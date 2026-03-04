@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { MarketingPageRenderer } from '@/components/MarketingPageRenderer';
 import { buildMetadata } from '@/features/cms/seo';
@@ -17,5 +17,8 @@ export async function generateMetadata() {
 export default async function ServicePage() {
   const page = await getPublishedPage('service');
   if (!page) notFound();
+  if (page.seo.slug && page.seo.slug !== 'service') {
+    redirect(`/${page.seo.slug}`);
+  }
   return <MarketingPageRenderer page={page} />;
 }

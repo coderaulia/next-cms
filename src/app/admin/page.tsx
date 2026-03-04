@@ -13,6 +13,7 @@ type DashboardData = {
 
 function DashboardPanel({ token }: { token: string }) {
   const [data, setData] = useState<DashboardData | null>(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function load() {
@@ -20,13 +21,20 @@ function DashboardPanel({ token }: { token: string }) {
         fetch('/api/admin/pages', { headers: { 'x-admin-token': token } }),
         fetch('/api/admin/blog?includeDrafts=1', { headers: { 'x-admin-token': token } })
       ]);
-      if (!pagesResponse.ok || !blogResponse.ok) return;
+      if (!pagesResponse.ok || !blogResponse.ok) {
+        setError('Failed to load dashboard.');
+        return;
+      }
       const pagesPayload = (await pagesResponse.json()) as { pages: LandingPage[] };
       const blogPayload = (await blogResponse.json()) as { posts: BlogPost[] };
       setData({ pages: pagesPayload.pages, blogPosts: blogPayload.posts });
     }
     load();
   }, [token]);
+
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
 
   if (!data) {
     return <p>Loading dashboard...</p>;

@@ -16,6 +16,12 @@ export async function getPublishedPages() {
   return Object.values(pages).filter((page) => page.published);
 }
 
+export async function getPublishedPageBySlug(slug: string): Promise<LandingPage | null> {
+  const normalized = slug.trim().replace(/^\/+/, '').toLowerCase();
+  const pages = await getPublishedPages();
+  return pages.find((page) => page.seo.slug.toLowerCase() === normalized) ?? null;
+}
+
 export async function getPublishedBlogPosts() {
   return getBlogPosts(false);
 }

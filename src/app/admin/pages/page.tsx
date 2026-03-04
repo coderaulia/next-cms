@@ -9,21 +9,29 @@ import type { LandingPage } from '@/features/cms/types';
 function PagesList({ token }: { token: string }) {
   const [pages, setPages] = useState<LandingPage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function load() {
-      const response = await fetch('/api/admin/pages', {
-        headers: { 'x-admin-token': token }
-      });
-      if (!response.ok) return;
-      const payload = (await response.json()) as { pages: LandingPage[] };
-      setPages(payload.pages);
-      setLoading(false);
+      try {
+        const response = await fetch('/api/admin/pages', {
+          headers: { 'x-admin-token': token }
+        });
+        if (!response.ok) {
+          setError('Failed to load pages.');
+          return;
+        }
+        const payload = (await response.json()) as { pages: LandingPage[] };
+        setPages(payload.pages);
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, [token]);
 
   if (loading) return <p>Loading pages...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="admin-form-wrap">

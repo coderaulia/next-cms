@@ -1,0 +1,196 @@
+{
+  "settings": {
+    "siteName": "Acme Marketing",
+    "baseUrl": "http://localhost:3000",
+    "organizationName": "Acme Marketing",
+    "organizationLogo": "https://placehold.co/240x80/png",
+    "defaultOgImage": "https://placehold.co/1200x630/png"
+  },
+  "pages": {
+    "home": {
+      "id": "home",
+      "title": "Growth Marketing That Converts",
+      "navLabel": "Home",
+      "published": true,
+      "seo": {
+        "metaTitle": "Growth Marketing That Converts | Acme Marketing",
+        "metaDescription": "Performance-focused marketing website services for fast growing teams.",
+        "slug": "",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "home-hero",
+          "heading": "Launch campaigns faster with conversion-first pages",
+          "body": "Build SEO-friendly pages, test messaging quickly, and publish content through a simple CMS.",
+          "ctaLabel": "Book discovery call",
+          "ctaHref": "/contact",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "Launch campaigns faster with conversion-first pages",
+          "layout": "split",
+          "theme": {
+            "background": "#eff6ff",
+            "text": "#0f172a",
+            "accent": "#1d4ed8"
+          }
+        },
+        {
+          "id": "home-services",
+          "heading": "What we help you ship",
+          "body": "Landing pages, technical SEO, analytics setup, and editorial workflows that keep your content moving.",
+          "ctaLabel": "See services",
+          "ctaHref": "/service",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "What we help you ship",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f0fdf4",
+            "text": "#052e16",
+            "accent": "#15803d"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-04T00:00:00.000Z"
+    },
+    "about": {
+      "id": "about",
+      "title": "About Our Team",
+      "navLabel": "About",
+      "published": true,
+      "seo": {
+        "metaTitle": "About Our Team | Acme Marketing",
+        "metaDescription": "Meet the team behind your website growth system.",
+        "slug": "about",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "about-story",
+          "heading": "A practical team focused on execution",
+          "body": "We combine content, engineering, and SEO to deliver compounding results for service businesses.",
+          "ctaLabel": "Read our blog",
+          "ctaHref": "/blog",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "A practical team focused on execution",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-04T00:00:00.000Z"
+    },
+    "service": {
+      "id": "service",
+      "title": "Services",
+      "navLabel": "Service",
+      "published": true,
+      "seo": {
+        "metaTitle": "Services | Acme Marketing",
+        "metaDescription": "Website and growth services built for modern marketing teams.",
+        "slug": "service",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "service-offers",
+          "heading": "Services built for measurable growth",
+          "body": "We provide page strategy, CMS implementation, technical SEO, and analytics reporting.",
+          "ctaLabel": "Start a project",
+          "ctaHref": "/contact",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "Services built for measurable growth",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-04T00:00:00.000Z"
+    },
+    "contact": {
+      "id": "contact",
+      "title": "Contact",
+      "navLabel": "Contact",
+      "published": true,
+      "seo": {
+        "metaTitle": "Contact | Acme Marketing",
+        "metaDescription": "Get in touch to discuss your next campaign or website project.",
+        "slug": "contact",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "contact-form",
+          "heading": "Let us know your goals",
+          "body": "Share your current website, timeline, and business target. We will respond with a practical plan.",
+          "ctaLabel": "Send inquiry",
+          "ctaHref": "mailto:hello@example.com",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "Let us know your goals",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-04T00:00:00.000Z"
+    }
+  },
+  "blogPosts": [
+    {
+      "id": "post-1",
+      "title": "How to Structure a High-Converting Service Landing Page",
+      "excerpt": "A practical structure for hero sections, proof blocks, and conversion paths that increase lead quality.",
+      "content": "# Why structure matters\n\nHigh-converting pages are clear, specific, and fast.\n\n## Recommended flow\n\n1. Hero with clear value proposition\n2. Social proof\n3. Service detail with outcomes\n4. CTA with low friction\n\nKeep sections simple and measurable.",
+      "author": "Editorial Team",
+      "tags": ["landing-page", "conversion", "seo"],
+      "coverImage": "https://placehold.co/1200x630/png",
+      "status": "published",
+      "publishedAt": "2026-03-04T00:00:00.000Z",
+      "updatedAt": "2026-03-04T00:00:00.000Z",
+      "seo": {
+        "metaTitle": "How to Structure a High-Converting Service Landing Page",
+        "metaDescription": "Use this framework to build service pages that improve conversion and organic visibility.",
+        "slug": "high-converting-service-landing-page",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      }
+    },
+    {
+      "id": "post-2",
+      "title": "Editorial Workflow Checklist for Marketing Teams",
+      "excerpt": "Set up a draft-to-publish workflow in your CMS so non-technical teams can ship content confidently.",
+      "content": "# Editorial workflow\n\nUse statuses, approvals, and clear owners.\n\nDraft quickly, review carefully, then publish with SEO checks.",
+      "author": "Editorial Team",
+      "tags": ["workflow", "cms"],
+      "coverImage": "https://placehold.co/1200x630/png",
+      "status": "draft",
+      "publishedAt": null,
+      "updatedAt": "2026-03-04T00:00:00.000Z",
+      "seo": {
+        "metaTitle": "Editorial Workflow Checklist for Marketing Teams",
+        "metaDescription": "A clear CMS workflow that supports consistent publishing quality.",
+        "slug": "editorial-workflow-checklist",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      }
+    }
+  ]
+}

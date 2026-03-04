@@ -16,7 +16,12 @@ export async function generateMetadata({ params }: BlogDetailPageProps) {
       title: 'Not found'
     };
   }
-  return buildMetadata(settings, post.seo, post.title, post.excerpt);
+  return buildMetadata(
+    settings,
+    { ...post.seo, slug: `blog/${post.seo.slug}` },
+    post.title,
+    post.excerpt
+  );
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {

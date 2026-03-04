@@ -42,7 +42,7 @@ export function validateLandingPage(payload: unknown): LandingPage | null {
   });
 
   return {
-    id: payload.id,
+    id: asString(payload.id) as PageId,
     title: asString(payload.title),
     navLabel: asString(payload.navLabel),
     published: asBoolean(payload.published),

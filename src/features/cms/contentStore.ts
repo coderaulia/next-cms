@@ -26,6 +26,8 @@ const normalizeSlug = (value: string) =>
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 
+const reservedPageSlugs = new Set(['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt']);
+
 async function ensureDataFile(): Promise<void> {
   await mkdir(DATA_DIR, { recursive: true });
   try {
@@ -68,11 +70,23 @@ export async function getPageById(id: PageId): Promise<LandingPage | null> {
 
 export async function upsertPage(page: LandingPage): Promise<LandingPage> {
   const content = await readContent();
+  const candidateSlug =
+    page.id === 'home' ? '' : normalizeSlug(page.seo.slug || page.id) || page.id;
+  let slug = candidateSlug;
+  if (reservedPageSlugs.has(slug)) {
+    slug = `${slug}-${page.id}`;
+  }
+  const duplicate = Object.values(content.pages).find(
+    (entry) => entry.id !== page.id && entry.seo.slug === slug
+  );
+  if (duplicate) {
+    slug = `${slug}-${page.id}`;
+  }
   const nextPage: LandingPage = {
     ...page,
     seo: {
       ...page.seo,
-      slug: normalizeSlug(page.seo.slug)
+      slug
     },
     updatedAt: nowIso()
   };
