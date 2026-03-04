@@ -17,7 +17,7 @@ export function AdminNav() {
 
   return (
     <nav className="admin-nav">
-      <Link href="/admin/dashboard" className={linkClass('/admin/dashboard')}>
+      <Link href="/admin" className={linkClass('/admin')}>
         Dashboard
       </Link>
       <Link href="/admin/pages" className={linkClass('/admin/pages')}>
