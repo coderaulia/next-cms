@@ -38,6 +38,72 @@ describe('CMS validators', () => {
     expect(page?.sections[0].layout).toBe('split');
   });
 
+  it('validates typed home blocks for homepage payload', () => {
+    const page = validateLandingPage({
+      id: 'home',
+      title: 'Home',
+      navLabel: 'Home',
+      published: true,
+      seo: {
+        metaTitle: 'Home',
+        metaDescription: 'desc',
+        slug: '',
+        canonical: '',
+        socialImage: '',
+        noIndex: false
+      },
+      sections: [],
+      homeBlocks: [
+        {
+          id: 'hero-1',
+          type: 'hero',
+          enabled: true,
+          theme: 'light',
+          badge: 'Badge',
+          titlePrimary: 'Primary',
+          titleAccent: 'Accent',
+          description: 'Description',
+          primaryCtaLabel: 'CTA 1',
+          primaryCtaHref: '/contact',
+          primaryCtaStyle: 'primary',
+          secondaryCtaLabel: 'CTA 2',
+          secondaryCtaHref: '/service',
+          secondaryCtaStyle: 'secondary'
+        }
+      ]
+    });
+
+    expect(page).not.toBeNull();
+    expect(page?.homeBlocks?.length).toBe(1);
+    expect(page?.homeBlocks?.[0].type).toBe('hero');
+  });
+
+  it('rejects unknown home block type', () => {
+    const page = validateLandingPage({
+      id: 'home',
+      title: 'Home',
+      navLabel: 'Home',
+      published: true,
+      seo: {
+        metaTitle: 'Home',
+        metaDescription: 'desc',
+        slug: '',
+        canonical: '',
+        socialImage: '',
+        noIndex: false
+      },
+      sections: [],
+      homeBlocks: [
+        {
+          id: 'bad',
+          type: 'mystery'
+        }
+      ]
+    });
+
+    expect(page).toBeNull();
+  });
+
   it('validates a blog post payload', () => {
     const post = validateBlogPost({
       id: 'p1',

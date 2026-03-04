@@ -3,9 +3,15 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
+const siteModules = ['Categories', 'Media Library', 'Comments'];
+const seoModules = ['Permalinks', 'Meta Tags', 'Sitemaps'];
+
 export function AdminNav() {
   const pathname = usePathname();
   const router = useRouter();
+
+  const isActive = (href: string) =>
+    pathname === href || (href !== '/admin' && pathname.startsWith(href));
 
   const handleLogout = () => {
     localStorage.removeItem('cms_admin_token');
@@ -13,22 +19,70 @@ export function AdminNav() {
     router.refresh();
   };
 
-  const linkClass = (href: string) => (pathname.startsWith(href) ? 'active' : '');
-
   return (
-    <nav className="admin-nav">
-      <Link href="/admin" className={linkClass('/admin')}>
-        Dashboard
-      </Link>
-      <Link href="/admin/pages" className={linkClass('/admin/pages')}>
-        Pages
-      </Link>
-      <Link href="/admin/blog" className={linkClass('/admin/blog')}>
-        Blog
-      </Link>
-      <button type="button" onClick={handleLogout}>
+    <aside className="admin-sidebar">
+      <div>
+        <Link href="/admin" className="admin-logo">
+          <span className="v2-brand-mark">V</span>
+          <span>vanaila.</span>
+        </Link>
+        <p className="admin-side-title">Core Content</p>
+        <ul className="admin-nav-list">
+          <li>
+            <Link href="/admin" className={`admin-nav-link ${isActive('/admin') ? 'active' : ''}`}>
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/blog"
+              className={`admin-nav-link ${isActive('/admin/blog') ? 'active' : ''}`}
+            >
+              Posts
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/pages"
+              className={`admin-nav-link ${isActive('/admin/pages') ? 'active' : ''}`}
+            >
+              Pages
+            </Link>
+          </li>
+        </ul>
+
+        <p className="admin-side-title">Site Management</p>
+        <ul className="admin-nav-list">
+          {siteModules.map((name) => (
+            <li key={name}>
+              <span className="admin-nav-disabled">{name}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="admin-side-title">Basic SEO</p>
+        <ul className="admin-nav-list">
+          {seoModules.map((name) => (
+            <li key={name}>
+              <span className="admin-nav-disabled">{name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <div className="admin-user-card">
+          <span className="admin-user-avatar">AD</span>
+          <div>
+            <strong>Administrator</strong>
+            <p className="muted">care@vanaila.com</p>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" className="admin-logout" onClick={handleLogout}>
         Logout
       </button>
-    </nav>
+    </aside>
   );
 }

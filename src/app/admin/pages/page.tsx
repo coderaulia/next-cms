@@ -34,27 +34,49 @@ function PagesList({ token }: { token: string }) {
   if (error) return <p className="error">{error}</p>;
 
   return (
-    <div className="admin-form-wrap">
-      <section className="admin-card">
-        <h2>Landing Pages</h2>
-        {pages.map((page) => (
-          <article key={page.id} className="section-editor">
-            <h3>{page.navLabel}</h3>
-            <p className="muted">Slug: /{page.seo.slug || ''}</p>
-            <p className="muted">Status: {page.published ? 'Published' : 'Draft'}</p>
-            <Link href={`/admin/pages/${page.id}`}>Edit page</Link>
-          </article>
-        ))}
-      </section>
-    </div>
+    <section className="admin-card">
+      <div className="admin-table-wrap">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>Slug</th>
+              <th>Status</th>
+              <th>Updated</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {pages.map((page) => (
+              <tr key={page.id}>
+                <td>
+                  <strong>{page.navLabel}</strong>
+                  <span className="admin-subtle">{page.title}</span>
+                </td>
+                <td>/{page.seo.slug || ''}</td>
+                <td>
+                  <span className={`admin-chip ${page.published ? 'admin-chip-success' : 'admin-chip-warning'}`}>
+                    {page.published ? 'published' : 'draft'}
+                  </span>
+                </td>
+                <td>{new Date(page.updatedAt).toLocaleDateString()}</td>
+                <td>
+                  <Link href={`/admin/pages/${page.id}`}>Edit</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
 export default function AdminPagesPage() {
   return (
     <AdminShell
-      title="Landing Page Editor"
-      description="Edit structure, copy, section layout, theme colors, and SEO fields."
+      title="Pages"
+      description="Manage landing pages and homepage block composition."
     >
       {(token) => <PagesList token={token} />}
     </AdminShell>

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 
+import { HomeBlockRenderer } from '@/components/home/HomeBlockRenderer';
 import { MarketingPageRenderer } from '@/components/MarketingPageRenderer';
 import { buildMetadata } from '@/features/cms/seo';
 import { getPublishedPage, getSiteSettings } from '@/features/cms/publicApi';
@@ -17,5 +18,8 @@ export async function generateMetadata() {
 export default async function HomePage() {
   const page = await getPublishedPage('home');
   if (!page) notFound();
+  if (page.homeBlocks && page.homeBlocks.length > 0) {
+    return <HomeBlockRenderer page={page} />;
+  }
   return <MarketingPageRenderer page={page} />;
 }

@@ -8,24 +8,30 @@ import { AdminNav } from './AdminNav';
 type AdminShellProps = {
   title: string;
   description?: string;
+  actions?: ReactNode;
   children: (token: string) => ReactNode;
 };
 
-export function AdminShell({ title, description, children }: AdminShellProps) {
+export function AdminShell({ title, description, actions, children }: AdminShellProps) {
   return (
     <main className="admin-page">
-      <div className="container">
-        <AdminAuthGate>
-          {(token) => (
-            <>
-              <h1>{title}</h1>
-              {description ? <p className="muted">{description}</p> : null}
-              <AdminNav />
+      <AdminAuthGate>
+        {(token) => (
+          <div className="admin-shell">
+            <AdminNav />
+            <section className="admin-main">
+              <header className="admin-main-header">
+                <div>
+                  <h1>{title}</h1>
+                  {description ? <p>{description}</p> : null}
+                </div>
+                {actions ? <div>{actions}</div> : null}
+              </header>
               {children(token)}
-            </>
-          )}
-        </AdminAuthGate>
-      </div>
+            </section>
+          </div>
+        )}
+      </AdminAuthGate>
     </main>
   );
 }

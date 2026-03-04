@@ -1,0 +1,104 @@
+import Link from 'next/link';
+
+import type { BlogPost } from '@/features/cms/types';
+
+type AdminPostsTableProps = {
+  posts: BlogPost[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  onPrev: () => void;
+  onNext: () => void;
+};
+
+export function AdminPostsTable({
+  posts,
+  total,
+  page,
+  pageSize,
+  totalPages,
+  onPrev,
+  onNext
+}: AdminPostsTableProps) {
+  const hasPosts = posts.length > 0;
+
+  return (
+    <>
+      <div className="admin-table-wrap">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Categories</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th />
+            </tr>
+          </thead>
+          {hasPosts ? (
+            <tbody>
+              {posts.map((post) => (
+                <tr key={post.id}>
+                  <td>
+                    <strong>{post.title}</strong>
+                    <span className="admin-subtle">ID: {post.id.slice(0, 8)}</span>
+                  </td>
+                  <td>{post.author}</td>
+                  <td>
+                    <div className="admin-actions">
+                      {post.tags.map((tag) => (
+                        <span className="admin-chip admin-chip-muted" key={tag}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td>{new Date(post.updatedAt).toLocaleDateString()}</td>
+                  <td>
+                    <span
+                      className={`admin-chip ${
+                        post.status === 'published' ? 'admin-chip-success' : 'admin-chip-warning'
+                      }`}
+                    >
+                      {post.status}
+                    </span>
+                  </td>
+                  <td>
+                    <Link href={`/admin/blog/${post.id}`}>Edit</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <tbody>
+              <tr>
+                <td colSpan={6} className="admin-subtle">
+                  No posts found for this filter.
+                </td>
+              </tr>
+            </tbody>
+          )}
+        </table>
+      </div>
+      <div className="admin-table-pagination">
+        <p>
+          Showing {total === 0 ? 0 : (page - 1) * pageSize + 1}
+          -{Math.min(page * pageSize, total)} of {total} posts
+        </p>
+        <div className="admin-pagination-controls">
+          <button type="button" disabled={page <= 1} onClick={onPrev}>
+            Prev
+          </button>
+          <span>
+            Page {page} / {totalPages}
+          </span>
+          <button type="button" disabled={page >= totalPages} onClick={onNext}>
+            Next
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}

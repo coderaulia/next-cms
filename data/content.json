@@ -1,6 +1,6 @@
 {
   "settings": {
-    "siteName": "Acme Marketing",
+    "siteName": "vanaila.",
     "baseUrl": "http://localhost:3000",
     "organizationName": "Acme Marketing",
     "organizationLogo": "https://placehold.co/240x80/png",
@@ -9,47 +9,182 @@
   "pages": {
     "home": {
       "id": "home",
-      "title": "Growth Marketing That Converts",
+      "title": "Your Business Online. Faster, Smarter, and Built To Scale.",
       "navLabel": "Home",
       "published": true,
       "seo": {
-        "metaTitle": "Growth Marketing That Converts | Acme Marketing",
-        "metaDescription": "Performance-focused marketing website services for fast growing teams.",
+        "metaTitle": "Your Business Online. Faster, Smarter, and Built To Scale. | Vanaila Digital",
+        "metaDescription": "Engineering-led digital solutions for ambitious modern businesses.",
         "slug": "",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
         "noIndex": false
       },
-      "sections": [
+      "sections": [],
+      "homeBlocks": [
         {
           "id": "home-hero",
-          "heading": "Launch campaigns faster with conversion-first pages",
-          "body": "Build SEO-friendly pages, test messaging quickly, and publish content through a simple CMS.",
-          "ctaLabel": "Book discovery call",
-          "ctaHref": "/contact",
-          "mediaImage": "https://placehold.co/960x640/png",
-          "mediaAlt": "Launch campaigns faster with conversion-first pages",
-          "layout": "split",
-          "theme": {
-            "background": "#eff6ff",
-            "text": "#0f172a",
-            "accent": "#1d4ed8"
-          }
+          "type": "hero",
+          "enabled": true,
+          "theme": "light",
+          "badge": "Vanaila Digital Consultancy",
+          "titlePrimary": "Your Business Online.",
+          "titleAccent": "Faster, Smarter, and Built To Scale.",
+          "description": "Vanaila Digital helps you move your ideas to production with strategic design, engineering, and SEO.",
+          "primaryCtaLabel": "Book free consultation",
+          "primaryCtaHref": "/contact",
+          "primaryCtaStyle": "primary",
+          "secondaryCtaLabel": "See our work",
+          "secondaryCtaHref": "/service",
+          "secondaryCtaStyle": "secondary"
         },
         {
-          "id": "home-services",
-          "heading": "What we help you ship",
-          "body": "Landing pages, technical SEO, analytics setup, and editorial workflows that keep your content moving.",
-          "ctaLabel": "See services",
-          "ctaHref": "/service",
-          "mediaImage": "https://placehold.co/960x640/png",
-          "mediaAlt": "What we help you ship",
-          "layout": "stacked",
-          "theme": {
-            "background": "#f0fdf4",
-            "text": "#052e16",
-            "accent": "#15803d"
-          }
+          "id": "home-values",
+          "type": "value_triplet",
+          "enabled": true,
+          "theme": "light",
+          "items": [
+            {
+              "id": "value-speed",
+              "icon": "⚡",
+              "title": "Speed",
+              "text": "Lightweight engineering and practical workflows that reduce time to launch."
+            },
+            {
+              "id": "value-simplicity",
+              "icon": "◎",
+              "title": "Simplicity",
+              "text": "Clear implementation choices with maintainable structures for long-term teams."
+            },
+            {
+              "id": "value-value",
+              "icon": "⎈",
+              "title": "Value",
+              "text": "Focused execution and measured outcomes for every delivery cycle."
+            }
+          ]
+        },
+        {
+          "id": "home-solutions",
+          "type": "solutions_grid",
+          "enabled": true,
+          "theme": "mist",
+          "heading": "Our Solutions",
+          "subheading": "Engineering solutions for modern business infrastructure. Build for performance, scale, and clarity.",
+          "items": [
+            {
+              "id": "solution-01",
+              "number": "01",
+              "title": "Professional Business Website",
+              "text": "Conversion-focused websites that are fast, secure, and easy to maintain.",
+              "ctaLabel": "Learn more",
+              "ctaHref": "/service"
+            },
+            {
+              "id": "solution-02",
+              "number": "02",
+              "title": "Custom Business Tools",
+              "text": "Internal tools and workflow platforms to remove operational friction.",
+              "ctaLabel": "Explore",
+              "ctaHref": "/service"
+            },
+            {
+              "id": "solution-03",
+              "number": "03",
+              "title": "Store Online Shops",
+              "text": "Commerce-ready storefronts with reliable performance and clean UX.",
+              "ctaLabel": "View service",
+              "ctaHref": "/service"
+            },
+            {
+              "id": "solution-04",
+              "number": "04",
+              "title": "Mobile Business Apps",
+              "text": "Responsive product experiences with focused feature sets.",
+              "ctaLabel": "Discuss",
+              "ctaHref": "/contact"
+            },
+            {
+              "id": "solution-05",
+              "number": "05",
+              "title": "Official Business Email",
+              "text": "Professional communication infrastructure for brand trust.",
+              "ctaLabel": "Professionalize",
+              "ctaHref": "/contact"
+            }
+          ]
+        },
+        {
+          "id": "home-why",
+          "type": "why_split",
+          "enabled": true,
+          "theme": "blue-soft",
+          "heading": "Why Vanaila Digital?",
+          "description": "We engineer digital systems that balance precision, speed, and business outcomes.",
+          "bullets": [
+            {
+              "id": "why-1",
+              "title": "Innovative Focused R&D",
+              "text": "Practical experimentation with measurable impact."
+            },
+            {
+              "id": "why-2",
+              "title": "8 Years of Hands-On Practice",
+              "text": "Cross-industry delivery experience with strong execution standards."
+            },
+            {
+              "id": "why-3",
+              "title": "Premium Quality, Best-Price Guarantee",
+              "text": "A reliable balance of quality and cost efficiency."
+            }
+          ],
+          "mediaImage": "https://placehold.co/560x420/png",
+          "mediaAlt": "Vanaila digital engineering visual"
+        },
+        {
+          "id": "home-logos",
+          "type": "logo_cloud",
+          "enabled": true,
+          "theme": "light",
+          "heading": "Trusted by Innovators",
+          "logos": [
+            {
+              "id": "logo-1",
+              "name": "TechWave"
+            },
+            {
+              "id": "logo-2",
+              "name": "GlobalCom"
+            },
+            {
+              "id": "logo-3",
+              "name": "ApexRetail"
+            },
+            {
+              "id": "logo-4",
+              "name": "InnovaHealth"
+            },
+            {
+              "id": "logo-5",
+              "name": "Quantum"
+            }
+          ],
+          "primaryCtaLabel": "View our portfolio",
+          "primaryCtaHref": "/blog",
+          "secondaryCtaLabel": "Let's talk growth",
+          "secondaryCtaHref": "/contact"
+        },
+        {
+          "id": "home-cta",
+          "type": "primary_cta",
+          "enabled": true,
+          "theme": "blue-soft",
+          "heading": "Ready to Grow?",
+          "accentText": "Join the organizations that trust Vanaila Digital.",
+          "description": "Let's build something that works hard for your goals.",
+          "ctaLabel": "Claim free consultation call",
+          "ctaHref": "/contact",
+          "ctaStyle": "primary"
         }
       ],
       "updatedAt": "2026-03-04T00:00:00.000Z"
@@ -158,7 +293,7 @@
       "excerpt": "A practical structure for hero sections, proof blocks, and conversion paths that increase lead quality.",
       "content": "# Why structure matters\n\nHigh-converting pages are clear, specific, and fast.\n\n## Recommended flow\n\n1. Hero with clear value proposition\n2. Social proof\n3. Service detail with outcomes\n4. CTA with low friction\n\nKeep sections simple and measurable.",
       "author": "Editorial Team",
-      "tags": ["landing-page", "conversion", "seo"],
+      "tags": ["engineering", "performance", "seo"],
       "coverImage": "https://placehold.co/1200x630/png",
       "status": "published",
       "publishedAt": "2026-03-04T00:00:00.000Z",

@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { defaultContent } from './defaultContent';
-import type { BlogPost, CmsContent, LandingPage, PageId } from './types';
+import type { BlogPost, CmsContent, HomeBlock, LandingPage, PageId } from './types';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'content.json');
@@ -36,6 +36,14 @@ async function ensureDataFile(): Promise<void> {
     await writeFile(DATA_FILE, JSON.stringify(defaultContent, null, 2), 'utf-8');
   }
 }
+
+const normalizeHomeBlocks = (blocks: HomeBlock[] | undefined): HomeBlock[] | undefined => {
+  if (!blocks) return undefined;
+  return blocks.map((block, index) => ({
+    ...block,
+    id: block.id || `home-block-${index + 1}`
+  }));
+};
 
 export async function readContent(): Promise<CmsContent> {
   await ensureDataFile();
@@ -84,6 +92,10 @@ export async function upsertPage(page: LandingPage): Promise<LandingPage> {
   }
   const nextPage: LandingPage = {
     ...page,
+    homeBlocks:
+      page.id === 'home'
+        ? normalizeHomeBlocks(page.homeBlocks ?? content.pages.home.homeBlocks ?? [])
+        : page.homeBlocks,
     seo: {
       ...page.seo,
       slug
@@ -101,6 +113,74 @@ export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
     ? content.blogPosts
     : content.blogPosts.filter((post) => post.status === 'published');
   return filtered.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+}
+
+export type BlogQueryInput = {
+  includeDrafts: boolean;
+  q?: string;
+  status?: 'all' | 'draft' | 'published';
+  category?: string;
+  dateSort?: 'newest' | 'oldest';
+  page?: number;
+  pageSize?: number;
+};
+
+export async function queryBlogPosts(input: BlogQueryInput) {
+  const content = await readContent();
+  const query = (input.q ?? '').trim().toLowerCase();
+  const category = (input.category ?? '').trim().toLowerCase();
+  const status =
+    input.status === 'draft' || input.status === 'published' || input.status === 'all'
+      ? input.status
+      : 'all';
+  const dateSort = input.dateSort === 'oldest' ? 'oldest' : 'newest';
+  const page = Number.isFinite(input.page) && (input.page ?? 0) > 0 ? Number(input.page) : 1;
+  const pageSize =
+    Number.isFinite(input.pageSize) && (input.pageSize ?? 0) > 0
+      ? Math.min(Number(input.pageSize), 50)
+      : 10;
+
+  const categories = Array.from(
+    new Set(
+      content.blogPosts
+        .flatMap((post) => post.tags)
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0)
+    )
+  ).sort((a, b) => (a > b ? 1 : -1));
+
+  let posts = content.blogPosts.filter((post) => {
+    if (!input.includeDrafts && post.status !== 'published') return false;
+    if (status !== 'all' && post.status !== status) return false;
+    if (query.length > 0) {
+      const haystack = `${post.title} ${post.author}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    if (category.length > 0) {
+      const hasCategory = post.tags.some((tag) => tag.toLowerCase() === category);
+      if (!hasCategory) return false;
+    }
+    return true;
+  });
+
+  posts = posts.sort((a, b) => {
+    if (dateSort === 'oldest') return a.updatedAt > b.updatedAt ? 1 : -1;
+    return a.updatedAt < b.updatedAt ? 1 : -1;
+  });
+
+  const total = posts.length;
+  const start = (page - 1) * pageSize;
+  const paginated = posts.slice(start, start + pageSize);
+
+  return {
+    posts: paginated,
+    meta: {
+      total,
+      page,
+      pageSize,
+      categories
+    }
+  };
 }
 
 export async function getBlogPostById(id: string): Promise<BlogPost | null> {

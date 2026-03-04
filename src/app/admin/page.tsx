@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { BlogPost, LandingPage } from '@/features/cms/types';
@@ -19,12 +19,16 @@ function DashboardPanel({ token }: { token: string }) {
     async function load() {
       const [pagesResponse, blogResponse] = await Promise.all([
         fetch('/api/admin/pages', { headers: { 'x-admin-token': token } }),
-        fetch('/api/admin/blog?includeDrafts=1', { headers: { 'x-admin-token': token } })
+        fetch('/api/admin/blog?includeDrafts=1&page=1&pageSize=5', {
+          headers: { 'x-admin-token': token }
+        })
       ]);
+
       if (!pagesResponse.ok || !blogResponse.ok) {
         setError('Failed to load dashboard.');
         return;
       }
+
       const pagesPayload = (await pagesResponse.json()) as { pages: LandingPage[] };
       const blogPayload = (await blogResponse.json()) as { posts: BlogPost[] };
       setData({ pages: pagesPayload.pages, blogPosts: blogPayload.posts });
@@ -32,39 +36,91 @@ function DashboardPanel({ token }: { token: string }) {
     load();
   }, [token]);
 
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
+  const metrics = useMemo(() => {
+    if (!data) return null;
+    const publishedPages = data.pages.filter((page) => page.published).length;
+    const publishedPosts = data.blogPosts.filter((post) => post.status === 'published').length;
+    const draftPosts = data.blogPosts.filter((post) => post.status === 'draft').length;
+    return { publishedPages, publishedPosts, draftPosts };
+  }, [data]);
 
-  if (!data) {
-    return <p>Loading dashboard...</p>;
-  }
-
-  const publishedPages = data.pages.filter((page) => page.published).length;
-  const publishedPosts = data.blogPosts.filter((post) => post.status === 'published').length;
-  const draftPosts = data.blogPosts.filter((post) => post.status === 'draft').length;
+  if (error) return <p className="error">{error}</p>;
+  if (!data || !metrics) return <p>Loading dashboard...</p>;
 
   return (
     <div className="admin-form-wrap">
-      <section className="admin-card">
-        <h2>Content Snapshot</h2>
-        <p>
-          Pages published: {publishedPages}/{data.pages.length}
-        </p>
-        <p>Blog posts published: {publishedPosts}</p>
-        <p>Blog drafts: {draftPosts}</p>
+      <section className="admin-kpi-grid">
+        <article className="admin-card">
+          <p className="admin-kpi-label">Published pages</p>
+          <p className="admin-kpi-value">
+            {metrics.publishedPages}/{data.pages.length}
+          </p>
+        </article>
+        <article className="admin-card">
+          <p className="admin-kpi-label">Published posts</p>
+          <p className="admin-kpi-value">{metrics.publishedPosts}</p>
+        </article>
+        <article className="admin-card">
+          <p className="admin-kpi-label">Draft posts</p>
+          <p className="admin-kpi-value">{metrics.draftPosts}</p>
+        </article>
       </section>
+
       <section className="admin-card">
-        <h2>Actions</h2>
-        <p>
-          <Link href="/admin/pages">Edit landing pages</Link>
-        </p>
-        <p>
-          <Link href="/admin/blog">Manage blog posts</Link>
-        </p>
-        <p>
-          <Link href="/admin/blog/new">Create new blog post</Link>
-        </p>
+        <div className="admin-inline-header">
+          <h2>Quick actions</h2>
+        </div>
+        <div className="admin-grid-3">
+          <Link href="/admin/pages" className="v2-btn v2-btn-secondary">
+            Edit landing pages
+          </Link>
+          <Link href="/admin/blog" className="v2-btn v2-btn-secondary">
+            Manage posts
+          </Link>
+          <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
+            Create new post
+          </Link>
+        </div>
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-inline-header">
+          <h2>Recent posts</h2>
+          <Link href="/admin/blog">View all</Link>
+        </div>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.blogPosts.map((post) => (
+                <tr key={post.id}>
+                  <td>
+                    <strong>{post.title}</strong>
+                    <span className="admin-subtle">/blog/{post.seo.slug}</span>
+                  </td>
+                  <td>{post.author}</td>
+                  <td>
+                    <span
+                      className={`admin-chip ${
+                        post.status === 'published' ? 'admin-chip-success' : 'admin-chip-muted'
+                      }`}
+                    >
+                      {post.status}
+                    </span>
+                  </td>
+                  <td>{new Date(post.updatedAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );
@@ -72,10 +128,7 @@ function DashboardPanel({ token }: { token: string }) {
 
 export default function AdminDashboardPage() {
   return (
-    <AdminShell
-      title="CMS Admin"
-      description="Manage landing pages, blog workflow, and SEO fields."
-    >
+    <AdminShell title="Dashboard" description="Architectural dashboard and content control center.">
       {(token) => <DashboardPanel token={token} />}
     </AdminShell>
   );

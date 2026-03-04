@@ -36,7 +36,7 @@ function BlogEditor({ token }: { token: string }) {
 
 export default function AdminBlogByIdPage() {
   return (
-    <AdminShell title="Edit Blog Post" description="Update content, SEO, and publish status.">
+    <AdminShell title="Edit Post" description="Update content, SEO, and publication status.">
       {(token) => <BlogEditor token={token} />}
     </AdminShell>
   );

@@ -64,7 +64,7 @@ function CreateBlogPost({ token }: { token: string }) {
 
 export default function AdminBlogCreatePage() {
   return (
-    <AdminShell title="Create Blog Post" description="Start a draft, then complete content and SEO fields.">
+    <AdminShell title="New Post" description="Create a draft, then complete content and SEO fields.">
       {(token) => <CreateBlogPost token={token} />}
     </AdminShell>
   );

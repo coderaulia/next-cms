@@ -38,7 +38,7 @@ export default function AdminPageById() {
   return (
     <AdminShell
       title="Edit Landing Page"
-      description="Update sections, structure, color theme, and SEO tags."
+      description="Update SEO and content. Homepage supports typed block composition."
     >
       {(token) => <PageEditorScreen token={token} />}
     </AdminShell>

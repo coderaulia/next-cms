@@ -4,8 +4,9 @@ Production-ready starter CMS for marketing websites using Next.js and TypeScript
 
 It includes:
 - Editable landing pages: Home, About, Service, Contact
+- Typed homepage block system (`hero`, `value_triplet`, `solutions_grid`, `why_split`, `logo_cloud`, `primary_cta`)
 - Blog management: create, edit, publish, unpublish, delete
-- Admin panel for non-technical content edits
+- Redesigned admin panel with sidebar IA, posts table, and server-side filters
 - Technical SEO defaults: metadata, canonicals, OG/Twitter tags, sitemap, robots, JSON-LD
 
 ## Stack Decision
@@ -64,10 +65,17 @@ npm run dev
 - `slug`
 - `published`
 - `seo`: `metaTitle`, `metaDescription`, `canonical`, `socialImage`, `noIndex`
-- `sections[]`: supports per-section structure and color controls
+- `sections[]`: legacy section model for non-home pages
   - `layout`: `stacked` or `split`
   - `theme`: `background`, `text`, `accent`
   - `heading`, `body`, `ctaLabel`, `ctaHref`, `mediaImage`, `mediaAlt`
+- `homeBlocks[]` (home page only): typed dynamic block model
+  - `hero`
+  - `value_triplet`
+  - `solutions_grid`
+  - `why_split`
+  - `logo_cloud`
+  - `primary_cta`
 
 ### Blog post
 
@@ -77,6 +85,24 @@ npm run dev
 - `publishedAt`, `updatedAt`
 - `coverImage`, `tags[]`, `author`
 - `seo`: `metaTitle`, `metaDescription`, `canonical`, `socialImage`, `noIndex`
+
+### Admin blog list API
+
+`GET /api/admin/blog` supports:
+- `includeDrafts=1`
+- `q`
+- `status=all|draft|published`
+- `category`
+- `dateSort=newest|oldest`
+- `page`
+- `pageSize`
+
+Response includes:
+- `posts[]`
+- `meta.total`
+- `meta.page`
+- `meta.pageSize`
+- `meta.categories[]`
 
 ## SEO Features Included
 
@@ -97,6 +123,9 @@ src/
   app/
     (public pages, admin pages, api routes, sitemap, robots)
   components/
+    home/
+      blocks/
+    admin/
   features/cms/
   services/
   tests/
@@ -117,6 +146,7 @@ docs/
 See:
 - [Admin usage guide](./docs/admin-usage.md)
 - [Deployment handoff](./docs/deployment-handoff.md)
+- [Phase 4 testing checklist](./docs/testing-phase-4.md)
 
 ## Assumptions
 

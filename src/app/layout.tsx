@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Playfair_Display, Sora } from 'next/font/google';
 
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { SiteFooter } from '@/components/SiteFooter';
@@ -9,12 +10,25 @@ import './globals.css';
 
 export const dynamic = 'force-dynamic';
 
+const fontBody = Sora({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap'
+});
+
+const fontAccent = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-accent',
+  style: ['italic'],
+  display: 'swap'
+});
+
 export const metadata: Metadata = {
   title: {
-    default: 'React CMS',
+    default: 'vanaila.',
     template: '%s'
   },
-  description: 'Marketing CMS starter with landing pages, blog workflow, and technical SEO defaults.'
+  description: 'Engineering-led marketing CMS with dynamic landing blocks and editorial workflow.'
 };
 
 export default async function RootLayout({
@@ -23,13 +37,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const [settings, pages] = await Promise.all([getSiteSettings(), getPublishedPages()]);
-  const navItems = pages
-    .map((page) => ({
-      href: page.seo.slug ? `/${page.seo.slug}` : '/',
-      label: page.navLabel
-    }))
-    .sort((a, b) => (a.href > b.href ? 1 : -1));
-  navItems.push({ href: '/blog', label: 'Blog' });
+  const pageNavItems = pages.map((page) => ({
+    href: page.seo.slug ? `/${page.seo.slug}` : '/',
+    label: page.navLabel
+  }));
+  const allNavItems = [...pageNavItems, { href: '/blog', label: 'Insights' }];
+  const navOrder = ['/', '/service', '/about', '/blog', '/contact'];
+  const navItems = allNavItems.sort(
+    (a, b) => navOrder.indexOf(a.href) - navOrder.indexOf(b.href)
+  );
 
   const orgSchema = {
     '@context': 'https://schema.org',
@@ -52,11 +68,11 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={`${fontBody.variable} ${fontAccent.variable}`}>
+      <body className="v2-site">
         <SeoJsonLd data={[orgSchema, siteSchema]} />
         <SiteHeader siteName={settings.siteName} navItems={navItems} />
-        {children}
+        <div className="v2-page">{children}</div>
         <SiteFooter siteName={settings.siteName} />
       </body>
     </html>
