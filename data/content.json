@@ -1,6 +1,6 @@
 {
   "settings": {
-    "siteName": "vanaila.",
+    "siteName": "Vanaila Digital.",
     "baseUrl": "http://localhost:3000",
     "organizationName": "Acme Marketing",
     "organizationLogo": "https://placehold.co/240x80/png",
@@ -9,12 +9,12 @@
   "pages": {
     "home": {
       "id": "home",
-      "title": "Your Business Online. Faster, Smarter, and Built To Scale.",
+      "title": "Faster Tech. Smarter Work. Scaled Results.",
       "navLabel": "Home",
       "published": true,
       "seo": {
-        "metaTitle": "Your Business Online. Faster, Smarter, and Built To Scale. | Vanaila Digital",
-        "metaDescription": "Engineering-led digital solutions for ambitious modern businesses.",
+        "metaTitle": "Faster Tech. Smarter Work. Scaled Results. | Vanaila Digital",
+        "metaDescription": "Premium engineering-focused digital agency for high-performance infrastructure.",
         "slug": "",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -27,14 +27,14 @@
           "type": "hero",
           "enabled": true,
           "theme": "light",
-          "badge": "Vanaila Digital Consultancy",
-          "titlePrimary": "Your Business Online.",
-          "titleAccent": "Faster, Smarter, and Built To Scale.",
-          "description": "Vanaila Digital helps you move your ideas to production with strategic design, engineering, and SEO.",
-          "primaryCtaLabel": "Book free consultation",
+          "badge": "Premium Digital Consultancy",
+          "titlePrimary": "Faster Tech. Smarter Work.",
+          "titleAccent": "Scaled Results.",
+          "description": "Vanaila Digital builds the high-performance digital tools your business deserves. We specialize in lightning-fast websites and custom software that automates your unique workflows, giving you the elite-level tech you need at SME-friendly rates.",
+          "primaryCtaLabel": "Get a free strategy call",
           "primaryCtaHref": "/contact",
           "primaryCtaStyle": "primary",
-          "secondaryCtaLabel": "See our work",
+          "secondaryCtaLabel": "Explore our work",
           "secondaryCtaHref": "/service",
           "secondaryCtaStyle": "secondary"
         },
@@ -46,21 +46,21 @@
           "items": [
             {
               "id": "value-speed",
-              "icon": "⚡",
+              "icon": "bolt",
               "title": "Speed",
-              "text": "Lightweight engineering and practical workflows that reduce time to launch."
+              "text": "Lightning-fast performance that keeps your customers engaged and improves your search rankings."
             },
             {
               "id": "value-simplicity",
-              "icon": "◎",
+              "icon": "check_circle",
               "title": "Simplicity",
-              "text": "Clear implementation choices with maintainable structures for long-term teams."
+              "text": "Complex technical problems solved with elegant, easy-to-use interfaces that your team will love."
             },
             {
               "id": "value-value",
-              "icon": "⎈",
+              "icon": "savings",
               "title": "Value",
-              "text": "Focused execution and measured outcomes for every delivery cycle."
+              "text": "Professional-grade solutions optimized for smart investment, without enterprise pricing."
             }
           ]
         },
@@ -70,47 +70,47 @@
           "enabled": true,
           "theme": "mist",
           "heading": "Our Solutions",
-          "subheading": "Engineering solutions for modern business infrastructure. Build for performance, scale, and clarity.",
+          "subheading": "Engineered solutions for modern business infrastructure. We build for performance, scale, and uncompromising quality.",
           "items": [
             {
               "id": "solution-01",
               "number": "01",
               "title": "Professional Business Website",
-              "text": "Conversion-focused websites that are fast, secure, and easy to maintain.",
-              "ctaLabel": "Learn more",
-              "ctaHref": "/service"
+              "text": "Clean, fast-loading digital authority. We architect modern websites built to convert and scale.",
+              "ctaLabel": "Brand authority",
+              "ctaHref": "/website-development"
             },
             {
               "id": "solution-02",
               "number": "02",
               "title": "Custom Business Tools",
-              "text": "Internal tools and workflow platforms to remove operational friction.",
-              "ctaLabel": "Explore",
-              "ctaHref": "/service"
+              "text": "Bespoke automation systems engineered to streamline internal workflows and reduce operational friction.",
+              "ctaLabel": "Automation",
+              "ctaHref": "/custom-business-tools"
             },
             {
               "id": "solution-03",
               "number": "03",
-              "title": "Store Online Shops",
-              "text": "Commerce-ready storefronts with reliable performance and clean UX.",
-              "ctaLabel": "View service",
-              "ctaHref": "/service"
+              "title": "Secure Online Shops",
+              "text": "Robust commerce systems built for secure payments and performance-driven growth.",
+              "ctaLabel": "Revenue growth",
+              "ctaHref": "/secure-online-shops"
             },
             {
               "id": "solution-04",
               "number": "04",
-              "title": "Mobile Business Apps",
-              "text": "Responsive product experiences with focused feature sets.",
-              "ctaLabel": "Discuss",
-              "ctaHref": "/contact"
+              "title": "Mobile Business App",
+              "text": "Professional iOS and Android experiences with responsive architecture and native-feel interaction.",
+              "ctaLabel": "Custom access",
+              "ctaHref": "/mobile-business-app"
             },
             {
               "id": "solution-05",
               "number": "05",
               "title": "Official Business Email",
-              "text": "Professional communication infrastructure for brand trust.",
-              "ctaLabel": "Professionalize",
-              "ctaHref": "/contact"
+              "text": "Complete domain and email setup engineered for deliverability and professional trust.",
+              "ctaLabel": "Professionalization",
+              "ctaHref": "/official-business-email"
             }
           ]
         },
@@ -120,22 +120,32 @@
           "enabled": true,
           "theme": "blue-soft",
           "heading": "Why Vanaila Digital?",
-          "description": "We engineer digital systems that balance precision, speed, and business outcomes.",
+          "description": "We don't just build software; we build the engine for your future growth. Here's what sets our consultancy apart.",
           "bullets": [
             {
               "id": "why-1",
-              "title": "Innovative Focused R&D",
-              "text": "Practical experimentation with measurable impact."
+              "title": "Innovation Focused on ROI",
+              "text": "We prioritize features that drive revenue and efficiency, ensuring your investment pays for itself."
             },
             {
               "id": "why-2",
-              "title": "8 Years of Hands-On Practice",
-              "text": "Cross-industry delivery experience with strong execution standards."
+              "title": "8 Years of Hands-On Expertise",
+              "text": "Benefit from years of refined processes and technical mastery in digital delivery."
             },
             {
               "id": "why-3",
+              "title": "Your External Technical Partner",
+              "text": "We act as your dedicated CTO extension, so you can focus on running your business."
+            },
+            {
+              "id": "why-4",
+              "title": "Bespoke Strategy for Every Project",
+              "text": "No cookie-cutter templates. We design every strategy specifically for your unique goals."
+            },
+            {
+              "id": "why-5",
               "title": "Premium Quality, Best-Price Guarantee",
-              "text": "A reliable balance of quality and cost efficiency."
+              "text": "Top-tier coding standards and design at a price point that makes sense for growing businesses."
             }
           ],
           "mediaImage": "https://placehold.co/560x420/png",
@@ -181,13 +191,13 @@
           "theme": "blue-soft",
           "heading": "Ready to Grow?",
           "accentText": "Join the organizations that trust Vanaila Digital.",
-          "description": "Let's build something that works hard for your goals.",
+          "description": "Let's build something that works as hard as you do.",
           "ctaLabel": "Claim free consultation call",
           "ctaHref": "/contact",
           "ctaStyle": "primary"
         }
       ],
-      "updatedAt": "2026-03-04T00:00:00.000Z"
+      "updatedAt": "2026-03-04T00:00:00Z"
     },
     "about": {
       "id": "about",
@@ -204,14 +214,149 @@
       },
       "sections": [
         {
+          "id": "about-hero",
+          "heading": "A Decade of|Engineering Excellence",
+          "body": "Founded on the principles of precision and scalability, we have spent over 8 years perfecting the digital infrastructure that powers ambitious brands.",
+          "ctaLabel": "Vanaila Digital:",
+          "ctaHref": "/about",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
           "id": "about-story",
-          "heading": "A practical team focused on execution",
-          "body": "We combine content, engineering, and SEO to deliver compounding results for service businesses.",
-          "ctaLabel": "Read our blog",
-          "ctaHref": "/blog",
-          "mediaImage": "https://placehold.co/960x640/png",
-          "mediaAlt": "A practical team focused on execution",
+          "heading": "Our Technical DNA",
+          "body": "Vanaila Digital was born in Bogor, Indonesia, from a simple yet powerful observation: the gap between aesthetic design and robust engineering was widening.\n\nFor over 8 years, we have cultivated a culture of architectural foresight, building not just for today's launch, but for next year's scale.",
+          "ctaLabel": "2023",
+          "ctaHref": "Established in Bogor",
+          "mediaImage": "",
+          "mediaAlt": "Our roots in engineering mean we prioritize speed, security, and stability above all else.",
           "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-vision",
+          "heading": "Our Vision",
+          "body": "To redefine the standard of digital craftsmanship by proving that high-performance engineering is the truest form of modern design.",
+          "ctaLabel": "visibility",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-mission",
+          "heading": "Our Mission",
+          "body": "To empower forward-thinking businesses with digital infrastructure that scales effortlessly. We commit to transparency in code and clarity in communication.",
+          "ctaLabel": "rocket_launch",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-pillars-intro",
+          "heading": "The Pillars of Vanaila",
+          "body": "Three core principles that have guided our engineering decisions for nearly a decade.",
+          "ctaLabel": "",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-pillar-1",
+          "heading": "Architectural Foresight",
+          "body": "We architect for the future. Every line of code is written with scalability and maintenance in mind.",
+          "ctaLabel": "architecture",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-pillar-2",
+          "heading": "Precision & Care",
+          "body": "From pixel-perfect responsiveness to optimized database queries, we treat every project as if it were our own product.",
+          "ctaLabel": "psychology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-pillar-3",
+          "heading": "Results-Driven Approach",
+          "body": "Beauty without function is vanity. We measure our success through load times, conversion rates, and partner growth.",
+          "ctaLabel": "trending_up",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-quote",
+          "heading": "We believe that true potential is unlocked when complex problems meet elegant engineering.",
+          "body": "Whether you are a startup looking to disrupt or an enterprise aiming to optimize, our team is ready to translate your vision into a digital reality that stands the test of time.",
+          "ctaLabel": "format_quote",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "about-cta",
+          "heading": "Unlock Your|Digital Potential",
+          "body": "Partner with an engineering team that understands the intersection of technology and business growth. Let's build something remarkable.",
+          "ctaLabel": "Claim Free Consultation Call",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
           "theme": {
             "background": "#f9fafb",
             "text": "#111827",
@@ -219,12 +364,12 @@
           }
         }
       ],
-      "updatedAt": "2026-03-04T00:00:00.000Z"
+      "updatedAt": "2026-03-04T00:00:00Z"
     },
     "service": {
       "id": "service",
       "title": "Services",
-      "navLabel": "Service",
+      "navLabel": "Services",
       "published": true,
       "seo": {
         "metaTitle": "Services | Acme Marketing",
@@ -236,14 +381,179 @@
       },
       "sections": [
         {
-          "id": "service-offers",
-          "heading": "Services built for measurable growth",
-          "body": "We provide page strategy, CMS implementation, technical SEO, and analytics reporting.",
-          "ctaLabel": "Start a project",
+          "id": "service-hero",
+          "heading": "Our Services:|Tailored Digital Infrastructure",
+          "body": "We bridge the gap between complex engineering and seamless user experience. Explore our specialized services designed to establish and scale your digital authority.",
+          "ctaLabel": "Tailored Solutions",
+          "ctaHref": "/service",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-intro",
+          "heading": "Our Solutions",
+          "body": "Engineered solutions for modern business infrastructure. We build for performance, scale, and uncompromising quality.",
+          "ctaLabel": "",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-card-1",
+          "heading": "Website Development",
+          "body": "Clean, fast-loading digital authority. We build premium corporate presences that balance aesthetic minimalism with architectural performance.",
+          "ctaLabel": "language",
+          "ctaHref": "/website-development",
+          "mediaImage": "",
+          "mediaAlt": "Svelte,WordPress,SEO",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-card-2",
+          "heading": "Custom Business Tools",
+          "body": "Bespoke automation systems including HR portals and recruitment tools. Engineered to streamline internal workflows and reduce operational friction.",
+          "ctaLabel": "integration_instructions",
+          "ctaHref": "/custom-business-tools",
+          "mediaImage": "",
+          "mediaAlt": "Python,React,Automation",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-card-3",
+          "heading": "Secure Online Shops",
+          "body": "Robust retail systems built on WooCommerce. We prioritize high-security payment processing and custom inventory integrations for modern commerce.",
+          "ctaLabel": "shopping_cart",
+          "ctaHref": "/secure-online-shops",
+          "mediaImage": "",
+          "mediaAlt": "WooCommerce,Store,Security",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-card-4",
+          "heading": "Mobile Business App",
+          "body": "Professional iOS and Android development. Using React Native, we deliver native-feel experiences that keep your business connected.",
+          "ctaLabel": "smartphone",
+          "ctaHref": "/mobile-business-app",
+          "mediaImage": "",
+          "mediaAlt": "React Native,iOS,Android",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-card-5",
+          "heading": "Official Business Email",
+          "body": "Complete business email and domain setup for a professional image, maximum deliverability, and secure operations.",
+          "ctaLabel": "email",
+          "ctaHref": "/official-business-email",
+          "mediaImage": "",
+          "mediaAlt": "GWS,DNS Setup,Infrastructure",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-trust-intro",
+          "heading": "Why Trust Vanaila",
+          "body": "",
+          "ctaLabel": "",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-trust-1",
+          "heading": "Versatile Expertise",
+          "body": "From simple blogs to complex data pipelines, our team masters the full stack.",
+          "ctaLabel": "terminal",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-trust-2",
+          "heading": "Ecosystem Ready",
+          "body": "We build solutions that play well with your existing tech stack and third-party APIs.",
+          "ctaLabel": "hub",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-trust-3",
+          "heading": "8+ Years Leadership",
+          "body": "Nearly a decade of technical excellence and proven delivery for global clients.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "service-cta",
+          "heading": "Ready to scale your|digital infrastructure?",
+          "body": "Let's discuss how our engineering approach can solve your specific business challenges. No commitment, just technical clarity.",
+          "ctaLabel": "Claim Free Consultation",
           "ctaHref": "/contact",
-          "mediaImage": "https://placehold.co/960x640/png",
-          "mediaAlt": "Services built for measurable growth",
-          "layout": "split",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
           "theme": {
             "background": "#f9fafb",
             "text": "#111827",
@@ -251,7 +561,1534 @@
           }
         }
       ],
-      "updatedAt": "2026-03-04T00:00:00.000Z"
+      "updatedAt": "2026-03-04T00:00:00Z"
+    },
+    "service-website-development": {
+      "id": "service-website-development",
+      "title": "Website Development",
+      "navLabel": "Website Development",
+      "published": true,
+      "seo": {
+        "metaTitle": "Website Development | Vanaila Digital",
+        "metaDescription": "Engineering your digital growth with high-performance web architecture.",
+        "slug": "website-development",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Website Development|Engineering Your Digital Growth",
+          "body": "Transform your online presence into a performance-driven asset. We build infrastructure that scales with your ambition.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "Startup",
+          "body": "5 Premium Pages\nMobile-First Responsive Design\nCore Web Vitals Optimized\nStandard CMS Integration",
+          "ctaLabel": "Base Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 3.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Professional",
+          "body": "Up to 12 Advanced Pages\nCustom UX/UI Research\nTechnical SEO Architecture\nConversion Rate Optimization\nAPI Integration",
+          "ctaLabel": "Growth Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 7.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Enterprise",
+          "body": "Unlimited Build & Pages\nCustom Backend Engineering\nEnterprise-Grade Security\nDedicated DevOps Support",
+          "ctaLabel": "Scale Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Infrastructure Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Why Choose Vanaila?",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "24-Hour SLA",
+          "body": "Critical technical support and updates with guaranteed response windows.",
+          "ctaLabel": "schedule",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "8+ Years Pedigree",
+          "body": "A decade of engineering experience building digital assets.",
+          "ctaLabel": "history_edu",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Best Price Guarantee",
+          "body": "Premium engineering at competitive rates.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "Ecosystem Ready",
+          "body": "Modular builds designed for your existing stack.",
+          "ctaLabel": "hub",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Discovery",
+          "body": "Requirements and business audit",
+          "ctaLabel": "search",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Architecture",
+          "body": "Technical design and sitemap",
+          "ctaLabel": "architecture",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Development",
+          "body": "Clean engineering and UI build",
+          "ctaLabel": "code",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "QA & Testing",
+          "body": "Stress test and UX validation",
+          "ctaLabel": "fact_check",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Deployment",
+          "body": "Go-live and cloud configuration",
+          "ctaLabel": "rocket_launch",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to Build Your|Digital Future?",
+          "body": "Whether you are a scaling startup or an established enterprise, technical clarity will guide your next breakthrough.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-05T14:02:28.831Z"
+    },
+    "service-custom-business-tools": {
+      "id": "service-custom-business-tools",
+      "title": "Custom Business Tools",
+      "navLabel": "Custom Business Tools",
+      "published": true,
+      "seo": {
+        "metaTitle": "Custom Business Tools | Vanaila Digital",
+        "metaDescription": "Automate workflows with bespoke internal tools and systems.",
+        "slug": "custom-business-tools",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Custom Business Tools|Automate Your Unique Workflows",
+          "body": "We build bespoke internal tools and automation systems that become the technical backbone of your operations.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "Process Boost",
+          "body": "Workflow Automation\nInternal Dashboard\nAPI Integration\nStandard Maintenance Support",
+          "ctaLabel": "Automation Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 5.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Operational Core",
+          "body": "Comprehensive Ops Portal\nRole-Based Access Control\nComplex Database Architecture\nCustom Reporting",
+          "ctaLabel": "Infrastructure Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 12.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Enterprise Hub",
+          "body": "Legacy Modernization\nSecure Data Pipelines\nCustom AI Integration\nPriority Support",
+          "ctaLabel": "Ecosystem Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Architecture Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Engineered for Efficiency",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "Rapid ROI",
+          "body": "Tools pay for themselves by reducing manual time.",
+          "ctaLabel": "bolt",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "Bank-Grade Security",
+          "body": "Strict encryption and audit protocols.",
+          "ctaLabel": "security",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Custom Tailored",
+          "body": "No generic templates. Built for your logic.",
+          "ctaLabel": "settings_suggest",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "Ecosystem Integration",
+          "body": "Sync with Slack, GWS, and your CRM stack.",
+          "ctaLabel": "sync_alt",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Workflow Audit",
+          "body": "Identify manual bottlenecks",
+          "ctaLabel": "troubleshoot",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Database Design",
+          "body": "Data integrity architecture",
+          "ctaLabel": "schema",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Core Engineering",
+          "body": "Bespoke logic and backend",
+          "ctaLabel": "terminal",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Stress Testing",
+          "body": "QA in real-world scenarios",
+          "ctaLabel": "bug_report",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Deployment",
+          "body": "Secure migration and training",
+          "ctaLabel": "dns",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to automate your|operational friction?",
+          "body": "Turn technical complexity into a competitive advantage.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-05T14:02:28.831Z"
+    },
+    "service-secure-online-shops": {
+      "id": "service-secure-online-shops",
+      "title": "Secure Online Shops",
+      "navLabel": "Secure Online Shops",
+      "published": true,
+      "seo": {
+        "metaTitle": "Secure Online Shops | Vanaila Digital",
+        "metaDescription": "Build secure, scalable ecommerce infrastructure for growth.",
+        "slug": "secure-online-shops",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Secure Online Shops|Your 24/7 Global Sales Machine",
+          "body": "We build robust systems designed for conversion and scalability. Secure, fast, and engineered to grow your brand.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "The Startup Shop",
+          "body": "WooCommerce Setup\nUp to 50 Products\nWhatsApp Integration\nPerformance Optimization",
+          "ctaLabel": "Beginner Started",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 6.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "The Growth Merchant",
+          "body": "Headless Ecommerce\nAutomated Payments\nInventory Sync\nSecurity Layer\nAdvanced Analytics",
+          "ctaLabel": "Modern Architecture",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 18.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "The Enterprise Retailer",
+          "body": "Custom Frontends\nNative Mobile Apps\nLoyalty Systems\nB2B Portals",
+          "ctaLabel": "Bespoke Ecosystem",
+          "ctaHref": "/contact",
+          "mediaImage": "Architecture Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Built for Reliability & Speed",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "8+ Years Reliability",
+          "body": "High-uptime sales platforms for diverse industries.",
+          "ctaLabel": "verified_user",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "Ecosystem Experts",
+          "body": "Seamless local payment and logistics integration.",
+          "ctaLabel": "storefront",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Best Price Guarantee",
+          "body": "Maximum performance per cost ratio.",
+          "ctaLabel": "payments",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "The 24-Hour SLA",
+          "body": "Rapid response for critical ecommerce incidents.",
+          "ctaLabel": "support_agent",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Strategy & Audit",
+          "body": "Inventory and goal mapping",
+          "ctaLabel": "strategy",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Infrastructure",
+          "body": "Server and stack selection",
+          "ctaLabel": "storage",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "UX & Design",
+          "body": "High-conversion interfaces",
+          "ctaLabel": "brush",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Integration",
+          "body": "Payments and logistics sync",
+          "ctaLabel": "sync",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Launch & Support",
+          "body": "Go-live and maintenance",
+          "ctaLabel": "rocket",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to dominate the|digital market?",
+          "body": "Build a shop that sells while you sleep with reliable ecommerce infrastructure.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-05T14:02:28.831Z"
+    },
+    "service-mobile-business-app": {
+      "id": "service-mobile-business-app",
+      "title": "Mobile Business App",
+      "navLabel": "Mobile Business App",
+      "published": true,
+      "seo": {
+        "metaTitle": "Mobile Business App | Vanaila Digital",
+        "metaDescription": "Deliver high-fidelity mobile apps for iOS and Android.",
+        "slug": "mobile-business-app",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Mobile Business App|Native Power, Cross-Platform Speed",
+          "body": "Reach users where they spend time with native-performing iOS and Android applications from a unified codebase.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "App Launchpad",
+          "body": "React Native Framework\niOS & Android\nCore Business Features\nStore Deployment",
+          "ctaLabel": "MVP Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 15.0M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Advanced Native",
+          "body": "Custom UI/UX\nPush Notifications\nOffline Sync\nBiometric Auth\nStore Approval Support",
+          "ctaLabel": "Engagement Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 35.0M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Enterprise Native",
+          "body": "Complex Backend Integration\nPayment SDKs\nCustom Analytics\nMulti-Region Hosting",
+          "ctaLabel": "Ecosystem Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Infrastructure Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Why Go Mobile with Us?",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "Single Base, Dual Power",
+          "body": "One codebase for both iOS and Android.",
+          "ctaLabel": "speed",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "High-Fidelity UX",
+          "body": "Native-feel navigation and smooth interactions.",
+          "ctaLabel": "vibration",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Cloud-Synced",
+          "body": "Real-time sync between web and mobile.",
+          "ctaLabel": "cloud_done",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "App Store Ready",
+          "body": "We handle submission and optimization flows.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "UX Wireframing",
+          "body": "User journey and interaction design",
+          "ctaLabel": "draw",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Native Dev",
+          "body": "Cross-platform programming",
+          "ctaLabel": "phone_android",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Backend Bridge",
+          "body": "API and infrastructure sync",
+          "ctaLabel": "api",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Alpha/Beta Test",
+          "body": "Feedback-driven quality loops",
+          "ctaLabel": "touch_app",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Store Launch",
+          "body": "Deployment to app stores",
+          "ctaLabel": "publish",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to put your brand|in their pocket?",
+          "body": "Discuss your mobile strategy and start building high-performance apps today.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-05T14:02:28.832Z"
+    },
+    "service-official-business-email": {
+      "id": "service-official-business-email",
+      "title": "Official Business Email",
+      "navLabel": "Official Business Email",
+      "published": true,
+      "seo": {
+        "metaTitle": "Official Business Email | Vanaila Digital",
+        "metaDescription": "Professional business email infrastructure with deliverability and security.",
+        "slug": "official-business-email",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Official Business Email|Establish Instant Trust & Authority",
+          "body": "We architect professional Google Workspace and custom domain email infrastructure for secure business communication.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "Pro Identity",
+          "body": "GWS Setup\nDNS Configuration\nEmail Migration Support\nSpam Protection",
+          "ctaLabel": "Starter Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 1.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Corporate Comm",
+          "body": "Unlimited User Guide\nAdvanced Security Protocols\nSignature Design\nShared Calendars\nDeliverability Monitoring",
+          "ctaLabel": "Authority Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 4.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Secure Infrastructure",
+          "body": "Full DLP Setup\nArchival & eDiscovery\nPhishing Simulation\nManaged Security",
+          "ctaLabel": "Enterprise Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Security Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Professionalism by Design",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "100% Trust Factor",
+          "body": "Domain-based identity improves response rates.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "Inbox Defense",
+          "body": "SPF, DKIM, and DMARC for anti-spam deliverability.",
+          "ctaLabel": "security",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Seamless GWS",
+          "body": "Industry-standard collaboration and security tooling.",
+          "ctaLabel": "laptop_mac",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "Device Sync",
+          "body": "Perfect sync across desktop and mobile clients.",
+          "ctaLabel": "sync",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Domain Audit",
+          "body": "DNS health and status checks",
+          "ctaLabel": "domain",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Identity Setup",
+          "body": "GWS and user provisioning",
+          "ctaLabel": "badge",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Security Protocols",
+          "body": "DKIM, SPF, and DMARC config",
+          "ctaLabel": "key",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Migration",
+          "body": "Transition existing mailbox data",
+          "ctaLabel": "move_to_inbox",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Verification",
+          "body": "Deliverability testing and QA",
+          "ctaLabel": "alternate_email",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to professionalize|your communication?",
+          "body": "Set up secure, high-authority email infrastructure and communicate with confidence.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-05T14:02:28.832Z"
+    },
+    "partnership": {
+      "id": "partnership",
+      "title": "Partnership Program",
+      "navLabel": "Partnership",
+      "published": true,
+      "seo": {
+        "metaTitle": "Partnership Program | Vanaila Digital",
+        "metaDescription": "Join our technical alliance and referral partner network.",
+        "slug": "partnership",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Build the Future|Scale with Vanaila.",
+          "body": "Join our network of elite technical agencies and referral partners. Let us deliver extraordinary digital infrastructure together.",
+          "ctaLabel": "Ecosystem Partnership",
+          "ctaHref": "/partnership",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-intro",
+          "heading": "Partnership Tracks",
+          "body": "Choose the model that fits your team and growth strategy.",
+          "ctaLabel": "Program",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-1",
+          "heading": "Referral Alpha",
+          "body": "Earn commissions by connecting clients with our engineering services.",
+          "ctaLabel": "handshake",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-2",
+          "heading": "Technical Alliance",
+          "body": "Embed our lead architects into your project workflow with white-label support.",
+          "ctaLabel": "hub",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-3",
+          "heading": "Service Expansion",
+          "body": "Offer cloud infra and mobile app delivery under your own brand.",
+          "ctaLabel": "rocket_launch",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standards-intro",
+          "heading": "Our Selection Standard",
+          "body": "We partner with teams that share our standards for engineering quality.",
+          "ctaLabel": "Standards",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-1",
+          "heading": "Excellence",
+          "body": "Proven high-performance delivery track record.",
+          "ctaLabel": "01",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-2",
+          "heading": "Integrity",
+          "body": "Transparent communication and milestone discipline.",
+          "ctaLabel": "02",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-3",
+          "heading": "Innovation",
+          "body": "Commitment to modern stacks and cloud-native delivery.",
+          "ctaLabel": "03",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-4",
+          "heading": "Growth",
+          "body": "Long-term vision for mutual ecosystem expansion.",
+          "ctaLabel": "04",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perks-intro",
+          "heading": "Ecosystem Perks",
+          "body": "Beyond collaboration, we provide resources for partners to thrive.",
+          "ctaLabel": "Perks",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perk-1",
+          "heading": "Architecture Audits",
+          "body": "Free consultation for complex cloud infrastructure designs.",
+          "ctaLabel": "architecture",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perk-2",
+          "heading": "Priority Support",
+          "body": "Direct line to senior architects for emergency escalations.",
+          "ctaLabel": "monitoring",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perk-3",
+          "heading": "Co-Marketing",
+          "body": "Join webinars and white papers to boost visibility.",
+          "ctaLabel": "local_atm",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to Build Partner Value?|Join our ecosystem network.",
+          "body": "Tell us your capabilities and we will map the best collaboration model for your team.",
+          "ctaLabel": "Start Partnership Discussion",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-03-05T14:02:28.832Z"
     },
     "contact": {
       "id": "contact",
@@ -268,14 +2105,149 @@
       },
       "sections": [
         {
-          "id": "contact-form",
-          "heading": "Let us know your goals",
-          "body": "Share your current website, timeline, and business target. We will respond with a practical plan.",
-          "ctaLabel": "Send inquiry",
-          "ctaHref": "mailto:hello@example.com",
-          "mediaImage": "https://placehold.co/960x640/png",
-          "mediaAlt": "Let us know your goals",
+          "id": "contact-hero",
+          "heading": "Let's Build Your|Digital Edge",
+          "body": "From high-performance web applications to enterprise-grade architectures, we turn technical complexity into business advantage.",
+          "ctaLabel": "Connect with the lab",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-brief",
+          "heading": "Strategic Brief",
+          "body": "Tell us about your mission. We'll analyze your needs and respond within 24 business hours.",
+          "ctaLabel": "Submit Project Brief",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "Response in 24 business hours",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-meet",
+          "heading": "Prefer a face-to-face|discussion?",
+          "body": "Skip the form and jump straight into a strategy session. We'll explore your technical requirements and business goals in real-time.",
+          "ctaLabel": "Book a Google Meet Session",
+          "ctaHref": "mailto:care@vanaila.com?subject=Google%20Meet%20Consultation",
+          "mediaImage": "",
+          "mediaAlt": "Instant Booking",
           "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-booking-1",
+          "heading": "30-minute technical evaluation",
+          "body": "",
+          "ctaLabel": "check",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-booking-2",
+          "heading": "Direct access to lead architects",
+          "body": "",
+          "ctaLabel": "check",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-booking-3",
+          "heading": "No-obligation consultation",
+          "body": "",
+          "ctaLabel": "check",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-company",
+          "heading": "PT Vanaila Digital Vision",
+          "body": "Bogor Raya Digital Park, Block A-12\nWest Java, Indonesia 16143\n\nGlobal Reach\nSupporting partners across SEA, Europe, and North America.",
+          "ctaLabel": "",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-email",
+          "heading": "Email Us",
+          "body": "care@vanaila.com",
+          "ctaLabel": "alternate_email",
+          "ctaHref": "mailto:care@vanaila.com",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-whatsapp",
+          "heading": "WhatsApp Business",
+          "body": "+62 851 7441 3323",
+          "ctaLabel": "chat",
+          "ctaHref": "https://wa.me/6285174413323",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "contact-instagram",
+          "heading": "Instagram",
+          "body": "@vanaila.digital",
+          "ctaLabel": "photo_camera",
+          "ctaHref": "https://instagram.com/vanaila.digital",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
           "theme": {
             "background": "#f9fafb",
             "text": "#111827",
@@ -283,7 +2255,7 @@
           }
         }
       ],
-      "updatedAt": "2026-03-04T00:00:00.000Z"
+      "updatedAt": "2026-03-04T00:00:00Z"
     }
   },
   "blogPosts": [
@@ -293,11 +2265,15 @@
       "excerpt": "A practical structure for hero sections, proof blocks, and conversion paths that increase lead quality.",
       "content": "# Why structure matters\n\nHigh-converting pages are clear, specific, and fast.\n\n## Recommended flow\n\n1. Hero with clear value proposition\n2. Social proof\n3. Service detail with outcomes\n4. CTA with low friction\n\nKeep sections simple and measurable.",
       "author": "Editorial Team",
-      "tags": ["engineering", "performance", "seo"],
+      "tags": [
+        "engineering",
+        "performance",
+        "seo"
+      ],
       "coverImage": "https://placehold.co/1200x630/png",
       "status": "published",
-      "publishedAt": "2026-03-04T00:00:00.000Z",
-      "updatedAt": "2026-03-04T00:00:00.000Z",
+      "publishedAt": "2026-03-04T00:00:00Z",
+      "updatedAt": "2026-03-04T00:00:00Z",
       "seo": {
         "metaTitle": "How to Structure a High-Converting Service Landing Page",
         "metaDescription": "Use this framework to build service pages that improve conversion and organic visibility.",
@@ -313,11 +2289,14 @@
       "excerpt": "Set up a draft-to-publish workflow in your CMS so non-technical teams can ship content confidently.",
       "content": "# Editorial workflow\n\nUse statuses, approvals, and clear owners.\n\nDraft quickly, review carefully, then publish with SEO checks.",
       "author": "Editorial Team",
-      "tags": ["workflow", "cms"],
+      "tags": [
+        "workflow",
+        "cms"
+      ],
       "coverImage": "https://placehold.co/1200x630/png",
       "status": "draft",
       "publishedAt": null,
-      "updatedAt": "2026-03-04T00:00:00.000Z",
+      "updatedAt": "2026-03-04T00:00:00Z",
       "seo": {
         "metaTitle": "Editorial Workflow Checklist for Marketing Teams",
         "metaDescription": "A clear CMS workflow that supports consistent publishing quality.",

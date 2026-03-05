@@ -6,32 +6,109 @@ type SolutionsGridBlockViewProps = {
   block: SolutionsGridBlock;
 };
 
-const SOLUTION_ICONS = ['▣', '✦', '◍', '▤', '✉'];
+const ICONS = ['language', 'integration_instructions', 'shopping_cart', 'smartphone', 'email'];
+const ICON_STYLES = [
+  {
+    hoverBorder: 'group-hover:border-electricBlue/40',
+    iconWrap:
+      'w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-electricBlue border border-slate-100 shadow-inner group-hover:scale-110 group-hover:bg-electricBlue group-hover:text-white transition-all duration-500',
+    cta: 'text-electricBlue',
+    line: 'bg-electricBlue'
+  },
+  {
+    hoverBorder: 'group-hover:border-royalPurple/40',
+    iconWrap:
+      'w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-royalPurple border border-slate-100 shadow-inner group-hover:scale-110 group-hover:bg-royalPurple group-hover:text-white transition-all duration-500',
+    cta: 'text-royalPurple',
+    line: 'bg-royalPurple'
+  },
+  {
+    hoverBorder: 'group-hover:border-vibrantCyan/40',
+    iconWrap:
+      'w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-vibrantCyan border border-slate-100 shadow-inner group-hover:scale-110 group-hover:bg-vibrantCyan group-hover:text-white transition-all duration-500',
+    cta: 'text-vibrantCyan',
+    line: 'bg-vibrantCyan'
+  },
+  {
+    hoverBorder: 'group-hover:border-vanailaNavy/30',
+    iconWrap:
+      'w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-vanailaNavy border border-slate-100 shadow-inner group-hover:scale-110 group-hover:bg-vanailaNavy group-hover:text-white transition-all duration-500',
+    cta: 'text-vanailaNavy',
+    line: 'bg-vanailaNavy'
+  },
+  {
+    hoverBorder: 'group-hover:border-indigo-500/30',
+    iconWrap:
+      'w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-indigo-500 border border-slate-100 shadow-inner group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500',
+    cta: 'text-indigo-500',
+    line: 'bg-indigo-500'
+  }
+] as const;
+
+const CARD_WRAPPER_CLASSES = [
+  '',
+  'md:mt-12 lg:mt-0',
+  'lg:mt-12',
+  '',
+  'md:mt-12 lg:mt-0'
+] as const;
 
 export function SolutionsGridBlockView({ block }: SolutionsGridBlockViewProps) {
   return (
-    <section className={`v2-section v2-solutions-wrap theme-${block.theme}`}>
-      <div className="container">
-        <header className="v2-section-header">
-          <h2>{block.heading}</h2>
-          <p>{block.subheading}</p>
-        </header>
-        <div className="v2-solution-grid">
-          {block.items.map((item, index) => (
-            <article key={item.id} className="v2-solution-card v2-glass-panel">
-              <div className="v2-solution-head">
-                <span className="v2-solution-icon" aria-hidden="true">
-                  {SOLUTION_ICONS[index % SOLUTION_ICONS.length]}
-                </span>
-                <p className="v2-card-index">{item.number}</p>
+    <section className={`py-32 relative theme-${block.theme}`} id="services">
+      <div className="absolute top-[10%] left-[-10%] w-[50%] h-[60%] shard-gradient-soft rotate-12 z-0" />
+      <div className="absolute bottom-[10%] right-[-10%] w-[60%] h-[50%] shard-gradient-2 -rotate-12 z-0" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+        <div className="max-w-3xl mx-auto text-center mb-24 scroll-reveal">
+          <h2 className="text-5xl md:text-7xl font-display font-black text-deepSlate mb-6 tracking-tighter">
+            {block.heading}
+          </h2>
+          <p className="text-xl md:text-2xl text-slate-500 font-light leading-relaxed">{block.subheading}</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          {block.items.map((item, index) => {
+            const style = ICON_STYLES[index % ICON_STYLES.length];
+            const icon = ICONS[index % ICONS.length];
+            const shape = index % 2 === 0 ? 'irregular-card-1' : 'irregular-card-2';
+            const wrapper = CARD_WRAPPER_CLASSES[index % CARD_WRAPPER_CLASSES.length];
+            return (
+              <div className={`relative group panel-reveal ${wrapper}`.trim()} key={item.id}>
+                <Link
+                  href={item.ctaHref || '/service'}
+                  className={`glass-card ${shape} p-10 relative z-10 hover:-translate-y-2 transition-transform duration-500 ${style.hoverBorder} bg-white h-full flex flex-col block`}
+                >
+                  <div className="flex justify-between items-start mb-8">
+                    <div className={style.iconWrap}>
+                      <span className="material-symbols-outlined text-3xl">{icon}</span>
+                    </div>
+                    <span className="text-5xl font-black text-slate-100/80 -z-10 absolute right-8 top-8">
+                      {item.number || String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-display font-bold text-deepSlate mb-3 leading-tight">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm font-light leading-relaxed mb-6 flex-grow">{item.text}</p>
+                  <div className={`flex items-center gap-3 text-xs font-bold uppercase tracking-widest ${style.cta}`}>
+                    <span className={`w-6 h-px ${style.line}`} />
+                    {item.ctaLabel}
+                  </div>
+                </Link>
               </div>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-              <Link href={item.ctaHref} className="v2-solution-link">
-                {item.ctaLabel}
-              </Link>
-            </article>
-          ))}
+            );
+          })}
+        </div>
+
+        <div className="mt-24 text-center">
+          <Link className="inline-flex flex-col items-center gap-4 group" href="/service">
+            <span className="w-16 h-16 rounded-full border border-slate-300 bg-white/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-electricBlue group-hover:text-white group-hover:border-electricBlue transition-all duration-300 shadow-sm">
+              <span className="material-symbols-outlined text-2xl">expand_more</span>
+            </span>
+            <span className="text-xs font-black uppercase tracking-[0.3em] text-deepSlate group-hover:text-electricBlue transition-colors">
+              Explore All Solutions
+            </span>
+          </Link>
         </div>
       </div>
     </section>

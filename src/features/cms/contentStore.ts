@@ -45,6 +45,20 @@ const normalizeHomeBlocks = (blocks: HomeBlock[] | undefined): HomeBlock[] | und
   }));
 };
 
+function mergeWithDefaults(content: CmsContent): CmsContent {
+  return {
+    settings: {
+      ...defaultContent.settings,
+      ...content.settings
+    },
+    pages: {
+      ...structuredClone(defaultContent.pages),
+      ...content.pages
+    },
+    blogPosts: Array.isArray(content.blogPosts) ? content.blogPosts : structuredClone(defaultContent.blogPosts)
+  };
+}
+
 export async function readContent(): Promise<CmsContent> {
   await ensureDataFile();
   const raw = await readFile(DATA_FILE, 'utf-8');
@@ -53,7 +67,17 @@ export async function readContent(): Promise<CmsContent> {
     await writeFile(DATA_FILE, JSON.stringify(defaultContent, null, 2), 'utf-8');
     return structuredClone(defaultContent);
   }
-  return parsed;
+
+  const merged = mergeWithDefaults(parsed);
+  const hasAllPages = Object.keys(defaultContent.pages).every(
+    (id) => id in (parsed.pages as Record<string, unknown>)
+  );
+
+  if (!hasAllPages) {
+    await writeFile(DATA_FILE, JSON.stringify(merged, null, 2), 'utf-8');
+  }
+
+  return merged;
 }
 
 export async function writeContent(content: CmsContent): Promise<void> {

@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 
-import { MarketingPageRenderer } from '@/components/MarketingPageRenderer';
+import { ContactPageView } from '@/components/pages/ContactPageView';
 import { buildMetadata } from '@/features/cms/seo';
 import { getPublishedPage, getSiteSettings } from '@/features/cms/publicApi';
 
@@ -20,5 +20,5 @@ export default async function ContactPage() {
   if (page.seo.slug && page.seo.slug !== 'contact') {
     redirect(`/${page.seo.slug}`);
   }
-  return <MarketingPageRenderer page={page} />;
+  return <ContactPageView page={page} />;
 }

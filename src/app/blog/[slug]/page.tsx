@@ -1,8 +1,13 @@
 import { notFound } from 'next/navigation';
 
+import { BlogPostView } from '@/components/pages/BlogPostView';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { buildCanonical, buildMetadata } from '@/features/cms/seo';
-import { getPublishedBlogPostBySlug, getSiteSettings } from '@/features/cms/publicApi';
+import {
+  getPublishedBlogPostBySlug,
+  getPublishedBlogPosts,
+  getSiteSettings
+} from '@/features/cms/publicApi';
 
 type BlogDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -26,7 +31,11 @@ export async function generateMetadata({ params }: BlogDetailPageProps) {
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const [settings, post] = await Promise.all([getSiteSettings(), getPublishedBlogPostBySlug(slug)]);
+  const [settings, post, allPosts] = await Promise.all([
+    getSiteSettings(),
+    getPublishedBlogPostBySlug(slug),
+    getPublishedBlogPosts()
+  ]);
   if (!post) notFound();
 
   const canonical = buildCanonical(settings.baseUrl, `blog/${post.seo.slug}`, post.seo.canonical);
@@ -53,20 +62,20 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     dateModified: post.updatedAt
   };
 
+  const related = allPosts
+    .filter((row) => row.id !== post.id)
+    .sort((a, b) => {
+      const aScore = a.tags.some((tag) => post.tags.includes(tag)) ? 1 : 0;
+      const bScore = b.tags.some((tag) => post.tags.includes(tag)) ? 1 : 0;
+      if (aScore !== bScore) return bScore - aScore;
+      return a.updatedAt < b.updatedAt ? 1 : -1;
+    })
+    .slice(0, 3);
+
   return (
-    <main className="blog-detail">
-      <div className="container">
-        <SeoJsonLd data={jsonLd} />
-        <p className="blog-meta">
-          {post.author} {post.publishedAt ? `• ${new Date(post.publishedAt).toLocaleDateString()}` : ''}
-        </p>
-        <h1>{post.title}</h1>
-        <p>{post.excerpt}</p>
-        {post.coverImage ? <img src={post.coverImage} alt={post.title} /> : null}
-        <article className="prose">
-          <pre>{post.content}</pre>
-        </article>
-      </div>
-    </main>
+    <>
+      <SeoJsonLd data={jsonLd} />
+      <BlogPostView post={post} related={related} />
+    </>
   );
 }

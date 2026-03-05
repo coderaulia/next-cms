@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 
-import { MarketingPageRenderer } from '@/components/MarketingPageRenderer';
+import { AboutPageView } from '@/components/pages/AboutPageView';
 import { buildMetadata } from '@/features/cms/seo';
 import { getPublishedPage, getSiteSettings } from '@/features/cms/publicApi';
 
@@ -20,5 +20,5 @@ export default async function AboutPage() {
   if (page.seo.slug && page.seo.slug !== 'about') {
     redirect(`/${page.seo.slug}`);
   }
-  return <MarketingPageRenderer page={page} />;
+  return <AboutPageView page={page} />;
 }

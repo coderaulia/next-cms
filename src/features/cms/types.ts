@@ -1,4 +1,14 @@
-export type PageId = 'home' | 'about' | 'service' | 'contact';
+export type PageId =
+  | 'home'
+  | 'about'
+  | 'service'
+  | 'contact'
+  | 'partnership'
+  | 'service-website-development'
+  | 'service-custom-business-tools'
+  | 'service-secure-online-shops'
+  | 'service-mobile-business-app'
+  | 'service-official-business-email';
 
 export type SectionLayout = 'stacked' | 'split';
 
@@ -174,3 +184,4 @@ export type CmsContent = {
 export type AdminSession = {
   token: string;
 };
+

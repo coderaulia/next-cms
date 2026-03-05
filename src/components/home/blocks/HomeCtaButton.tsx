@@ -14,7 +14,7 @@ export function HomeCtaButton({ href, label, styleToken = 'primary' }: HomeCtaBu
   return (
     <Link href={href} className={`v2-btn v2-btn-${styleToken}`}>
       <span>{label}</span>
-      {showArrow ? <span aria-hidden="true">↗</span> : null}
+      {showArrow ? <span aria-hidden="true">{'->'}</span> : null}
     </Link>
   );
 }

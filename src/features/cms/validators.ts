@@ -8,7 +8,18 @@ import type {
   PageId
 } from './types';
 
-const PAGE_IDS: PageId[] = ['home', 'about', 'service', 'contact'];
+const PAGE_IDS: PageId[] = [
+  'home',
+  'about',
+  'service',
+  'contact',
+  'partnership',
+  'service-website-development',
+  'service-custom-business-tools',
+  'service-secure-online-shops',
+  'service-mobile-business-app',
+  'service-official-business-email'
+];
 const HOME_THEMES: HomeThemeToken[] = ['light', 'blue-soft', 'mist'];
 const CTA_STYLES: CtaStyleToken[] = ['primary', 'secondary', 'ghost'];
 const HOME_BLOCK_TYPES: HomeBlockType[] = [
@@ -260,3 +271,4 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
     }
   };
 }
+

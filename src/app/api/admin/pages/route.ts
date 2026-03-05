@@ -8,8 +8,20 @@ export async function GET(request: Request) {
   if (unauthorized) return unauthorized;
 
   const pages = await getPages();
-  const ordered = ['home', 'about', 'service', 'contact']
+  const ordered = [
+    'home',
+    'about',
+    'service',
+    'service-website-development',
+    'service-custom-business-tools',
+    'service-secure-online-shops',
+    'service-mobile-business-app',
+    'service-official-business-email',
+    'partnership',
+    'contact'
+  ]
     .map((id) => pages[id as keyof typeof pages])
     .filter(Boolean);
   return NextResponse.json({ pages: ordered });
 }
+

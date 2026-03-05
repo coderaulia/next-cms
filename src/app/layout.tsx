@@ -5,6 +5,7 @@ import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { getPublishedPages, getSiteSettings } from '@/features/cms/publicApi';
+import type { PageId } from '@/features/cms/types';
 
 import './globals.css';
 
@@ -37,15 +38,22 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const [settings, pages] = await Promise.all([getSiteSettings(), getPublishedPages()]);
-  const pageNavItems = pages.map((page) => ({
-    href: page.seo.slug ? `/${page.seo.slug}` : '/',
-    label: page.navLabel
-  }));
-  const allNavItems = [...pageNavItems, { href: '/blog', label: 'Insights' }];
-  const navOrder = ['/', '/service', '/about', '/blog', '/contact'];
-  const navItems = allNavItems.sort(
-    (a, b) => navOrder.indexOf(a.href) - navOrder.indexOf(b.href)
+
+  const pageNavMap = new Map(
+    pages.map((page) => [
+      page.id,
+      {
+        href: page.seo.slug ? `/${page.seo.slug}` : '/',
+        label: page.navLabel
+      }
+    ])
   );
+
+  const orderedTopLevel: PageId[] = ['home', 'about', 'service', 'partnership', 'contact'];
+  const navItems = orderedTopLevel
+    .map((id) => pageNavMap.get(id))
+    .filter((item): item is { href: string; label: string } => Boolean(item));
+  navItems.splice(3, 0, { href: '/blog', label: 'Insights' });
 
   const orgSchema = {
     '@context': 'https://schema.org',

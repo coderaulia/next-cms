@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation';
 
 import { MarketingPageRenderer } from '@/components/MarketingPageRenderer';
+import { AboutPageView } from '@/components/pages/AboutPageView';
+import { ContactPageView } from '@/components/pages/ContactPageView';
+import { PartnershipPageView } from '@/components/pages/PartnershipPageView';
+import { ServiceDetailPageView } from '@/components/pages/ServiceDetailPageView';
+import { ServicePageView } from '@/components/pages/ServicePageView';
 import { buildMetadata } from '@/features/cms/seo';
 import { getPublishedPageBySlug, getSiteSettings } from '@/features/cms/publicApi';
 
@@ -9,6 +14,13 @@ type DynamicPageProps = {
 };
 
 const reserved = new Set(['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt']);
+const serviceDetailIds = new Set([
+  'service-website-development',
+  'service-custom-business-tools',
+  'service-secure-online-shops',
+  'service-mobile-business-app',
+  'service-official-business-email'
+]);
 
 export async function generateMetadata({ params }: DynamicPageProps) {
   const { slug } = await params;
@@ -23,5 +35,22 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
   if (reserved.has(slug)) notFound();
   const page = await getPublishedPageBySlug(slug);
   if (!page) notFound();
+
+  if (page.id === 'about') {
+    return <AboutPageView page={page} />;
+  }
+  if (page.id === 'service') {
+    return <ServicePageView page={page} />;
+  }
+  if (page.id === 'partnership') {
+    return <PartnershipPageView page={page} />;
+  }
+  if (serviceDetailIds.has(page.id)) {
+    return <ServiceDetailPageView page={page} />;
+  }
+  if (page.id === 'contact') {
+    return <ContactPageView page={page} />;
+  }
+
   return <MarketingPageRenderer page={page} />;
 }
