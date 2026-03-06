@@ -9,19 +9,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPublishedBlogPosts()
   ]);
 
-  const pageEntries: MetadataRoute.Sitemap = pages.map((page) => ({
-    url: `${settings.baseUrl}${page.seo.slug ? `/${page.seo.slug}` : ''}`,
-    lastModified: page.updatedAt,
-    changeFrequency: 'weekly',
-    priority: page.id === 'home' ? 1 : 0.7
-  }));
+  const indexingBlocked =
+    settings.reading.discourageSearchEngines || settings.seo.defaultNoIndex;
 
-  const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${settings.baseUrl}/blog/${post.seo.slug}`,
-    lastModified: post.updatedAt,
-    changeFrequency: 'weekly',
-    priority: 0.6
-  }));
+  if (!settings.sitemap.enabled || indexingBlocked) {
+    return [];
+  }
+
+  const withLastModified = settings.sitemap.includeLastModified;
+
+  const pageEntries: MetadataRoute.Sitemap = settings.sitemap.includePages
+    ? pages.map((page) => ({
+        url: `${settings.baseUrl}${page.seo.slug ? `/${page.seo.slug}` : ''}`,
+        lastModified: withLastModified ? page.updatedAt : undefined,
+        changeFrequency: 'weekly',
+        priority: page.id === 'home' ? 1 : 0.7
+      }))
+    : [];
+
+  const blogEntries: MetadataRoute.Sitemap = settings.sitemap.includePosts
+    ? posts.map((post) => ({
+        url: `${settings.baseUrl}/blog/${post.seo.slug}`,
+        lastModified: withLastModified ? post.updatedAt : undefined,
+        changeFrequency: 'weekly',
+        priority: 0.6
+      }))
+    : [];
 
   return [...pageEntries, ...blogEntries];
 }

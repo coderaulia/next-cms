@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { defaultContent } from './defaultContent';
-import type { BlogPost, CmsContent, HomeBlock, LandingPage, PageId } from './types';
+import type { BlogPost, CmsContent, HomeBlock, LandingPage, PageId, SiteSettings } from './types';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'content.json');
@@ -16,6 +16,59 @@ const safeParse = (raw: string): CmsContent | null => {
     return null;
   }
 };
+
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+function normalizeSettings(input: unknown): SiteSettings {
+  const defaults = structuredClone(defaultContent.settings);
+  const source = isObject(input) ? input : {};
+
+  const general = isObject(source.general) ? source.general : {};
+  const writing = isObject(source.writing) ? source.writing : {};
+  const reading = isObject(source.reading) ? source.reading : {};
+  const discussion = isObject(source.discussion) ? source.discussion : {};
+  const media = isObject(source.media) ? source.media : {};
+  const permalinks = isObject(source.permalinks) ? source.permalinks : {};
+  const seo = isObject(source.seo) ? source.seo : {};
+  const sitemap = isObject(source.sitemap) ? source.sitemap : {};
+
+  const next: SiteSettings = {
+    ...defaults,
+    ...source,
+    general: { ...defaults.general, ...general },
+    writing: {
+      ...defaults.writing,
+      ...writing,
+      pingServices: Array.isArray(writing.pingServices)
+        ? writing.pingServices.map((service) => String(service).trim()).filter(Boolean)
+        : defaults.writing.pingServices
+    },
+    reading: { ...defaults.reading, ...reading },
+    discussion: { ...defaults.discussion, ...discussion },
+    media: { ...defaults.media, ...media },
+    permalinks: { ...defaults.permalinks, ...permalinks },
+    seo: { ...defaults.seo, ...seo },
+    sitemap: { ...defaults.sitemap, ...sitemap }
+  } as SiteSettings;
+
+  // Bridge legacy keys and grouped settings.
+  if (typeof source.siteName === 'string' && source.siteName.trim().length > 0) {
+    next.general.siteName = source.siteName.trim();
+  }
+  if (typeof source.baseUrl === 'string' && source.baseUrl.trim().length > 0) {
+    next.general.baseUrl = source.baseUrl.trim();
+  }
+  if (typeof source.defaultOgImage === 'string' && source.defaultOgImage.trim().length > 0) {
+    next.seo.defaultOgImage = source.defaultOgImage.trim();
+  }
+
+  next.siteName = next.general.siteName;
+  next.baseUrl = next.general.baseUrl;
+  next.defaultOgImage = next.seo.defaultOgImage;
+
+  return next;
+}
 
 const normalizeSlug = (value: string) =>
   value
@@ -47,10 +100,7 @@ const normalizeHomeBlocks = (blocks: HomeBlock[] | undefined): HomeBlock[] | und
 
 function mergeWithDefaults(content: CmsContent): CmsContent {
   return {
-    settings: {
-      ...defaultContent.settings,
-      ...content.settings
-    },
+    settings: normalizeSettings(content.settings),
     pages: {
       ...structuredClone(defaultContent.pages),
       ...content.pages
@@ -87,7 +137,15 @@ export async function writeContent(content: CmsContent): Promise<void> {
 
 export async function getSettings() {
   const content = await readContent();
-  return content.settings;
+  return normalizeSettings(content.settings);
+}
+
+export async function updateSettings(settings: SiteSettings): Promise<SiteSettings> {
+  const content = await readContent();
+  const next = normalizeSettings(settings);
+  content.settings = next;
+  await writeContent(content);
+  return next;
 }
 
 export async function getPages() {
@@ -242,16 +300,23 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
   const id = crypto.randomUUID();
   const title = payload?.title?.trim() || 'Untitled post';
   const slug = uniquePostSlug(content, title, payload?.seo?.slug);
+  const writing = normalizeSettings(content.settings).writing;
+  const requestedStatus = payload?.status;
+  const fallbackStatus = writing.requireReviewBeforePublish ? 'draft' : writing.defaultPostStatus;
+  const status = requestedStatus ?? fallbackStatus;
+
   const post: BlogPost = {
     id,
     title,
     excerpt: payload?.excerpt?.trim() || '',
     content: payload?.content || '',
-    author: payload?.author?.trim() || 'Admin',
-    tags: payload?.tags ?? [],
+    author: payload?.author?.trim() || writing.defaultPostAuthor || 'Admin',
+    tags:
+      payload?.tags ??
+      (writing.defaultPostCategory ? [writing.defaultPostCategory.toLowerCase()] : []),
     coverImage: payload?.coverImage || '',
-    status: payload?.status ?? 'draft',
-    publishedAt: payload?.status === 'published' ? nowIso() : null,
+    status,
+    publishedAt: status === 'published' ? nowIso() : null,
     updatedAt: nowIso(),
     seo: {
       metaTitle: payload?.seo?.metaTitle || title,

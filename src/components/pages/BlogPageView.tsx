@@ -9,9 +9,10 @@ type BlogPageViewProps = {
   query: string;
   activeTag: string;
   page: number;
+  pageSize?: number;
 };
 
-const pageSize = 6;
+const defaultPageSize = 6;
 
 function toMinutes(content: string) {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
@@ -27,7 +28,7 @@ function urlForBlog(query: string, tag: string, page: number) {
   return qs.length > 0 ? `/blog?${qs}` : '/blog';
 }
 
-export function BlogPageView({ posts, query, activeTag, page }: BlogPageViewProps) {
+export function BlogPageView({ posts, query, activeTag, page, pageSize = defaultPageSize }: BlogPageViewProps) {
   const normalizedQuery = query.trim().toLowerCase();
   const normalizedTag = activeTag.trim().toLowerCase() || 'all';
 
@@ -278,3 +279,4 @@ export function BlogPageView({ posts, query, activeTag, page }: BlogPageViewProp
     </main>
   );
 }
+

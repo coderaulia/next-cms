@@ -167,7 +167,89 @@ export type BlogPost = {
   seo: SeoFields;
 };
 
+export type GeneralSettings = {
+  siteName: string;
+  siteTagline: string;
+  baseUrl: string;
+  adminEmail: string;
+  timezone: string;
+  language: string;
+  dateFormat: string;
+  timeFormat: string;
+  weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+};
+
+export type WritingSettings = {
+  defaultPostCategory: string;
+  defaultPostFormat: 'standard' | 'aside' | 'gallery' | 'video';
+  defaultPostStatus: BlogStatus;
+  defaultPostAuthor: string;
+  convertEmoticons: boolean;
+  requireReviewBeforePublish: boolean;
+  pingServices: string[];
+};
+
+export type ReadingSettings = {
+  homepageDisplay: 'latest_posts' | 'static_page';
+  homepagePageId: PageId | '';
+  postsPageId: PageId | '';
+  postsPerPage: number;
+  feedItems: number;
+  feedSummary: 'full' | 'excerpt';
+  discourageSearchEngines: boolean;
+};
+
+export type DiscussionSettings = {
+  commentsEnabled: boolean;
+  commentRegistrationRequired: boolean;
+  closeCommentsAfterDays: number;
+  threadedCommentsEnabled: boolean;
+  threadDepth: number;
+  requireCommentApproval: boolean;
+  notifyOnComment: boolean;
+};
+
+export type MediaSettings = {
+  uploadOrganizeByMonth: boolean;
+  thumbnailWidth: number;
+  thumbnailHeight: number;
+  mediumMaxWidth: number;
+  mediumMaxHeight: number;
+  largeMaxWidth: number;
+  largeMaxHeight: number;
+};
+
+export type PermalinkSettings = {
+  postPermalinkStructure: string;
+  categoryBase: string;
+  tagBase: string;
+};
+
+export type SeoGlobalSettings = {
+  titleTemplate: string;
+  defaultMetaDescription: string;
+  defaultOgImage: string;
+  defaultNoIndex: boolean;
+};
+
+export type SitemapSettings = {
+  enabled: boolean;
+  includePages: boolean;
+  includePosts: boolean;
+  includeLastModified: boolean;
+};
+
 export type SiteSettings = {
+  general: GeneralSettings;
+  writing: WritingSettings;
+  reading: ReadingSettings;
+  discussion: DiscussionSettings;
+  media: MediaSettings;
+  permalinks: PermalinkSettings;
+  seo: SeoGlobalSettings;
+  sitemap: SitemapSettings;
+
+  // Legacy aliases retained for backward compatibility in existing renderers.
   siteName: string;
   baseUrl: string;
   organizationName: string;

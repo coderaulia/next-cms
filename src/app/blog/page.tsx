@@ -15,23 +15,28 @@ export async function generateMetadata() {
   return buildMetadata(
     settings,
     {
-      metaTitle: `Insights | ${settings.siteName}`,
+      metaTitle: 'Insights',
       metaDescription: 'Technical leadership, performance optimization, and digital strategy insights.',
       slug: 'blog',
       canonical: '',
       socialImage: settings.defaultOgImage,
       noIndex: false
     },
-    `Insights | ${settings.siteName}`,
+    'Insights',
     'Technical leadership, performance optimization, and digital strategy insights.'
   );
 }
 
 export default async function BlogListPage({ searchParams }: BlogListPageProps) {
-  const [params, posts] = await Promise.all([searchParams, getPublishedBlogPosts()]);
+  const [params, settings, posts] = await Promise.all([
+    searchParams,
+    getSiteSettings(),
+    getPublishedBlogPosts()
+  ]);
   const query = params.q ?? '';
   const activeTag = params.tag ?? 'all';
   const page = Number.parseInt(params.page ?? '1', 10);
+  const pageSize = Math.max(1, Math.min(settings.reading.postsPerPage, 24));
 
   return (
     <BlogPageView
@@ -39,6 +44,7 @@ export default async function BlogListPage({ searchParams }: BlogListPageProps) 
       query={query}
       activeTag={activeTag}
       page={Number.isNaN(page) ? 1 : page}
+      pageSize={pageSize}
     />
   );
 }

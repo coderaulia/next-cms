@@ -5,7 +5,8 @@ import type {
   HomeBlockType,
   HomeThemeToken,
   LandingPage,
-  PageId
+  PageId,
+  SiteSettings
 } from './types';
 
 const PAGE_IDS: PageId[] = [
@@ -37,6 +38,21 @@ const isObject = (value: unknown): value is Record<string, unknown> =>
 const asString = (value: unknown) => (typeof value === 'string' ? value : '');
 
 const asBoolean = (value: unknown) => Boolean(value);
+
+const asNumber = (value: unknown, fallback = 0) => {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string' && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return fallback;
+};
+
+const asIntegerClamp = (value: unknown, fallback: number, min: number, max: number) => {
+  const candidate = Math.round(asNumber(value, fallback));
+  if (!Number.isFinite(candidate)) return fallback;
+  return Math.min(max, Math.max(min, candidate));
+};
 
 const isHomeTheme = (value: string): value is HomeThemeToken =>
   HOME_THEMES.includes(value as HomeThemeToken);
@@ -272,3 +288,108 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
   };
 }
 
+
+
+export function validateSiteSettings(payload: unknown): SiteSettings | null {
+  if (!isObject(payload)) return null;
+
+  const general = isObject(payload.general) ? payload.general : {};
+  const writing = isObject(payload.writing) ? payload.writing : {};
+  const reading = isObject(payload.reading) ? payload.reading : {};
+  const discussion = isObject(payload.discussion) ? payload.discussion : {};
+  const media = isObject(payload.media) ? payload.media : {};
+  const permalinks = isObject(payload.permalinks) ? payload.permalinks : {};
+  const seo = isObject(payload.seo) ? payload.seo : {};
+  const sitemap = isObject(payload.sitemap) ? payload.sitemap : {};
+
+  const siteName = asString(general.siteName) || asString(payload.siteName);
+  const baseUrl = asString(general.baseUrl) || asString(payload.baseUrl);
+  const defaultOgImage = asString(seo.defaultOgImage) || asString(payload.defaultOgImage);
+
+  const homepageDisplay = asString(reading.homepageDisplay) === 'latest_posts' ? 'latest_posts' : 'static_page';
+  const homepagePageId = asString(reading.homepagePageId);
+  const postsPageId = asString(reading.postsPageId);
+  const feedSummary = asString(reading.feedSummary) === 'full' ? 'full' : 'excerpt';
+  const defaultPostStatus = asString(writing.defaultPostStatus) === 'published' ? 'published' : 'draft';
+
+  const defaultPostFormatCandidate = asString(writing.defaultPostFormat);
+  const defaultPostFormat = ['standard', 'aside', 'gallery', 'video'].includes(defaultPostFormatCandidate)
+    ? (defaultPostFormatCandidate as 'standard' | 'aside' | 'gallery' | 'video')
+    : 'standard';
+
+  const pingServices = Array.isArray(writing.pingServices)
+    ? writing.pingServices.map((service) => asString(service)).filter((service) => service.length > 0)
+    : [];
+
+  return {
+    general: {
+      siteName,
+      siteTagline: asString(general.siteTagline),
+      baseUrl,
+      adminEmail: asString(general.adminEmail),
+      timezone: asString(general.timezone) || 'UTC',
+      language: asString(general.language) || 'en-US',
+      dateFormat: asString(general.dateFormat) || 'MMMM d, yyyy',
+      timeFormat: asString(general.timeFormat) || 'HH:mm',
+      weekStartsOn: asIntegerClamp(general.weekStartsOn, 1, 0, 6) as 0 | 1 | 2 | 3 | 4 | 5 | 6
+    },
+    writing: {
+      defaultPostCategory: asString(writing.defaultPostCategory) || 'General',
+      defaultPostFormat,
+      defaultPostStatus,
+      defaultPostAuthor: asString(writing.defaultPostAuthor) || 'Admin',
+      convertEmoticons: asBoolean(writing.convertEmoticons),
+      requireReviewBeforePublish: asBoolean(writing.requireReviewBeforePublish),
+      pingServices
+    },
+    reading: {
+      homepageDisplay,
+      homepagePageId: isValidPageId(homepagePageId) ? homepagePageId : '',
+      postsPageId: isValidPageId(postsPageId) ? postsPageId : '',
+      postsPerPage: asIntegerClamp(reading.postsPerPage, 10, 1, 100),
+      feedItems: asIntegerClamp(reading.feedItems, 10, 1, 100),
+      feedSummary,
+      discourageSearchEngines: asBoolean(reading.discourageSearchEngines)
+    },
+    discussion: {
+      commentsEnabled: asBoolean(discussion.commentsEnabled),
+      commentRegistrationRequired: asBoolean(discussion.commentRegistrationRequired),
+      closeCommentsAfterDays: asIntegerClamp(discussion.closeCommentsAfterDays, 30, 0, 365),
+      threadedCommentsEnabled: asBoolean(discussion.threadedCommentsEnabled),
+      threadDepth: asIntegerClamp(discussion.threadDepth, 3, 1, 10),
+      requireCommentApproval: asBoolean(discussion.requireCommentApproval),
+      notifyOnComment: asBoolean(discussion.notifyOnComment)
+    },
+    media: {
+      uploadOrganizeByMonth: asBoolean(media.uploadOrganizeByMonth),
+      thumbnailWidth: asIntegerClamp(media.thumbnailWidth, 300, 50, 2000),
+      thumbnailHeight: asIntegerClamp(media.thumbnailHeight, 300, 50, 2000),
+      mediumMaxWidth: asIntegerClamp(media.mediumMaxWidth, 768, 100, 4000),
+      mediumMaxHeight: asIntegerClamp(media.mediumMaxHeight, 768, 100, 4000),
+      largeMaxWidth: asIntegerClamp(media.largeMaxWidth, 1600, 200, 8000),
+      largeMaxHeight: asIntegerClamp(media.largeMaxHeight, 1600, 200, 8000)
+    },
+    permalinks: {
+      postPermalinkStructure: asString(permalinks.postPermalinkStructure) || '/blog/%postname%',
+      categoryBase: asString(permalinks.categoryBase) || 'category',
+      tagBase: asString(permalinks.tagBase) || 'tag'
+    },
+    seo: {
+      titleTemplate: asString(seo.titleTemplate) || '%page_title% | %site_name%',
+      defaultMetaDescription: asString(seo.defaultMetaDescription),
+      defaultOgImage,
+      defaultNoIndex: asBoolean(seo.defaultNoIndex)
+    },
+    sitemap: {
+      enabled: asBoolean(sitemap.enabled),
+      includePages: asBoolean(sitemap.includePages),
+      includePosts: asBoolean(sitemap.includePosts),
+      includeLastModified: asBoolean(sitemap.includeLastModified)
+    },
+    siteName,
+    baseUrl,
+    organizationName: asString(payload.organizationName),
+    organizationLogo: asString(payload.organizationLogo),
+    defaultOgImage
+  };
+}

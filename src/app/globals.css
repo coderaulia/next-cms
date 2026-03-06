@@ -1092,14 +1092,15 @@ img {
 }
 
 .admin-page {
-  min-height: calc(100vh - 80px);
+  min-height: 100vh;
   padding: 0;
 }
 
 .admin-shell {
   display: grid;
   grid-template-columns: 310px minmax(0, 1fr);
-  min-height: calc(100vh - 80px);
+  min-height: 100vh;
+  align-items: stretch;
 }
 
 .admin-sidebar {
@@ -1107,9 +1108,22 @@ img {
   color: #c1d0e9;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.admin-sidebar-footer {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 22px;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(160, 182, 220, 0.18);
 }
 
 .admin-logo {
@@ -1455,7 +1469,12 @@ button:disabled {
   }
 
   .admin-sidebar {
-    grid-template-rows: auto;
+    min-height: auto;
+  }
+
+  .admin-sidebar-scroll {
+    overflow: visible;
+    padding-right: 0;
   }
 
   .admin-filter-bar {
@@ -1562,4 +1581,5 @@ button:disabled {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 

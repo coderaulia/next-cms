@@ -2,9 +2,31 @@
 
 ## Accessing Admin
 
-1. Open `/admin`.
-2. Enter `CMS_ADMIN_TOKEN` value from `.env.local`.
-3. Use the left sidebar to manage dashboard, posts, and pages.
+1. Open `/admin/login`.
+2. Enter the `CMS_ADMIN_TOKEN` value from `.env.local`.
+3. Use the left sidebar modules:
+- Dashboard
+- Posts
+- Pages
+- Settings
+- Categories / Media Library / Comments (settings shortcuts)
+- Permalinks / Meta Tags / Sitemaps (settings shortcuts)
+
+## Website Settings
+
+Go to `/admin/settings`.
+
+Tabs available:
+- General: site title, URL, timezone, language, date/time format, org profile
+- Writing: default post category/author/status and review behavior
+- Reading: homepage mode, page mapping, posts-per-page, search indexing toggle
+- Discussion: comment policy controls
+- Media: default image dimensions
+- Permalinks: post/category/tag URL bases
+- Meta Tags: title template, default description, OG image, default noindex
+- Sitemaps: enable sitemap and include rules
+
+Save to apply runtime behavior updates for metadata, robots, sitemap, and blog list page size.
 
 ## Editing Landing Pages
 
@@ -16,38 +38,34 @@ You can edit:
 - Homepage block editor (`home` page):
   - add/remove/reorder/enable blocks
   - choose token preset theme (`light`, `blue-soft`, `mist`)
-  - edit block payload fields for each block type
-- Legacy section editor (non-home pages):
+  - edit block payload fields
+- Non-home section editor:
   - structure (`stacked` / `split`)
-  - heading/body/call-to-action
-  - media image + alt text
-  - colors (background, text, accent)
-
-Save to apply changes instantly.
+  - heading/body/CTA/media fields
+  - accent token fields
 
 ## Managing Blog Posts
 
 Go to `/admin/blog`.
 
-Available flow:
+Flow:
 1. Create draft
-2. Edit content and SEO fields
-3. Publish when ready
-4. Unpublish if needed
-5. Delete if no longer needed
+2. Edit content + SEO
+3. Publish / unpublish
+4. Delete when needed
 
 Posts table supports:
 - search by title/author
 - status filter
-- category filter (mapped from tags)
-- date sort (newest/oldest)
-- pagination controls with URL-synced query state
+- category filter (from tags)
+- date sort
+- pagination with URL-synced query state
 
 ## Publishing Checklist
 
-Before publishing a page/post:
+Before publishing page/post:
 - Confirm SEO title and description
 - Confirm clean slug
-- Confirm canonical URL strategy
+- Confirm canonical strategy
 - Confirm social image URL
-- Confirm `noindex` is off for public content
+- Confirm `noindex` is disabled for public content

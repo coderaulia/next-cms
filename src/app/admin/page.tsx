@@ -80,6 +80,9 @@ function DashboardPanel({ token }: { token: string }) {
           <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
             Create new post
           </Link>
+          <Link href="/admin/settings" className="v2-btn v2-btn-secondary">
+            Site settings
+          </Link>
         </div>
       </section>
 

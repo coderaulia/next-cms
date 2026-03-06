@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Sora } from 'next/font/google';
 
+import { AppShell } from '@/components/AppShell';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
-import { SiteFooter } from '@/components/SiteFooter';
-import { SiteHeader } from '@/components/SiteHeader';
 import { getPublishedPages, getSiteSettings } from '@/features/cms/publicApi';
 import type { PageId } from '@/features/cms/types';
 
@@ -79,9 +78,9 @@ export default async function RootLayout({
     <html lang="en" className={`${fontBody.variable} ${fontAccent.variable}`}>
       <body className="v2-site">
         <SeoJsonLd data={[orgSchema, siteSchema]} />
-        <SiteHeader siteName={settings.siteName} navItems={navItems} />
-        <div className="v2-page">{children}</div>
-        <SiteFooter siteName={settings.siteName} />
+        <AppShell siteName={settings.siteName} navItems={navItems}>
+          {children}
+        </AppShell>
       </body>
     </html>
   );

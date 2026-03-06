@@ -732,6 +732,70 @@ const partnership = page(
 
 export const defaultContent: CmsContent = {
   settings: {
+    general: {
+      siteName: 'Vanaila Digital.',
+      siteTagline: 'Engineering-focused digital agency for ambitious brands.',
+      baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+      adminEmail: process.env.CMS_ADMIN_EMAIL ?? 'care@vanaila.com',
+      timezone: process.env.CMS_TIMEZONE ?? 'Asia/Jakarta',
+      language: 'en-US',
+      dateFormat: 'MMMM d, yyyy',
+      timeFormat: 'HH:mm',
+      weekStartsOn: 1
+    },
+    writing: {
+      defaultPostCategory: 'General',
+      defaultPostFormat: 'standard',
+      defaultPostStatus: 'draft',
+      defaultPostAuthor: 'Admin',
+      convertEmoticons: true,
+      requireReviewBeforePublish: false,
+      pingServices: ['https://rpc.pingomatic.com/']
+    },
+    reading: {
+      homepageDisplay: 'static_page',
+      homepagePageId: 'home',
+      postsPageId: '',
+      postsPerPage: 10,
+      feedItems: 10,
+      feedSummary: 'excerpt',
+      discourageSearchEngines: false
+    },
+    discussion: {
+      commentsEnabled: false,
+      commentRegistrationRequired: false,
+      closeCommentsAfterDays: 30,
+      threadedCommentsEnabled: true,
+      threadDepth: 3,
+      requireCommentApproval: true,
+      notifyOnComment: true
+    },
+    media: {
+      uploadOrganizeByMonth: true,
+      thumbnailWidth: 300,
+      thumbnailHeight: 300,
+      mediumMaxWidth: 768,
+      mediumMaxHeight: 768,
+      largeMaxWidth: 1600,
+      largeMaxHeight: 1600
+    },
+    permalinks: {
+      postPermalinkStructure: '/blog/%postname%',
+      categoryBase: 'category',
+      tagBase: 'tag'
+    },
+    seo: {
+      titleTemplate: '%page_title% | %site_name%',
+      defaultMetaDescription: 'Engineering-led digital systems for growth-focused businesses.',
+      defaultOgImage: 'https://placehold.co/1200x630/png',
+      defaultNoIndex: false
+    },
+    sitemap: {
+      enabled: true,
+      includePages: true,
+      includePosts: true,
+      includeLastModified: true
+    },
     siteName: 'Vanaila Digital.',
     baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
     organizationName: process.env.CMS_ORG_NAME ?? 'Vanaila Digital',
