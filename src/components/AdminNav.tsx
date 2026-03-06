@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { clearAdminToken } from '@/features/cms/adminClientAuth';
+import { logoutAdmin } from '@/features/cms/adminClientAuth';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
 const siteManagementLinks = [
   { href: '/admin/settings', label: 'Settings' },
-  { href: '/admin/settings?tab=writing', label: 'Categories' },
-  { href: '/admin/settings?tab=media', label: 'Media Library' },
+  { href: '/admin/categories', label: 'Categories' },
+  { href: '/admin/media', label: 'Media Library' },
   { href: '/admin/settings?tab=discussion', label: 'Comments' }
 ];
 
@@ -18,15 +19,25 @@ const seoLinks = [
   { href: '/admin/settings?tab=sitemap', label: 'Sitemaps' }
 ];
 
-export function AdminNav() {
+function initialsForUser(user: AdminSessionUser) {
+  const source = user.displayName.trim() || user.email.trim();
+  const parts = source.split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AD';
+}
+
+type AdminNavProps = {
+  user: AdminSessionUser;
+};
+
+export function AdminNav({ user }: AdminNavProps) {
   const pathname = usePathname();
   const router = useRouter();
 
   const isActive = (href: string) =>
     pathname === href || (href !== '/admin' && pathname.startsWith(href.split('?')[0]));
 
-  const handleLogout = () => {
-    clearAdminToken();
+  const handleLogout = async () => {
+    await logoutAdmin();
     router.replace('/admin/login');
     router.refresh();
   };
@@ -89,10 +100,10 @@ export function AdminNav() {
 
       <div className="admin-sidebar-footer">
         <div className="admin-user-card">
-          <span className="admin-user-avatar">AD</span>
+          <span className="admin-user-avatar">{initialsForUser(user)}</span>
           <div>
-            <strong>Administrator</strong>
-            <p className="muted">care@vanaila.com</p>
+            <strong>{user.displayName}</strong>
+            <p className="muted">{user.email}</p>
           </div>
         </div>
 

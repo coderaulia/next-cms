@@ -12,7 +12,9 @@ npm run dev
 ```
 3. Set environment values in `.env.local`:
 - `NEXT_PUBLIC_SITE_URL`
-- `CMS_ADMIN_TOKEN`
+- `CMS_ADMIN_EMAIL`
+- `CMS_ADMIN_PASSWORD`
+- `CMS_ADMIN_NAME`
 - Optional organization values:
   - `CMS_ORG_NAME`
   - `CMS_ORG_LOGO`
@@ -25,8 +27,7 @@ Recommended for production clients:
 1. Move to Neon PostgreSQL.
 2. Keep the same CMS payload shapes (`settings`, `pages`, `blogPosts`) so UI/admin stays compatible.
 3. Use JSONB for flexible fields (`seo`, `sections`, `homeBlocks`).
-
-Until Neon migration is complete, keep file storage for local/staging.
+4. Use Neon-backed admin sessions instead of local token storage.
 
 ## 3) Define Client Content Model
 
@@ -83,10 +84,7 @@ Public shell and admin shell must stay separate:
 - No public navbar/footer
 - Dedicated admin UI only
 - Admin login page: `/admin/login`
-
-Current shell logic:
-- `src/components/AppShell.tsx`
-- `src/app/layout.tsx`
+- Admin auth: email/password + cookie sessions
 
 ## 7) Admin Adaptation for New Client
 
@@ -136,7 +134,7 @@ npm run build
 4. Website Settings configured for target domain/timezone/indexing behavior.
 5. Public responsive checks (mobile/tablet/desktop).
 6. SEO sanity checks complete.
-7. Admin token rotated and documented for client.
+7. Admin credentials rotated and documented for client.
 
 ## 10) Recommended Workflow Per Client
 

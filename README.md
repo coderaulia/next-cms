@@ -9,6 +9,8 @@ It includes:
 - Separate admin login + dedicated admin shell (no public header/footer in admin)
 - Website Settings module (General, Writing, Reading, Discussion, Media, Permalinks, Meta Tags, Sitemaps)
 - Technical SEO defaults: metadata, canonicals, OG/Twitter tags, sitemap, robots, JSON-LD
+- Dual persistence mode: local file store by default, Neon Postgres when `DATABASE_URL` is configured
+- Neon-backed admin users and cookie sessions when database mode is enabled`r`n- Working admin modules for categories and media library metadata
 
 ## Stack Decision
 
@@ -16,6 +18,7 @@ It includes:
 - Language: TypeScript (strict)
 - Package manager: npm
 - Test baseline: Vitest
+- Database: Neon Postgres + Drizzle ORM
 
 ## Getting Started
 
@@ -43,9 +46,15 @@ npm run dev
 
 ## Admin Access
 
-- Set `CMS_ADMIN_TOKEN` in `.env.local`.
-- Login at `/admin/login`.
-- Admin APIs require `x-admin-token`.
+Preferred setup:
+- Set `CMS_ADMIN_EMAIL`
+- Set `CMS_ADMIN_PASSWORD`
+- Optional: set `CMS_ADMIN_NAME`
+
+Behavior:
+- The first admin login bootstraps an admin user into Neon if `admin_users` is empty.
+- Admin UI uses secure cookie sessions.
+- Legacy `CMS_ADMIN_TOKEN` / `x-admin-token` support remains only as a compatibility fallback for migration and tests.
 
 ## Scripts
 
@@ -56,6 +65,11 @@ npm run dev
 - `npm run typecheck` - TypeScript checks
 - `npm run test` - Vitest tests
 - `npm run check` - lint + typecheck + test
+- `npm run db:generate` - generate Drizzle SQL migrations
+- `npm run db:migrate` - apply migrations
+- `npm run db:push` - push schema directly to database
+- `npm run db:studio` - open Drizzle Studio
+- `npm run db:seed:file` - import `data/content.json` into Neon
 
 ## Content Model
 
@@ -136,6 +150,7 @@ src/
     home/
       blocks/
     admin/
+  db/
   features/cms/
   services/
   tests/
@@ -149,23 +164,25 @@ docs/
 ## Deployment Notes
 
 - Set `NEXT_PUBLIC_SITE_URL` to production domain.
-- Set `CMS_ADMIN_TOKEN` to a strong secret.
-- Ensure write access for `data/content.json`.
-- For read-only/serverless hosting, replace file storage with DB (e.g. Neon).
+- Set `CMS_ADMIN_EMAIL`, `CMS_ADMIN_PASSWORD`, and `CMS_ADMIN_NAME`.
+- For Neon mode, set `DATABASE_URL` and optionally `DATABASE_URL_MIGRATION`.
+- Local file persistence still works when `DATABASE_URL` is not set, but Neon is the recommended production path.
+- For Hostinger deployment, database mode is the recommended path.
 
 See:
 - [Admin usage guide](./docs/admin-usage.md)
 - [Deployment handoff](./docs/deployment-handoff.md)
 - [Phase 4 testing checklist](./docs/testing-phase-4.md)
 - [Client reuse playbook](./docs/client-reuse-playbook.md)
+- [Neon + Hostinger setup](./docs/neon-hostinger-setup.md)
 
 ## Assumptions
 
 - Single language deployment.
-- Single admin token auth for this stage.
 - Free/open-source libraries only.
 
 ## Risks
 
-- File storage is not ideal for horizontally scaled hosting.
+- Media uploads still need a production storage provider.
 - SEO outcomes depend on content quality and ongoing strategy.
+

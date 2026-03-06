@@ -5,7 +5,7 @@ import { createBlogPost, queryBlogPosts } from '@/features/cms/contentStore';
 import type { BlogPost } from '@/features/cms/types';
 
 export async function GET(request: Request) {
-  const unauthorized = assertAdminRequest(request);
+  const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
   const { searchParams } = new URL(request.url);
@@ -30,10 +30,11 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = assertAdminRequest(request);
+  const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
   const payload = (await request.json().catch(() => null)) as Partial<BlogPost> | null;
   const post = await createBlogPost(payload ?? {});
   return NextResponse.json({ post }, { status: 201 });
 }
+

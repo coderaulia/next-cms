@@ -1,21 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import type { BlogPost } from '@/features/cms/types';
+import type { BlogPost, Category } from '@/features/cms/types';
 
 type BlogEditorFormProps = {
   initialPost: BlogPost;
-  adminToken: string;
   isNew?: boolean;
 };
 
-export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogEditorFormProps) {
+type CategoriesResponse = {
+  categories: Category[];
+};
+
+export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormProps) {
   const [post, setPost] = useState(initialPost);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    fetch('/api/admin/categories')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (!payload) return;
+        setCategories((payload as CategoriesResponse).categories);
+      });
+  }, []);
+
+  const selectedCategories = useMemo(() => new Set(post.tags), [post.tags]);
+
+  const toggleCategory = (slug: string) => {
+    const next = new Set(selectedCategories);
+    if (next.has(slug)) {
+      next.delete(slug);
+    } else {
+      next.add(slug);
+    }
+
+    setPost({ ...post, tags: Array.from(next) });
+  };
 
   const savePost = async () => {
     setSaving(true);
@@ -23,8 +49,7 @@ export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogE
     const response = await fetch(`/api/admin/blog/${post.id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': adminToken
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(post)
     });
@@ -43,10 +68,7 @@ export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogE
 
   const publish = async () => {
     const response = await fetch(`/api/admin/blog/${post.id}/publish`, {
-      method: 'POST',
-      headers: {
-        'x-admin-token': adminToken
-      }
+      method: 'POST'
     });
     if (!response.ok) {
       setNotice('Failed to publish');
@@ -59,10 +81,7 @@ export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogE
 
   const unpublish = async () => {
     const response = await fetch(`/api/admin/blog/${post.id}/unpublish`, {
-      method: 'POST',
-      headers: {
-        'x-admin-token': adminToken
-      }
+      method: 'POST'
     });
     if (!response.ok) {
       setNotice('Failed to unpublish');
@@ -76,10 +95,7 @@ export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogE
   const deletePost = async () => {
     if (!confirm('Delete this post?')) return;
     const response = await fetch(`/api/admin/blog/${post.id}`, {
-      method: 'DELETE',
-      headers: {
-        'x-admin-token': adminToken
-      }
+      method: 'DELETE'
     });
     if (!response.ok) {
       setNotice('Failed to delete');
@@ -122,8 +138,26 @@ export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogE
             onChange={(event) => setPost({ ...post, author: event.target.value })}
           />
         </label>
+        <div>
+          <p className="admin-kpi-label">Categories</p>
+          <div className="admin-actions" style={{ flexWrap: 'wrap' }}>
+            {categories.map((category) => {
+              const active = selectedCategories.has(category.slug);
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  className={active ? 'v2-btn v2-btn-primary' : 'v2-btn v2-btn-secondary'}
+                  onClick={() => toggleCategory(category.slug)}
+                >
+                  {category.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
         <label>
-          Tags (comma separated)
+          Category slugs (comma separated)
           <input
             value={post.tags.join(', ')}
             onChange={(event) =>
@@ -131,7 +165,7 @@ export function BlogEditorForm({ initialPost, adminToken, isNew = false }: BlogE
                 ...post,
                 tags: event.target.value
                   .split(',')
-                  .map((item) => item.trim())
+                  .map((item) => item.trim().toLowerCase())
                   .filter(Boolean)
               })
             }

@@ -9,7 +9,7 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, { params }: RouteContext) {
-  const unauthorized = assertAdminRequest(request);
+  const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
@@ -21,7 +21,7 @@ export async function GET(request: Request, { params }: RouteContext) {
 }
 
 export async function PUT(request: Request, { params }: RouteContext) {
-  const unauthorized = assertAdminRequest(request);
+  const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
@@ -37,7 +37,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
-  const unauthorized = assertAdminRequest(request);
+  const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
@@ -47,3 +47,4 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   }
   return NextResponse.json({ ok: true });
 }
+

@@ -1,9 +1,9 @@
 'use client';
 
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { saveAdminToken, verifyAdminToken } from '@/features/cms/adminClientAuth';
+import { getAdminSession, loginAdmin } from '@/features/cms/adminClientAuth';
 
 const sanitizeNext = (value: string | null) => {
   const fallback = '/admin';
@@ -17,26 +17,35 @@ const sanitizeNext = (value: string | null) => {
 export default function AdminLoginPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const [token, setToken] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
 
   const nextHref = useMemo(() => sanitizeNext(params.get('next')), [params]);
+
+  useEffect(() => {
+    getAdminSession().then((user) => {
+      if (user) {
+        router.replace(nextHref);
+        router.refresh();
+      }
+    });
+  }, [nextHref, router]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setPending(true);
     setError('');
 
-    const ok = await verifyAdminToken(token);
+    const user = await loginAdmin({ email, password });
     setPending(false);
 
-    if (!ok) {
-      setError('Invalid admin token.');
+    if (!user) {
+      setError('Invalid email or password.');
       return;
     }
 
-    saveAdminToken(token);
     router.replace(nextHref);
     router.refresh();
   };
@@ -44,23 +53,35 @@ export default function AdminLoginPage() {
   return (
     <main className="admin-page">
       <section className="max-w-xl mx-auto px-6 py-20">
-        <div className="admin-card">
+        <div className="admin-card admin-login">
           <h1 className="text-3xl font-display font-black text-deepSlate mb-3">Admin Login</h1>
-          <p className="admin-subtle mb-8">Enter your admin token to access the CMS panel.</p>
+          <p className="admin-subtle mb-8">Sign in with your admin email and password to access the CMS panel.</p>
           <form className="admin-form-wrap" onSubmit={handleSubmit}>
-            <label htmlFor="token">
-              Admin token
+            <label htmlFor="email">
+              Email
               <input
-                id="token"
-                type="password"
-                value={token}
-                onChange={(event) => setToken(event.target.value)}
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
                 required
                 autoFocus
               />
             </label>
+            <label htmlFor="password">
+              Password
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                required
+              />
+            </label>
             <button type="submit" disabled={pending}>
-              {pending ? 'Checking...' : 'Login'}
+              {pending ? 'Signing in...' : 'Login'}
             </button>
           </form>
           {error ? <p className="error mt-3">{error}</p> : null}

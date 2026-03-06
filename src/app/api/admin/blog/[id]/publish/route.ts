@@ -8,7 +8,7 @@ type RouteContext = {
 };
 
 export async function POST(request: Request, { params }: RouteContext) {
-  const unauthorized = assertAdminRequest(request);
+  const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
@@ -18,3 +18,4 @@ export async function POST(request: Request, { params }: RouteContext) {
   }
   return NextResponse.json({ post });
 }
+

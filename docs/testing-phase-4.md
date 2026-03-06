@@ -17,11 +17,11 @@ Expected:
 
 ## Manual Validation: Admin Flows
 
-1. Login at `/admin/login` with `CMS_ADMIN_TOKEN`.
+1. Login at `/admin/login` with `CMS_ADMIN_EMAIL` and `CMS_ADMIN_PASSWORD`.
 2. Verify admin sidebar fills full viewport height and anchors footer actions at bottom.
 3. Verify sidebar modules:
 - Dashboard, Posts, Pages, Settings
-- Settings shortcuts: Categories, Media Library, Comments, Permalinks, Meta Tags, Sitemaps
+- Site modules: Categories, Media Library, Comments, Permalinks, Meta Tags, Sitemaps
 4. Edit each landing page:
 - change section heading/body
 - for homepage, add/reorder/toggle typed blocks and update payload fields
@@ -40,6 +40,7 @@ Expected:
 - reload page and confirm persisted values
 8. Confirm published post appears on `/blog`.
 9. Unpublish post and confirm it disappears from public blog list/detail.
+10. Logout, then confirm protected admin routes redirect back to `/admin/login`.
 
 ## Manual Validation: SEO
 
@@ -69,3 +70,4 @@ Focus on:
 - homepage block layout stacking on mobile
 - admin sidebar height and footer placement
 - form usability in admin pages
+

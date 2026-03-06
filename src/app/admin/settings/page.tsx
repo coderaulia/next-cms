@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
-import type { LandingPage, SiteSettings } from '@/features/cms/types';
+import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
 
 type SettingsResponse = {
   settings: SiteSettings;
@@ -13,6 +13,10 @@ type SettingsResponse = {
 
 type PageResponse = {
   pages: LandingPage[];
+};
+
+type CategoriesResponse = {
+  categories: Category[];
 };
 
 type SettingsTab =
@@ -41,12 +45,13 @@ function parseTab(value: string | null): SettingsTab {
   return tabs.some((tab) => tab.id === candidate) ? (candidate as SettingsTab) : 'general';
 }
 
-function SettingsEditor({ token }: { token: string }) {
+function SettingsEditor() {
   const params = useSearchParams();
   const activeTab = parseTab(params.get('tab'));
 
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [pages, setPages] = useState<LandingPage[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -56,12 +61,13 @@ function SettingsEditor({ token }: { token: string }) {
     async function load() {
       setLoading(true);
       setError('');
-      const [settingsRes, pagesRes] = await Promise.all([
-        fetch('/api/admin/settings', { headers: { 'x-admin-token': token } }),
-        fetch('/api/admin/pages', { headers: { 'x-admin-token': token } })
+      const [settingsRes, pagesRes, categoriesRes] = await Promise.all([
+        fetch('/api/admin/settings'),
+        fetch('/api/admin/pages'),
+        fetch('/api/admin/categories')
       ]);
 
-      if (!settingsRes.ok || !pagesRes.ok) {
+      if (!settingsRes.ok || !pagesRes.ok || !categoriesRes.ok) {
         setLoading(false);
         setError('Failed to load settings.');
         return;
@@ -69,13 +75,15 @@ function SettingsEditor({ token }: { token: string }) {
 
       const settingsPayload = (await settingsRes.json()) as SettingsResponse;
       const pagesPayload = (await pagesRes.json()) as PageResponse;
+      const categoriesPayload = (await categoriesRes.json()) as CategoriesResponse;
 
       setSettings(settingsPayload.settings);
       setPages(pagesPayload.pages);
+      setCategories(categoriesPayload.categories);
       setLoading(false);
     }
     load();
-  }, [token]);
+  }, []);
 
   const pageOptions = useMemo(
     () =>
@@ -86,6 +94,17 @@ function SettingsEditor({ token }: { token: string }) {
     [pages]
   );
 
+  const categoryOptions = useMemo(() => {
+    const entries = categories.map((category) => ({ label: category.name, value: category.slug }));
+    if (settings?.writing.defaultPostCategory && !entries.some((entry) => entry.value === settings.writing.defaultPostCategory)) {
+      entries.unshift({
+        label: settings.writing.defaultPostCategory,
+        value: settings.writing.defaultPostCategory
+      });
+    }
+    return entries;
+  }, [categories, settings?.writing.defaultPostCategory]);
+
   const save = async () => {
     if (!settings) return;
     setSaving(true);
@@ -95,8 +114,7 @@ function SettingsEditor({ token }: { token: string }) {
     const response = await fetch('/api/admin/settings', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': token
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(settings)
     });
@@ -278,7 +296,7 @@ function SettingsEditor({ token }: { token: string }) {
           <div className="admin-grid-2">
             <label>
               Default post category
-              <input
+              <select
                 value={settings.writing.defaultPostCategory}
                 onChange={(event) =>
                   setSettings({
@@ -286,7 +304,14 @@ function SettingsEditor({ token }: { token: string }) {
                     writing: { ...settings.writing, defaultPostCategory: event.target.value }
                   })
                 }
-              />
+              >
+                <option value="">None</option>
+                {categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
               Default post author
@@ -903,7 +928,10 @@ export default function AdminSettingsPage() {
       title="Settings"
       description="Configure General, Writing, Reading, Discussion, Media, Permalinks, SEO, and Sitemap behavior."
     >
-      {(token) => <SettingsEditor token={token} />}
+      {() => <SettingsEditor />}
     </AdminShell>
   );
 }
+
+
+

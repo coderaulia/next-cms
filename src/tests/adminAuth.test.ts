@@ -30,7 +30,7 @@ describe('admin auth', () => {
       }
     });
 
-    const result = assertAdminRequest(request);
+    const result = await assertAdminRequest(request);
     expect(result?.status).toBe(401);
   });
 
@@ -45,7 +45,7 @@ describe('admin auth', () => {
       }
     });
 
-    const result = assertAdminRequest(request);
+    const result = await assertAdminRequest(request);
     expect(result).toBeNull();
   });
 });

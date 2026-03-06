@@ -1,0 +1,149 @@
+import { defaultContent } from './defaultContent';
+import type { BlogPost, CmsContent, HomeBlock, LandingPage, SiteSettings } from './types';
+
+export const nowIso = () => new Date().toISOString();
+
+export const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+export function normalizeSettings(input: unknown): SiteSettings {
+  const defaults = structuredClone(defaultContent.settings);
+  const source = isObject(input) ? input : {};
+
+  const general = isObject(source.general) ? source.general : {};
+  const writing = isObject(source.writing) ? source.writing : {};
+  const reading = isObject(source.reading) ? source.reading : {};
+  const discussion = isObject(source.discussion) ? source.discussion : {};
+  const media = isObject(source.media) ? source.media : {};
+  const permalinks = isObject(source.permalinks) ? source.permalinks : {};
+  const seo = isObject(source.seo) ? source.seo : {};
+  const sitemap = isObject(source.sitemap) ? source.sitemap : {};
+
+  const next: SiteSettings = {
+    ...defaults,
+    ...source,
+    general: { ...defaults.general, ...general },
+    writing: {
+      ...defaults.writing,
+      ...writing,
+      pingServices: Array.isArray(writing.pingServices)
+        ? writing.pingServices.map((service) => String(service).trim()).filter(Boolean)
+        : defaults.writing.pingServices
+    },
+    reading: { ...defaults.reading, ...reading },
+    discussion: { ...defaults.discussion, ...discussion },
+    media: { ...defaults.media, ...media },
+    permalinks: { ...defaults.permalinks, ...permalinks },
+    seo: { ...defaults.seo, ...seo },
+    sitemap: { ...defaults.sitemap, ...sitemap }
+  } as SiteSettings;
+
+  if (typeof source.siteName === 'string' && source.siteName.trim().length > 0) {
+    next.general.siteName = source.siteName.trim();
+  }
+  if (typeof source.baseUrl === 'string' && source.baseUrl.trim().length > 0) {
+    next.general.baseUrl = source.baseUrl.trim();
+  }
+  if (typeof source.defaultOgImage === 'string' && source.defaultOgImage.trim().length > 0) {
+    next.seo.defaultOgImage = source.defaultOgImage.trim();
+  }
+
+  next.siteName = next.general.siteName;
+  next.baseUrl = next.general.baseUrl;
+  next.defaultOgImage = next.seo.defaultOgImage;
+
+  return next;
+}
+
+export const normalizeSlug = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+
+export const reservedPageSlugs = new Set(['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt']);
+
+export const normalizeHomeBlocks = (blocks: HomeBlock[] | undefined): HomeBlock[] | undefined => {
+  if (!blocks) return undefined;
+  return blocks.map((block, index) => ({
+    ...block,
+    id: block.id || `home-block-${index + 1}`
+  }));
+};
+
+export function mergeWithDefaults(content: CmsContent): CmsContent {
+  return {
+    settings: normalizeSettings(content.settings),
+    pages: {
+      ...structuredClone(defaultContent.pages),
+      ...content.pages
+    },
+    blogPosts: Array.isArray(content.blogPosts)
+      ? content.blogPosts
+      : structuredClone(defaultContent.blogPosts),
+    categories: Array.isArray(content.categories)
+      ? content.categories
+      : structuredClone(defaultContent.categories),
+    mediaAssets: Array.isArray(content.mediaAssets)
+      ? content.mediaAssets
+      : structuredClone(defaultContent.mediaAssets)
+  };
+}
+
+export function isPostSlugTaken(posts: BlogPost[], slug: string, ignoreId?: string) {
+  return posts.some((post) => post.seo.slug === slug && post.id !== ignoreId);
+}
+
+export function uniquePostSlug(
+  posts: BlogPost[],
+  title: string,
+  requestedSlug?: string,
+  ignoreId?: string
+) {
+  const source = requestedSlug && requestedSlug.length > 0 ? requestedSlug : title;
+  const base = normalizeSlug(source) || 'post';
+  if (!isPostSlugTaken(posts, base, ignoreId)) return base;
+
+  let i = 2;
+  while (isPostSlugTaken(posts, `${base}-${i}`, ignoreId)) {
+    i += 1;
+  }
+
+  return `${base}-${i}`;
+}
+
+export function normalizePageForWrite(
+  page: LandingPage,
+  existingPages: LandingPage[]
+): LandingPage {
+  const candidateSlug = page.id === 'home' ? '' : normalizeSlug(page.seo.slug || page.id) || page.id;
+  let slug = candidateSlug;
+
+  if (reservedPageSlugs.has(slug)) {
+    slug = `${slug}-${page.id}`;
+  }
+
+  const duplicate = existingPages.find((entry) => entry.id !== page.id && entry.seo.slug === slug);
+  if (duplicate) {
+    slug = `${slug}-${page.id}`;
+  }
+
+  return {
+    ...page,
+    homeBlocks:
+      page.id === 'home'
+        ? normalizeHomeBlocks(
+            page.homeBlocks ?? existingPages.find((entry) => entry.id === 'home')?.homeBlocks ?? []
+          )
+        : page.homeBlocks,
+    seo: {
+      ...page.seo,
+      slug
+    },
+    updatedAt: nowIso()
+  };
+}
+

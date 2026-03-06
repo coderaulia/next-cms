@@ -23,7 +23,7 @@ function parsePositiveInt(value: string | null, fallback: number) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-function BlogList({ token }: { token: string }) {
+function BlogList() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -64,9 +64,7 @@ function BlogList({ token }: { token: string }) {
           page: String(page),
           pageSize: String(pageSize)
         });
-        const response = await fetch(`/api/admin/blog?${params.toString()}`, {
-          headers: { 'x-admin-token': token }
-        });
+        const response = await fetch(`/api/admin/blog?${params.toString()}`);
         if (!response.ok) {
           setError('Failed to load posts.');
           return;
@@ -79,7 +77,7 @@ function BlogList({ token }: { token: string }) {
       }
     }
     load();
-  }, [token, q, status, category, dateSort, page, pageSize]);
+  }, [q, status, category, dateSort, page, pageSize]);
 
   const totalPages = useMemo(() => {
     if (!data) return 1;
@@ -192,7 +190,7 @@ export default function AdminBlogPage() {
         </Link>
       }
     >
-      {(token) => <BlogList token={token} />}
+      {() => <BlogList />}
     </AdminShell>
   );
 }

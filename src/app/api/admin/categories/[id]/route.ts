@@ -1,0 +1,53 @@
+import { NextResponse } from 'next/server';
+
+import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { deleteCategory, getCategoryById, updateCategory } from '@/features/cms/contentStore';
+import { validateCategory } from '@/features/cms/validators';
+
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(request: Request, { params }: RouteContext) {
+  const unauthorized = await assertAdminRequest(request);
+  if (unauthorized) return unauthorized;
+
+  const { id } = await params;
+  const category = await getCategoryById(id);
+  if (!category) {
+    return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+  }
+
+  return NextResponse.json({ category });
+}
+
+export async function PUT(request: Request, { params }: RouteContext) {
+  const unauthorized = await assertAdminRequest(request);
+  if (unauthorized) return unauthorized;
+
+  const { id } = await params;
+  const payload = validateCategory(await request.json().catch(() => null));
+  if (!payload || payload.id !== id) {
+    return NextResponse.json({ error: 'Invalid category payload' }, { status: 400 });
+  }
+
+  const category = await updateCategory(id, payload);
+  if (!category) {
+    return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+  }
+
+  return NextResponse.json({ category });
+}
+
+export async function DELETE(request: Request, { params }: RouteContext) {
+  const unauthorized = await assertAdminRequest(request);
+  if (unauthorized) return unauthorized;
+
+  const { id } = await params;
+  const removed = await deleteCategory(id);
+  if (!removed) {
+    return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+  }
+
+  return NextResponse.json({ ok: true });
+}

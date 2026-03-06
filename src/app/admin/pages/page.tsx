@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { AdminShell } from '@/components/AdminShell';
 import type { LandingPage } from '@/features/cms/types';
 
-function PagesList({ token }: { token: string }) {
+function PagesList() {
   const [pages, setPages] = useState<LandingPage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,9 +14,7 @@ function PagesList({ token }: { token: string }) {
   useEffect(() => {
     async function load() {
       try {
-        const response = await fetch('/api/admin/pages', {
-          headers: { 'x-admin-token': token }
-        });
+        const response = await fetch('/api/admin/pages');
         if (!response.ok) {
           setError('Failed to load pages.');
           return;
@@ -28,7 +26,7 @@ function PagesList({ token }: { token: string }) {
       }
     }
     load();
-  }, [token]);
+  }, []);
 
   if (loading) return <p>Loading pages...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -78,7 +76,7 @@ export default function AdminPagesPage() {
       title="Pages"
       description="Manage landing pages and homepage block composition."
     >
-      {(token) => <PagesList token={token} />}
+      {() => <PagesList />}
     </AdminShell>
   );
 }

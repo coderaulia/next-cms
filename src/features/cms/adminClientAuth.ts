@@ -1,25 +1,36 @@
-export const ADMIN_TOKEN_STORAGE_KEY = 'cms_admin_token';
+import type { AdminAuthResponse, AdminLoginPayload, AdminSessionUser } from './adminTypes';
 
-export function readAdminToken() {
-  if (typeof window === 'undefined') return '';
-  return localStorage.getItem(ADMIN_TOKEN_STORAGE_KEY)?.trim() ?? '';
+export async function getAdminSession(): Promise<AdminSessionUser | null> {
+  const response = await fetch('/api/admin/auth', {
+    method: 'GET',
+    cache: 'no-store'
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const payload = (await response.json()) as AdminAuthResponse;
+  return payload.user;
 }
 
-export function saveAdminToken(token: string) {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(ADMIN_TOKEN_STORAGE_KEY, token.trim());
-}
-
-export function clearAdminToken() {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(ADMIN_TOKEN_STORAGE_KEY);
-}
-
-export async function verifyAdminToken(token: string) {
+export async function loginAdmin(input: AdminLoginPayload): Promise<AdminSessionUser | null> {
   const response = await fetch('/api/admin/auth', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: token.trim() })
+    body: JSON.stringify(input)
   });
-  return response.ok;
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const payload = (await response.json()) as AdminAuthResponse;
+  return payload.user;
+}
+
+export async function logoutAdmin() {
+  await fetch('/api/admin/auth', {
+    method: 'DELETE'
+  });
 }

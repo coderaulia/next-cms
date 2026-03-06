@@ -11,17 +11,15 @@ type DashboardData = {
   blogPosts: BlogPost[];
 };
 
-function DashboardPanel({ token }: { token: string }) {
+function DashboardPanel() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
     async function load() {
       const [pagesResponse, blogResponse] = await Promise.all([
-        fetch('/api/admin/pages', { headers: { 'x-admin-token': token } }),
-        fetch('/api/admin/blog?includeDrafts=1&page=1&pageSize=5', {
-          headers: { 'x-admin-token': token }
-        })
+        fetch('/api/admin/pages'),
+        fetch('/api/admin/blog?includeDrafts=1&page=1&pageSize=5')
       ]);
 
       if (!pagesResponse.ok || !blogResponse.ok) {
@@ -34,7 +32,7 @@ function DashboardPanel({ token }: { token: string }) {
       setData({ pages: pagesPayload.pages, blogPosts: blogPayload.posts });
     }
     load();
-  }, [token]);
+  }, []);
 
   const metrics = useMemo(() => {
     if (!data) return null;
@@ -76,6 +74,12 @@ function DashboardPanel({ token }: { token: string }) {
           </Link>
           <Link href="/admin/blog" className="v2-btn v2-btn-secondary">
             Manage posts
+          </Link>
+          <Link href="/admin/categories" className="v2-btn v2-btn-secondary">
+            Manage categories
+          </Link>
+          <Link href="/admin/media" className="v2-btn v2-btn-secondary">
+            Media library
           </Link>
           <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
             Create new post
@@ -132,7 +136,7 @@ function DashboardPanel({ token }: { token: string }) {
 export default function AdminDashboardPage() {
   return (
     <AdminShell title="Dashboard" description="Architectural dashboard and content control center.">
-      {(token) => <DashboardPanel token={token} />}
+      {() => <DashboardPanel />}
     </AdminShell>
   );
 }

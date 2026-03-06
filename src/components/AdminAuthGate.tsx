@@ -3,10 +3,11 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { clearAdminToken, readAdminToken, verifyAdminToken } from '@/features/cms/adminClientAuth';
+import { getAdminSession } from '@/features/cms/adminClientAuth';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
 type AdminAuthGateProps = {
-  children: (token: string) => ReactNode;
+  children: (user: AdminSessionUser) => ReactNode;
 };
 
 function loginHref(pathname: string) {
@@ -17,32 +18,37 @@ function loginHref(pathname: string) {
 export function AdminAuthGate({ children }: AdminAuthGateProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [token, setToken] = useState<string>('');
+  const [user, setUser] = useState<AdminSessionUser | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const stored = readAdminToken();
-    if (!stored) {
-      router.replace(loginHref(pathname));
-      setReady(true);
-      return;
-    }
+    let cancelled = false;
 
-    verifyAdminToken(stored)
-      .then((ok) => {
-        if (ok) {
-          setToken(stored);
+    getAdminSession()
+      .then((sessionUser) => {
+        if (cancelled) return;
+
+        if (sessionUser) {
+          setUser(sessionUser);
           return;
         }
-        clearAdminToken();
+
         router.replace(loginHref(pathname));
       })
-      .finally(() => setReady(true));
+      .finally(() => {
+        if (!cancelled) {
+          setReady(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [pathname, router]);
 
-  if (!ready || !token) {
+  if (!ready || !user) {
     return <p>Checking admin access...</p>;
   }
 
-  return <>{children(token)}</>;
+  return <>{children(user)}</>;
 }

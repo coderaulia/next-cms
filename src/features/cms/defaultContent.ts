@@ -49,6 +49,34 @@ const page = (
   updatedAt: nowIso()
 });
 
+const category = (name: string, slug: string, description: string) => ({
+  id: `category-${slug}`,
+  name,
+  slug,
+  description,
+  createdAt: nowIso(),
+  updatedAt: nowIso()
+});
+
+const mediaAsset = (
+  id: string,
+  title: string,
+  url: string,
+  altText: string,
+  mimeType = 'image/png'
+) => ({
+  id,
+  title,
+  url,
+  altText,
+  mimeType,
+  width: 1200,
+  height: 630,
+  sizeBytes: null,
+  storageProvider: 'external-url',
+  createdAt: nowIso(),
+  updatedAt: nowIso()
+});
 type ServicePlanSeed = {
   tier: string;
   name: string;
@@ -744,7 +772,7 @@ export const defaultContent: CmsContent = {
       weekStartsOn: 1
     },
     writing: {
-      defaultPostCategory: 'General',
+      defaultPostCategory: 'general',
       defaultPostFormat: 'standard',
       defaultPostStatus: 'draft',
       defaultPostAuthor: 'Admin',
@@ -921,7 +949,34 @@ Draft quickly, review carefully, then publish with SEO checks.`,
         noIndex: false
       }
     }
+  ],
+  categories: [
+    category('General', 'general', 'Default publishing category for uncategorized content.'),
+    category('Engineering', 'engineering', 'Technical engineering insights and implementation notes.'),
+    category('Performance', 'performance', 'Web performance, speed, and optimization topics.'),
+    category('SEO', 'seo', 'Technical SEO and discoverability guidance.'),
+    category('Workflow', 'workflow', 'Operational workflows, editorial process, and CMS governance.'),
+    category('CMS', 'cms', 'Content management implementation and admin UX topics.')
+  ],
+  mediaAssets: [
+    mediaAsset(
+      'media-default-og',
+      'Default Open Graph',
+      'https://placehold.co/1200x630/png',
+      'Default social sharing image'
+    ),
+    mediaAsset(
+      'media-brand-mark',
+      'Vanaila Brand Mark',
+      'https://placehold.co/240x80/png',
+      'Vanaila Digital brand mark'
+    ),
+    mediaAsset(
+      'media-blog-cover',
+      'Blog Cover Placeholder',
+      'https://placehold.co/1200x630/png',
+      'Generic blog cover placeholder'
+    )
   ]
 };
-
 

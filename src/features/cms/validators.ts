@@ -1,10 +1,12 @@
 import type {
   BlogPost,
+  Category,
   CtaStyleToken,
   HomeBlock,
   HomeBlockType,
   HomeThemeToken,
   LandingPage,
+  MediaAsset,
   PageId,
   SiteSettings
 } from './types';
@@ -59,6 +61,15 @@ const isHomeTheme = (value: string): value is HomeThemeToken =>
 
 const isCtaStyle = (value: string): value is CtaStyleToken =>
   CTA_STYLES.includes(value as CtaStyleToken);
+
+const normalizeSlugValue = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const asTheme = (value: unknown): HomeThemeToken => {
   const token = asString(value);
@@ -290,6 +301,57 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
 
 
 
+export function validateCategory(payload: unknown): Category | null {
+  if (!isObject(payload)) return null;
+
+  const name = asString(payload.name).trim();
+  const fallbackSlug = normalizeSlugValue(name) || 'category';
+  const slug = normalizeSlugValue(asString(payload.slug)) || fallbackSlug;
+
+  if (!name || !slug) {
+    return null;
+  }
+
+  return {
+    id: asString(payload.id) || crypto.randomUUID(),
+    name,
+    slug,
+    description: asString(payload.description),
+    createdAt: asString(payload.createdAt) || new Date().toISOString(),
+    updatedAt: asString(payload.updatedAt) || new Date().toISOString()
+  };
+}
+
+export function validateMediaAsset(payload: unknown): MediaAsset | null {
+  if (!isObject(payload)) return null;
+
+  const title = asString(payload.title).trim();
+  const url = asString(payload.url).trim();
+  if (!title || !url) {
+    return null;
+  }
+
+  const asNullableInteger = (value: unknown) => {
+    if (value === null || typeof value === 'undefined' || value === '') return null;
+    const candidate = Math.round(asNumber(value, NaN));
+    return Number.isFinite(candidate) ? candidate : null;
+  };
+
+  return {
+    id: asString(payload.id) || crypto.randomUUID(),
+    title,
+    url,
+    altText: asString(payload.altText),
+    mimeType: asString(payload.mimeType) || 'image/png',
+    width: asNullableInteger(payload.width),
+    height: asNullableInteger(payload.height),
+    sizeBytes: asNullableInteger(payload.sizeBytes),
+    storageProvider: asString(payload.storageProvider) || 'external-url',
+    createdAt: asString(payload.createdAt) || new Date().toISOString(),
+    updatedAt: asString(payload.updatedAt) || new Date().toISOString()
+  };
+}
+
 export function validateSiteSettings(payload: unknown): SiteSettings | null {
   if (!isObject(payload)) return null;
 
@@ -334,7 +396,7 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
       weekStartsOn: asIntegerClamp(general.weekStartsOn, 1, 0, 6) as 0 | 1 | 2 | 3 | 4 | 5 | 6
     },
     writing: {
-      defaultPostCategory: asString(writing.defaultPostCategory) || 'General',
+      defaultPostCategory: normalizeSlugValue(asString(writing.defaultPostCategory)) || 'general',
       defaultPostFormat,
       defaultPostStatus,
       defaultPostAuthor: asString(writing.defaultPostAuthor) || 'Admin',
@@ -393,3 +455,6 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
     defaultOgImage
   };
 }
+
+
+

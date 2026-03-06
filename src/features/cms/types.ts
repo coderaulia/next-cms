@@ -167,6 +167,29 @@ export type BlogPost = {
   seo: SeoFields;
 };
 
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type MediaAsset = {
+  id: string;
+  title: string;
+  url: string;
+  altText: string;
+  mimeType: string;
+  width: number | null;
+  height: number | null;
+  sizeBytes: number | null;
+  storageProvider: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type GeneralSettings = {
   siteName: string;
   siteTagline: string;
@@ -261,9 +284,6 @@ export type CmsContent = {
   settings: SiteSettings;
   pages: Record<PageId, LandingPage>;
   blogPosts: BlogPost[];
+  categories: Category[];
+  mediaAssets: MediaAsset[];
 };
-
-export type AdminSession = {
-  token: string;
-};
-

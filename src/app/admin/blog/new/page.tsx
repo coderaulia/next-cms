@@ -6,7 +6,7 @@ import { AdminShell } from '@/components/AdminShell';
 import { BlogEditorForm } from '@/components/forms/BlogEditorForm';
 import type { BlogPost } from '@/features/cms/types';
 
-function CreateBlogPost({ token }: { token: string }) {
+function CreateBlogPost() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
@@ -17,8 +17,7 @@ function CreateBlogPost({ token }: { token: string }) {
     const response = await fetch('/api/admin/blog', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': token
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         title: 'Untitled post',
@@ -59,13 +58,13 @@ function CreateBlogPost({ token }: { token: string }) {
     );
   }
 
-  return <BlogEditorForm initialPost={post} adminToken={token} isNew />;
+  return <BlogEditorForm initialPost={post} isNew />;
 }
 
 export default function AdminBlogCreatePage() {
   return (
     <AdminShell title="New Post" description="Create a draft, then complete content and SEO fields.">
-      {(token) => <CreateBlogPost token={token} />}
+      {() => <CreateBlogPost />}
     </AdminShell>
   );
 }

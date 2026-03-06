@@ -3,7 +3,11 @@
 ## Required Environment Variables
 
 - `NEXT_PUBLIC_SITE_URL` (production domain URL, no trailing slash)
-- `CMS_ADMIN_TOKEN` (strong random secret)
+- `CMS_ADMIN_EMAIL`
+- `CMS_ADMIN_PASSWORD`
+- `CMS_ADMIN_NAME`
+- `DATABASE_URL`
+- `DATABASE_URL_MIGRATION` (optional but recommended)
 - `CMS_ORG_NAME` (optional)
 - `CMS_ORG_LOGO` (optional)
 
@@ -28,19 +32,15 @@ npm run start
 
 ## Hosting Notes
 
-This starter uses file-based persistence in `data/content.json`.
+Recommended production setup:
+- Neon for CMS data and admin sessions
+- Hostinger Node.js hosting for the Next.js app
 
-Requirements:
-- Runtime filesystem write access
-- Single instance deployment or shared volume
-
-If your target is read-only or autoscaled serverless:
-- Replace file store with a DB (PostgreSQL, MySQL, or managed document store)
-- Keep the same API surface to avoid UI rewrites
+Do not rely on local file writes for production CMS data on shared hosting.
 
 ## Handoff Checklist
 
-1. Rotate `CMS_ADMIN_TOKEN`.
+1. Rotate the bootstrap admin password to a final production credential.
 2. Update default placeholder images/content.
 3. Validate canonical URLs on production domain.
 4. Validate `/sitemap.xml` and `/robots.txt`.
@@ -48,3 +48,4 @@ If your target is read-only or autoscaled serverless:
    - page section editing
    - draft/publish workflow
    - SEO field usage
+   - Website Settings usage

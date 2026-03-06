@@ -7,16 +7,14 @@ import { AdminShell } from '@/components/AdminShell';
 import { PageEditorForm } from '@/components/forms/PageEditorForm';
 import type { LandingPage } from '@/features/cms/types';
 
-function PageEditorScreen({ token }: { token: string }) {
+function PageEditorScreen() {
   const params = useParams<{ id: string }>();
   const [page, setPage] = useState<LandingPage | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const response = await fetch(`/api/admin/pages/${params.id}`, {
-        headers: { 'x-admin-token': token }
-      });
+      const response = await fetch(`/api/admin/pages/${params.id}`);
       if (!response.ok) {
         setLoading(false);
         return;
@@ -26,12 +24,12 @@ function PageEditorScreen({ token }: { token: string }) {
       setLoading(false);
     }
     if (params.id) load();
-  }, [params.id, token]);
+  }, [params.id]);
 
   if (loading) return <p>Loading page editor...</p>;
   if (!page) return <p>Page not found.</p>;
 
-  return <PageEditorForm initialPage={page} adminToken={token} />;
+  return <PageEditorForm initialPage={page} />;
 }
 
 export default function AdminPageById() {
@@ -40,7 +38,7 @@ export default function AdminPageById() {
       title="Edit Landing Page"
       description="Update SEO and content. Homepage supports typed block composition."
     >
-      {(token) => <PageEditorScreen token={token} />}
+      {() => <PageEditorScreen />}
     </AdminShell>
   );
 }

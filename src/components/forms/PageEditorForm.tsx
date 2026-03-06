@@ -6,7 +6,6 @@ import type { HomeBlock, HomeBlockType, LandingPage, PageSection } from '@/featu
 
 type PageEditorFormProps = {
   initialPage: LandingPage;
-  adminToken: string;
 };
 
 const blockTypes: HomeBlockType[] = [
@@ -102,7 +101,7 @@ function createSection(index: number): PageSection {
   };
 }
 
-export function PageEditorForm({ initialPage, adminToken }: PageEditorFormProps) {
+export function PageEditorForm({ initialPage }: PageEditorFormProps) {
   const [page, setPage] = useState(initialPage);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
@@ -116,7 +115,7 @@ export function PageEditorForm({ initialPage, adminToken }: PageEditorFormProps)
     setNotice('');
     const response = await fetch(`/api/admin/pages/${page.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(page)
     });
     setSaving(false);

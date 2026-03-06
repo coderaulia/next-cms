@@ -3,13 +3,14 @@
 ## Accessing Admin
 
 1. Open `/admin/login`.
-2. Enter the `CMS_ADMIN_TOKEN` value from `.env.local`.
-3. Use the left sidebar modules:
+2. Sign in with `CMS_ADMIN_EMAIL` and `CMS_ADMIN_PASSWORD` from `.env.local`.
+3. On the first successful login in Neon mode, the app bootstraps the first admin user if `admin_users` is empty.
+4. Use the left sidebar modules:
 - Dashboard
 - Posts
 - Pages
 - Settings
-- Categories / Media Library / Comments (settings shortcuts)
+- Categories / Media Library / Comments
 - Permalinks / Meta Tags / Sitemaps (settings shortcuts)
 
 ## Website Settings
@@ -57,7 +58,7 @@ Flow:
 Posts table supports:
 - search by title/author
 - status filter
-- category filter (from tags)
+- category filter (from managed category slugs)
 - date sort
 - pagination with URL-synced query state
 
@@ -69,3 +70,4 @@ Before publishing page/post:
 - Confirm canonical strategy
 - Confirm social image URL
 - Confirm `noindex` is disabled for public content
+

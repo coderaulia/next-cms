@@ -2,6 +2,8 @@
 
 import { ReactNode } from 'react';
 
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
+
 import { AdminAuthGate } from './AdminAuthGate';
 import { AdminNav } from './AdminNav';
 
@@ -9,16 +11,16 @@ type AdminShellProps = {
   title: string;
   description?: string;
   actions?: ReactNode;
-  children: (token: string) => ReactNode;
+  children: (user: AdminSessionUser) => ReactNode;
 };
 
 export function AdminShell({ title, description, actions, children }: AdminShellProps) {
   return (
     <main className="admin-page">
       <AdminAuthGate>
-        {(token) => (
+        {(user) => (
           <div className="admin-shell">
-            <AdminNav />
+            <AdminNav user={user} />
             <section className="admin-main">
               <header className="admin-main-header">
                 <div>
@@ -27,7 +29,7 @@ export function AdminShell({ title, description, actions, children }: AdminShell
                 </div>
                 {actions ? <div>{actions}</div> : null}
               </header>
-              {children(token)}
+              {children(user)}
             </section>
           </div>
         )}
