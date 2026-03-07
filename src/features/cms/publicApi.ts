@@ -1,4 +1,12 @@
-import { getBlogPostBySlug, getBlogPosts, getPageById, getPages, getSettings } from './contentStore';
+import {
+  getBlogPostBySlug,
+  getBlogPosts,
+  getPageById,
+  getPages,
+  getPortfolioProjectBySlug,
+  getPortfolioProjects,
+  getSettings
+} from './contentStore';
 import type { LandingPage, PageId } from './types';
 
 export async function getSiteSettings() {
@@ -28,4 +36,12 @@ export async function getPublishedBlogPosts() {
 
 export async function getPublishedBlogPostBySlug(slug: string) {
   return getBlogPostBySlug(slug);
+}
+
+export async function getPublishedPortfolioProjects() {
+  return getPortfolioProjects(false);
+}
+
+export async function getPublishedPortfolioProjectBySlug(slug: string) {
+  return getPortfolioProjectBySlug(slug);
 }

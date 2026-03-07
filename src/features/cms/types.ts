@@ -13,6 +13,7 @@ export type PageId =
 export type SectionLayout = 'stacked' | 'split';
 
 export type BlogStatus = 'draft' | 'published';
+export type PortfolioStatus = 'draft' | 'published';
 
 export type HomeThemeToken = 'light' | 'blue-soft' | 'mist';
 
@@ -168,6 +169,28 @@ export type BlogPost = {
   seo: SeoFields;
 };
 
+export type PortfolioProject = {
+  id: string;
+  title: string;
+  summary: string;
+  challenge: string;
+  solution: string;
+  outcome: string;
+  clientName: string;
+  serviceType: string;
+  industry: string;
+  projectUrl: string;
+  coverImage: string;
+  gallery: string[];
+  tags: string[];
+  featured: boolean;
+  status: PortfolioStatus;
+  sortOrder: number;
+  publishedAt: string | null;
+  updatedAt: string;
+  seo: SeoFields;
+};
+
 export type Category = {
   id: string;
   name: string;
@@ -215,6 +238,52 @@ export type GeneralSettings = {
   dateFormat: string;
   timeFormat: string;
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+};
+
+export type NavigationLink = {
+  id: string;
+  label: string;
+  href: string;
+  enabled: boolean;
+};
+
+export type NavigationSettings = {
+  headerLinks: NavigationLink[];
+  headerCtaLabel: string;
+  headerCtaHref: string;
+  footerNavigatorLinks: NavigationLink[];
+  footerServiceLinks: NavigationLink[];
+};
+
+export type ContactSettings = {
+  companyName: string;
+  addressLine1: string;
+  addressLine2: string;
+  globalReachLabel: string;
+  globalReachText: string;
+  emailLabel: string;
+  emailValue: string;
+  emailHref: string;
+  whatsappLabel: string;
+  whatsappValue: string;
+  whatsappHref: string;
+  instagramLabel: string;
+  instagramValue: string;
+  instagramHref: string;
+};
+
+export type SocialSettings = {
+  chatHref: string;
+  instagramHref: string;
+  websiteHref: string;
+  emailHref: string;
+};
+
+export type BrandingSettings = {
+  footerTagline: string;
+  footerBadgePrimary: string;
+  footerBadgeSecondary: string;
+  copyrightText: string;
 };
 
 export type WritingSettings = {
@@ -274,11 +343,16 @@ export type SitemapSettings = {
   enabled: boolean;
   includePages: boolean;
   includePosts: boolean;
+  includePortfolio: boolean;
   includeLastModified: boolean;
 };
 
 export type SiteSettings = {
   general: GeneralSettings;
+  navigation: NavigationSettings;
+  contact: ContactSettings;
+  social: SocialSettings;
+  branding: BrandingSettings;
   writing: WritingSettings;
   reading: ReadingSettings;
   discussion: DiscussionSettings;
@@ -299,10 +373,7 @@ export type CmsContent = {
   settings: SiteSettings;
   pages: Record<PageId, LandingPage>;
   blogPosts: BlogPost[];
+  portfolioProjects: PortfolioProject[];
   categories: Category[];
   mediaAssets: MediaAsset[];
 };
-
-
-
-

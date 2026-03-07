@@ -74,6 +74,14 @@ export function AdminNav({ user }: AdminNavProps) {
               Pages
             </Link>
           </li>
+          <li>
+            <Link
+              href="/admin/portfolio"
+              className={`admin-nav-link ${isActive('/admin/portfolio') ? 'active' : ''}`}
+            >
+              Portfolio
+            </Link>
+          </li>
         </ul>
 
         <p className="admin-side-title">Site Management</p>

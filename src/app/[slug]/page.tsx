@@ -13,7 +13,7 @@ type DynamicPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const reserved = new Set(['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt']);
+const reserved = new Set(['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt', 'portfolio']);
 const serviceDetailIds = new Set([
   'service-website-development',
   'service-custom-business-tools',
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: DynamicPageProps) {
 export default async function DynamicLandingPage({ params }: DynamicPageProps) {
   const { slug } = await params;
   if (reserved.has(slug)) notFound();
-  const page = await getPublishedPageBySlug(slug);
+  const [page, settings] = await Promise.all([getPublishedPageBySlug(slug), getSiteSettings()]);
   if (!page) notFound();
 
   if (page.id === 'about') {
@@ -49,7 +49,7 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
     return <ServiceDetailPageView page={page} />;
   }
   if (page.id === 'contact') {
-    return <ContactPageView page={page} />;
+    return <ContactPageView page={page} settings={settings} />;
   }
 
   return <MarketingPageRenderer page={page} />;

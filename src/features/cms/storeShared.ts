@@ -1,16 +1,51 @@
 import { defaultContent } from './defaultContent';
-import type { BlogPost, CmsContent, HomeBlock, LandingPage, SiteSettings } from './types';
+import type {
+  BlogPost,
+  CmsContent,
+  HomeBlock,
+  LandingPage,
+  PortfolioProject,
+  SiteSettings
+} from './types';
 
 export const nowIso = () => new Date().toISOString();
 
 export const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
+function normalizeLinks(
+  input: unknown,
+  fallback: SiteSettings['navigation']['headerLinks']
+): SiteSettings['navigation']['headerLinks'] {
+  if (!Array.isArray(input)) return fallback;
+
+  const links = input
+    .map((entry, index) => {
+      const row = isObject(entry) ? entry : {};
+      const label = String(row.label ?? '').trim();
+      const href = String(row.href ?? '').trim();
+      if (!label || !href) return null;
+      return {
+        id: String(row.id ?? '').trim() || `link-${index + 1}`,
+        label,
+        href,
+        enabled: typeof row.enabled === 'boolean' ? row.enabled : true
+      };
+    })
+    .filter((entry): entry is SiteSettings['navigation']['headerLinks'][number] => Boolean(entry));
+
+  return links;
+}
+
 export function normalizeSettings(input: unknown): SiteSettings {
   const defaults = structuredClone(defaultContent.settings);
   const source = isObject(input) ? input : {};
 
   const general = isObject(source.general) ? source.general : {};
+  const navigation = isObject(source.navigation) ? source.navigation : {};
+  const contact = isObject(source.contact) ? source.contact : {};
+  const social = isObject(source.social) ? source.social : {};
+  const branding = isObject(source.branding) ? source.branding : {};
   const writing = isObject(source.writing) ? source.writing : {};
   const reading = isObject(source.reading) ? source.reading : {};
   const discussion = isObject(source.discussion) ? source.discussion : {};
@@ -23,6 +58,22 @@ export function normalizeSettings(input: unknown): SiteSettings {
     ...defaults,
     ...source,
     general: { ...defaults.general, ...general },
+    navigation: {
+      ...defaults.navigation,
+      ...navigation,
+      headerLinks: normalizeLinks(navigation.headerLinks, defaults.navigation.headerLinks),
+      footerNavigatorLinks: normalizeLinks(
+        navigation.footerNavigatorLinks,
+        defaults.navigation.footerNavigatorLinks
+      ),
+      footerServiceLinks: normalizeLinks(
+        navigation.footerServiceLinks,
+        defaults.navigation.footerServiceLinks
+      )
+    },
+    contact: { ...defaults.contact, ...contact },
+    social: { ...defaults.social, ...social },
+    branding: { ...defaults.branding, ...branding },
     writing: {
       ...defaults.writing,
       ...writing,
@@ -84,6 +135,9 @@ export function mergeWithDefaults(content: CmsContent): CmsContent {
     blogPosts: Array.isArray(content.blogPosts)
       ? content.blogPosts
       : structuredClone(defaultContent.blogPosts),
+    portfolioProjects: Array.isArray(content.portfolioProjects)
+      ? content.portfolioProjects
+      : structuredClone(defaultContent.portfolioProjects),
     categories: Array.isArray(content.categories)
       ? content.categories
       : structuredClone(defaultContent.categories),
@@ -109,6 +163,28 @@ export function uniquePostSlug(
 
   let i = 2;
   while (isPostSlugTaken(posts, `${base}-${i}`, ignoreId)) {
+    i += 1;
+  }
+
+  return `${base}-${i}`;
+}
+
+export function isPortfolioSlugTaken(projects: PortfolioProject[], slug: string, ignoreId?: string) {
+  return projects.some((project) => project.seo.slug === slug && project.id !== ignoreId);
+}
+
+export function uniquePortfolioSlug(
+  projects: PortfolioProject[],
+  title: string,
+  requestedSlug?: string,
+  ignoreId?: string
+) {
+  const source = requestedSlug && requestedSlug.length > 0 ? requestedSlug : title;
+  const base = normalizeSlug(source) || 'project';
+  if (!isPortfolioSlugTaken(projects, base, ignoreId)) return base;
+
+  let i = 2;
+  while (isPortfolioSlugTaken(projects, `${base}-${i}`, ignoreId)) {
     i += 1;
   }
 
@@ -146,4 +222,3 @@ export function normalizePageForWrite(
     updatedAt: nowIso()
   };
 }
-

@@ -10,6 +10,8 @@ import type {
   LandingPage,
   MediaAsset,
   PageId,
+  PortfolioProject,
+  PortfolioStatus,
   SiteSettings
 } from './types';
 
@@ -28,6 +30,7 @@ const PAGE_IDS: PageId[] = [
 const HOME_THEMES: HomeThemeToken[] = ['light', 'blue-soft', 'mist'];
 const CTA_STYLES: CtaStyleToken[] = ['primary', 'secondary', 'ghost'];
 const CONTACT_SUBMISSION_STATUSES: ContactSubmissionStatus[] = ['new', 'in_review', 'closed'];
+const PORTFOLIO_STATUSES: PortfolioStatus[] = ['draft', 'published'];
 const HOME_BLOCK_TYPES: HomeBlockType[] = [
   'hero',
   'value_triplet',
@@ -80,6 +83,9 @@ const isCtaStyle = (value: string): value is CtaStyleToken =>
 
 const isContactSubmissionStatus = (value: string): value is ContactSubmissionStatus =>
   CONTACT_SUBMISSION_STATUSES.includes(value as ContactSubmissionStatus);
+
+const isPortfolioStatus = (value: string): value is PortfolioStatus =>
+  PORTFOLIO_STATUSES.includes(value as PortfolioStatus);
 
 const normalizeSlugValue = (value: string) =>
   value
@@ -134,6 +140,21 @@ const asContactSubmissionStatus = (
 ): ContactSubmissionStatus => {
   const token = asString(value);
   return isContactSubmissionStatus(token) ? token : fallback;
+};
+
+const asPortfolioStatus = (
+  value: unknown,
+  fallback: PortfolioStatus = 'draft'
+): PortfolioStatus => {
+  const token = asString(value);
+  return isPortfolioStatus(token) ? token : fallback;
+};
+
+const asStringArray = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((entry) => asString(entry).trim())
+    .filter((entry) => entry.length > 0);
 };
 
 function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
@@ -363,7 +384,55 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
   };
 }
 
+export function validatePortfolioProject(payload: unknown): PortfolioProject | null {
+  if (!isObject(payload)) return null;
 
+  const rawSeo = isObject(payload.seo) ? payload.seo : {};
+  const title = asString(payload.title).trim();
+  if (!title) return null;
+
+  const status = asPortfolioStatus(payload.status, 'draft');
+  const normalizedSlug = normalizeSlugValue(asString(rawSeo.slug)) || normalizeSlugValue(title) || 'portfolio-project';
+
+  const gallery = asStringArray(payload.gallery)
+    .map((entry) => asSafeAssetUrl(entry))
+    .filter((entry) => entry.length > 0);
+
+  const tags = asStringArray(payload.tags)
+    .map((tag) => normalizeSlugValue(tag))
+    .filter((tag) => tag.length > 0)
+    .filter((tag, index, list) => list.indexOf(tag) === index);
+
+  return {
+    id: asString(payload.id) || crypto.randomUUID(),
+    title,
+    summary: asString(payload.summary),
+    challenge: asString(payload.challenge),
+    solution: asString(payload.solution),
+    outcome: asString(payload.outcome),
+    clientName: asString(payload.clientName),
+    serviceType: asString(payload.serviceType),
+    industry: asString(payload.industry),
+    projectUrl: asSafeHref(payload.projectUrl),
+    coverImage: asSafeAssetUrl(payload.coverImage),
+    gallery,
+    tags,
+    featured: asBoolean(payload.featured),
+    status,
+    sortOrder: asIntegerClamp(payload.sortOrder, 0, 0, 10000),
+    publishedAt: status === 'published' ? asString(payload.publishedAt) || new Date().toISOString() : null,
+    updatedAt: asString(payload.updatedAt) || new Date().toISOString(),
+    seo: {
+      metaTitle: asString(rawSeo.metaTitle) || title,
+      metaDescription: asString(rawSeo.metaDescription),
+      slug: normalizedSlug,
+      canonical: asSafeBaseUrl(rawSeo.canonical),
+      socialImage: asSafeAssetUrl(rawSeo.socialImage),
+      noIndex: asBoolean(rawSeo.noIndex),
+      keywords: asKeywords(rawSeo.keywords)
+    }
+  };
+}
 
 export function validateCategory(payload: unknown): Category | null {
   if (!isObject(payload)) return null;
@@ -397,7 +466,7 @@ export function validateMediaAsset(payload: unknown): MediaAsset | null {
 
   const asNullableInteger = (value: unknown) => {
     if (value === null || typeof value === 'undefined' || value === '') return null;
-    const candidate = Math.round(asNumber(value, NaN));
+    const candidate = Math.round(asNumber(value, Number.NaN));
     return Number.isFinite(candidate) ? candidate : null;
   };
 
@@ -432,7 +501,6 @@ export function validateContactSubmission(payload: unknown): ContactSubmission |
     return null;
   }
 
-
   return {
     id: asString(payload.id) || crypto.randomUUID(),
     name,
@@ -450,10 +518,38 @@ export function validateContactSubmissionStatus(value: unknown): ContactSubmissi
   return isContactSubmissionStatus(status) ? status : null;
 }
 
+function asNavigationLinks(
+  value: unknown,
+  fallbackPrefix: string
+): SiteSettings['navigation']['headerLinks'] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((entry, index) => {
+      const item = isObject(entry) ? entry : {};
+      const label = asString(item.label).trim();
+      const href = asSafeHref(item.href);
+      const enabled = typeof item.enabled === 'boolean' ? item.enabled : true;
+      if (!label || !href) return null;
+
+      return {
+        id: asString(item.id).trim() || `${fallbackPrefix}-${index + 1}`,
+        label,
+        href,
+        enabled
+      };
+    })
+    .filter((entry): entry is SiteSettings['navigation']['headerLinks'][number] => Boolean(entry));
+}
+
 export function validateSiteSettings(payload: unknown): SiteSettings | null {
   if (!isObject(payload)) return null;
 
   const general = isObject(payload.general) ? payload.general : {};
+  const navigation = isObject(payload.navigation) ? payload.navigation : {};
+  const contact = isObject(payload.contact) ? payload.contact : {};
+  const social = isObject(payload.social) ? payload.social : {};
+  const branding = isObject(payload.branding) ? payload.branding : {};
   const writing = isObject(payload.writing) ? payload.writing : {};
   const reading = isObject(payload.reading) ? payload.reading : {};
   const discussion = isObject(payload.discussion) ? payload.discussion : {};
@@ -492,6 +588,41 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
       dateFormat: asString(general.dateFormat) || 'MMMM d, yyyy',
       timeFormat: asString(general.timeFormat) || 'HH:mm',
       weekStartsOn: asIntegerClamp(general.weekStartsOn, 1, 0, 6) as 0 | 1 | 2 | 3 | 4 | 5 | 6
+    },
+    navigation: {
+      headerLinks: asNavigationLinks(navigation.headerLinks, 'header-link'),
+      headerCtaLabel: asString(navigation.headerCtaLabel) || 'Book Consultation',
+      headerCtaHref: asSafeHref(navigation.headerCtaHref) || '/contact',
+      footerNavigatorLinks: asNavigationLinks(navigation.footerNavigatorLinks, 'footer-nav'),
+      footerServiceLinks: asNavigationLinks(navigation.footerServiceLinks, 'footer-service')
+    },
+    contact: {
+      companyName: asString(contact.companyName),
+      addressLine1: asString(contact.addressLine1),
+      addressLine2: asString(contact.addressLine2),
+      globalReachLabel: asString(contact.globalReachLabel),
+      globalReachText: asString(contact.globalReachText),
+      emailLabel: asString(contact.emailLabel) || 'Email us',
+      emailValue: asString(contact.emailValue),
+      emailHref: asSafeHref(contact.emailHref),
+      whatsappLabel: asString(contact.whatsappLabel) || 'WhatsApp Business',
+      whatsappValue: asString(contact.whatsappValue),
+      whatsappHref: asSafeHref(contact.whatsappHref),
+      instagramLabel: asString(contact.instagramLabel) || 'Instagram',
+      instagramValue: asString(contact.instagramValue),
+      instagramHref: asSafeHref(contact.instagramHref)
+    },
+    social: {
+      chatHref: asSafeHref(social.chatHref),
+      instagramHref: asSafeHref(social.instagramHref),
+      websiteHref: asSafeHref(social.websiteHref),
+      emailHref: asSafeHref(social.emailHref)
+    },
+    branding: {
+      footerTagline: asString(branding.footerTagline),
+      footerBadgePrimary: asString(branding.footerBadgePrimary),
+      footerBadgeSecondary: asString(branding.footerBadgeSecondary),
+      copyrightText: asString(branding.copyrightText)
     },
     writing: {
       defaultPostCategory: normalizeSlugValue(asString(writing.defaultPostCategory)) || 'general',
@@ -544,6 +675,7 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
       enabled: asBoolean(sitemap.enabled),
       includePages: asBoolean(sitemap.includePages),
       includePosts: asBoolean(sitemap.includePosts),
+      includePortfolio: asBoolean(sitemap.includePortfolio),
       includeLastModified: asBoolean(sitemap.includeLastModified)
     },
     siteName,
@@ -553,10 +685,3 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
     defaultOgImage
   };
 }
-
-
-
-
-
-
-

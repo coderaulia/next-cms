@@ -290,6 +290,388 @@ function SettingsEditor() {
                 onChange={(event) => setSettings({ ...settings, organizationLogo: event.target.value })}
               />
             </label>
+            <label style={{ gridColumn: '1 / -1' }}>
+              Header menu links (one per line: label|href|enabled(1/0))
+              <textarea
+                rows={5}
+                value={settings.navigation.headerLinks
+                  .map((link) => [link.label, link.href, link.enabled ? '1' : '0'].join('|'))
+                  .join('\n')}
+                onChange={(event) => {
+                  const nextLinks = event.target.value
+                    .split('\n')
+                    .map((line, index) => {
+                      const [labelRaw, hrefRaw, enabledRaw] = line.split('|').map((part) => part.trim());
+                      if (!labelRaw || !hrefRaw) return null;
+                      const existing = settings.navigation.headerLinks[index];
+                      return {
+                        id: existing?.id || 'header-link-' + (index + 1),
+                        label: labelRaw,
+                        href: hrefRaw,
+                        enabled: enabledRaw === '0' ? false : true
+                      };
+                    })
+                    .filter((item): item is SiteSettings['navigation']['headerLinks'][number] => Boolean(item));
+
+                  setSettings({
+                    ...settings,
+                    navigation: { ...settings.navigation, headerLinks: nextLinks }
+                  });
+                }}
+              />
+            </label>
+            <label>
+              Header CTA label
+              <input
+                value={settings.navigation.headerCtaLabel}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    navigation: { ...settings.navigation, headerCtaLabel: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Header CTA href
+              <input
+                value={settings.navigation.headerCtaHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    navigation: { ...settings.navigation, headerCtaHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label style={{ gridColumn: '1 / -1' }}>
+              Footer navigator links (one per line: label|href|enabled(1/0))
+              <textarea
+                rows={5}
+                value={settings.navigation.footerNavigatorLinks
+                  .map((link) => [link.label, link.href, link.enabled ? '1' : '0'].join('|'))
+                  .join('\n')}
+                onChange={(event) => {
+                  const nextLinks = event.target.value
+                    .split('\n')
+                    .map((line, index) => {
+                      const [labelRaw, hrefRaw, enabledRaw] = line.split('|').map((part) => part.trim());
+                      if (!labelRaw || !hrefRaw) return null;
+                      const existing = settings.navigation.footerNavigatorLinks[index];
+                      return {
+                        id: existing?.id || 'footer-nav-' + (index + 1),
+                        label: labelRaw,
+                        href: hrefRaw,
+                        enabled: enabledRaw === '0' ? false : true
+                      };
+                    })
+                    .filter((item): item is SiteSettings['navigation']['footerNavigatorLinks'][number] => Boolean(item));
+
+                  setSettings({
+                    ...settings,
+                    navigation: { ...settings.navigation, footerNavigatorLinks: nextLinks }
+                  });
+                }}
+              />
+            </label>
+            <label style={{ gridColumn: '1 / -1' }}>
+              Footer service links (one per line: label|href|enabled(1/0))
+              <textarea
+                rows={5}
+                value={settings.navigation.footerServiceLinks
+                  .map((link) => [link.label, link.href, link.enabled ? '1' : '0'].join('|'))
+                  .join('\n')}
+                onChange={(event) => {
+                  const nextLinks = event.target.value
+                    .split('\n')
+                    .map((line, index) => {
+                      const [labelRaw, hrefRaw, enabledRaw] = line.split('|').map((part) => part.trim());
+                      if (!labelRaw || !hrefRaw) return null;
+                      const existing = settings.navigation.footerServiceLinks[index];
+                      return {
+                        id: existing?.id || 'footer-service-' + (index + 1),
+                        label: labelRaw,
+                        href: hrefRaw,
+                        enabled: enabledRaw === '0' ? false : true
+                      };
+                    })
+                    .filter((item): item is SiteSettings['navigation']['footerServiceLinks'][number] => Boolean(item));
+
+                  setSettings({
+                    ...settings,
+                    navigation: { ...settings.navigation, footerServiceLinks: nextLinks }
+                  });
+                }}
+              />
+            </label>
+            <label>
+              Company name
+              <input
+                value={settings.contact.companyName}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, companyName: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Address line 1
+              <input
+                value={settings.contact.addressLine1}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, addressLine1: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Address line 2
+              <input
+                value={settings.contact.addressLine2}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, addressLine2: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Global reach label
+              <input
+                value={settings.contact.globalReachLabel}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, globalReachLabel: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label style={{ gridColumn: '1 / -1' }}>
+              Global reach text
+              <textarea
+                rows={3}
+                value={settings.contact.globalReachText}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, globalReachText: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Email label
+              <input
+                value={settings.contact.emailLabel}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, emailLabel: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Email
+              <input
+                value={settings.contact.emailValue}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, emailValue: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Email href
+              <input
+                value={settings.contact.emailHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, emailHref: event.target.value },
+                    social: { ...settings.social, emailHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              WhatsApp label
+              <input
+                value={settings.contact.whatsappLabel}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, whatsappLabel: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              WhatsApp
+              <input
+                value={settings.contact.whatsappValue}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, whatsappValue: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              WhatsApp href
+              <input
+                value={settings.contact.whatsappHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, whatsappHref: event.target.value },
+                    social: { ...settings.social, chatHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Instagram label
+              <input
+                value={settings.contact.instagramLabel}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, instagramLabel: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Instagram
+              <input
+                value={settings.contact.instagramValue}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, instagramValue: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Instagram href
+              <input
+                value={settings.contact.instagramHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, instagramHref: event.target.value },
+                    social: { ...settings.social, instagramHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Website/social link
+              <input
+                value={settings.social.websiteHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    social: { ...settings.social, websiteHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Social chat link
+              <input
+                value={settings.social.chatHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    social: { ...settings.social, chatHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Social Instagram link
+              <input
+                value={settings.social.instagramHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    social: { ...settings.social, instagramHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Social email link
+              <input
+                value={settings.social.emailHref}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    social: { ...settings.social, emailHref: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Footer tagline
+              <input
+                value={settings.branding.footerTagline}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, footerTagline: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Footer badge primary
+              <input
+                value={settings.branding.footerBadgePrimary}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, footerBadgePrimary: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Footer badge secondary
+              <input
+                value={settings.branding.footerBadgeSecondary}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, footerBadgeSecondary: event.target.value }
+                  })
+                }
+              />
+            </label>
+            <label style={{ gridColumn: '1 / -1' }}>
+              Copyright text
+              <input
+                value={settings.branding.copyrightText}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, copyrightText: event.target.value }
+                  })
+                }
+              />
+            </label>
           </div>
         ) : null}
 
@@ -902,6 +1284,19 @@ function SettingsEditor() {
               />
             </label>
             <label>
+              Include portfolio
+              <input
+                type="checkbox"
+                checked={settings.sitemap.includePortfolio}
+                onChange={(event) =>
+                  setSettings({
+                    ...settings,
+                    sitemap: { ...settings.sitemap, includePortfolio: event.target.checked }
+                  })
+                }
+              />
+            </label>
+            <label>
               Include last modified date
               <input
                 type="checkbox"
@@ -927,12 +1322,26 @@ export default function AdminSettingsPage() {
   return (
     <AdminShell
       title="Settings"
-      description="Configure General, Writing, Reading, Discussion, Media, Permalinks, SEO, and Sitemap behavior."
+      description="Configure General, navigation/contact/footer links, Writing, Reading, Discussion, Media, Permalinks, SEO, and Sitemap behavior."
     >
       {() => <SettingsEditor />}
     </AdminShell>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

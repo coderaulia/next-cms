@@ -13,6 +13,7 @@ const TABLES = [
   'request_rate_limits',
   'post_categories',
   'blog_posts',
+  'portfolio_projects',
   'categories',
   'media_assets',
   'contact_submissions',
@@ -75,3 +76,4 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
+

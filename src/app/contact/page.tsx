@@ -15,10 +15,10 @@ export async function generateMetadata() {
 }
 
 export default async function ContactPage() {
-  const page = await getPublishedPage('contact');
+  const [page, settings] = await Promise.all([getPublishedPage('contact'), getSiteSettings()]);
   if (!page) notFound();
   if (page.seo.slug && page.seo.slug !== 'contact') {
     redirect(`/${page.seo.slug}`);
   }
-  return <ContactPageView page={page} />;
+  return <ContactPageView page={page} settings={settings} />;
 }

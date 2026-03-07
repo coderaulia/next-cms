@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import type { SiteSettings } from '@/features/cms/types';
+
 type NavItem = {
   href: string;
   label: string;
@@ -8,11 +10,15 @@ type NavItem = {
 type SiteHeaderProps = {
   siteName: string;
   navItems: NavItem[];
+  settings: SiteSettings;
 };
 
-export function SiteHeader({ siteName, navItems }: SiteHeaderProps) {
+export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
-  const links = navItems.filter((item) => item.href !== '/contact' && item.href !== '/partnership');
+  const configuredLinks = settings.navigation.headerLinks
+    .filter((link) => link.enabled)
+    .map((link) => ({ href: link.href, label: link.label }));
+  const links = configuredLinks.length > 0 ? configuredLinks : navItems;
 
   return (
     <header className="sticky w-full z-[100] top-0 bg-white/80 backdrop-blur-md border-b border-white/40">
@@ -31,7 +37,7 @@ export function SiteHeader({ siteName, navItems }: SiteHeaderProps) {
           <nav className="hidden md:flex space-x-8 items-center" aria-label="Primary navigation">
             {links.map((link) => (
               <Link
-                key={link.href}
+                key={`${link.href}-${link.label}`}
                 className="text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-electricBlue transition-colors"
                 href={link.href}
               >
@@ -39,24 +45,18 @@ export function SiteHeader({ siteName, navItems }: SiteHeaderProps) {
               </Link>
             ))}
             <Link
-              className="px-6 py-2.5 bg-white border border-slate-200 text-deepSlate text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all"
-              href="/partnership"
-            >
-              Partnership
-            </Link>
-            <Link
               className="px-6 py-2.5 bg-vanailaNavy text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:shadow-lg hover:shadow-blue-900/20 hover:bg-deepSlate transition-all border border-slate-700 no-underline"
-              href="/contact"
+              href={settings.navigation.headerCtaHref || '/contact'}
             >
-              Book Consultation
+              {settings.navigation.headerCtaLabel || 'Book Consultation'}
             </Link>
           </nav>
 
           <Link
-            href="/contact"
+            href={settings.navigation.headerCtaHref || '/contact'}
             className="md:hidden px-4 py-2 bg-vanailaNavy text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
           >
-            Contact
+            {settings.navigation.headerCtaLabel || 'Contact'}
           </Link>
         </div>
       </div>

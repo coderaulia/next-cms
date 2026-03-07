@@ -1,12 +1,18 @@
 import type { MetadataRoute } from 'next';
 
-import { getPublishedBlogPosts, getPublishedPages, getSiteSettings } from '@/features/cms/publicApi';
+import {
+  getPublishedBlogPosts,
+  getPublishedPages,
+  getPublishedPortfolioProjects,
+  getSiteSettings
+} from '@/features/cms/publicApi';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [settings, pages, posts] = await Promise.all([
+  const [settings, pages, posts, portfolioProjects] = await Promise.all([
     getSiteSettings(),
     getPublishedPages(),
-    getPublishedBlogPosts()
+    getPublishedBlogPosts(),
+    getPublishedPortfolioProjects()
   ]);
 
   const indexingBlocked =
@@ -36,5 +42,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
     : [];
 
-  return [...pageEntries, ...blogEntries];
+  const portfolioEntries: MetadataRoute.Sitemap = settings.sitemap.includePortfolio
+    ? portfolioProjects.map((project) => ({
+        url: `${settings.baseUrl}/portfolio/${project.seo.slug}`,
+        lastModified: withLastModified ? project.updatedAt : undefined,
+        changeFrequency: 'monthly',
+        priority: project.featured ? 0.8 : 0.6
+      }))
+    : [];
+
+  return [...pageEntries, ...blogEntries, ...portfolioEntries];
 }

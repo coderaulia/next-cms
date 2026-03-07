@@ -1,16 +1,19 @@
 import Link from 'next/link';
 
 import { ContactBriefForm } from '@/components/forms/ContactBriefForm';
-import type { LandingPage } from '@/features/cms/types';
+import type { LandingPage, SiteSettings } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
 import { Reveal } from '@/components/animations/Reveal';
 
 type ContactPageViewProps = {
   page: LandingPage;
+  settings?: Pick<SiteSettings, 'contact'>;
 };
 
-export function ContactPageView({ page }: ContactPageViewProps) {
+export function ContactPageView({ page, settings }: ContactPageViewProps) {
+  const contactSettings = settings?.contact;
+
   const hero = sectionWithFallback(page, 0, {
     id: 'contact-hero',
     heading: "Let's Build Your|Digital Edge",
@@ -36,7 +39,7 @@ export function ContactPageView({ page }: ContactPageViewProps) {
     heading: 'Prefer a face-to-face|discussion?',
     body: "Skip the form and jump straight into a strategy session. We'll explore your technical requirements and business goals in real-time.",
     ctaLabel: 'Book a Google Meet Session',
-    ctaHref: 'mailto:care@vanaila.com?subject=Google%20Meet%20Consultation',
+    ctaHref: contactSettings?.emailHref || 'mailto:care@vanaila.com?subject=Google%20Meet%20Consultation',
     mediaImage: '',
     mediaAlt: 'Instant Booking',
     layout: 'split'
@@ -74,8 +77,12 @@ export function ContactPageView({ page }: ContactPageViewProps) {
 
   const company = sectionWithFallback(page, 6, {
     id: 'contact-company',
-    heading: 'PT Vanaila Digital Vision',
-    body: 'Bogor Raya Digital Park, Block A-12\nWest Java, Indonesia 16143\n\nGlobal reach\nSupporting partners across SEA, Europe, and North America.',
+    heading: contactSettings?.companyName || 'PT Vanaila Digital Vision',
+    body: `${contactSettings?.addressLine1 || 'Bogor Raya Digital Park, Block A-12'}\n${
+      contactSettings?.addressLine2 || 'West Java, Indonesia 16143'
+    }\n\n${contactSettings?.globalReachLabel || 'Global reach'}\n${
+      contactSettings?.globalReachText || 'Supporting partners across SEA, Europe, and North America.'
+    }`,
     ctaLabel: '',
     ctaHref: '',
     mediaImage: '',
@@ -84,30 +91,30 @@ export function ContactPageView({ page }: ContactPageViewProps) {
   });
   const email = sectionWithFallback(page, 7, {
     id: 'contact-email',
-    heading: 'Email Us',
-    body: 'care@vanaila.com',
+    heading: contactSettings?.emailLabel || 'Email Us',
+    body: contactSettings?.emailValue || 'care@vanaila.com',
     ctaLabel: 'alternate_email',
-    ctaHref: 'mailto:care@vanaila.com',
+    ctaHref: contactSettings?.emailHref || 'mailto:care@vanaila.com',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
   });
   const whatsapp = sectionWithFallback(page, 8, {
     id: 'contact-whatsapp',
-    heading: 'WhatsApp Business',
-    body: '+62 851 7441 3323',
+    heading: contactSettings?.whatsappLabel || 'WhatsApp Business',
+    body: contactSettings?.whatsappValue || '+62 851 7441 3323',
     ctaLabel: 'chat',
-    ctaHref: 'https://wa.me/6285174413323',
+    ctaHref: contactSettings?.whatsappHref || 'https://wa.me/6285174413323',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
   });
   const instagram = sectionWithFallback(page, 9, {
     id: 'contact-instagram',
-    heading: 'Instagram',
-    body: '@vanaila.digital',
+    heading: contactSettings?.instagramLabel || 'Instagram',
+    body: contactSettings?.instagramValue || '@vanaila.digital',
     ctaLabel: 'photo_camera',
-    ctaHref: 'https://instagram.com/vanaila.digital',
+    ctaHref: contactSettings?.instagramHref || 'https://instagram.com/vanaila.digital',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
@@ -231,7 +238,3 @@ export function ContactPageView({ page }: ContactPageViewProps) {
     </main>
   );
 }
-
-
-
-

@@ -78,7 +78,7 @@ export default async function RootLayout({
     <html lang="en" className={`${fontBody.variable} ${fontAccent.variable}`}>
       <body className="v2-site">
         <SeoJsonLd data={[orgSchema, siteSchema]} />
-        <AppShell siteName={settings.siteName} navItems={navItems}>
+        <AppShell siteName={settings.siteName} navItems={navItems} settings={settings}>
           {children}
         </AppShell>
       </body>

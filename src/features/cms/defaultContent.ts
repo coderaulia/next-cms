@@ -825,6 +825,62 @@ export const defaultContent: CmsContent = {
       timeFormat: 'HH:mm',
       weekStartsOn: 1
     },
+    navigation: {
+      headerLinks: [
+        { id: 'nav-home', label: 'Home', href: '/', enabled: true },
+        { id: 'nav-about', label: 'About', href: '/about', enabled: true },
+        { id: 'nav-services', label: 'Services', href: '/service', enabled: true },
+        { id: 'nav-insights', label: 'Insights', href: '/blog', enabled: true },
+        { id: 'nav-partnership', label: 'Partnership', href: '/partnership', enabled: true },
+        { id: 'nav-portfolio', label: 'Portfolio', href: '/portfolio', enabled: true }
+      ],
+      headerCtaLabel: 'Book Consultation',
+      headerCtaHref: '/contact',
+      footerNavigatorLinks: [
+        { id: 'footer-nav-home', label: 'Home', href: '/', enabled: true },
+        { id: 'footer-nav-about', label: 'About Us', href: '/about', enabled: true },
+        { id: 'footer-nav-services', label: 'Services', href: '/service', enabled: true },
+        { id: 'footer-nav-insights', label: 'Insights', href: '/blog', enabled: true },
+        { id: 'footer-nav-partnership', label: 'Partnership', href: '/partnership', enabled: true },
+        { id: 'footer-nav-contact', label: 'Contact', href: '/contact', enabled: true },
+        { id: 'footer-nav-portfolio', label: 'Portfolio', href: '/portfolio', enabled: true }
+      ],
+      footerServiceLinks: [
+        { id: 'footer-service-web', label: 'Website Development', href: '/website-development', enabled: true },
+        { id: 'footer-service-shop', label: 'Secure Online Shops', href: '/secure-online-shops', enabled: true },
+        { id: 'footer-service-mobile', label: 'Mobile Business App', href: '/mobile-business-app', enabled: true },
+        { id: 'footer-service-email', label: 'Official Business Email', href: '/official-business-email', enabled: true },
+        { id: 'footer-service-tools', label: 'Custom Business Tools', href: '/custom-business-tools', enabled: true }
+      ]
+    },
+    contact: {
+      companyName: 'PT Vanaila Digital Vision',
+      addressLine1: 'Bogor Raya Digital Park, Block A-12',
+      addressLine2: 'West Java, Indonesia 16143',
+      globalReachLabel: 'Global Reach',
+      globalReachText: 'Supporting partners across SEA, Europe, and North America.',
+      emailLabel: 'Email Us',
+      emailValue: 'care@vanaila.com',
+      emailHref: 'mailto:care@vanaila.com',
+      whatsappLabel: 'WhatsApp Business',
+      whatsappValue: '+62 851 7441 3323',
+      whatsappHref: 'https://wa.me/6285174413323',
+      instagramLabel: 'Instagram',
+      instagramValue: '@vanaila.digital',
+      instagramHref: 'https://instagram.com/vanaila.digital'
+    },
+    social: {
+      chatHref: '/contact',
+      instagramHref: 'https://instagram.com/vanaila.digital',
+      websiteHref: 'https://vanaila.com',
+      emailHref: 'mailto:care@vanaila.com'
+    },
+    branding: {
+      footerTagline: 'Engineering-focused digital agency delivering high-performance infrastructure.',
+      footerBadgePrimary: 'Glassmorphism Edition',
+      footerBadgeSecondary: 'Premium Engineering',
+      copyrightText: '© 2026 Vanaila Digital.'
+    },
     writing: {
       defaultPostCategory: 'general',
       defaultPostFormat: 'standard',
@@ -876,6 +932,7 @@ export const defaultContent: CmsContent = {
       enabled: true,
       includePages: true,
       includePosts: true,
+      includePortfolio: true,
       includeLastModified: true
     },
     siteName: 'Vanaila Digital.',
@@ -1024,6 +1081,71 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       }
     }
   ],
+  portfolioProjects: [
+    {
+      id: 'portfolio-1',
+      title: 'B2B Lead Funnel Platform',
+      summary:
+        'Designed and shipped a conversion-focused website and lead workflow for a regional industrial supplier.',
+      challenge:
+        'The client had fragmented landing pages, slow load times, and no clear lead qualification flow.',
+      solution:
+        'We rebuilt the information architecture, added CMS-managed landing modules, and integrated automated lead routing.',
+      outcome:
+        'Lead quality improved and inquiry response time dropped after launch.',
+      clientName: 'Astra Industrial Supply',
+      serviceType: 'Website Development + Automation',
+      industry: 'Manufacturing',
+      projectUrl: 'https://example.com',
+      coverImage: 'https://placehold.co/1200x800/png',
+      gallery: ['https://placehold.co/1200x800/png', 'https://placehold.co/1200x800/png'],
+      tags: ['website-development', 'automation', 'seo'],
+      featured: true,
+      status: 'published',
+      sortOrder: 1,
+      publishedAt: nowIso(),
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'B2B Lead Funnel Platform Case Study',
+        metaDescription:
+          'How Vanaila Digital improved lead quality with a performance-first website and automated lead workflow.',
+        slug: 'b2b-lead-funnel-platform',
+        canonical: '',
+        socialImage: 'https://placehold.co/1200x630/png',
+        noIndex: false,
+        keywords: ['case study', 'b2b website', 'lead funnel', 'marketing automation']
+      }
+    },
+    {
+      id: 'portfolio-2',
+      title: 'Omnichannel Commerce Revamp',
+      summary: 'Modernized checkout and inventory sync for a fast-growing retail brand.',
+      challenge: 'Cart abandonment and stock mismatch across channels.',
+      solution: 'Implemented headless storefront architecture and synchronized inventory workflows.',
+      outcome: 'Improved purchase completion and operational accuracy.',
+      clientName: 'Nova Retail Group',
+      serviceType: 'Secure Online Shops',
+      industry: 'Retail',
+      projectUrl: '',
+      coverImage: 'https://placehold.co/1200x800/png',
+      gallery: [],
+      tags: ['ecommerce', 'performance'],
+      featured: false,
+      status: 'draft',
+      sortOrder: 2,
+      publishedAt: null,
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'Omnichannel Commerce Revamp Case Study',
+        metaDescription: 'Commerce modernization with synchronized inventory and a faster buying experience.',
+        slug: 'omnichannel-commerce-revamp',
+        canonical: '',
+        socialImage: 'https://placehold.co/1200x630/png',
+        noIndex: false,
+        keywords: ['ecommerce case study', 'headless commerce', 'checkout optimization']
+      }
+    }
+  ],
   categories: [
     category('General', 'general', 'Default publishing category for uncategorized content.'),
     category('Engineering', 'engineering', 'Technical engineering insights and implementation notes.'),
@@ -1053,6 +1175,10 @@ Draft quickly, review carefully, then publish with SEO checks.`,
     )
   ]
 };
+
+
+
+
 
 
 

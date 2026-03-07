@@ -1,14 +1,22 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { BlogPost, CmsContent, LandingPage, PageId, SiteSettings } from './types';
-import type { BlogQueryInput } from './storeTypes';
+import type {
+  BlogPost,
+  CmsContent,
+  LandingPage,
+  PageId,
+  PortfolioProject,
+  SiteSettings
+} from './types';
+import type { BlogQueryInput, PortfolioQueryInput } from './storeTypes';
 import {
   mergeWithDefaults,
   normalizePageForWrite,
   normalizeSettings,
   normalizeSlug,
   nowIso,
+  uniquePortfolioSlug,
   uniquePostSlug
 } from './storeShared';
 
@@ -259,4 +267,206 @@ export async function setPostStatus(id: string, status: 'draft' | 'published'): 
   return next;
 }
 
+export async function getPortfolioProjects(includeDrafts = false): Promise<PortfolioProject[]> {
+  const content = await readContent();
+  const filtered = includeDrafts
+    ? content.portfolioProjects
+    : content.portfolioProjects.filter((project) => project.status === 'published');
 
+  return filtered.sort((a, b) => {
+    if (a.featured !== b.featured) return a.featured ? -1 : 1;
+    if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+    return a.updatedAt < b.updatedAt ? 1 : -1;
+  });
+}
+
+export async function queryPortfolioProjects(input: PortfolioQueryInput) {
+  const content = await readContent();
+  const query = (input.q ?? '').trim().toLowerCase();
+  const tag = (input.tag ?? '').trim().toLowerCase();
+  const status =
+    input.status === 'draft' || input.status === 'published' || input.status === 'all'
+      ? input.status
+      : 'all';
+  const featured =
+    input.featured === 'featured' || input.featured === 'standard' || input.featured === 'all'
+      ? input.featured
+      : 'all';
+  const dateSort = input.dateSort === 'oldest' ? 'oldest' : 'newest';
+  const page = Number.isFinite(input.page) && (input.page ?? 0) > 0 ? Number(input.page) : 1;
+  const pageSize =
+    Number.isFinite(input.pageSize) && (input.pageSize ?? 0) > 0
+      ? Math.min(Number(input.pageSize), 50)
+      : 10;
+
+  const tags = Array.from(
+    new Set(
+      content.portfolioProjects
+        .flatMap((project) => project.tags)
+        .map((entry) => entry.trim())
+        .filter((entry) => entry.length > 0)
+    )
+  ).sort((a, b) => (a > b ? 1 : -1));
+
+  let projects = content.portfolioProjects.filter((project) => {
+    if (!input.includeDrafts && project.status !== 'published') return false;
+    if (status !== 'all' && project.status !== status) return false;
+    if (featured === 'featured' && !project.featured) return false;
+    if (featured === 'standard' && project.featured) return false;
+
+    if (query.length > 0) {
+      const haystack = `${project.title} ${project.clientName} ${project.serviceType} ${project.industry}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+
+    if (tag.length > 0) {
+      const hasTag = project.tags.some((entry) => entry.toLowerCase() === tag);
+      if (!hasTag) return false;
+    }
+
+    return true;
+  });
+
+  projects = projects.sort((a, b) => {
+    if (a.featured !== b.featured) return a.featured ? -1 : 1;
+    if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+    if (dateSort === 'oldest') return a.updatedAt > b.updatedAt ? 1 : -1;
+    return a.updatedAt < b.updatedAt ? 1 : -1;
+  });
+
+  const total = projects.length;
+  const start = (page - 1) * pageSize;
+  const paginated = projects.slice(start, start + pageSize);
+
+  return {
+    projects: paginated,
+    meta: {
+      total,
+      page,
+      pageSize,
+      tags
+    }
+  };
+}
+
+export async function getPortfolioProjectById(id: string): Promise<PortfolioProject | null> {
+  const content = await readContent();
+  return content.portfolioProjects.find((project) => project.id === id) ?? null;
+}
+
+export async function getPortfolioProjectBySlug(slug: string): Promise<PortfolioProject | null> {
+  const normalized = normalizeSlug(slug);
+  const content = await readContent();
+  return (
+    content.portfolioProjects.find(
+      (project) => project.seo.slug === normalized && project.status === 'published'
+    ) ?? null
+  );
+}
+
+export async function createPortfolioProject(
+  payload?: Partial<PortfolioProject>
+): Promise<PortfolioProject> {
+  const content = await readContent();
+  const id = crypto.randomUUID();
+  const title = payload?.title?.trim() || 'Untitled project';
+  const slug = uniquePortfolioSlug(content.portfolioProjects, title, payload?.seo?.slug);
+  const requestedStatus = payload?.status;
+  const status = requestedStatus ?? 'draft';
+  const maxSort = content.portfolioProjects.reduce((acc, project) => Math.max(acc, project.sortOrder), 0);
+
+  const project: PortfolioProject = {
+    id,
+    title,
+    summary: payload?.summary?.trim() || '',
+    challenge: payload?.challenge || '',
+    solution: payload?.solution || '',
+    outcome: payload?.outcome || '',
+    clientName: payload?.clientName?.trim() || '',
+    serviceType: payload?.serviceType?.trim() || '',
+    industry: payload?.industry?.trim() || '',
+    projectUrl: payload?.projectUrl || '',
+    coverImage: payload?.coverImage || '',
+    gallery: payload?.gallery ?? [],
+    tags: payload?.tags ?? [],
+    featured: payload?.featured ?? false,
+    status,
+    sortOrder: payload?.sortOrder ?? maxSort + 1,
+    publishedAt: status === 'published' ? nowIso() : null,
+    updatedAt: nowIso(),
+    seo: {
+      metaTitle: payload?.seo?.metaTitle || title,
+      metaDescription: payload?.seo?.metaDescription || '',
+      slug,
+      canonical: payload?.seo?.canonical || '',
+      socialImage: payload?.seo?.socialImage || '',
+      noIndex: payload?.seo?.noIndex ?? false,
+      keywords: payload?.seo?.keywords ?? []
+    }
+  };
+
+  content.portfolioProjects.unshift(project);
+  await writeContent(content);
+  return project;
+}
+
+export async function updatePortfolioProject(
+  id: string,
+  payload: PortfolioProject
+): Promise<PortfolioProject | null> {
+  const content = await readContent();
+  const index = content.portfolioProjects.findIndex((project) => project.id === id);
+  if (index === -1) return null;
+
+  const slug = uniquePortfolioSlug(content.portfolioProjects, payload.title, payload.seo.slug, id);
+  const current = content.portfolioProjects[index];
+
+  const next: PortfolioProject = {
+    ...payload,
+    id,
+    seo: {
+      ...payload.seo,
+      slug
+    },
+    publishedAt:
+      payload.status === 'published'
+        ? current.publishedAt ?? nowIso()
+        : payload.publishedAt ?? null,
+    updatedAt: nowIso()
+  };
+
+  content.portfolioProjects[index] = next;
+  await writeContent(content);
+  return next;
+}
+
+export async function deletePortfolioProject(id: string): Promise<boolean> {
+  const content = await readContent();
+  const next = content.portfolioProjects.filter((project) => project.id !== id);
+  if (next.length === content.portfolioProjects.length) return false;
+
+  content.portfolioProjects = next;
+  await writeContent(content);
+  return true;
+}
+
+export async function setPortfolioProjectStatus(
+  id: string,
+  status: 'draft' | 'published'
+): Promise<PortfolioProject | null> {
+  const content = await readContent();
+  const index = content.portfolioProjects.findIndex((project) => project.id === id);
+  if (index === -1) return null;
+
+  const existing = content.portfolioProjects[index];
+  const next: PortfolioProject = {
+    ...existing,
+    status,
+    publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+    updatedAt: nowIso()
+  };
+
+  content.portfolioProjects[index] = next;
+  await writeContent(content);
+  return next;
+}

@@ -14,8 +14,10 @@ async function main() {
 
   console.log(
     `Imported ${Object.keys(content.pages).length} pages, ${content.blogPosts.length} posts, ${
-      content.categories?.length ?? 0
-    } categories, and ${content.mediaAssets?.length ?? 0} media assets into database.`
+      content.portfolioProjects?.length ?? 0
+    } portfolio projects, ${content.categories?.length ?? 0} categories, and ${
+      content.mediaAssets?.length ?? 0
+    } media assets into database.`
   );
 }
 
@@ -23,4 +25,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-

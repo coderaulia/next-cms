@@ -2,6 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 
+import type { SiteSettings } from '@/features/cms/types';
+
 import { SiteFooter } from './SiteFooter';
 import { SiteHeader } from './SiteHeader';
 
@@ -13,10 +15,11 @@ type NavItem = {
 type AppShellProps = {
   siteName: string;
   navItems: NavItem[];
+  settings: SiteSettings;
   children: React.ReactNode;
 };
 
-export function AppShell({ siteName, navItems, children }: AppShellProps) {
+export function AppShell({ siteName, navItems, settings, children }: AppShellProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
 
@@ -26,9 +29,9 @@ export function AppShell({ siteName, navItems, children }: AppShellProps) {
 
   return (
     <>
-      <SiteHeader siteName={siteName} navItems={navItems} />
+      <SiteHeader siteName={siteName} navItems={navItems} settings={settings} />
       <div className="v2-page">{children}</div>
-      <SiteFooter siteName={siteName} />
+      <SiteFooter siteName={siteName} settings={settings} />
     </>
   );
 }

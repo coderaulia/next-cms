@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
-import type { BlogPost, LandingPage } from '@/features/cms/types';
+import type { BlogPost, LandingPage, PortfolioProject } from '@/features/cms/types';
 
 type DashboardData = {
   pages: LandingPage[];
   blogPosts: BlogPost[];
+  portfolioProjects: PortfolioProject[];
 };
 
 function DashboardPanel() {
@@ -17,19 +18,25 @@ function DashboardPanel() {
 
   useEffect(() => {
     async function load() {
-      const [pagesResponse, blogResponse] = await Promise.all([
+      const [pagesResponse, blogResponse, portfolioResponse] = await Promise.all([
         fetch('/api/admin/pages'),
-        fetch('/api/admin/blog?includeDrafts=1&page=1&pageSize=5')
+        fetch('/api/admin/blog?includeDrafts=1&page=1&pageSize=5'),
+        fetch('/api/admin/portfolio?includeDrafts=1&page=1&pageSize=5')
       ]);
 
-      if (!pagesResponse.ok || !blogResponse.ok) {
+      if (!pagesResponse.ok || !blogResponse.ok || !portfolioResponse.ok) {
         setError('Failed to load dashboard.');
         return;
       }
 
       const pagesPayload = (await pagesResponse.json()) as { pages: LandingPage[] };
       const blogPayload = (await blogResponse.json()) as { posts: BlogPost[] };
-      setData({ pages: pagesPayload.pages, blogPosts: blogPayload.posts });
+      const portfolioPayload = (await portfolioResponse.json()) as { projects: PortfolioProject[] };
+      setData({
+        pages: pagesPayload.pages,
+        blogPosts: blogPayload.posts,
+        portfolioProjects: portfolioPayload.projects
+      });
     }
     load();
   }, []);
@@ -39,7 +46,10 @@ function DashboardPanel() {
     const publishedPages = data.pages.filter((page) => page.published).length;
     const publishedPosts = data.blogPosts.filter((post) => post.status === 'published').length;
     const draftPosts = data.blogPosts.filter((post) => post.status === 'draft').length;
-    return { publishedPages, publishedPosts, draftPosts };
+    const publishedPortfolio = data.portfolioProjects.filter(
+      (project) => project.status === 'published'
+    ).length;
+    return { publishedPages, publishedPosts, draftPosts, publishedPortfolio };
   }, [data]);
 
   if (error) return <p className="error">{error}</p>;
@@ -62,6 +72,10 @@ function DashboardPanel() {
           <p className="admin-kpi-label">Draft posts</p>
           <p className="admin-kpi-value">{metrics.draftPosts}</p>
         </article>
+        <article className="admin-card">
+          <p className="admin-kpi-label">Published portfolio</p>
+          <p className="admin-kpi-value">{metrics.publishedPortfolio}</p>
+        </article>
       </section>
 
       <section className="admin-card">
@@ -75,6 +89,9 @@ function DashboardPanel() {
           <Link href="/admin/blog" className="v2-btn v2-btn-secondary">
             Manage posts
           </Link>
+          <Link href="/admin/portfolio" className="v2-btn v2-btn-secondary">
+            Manage portfolio
+          </Link>
           <Link href="/admin/categories" className="v2-btn v2-btn-secondary">
             Manage categories
           </Link>
@@ -86,6 +103,9 @@ function DashboardPanel() {
           </Link>
           <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
             Create new post
+          </Link>
+          <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
+            Create new project
           </Link>
           <Link href="/admin/settings" className="v2-btn v2-btn-secondary">
             Site settings

@@ -2,8 +2,17 @@ import { env } from '@/services/env';
 
 import * as dbCollectionsStore from './dbCollectionsStore';
 import * as dbStore from './dbStore';
-import type { BlogPost, Category, CmsContent, LandingPage, MediaAsset, PageId, SiteSettings } from './types';
-import type { BlogQueryInput } from './storeTypes';
+import type {
+  BlogPost,
+  Category,
+  CmsContent,
+  LandingPage,
+  MediaAsset,
+  PageId,
+  PortfolioProject,
+  SiteSettings
+} from './types';
+import type { BlogQueryInput, PortfolioQueryInput } from './storeTypes';
 
 const isDatabaseMode = () => Boolean(env.databaseUrl);
 
@@ -15,10 +24,11 @@ export async function readContent(): Promise<CmsContent> {
     return (await loadFileStore()).readContent();
   }
 
-  const [settings, pages, blogPosts, categories, mediaAssets] = await Promise.all([
+  const [settings, pages, blogPosts, portfolioProjects, categories, mediaAssets] = await Promise.all([
     dbStore.getSettings(),
     dbStore.getPages(),
     dbStore.getBlogPosts(true),
+    dbStore.getPortfolioProjects(true),
     dbCollectionsStore.getCategories(),
     dbCollectionsStore.getMediaAssets()
   ]);
@@ -27,6 +37,7 @@ export async function readContent(): Promise<CmsContent> {
     settings,
     pages,
     blogPosts,
+    portfolioProjects,
     categories,
     mediaAssets
   };
@@ -65,7 +76,7 @@ export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
   return isDatabaseMode() ? dbStore.getBlogPosts(includeDrafts) : (await loadFileStore()).getBlogPosts(includeDrafts);
 }
 
-export type { BlogQueryInput } from './storeTypes';
+export type { BlogQueryInput, PortfolioQueryInput } from './storeTypes';
 
 export async function queryBlogPosts(input: BlogQueryInput) {
   return isDatabaseMode() ? dbStore.queryBlogPosts(input) : (await loadFileStore()).queryBlogPosts(input);
@@ -93,6 +104,62 @@ export async function deleteBlogPost(id: string): Promise<boolean> {
 
 export async function setPostStatus(id: string, status: 'draft' | 'published'): Promise<BlogPost | null> {
   return isDatabaseMode() ? dbStore.setPostStatus(id, status) : (await loadFileStore()).setPostStatus(id, status);
+}
+
+export async function getPortfolioProjects(includeDrafts = false): Promise<PortfolioProject[]> {
+  return isDatabaseMode()
+    ? dbStore.getPortfolioProjects(includeDrafts)
+    : (await loadFileStore()).getPortfolioProjects(includeDrafts);
+}
+
+export async function queryPortfolioProjects(input: PortfolioQueryInput) {
+  return isDatabaseMode()
+    ? dbStore.queryPortfolioProjects(input)
+    : (await loadFileStore()).queryPortfolioProjects(input);
+}
+
+export async function getPortfolioProjectById(id: string): Promise<PortfolioProject | null> {
+  return isDatabaseMode()
+    ? dbStore.getPortfolioProjectById(id)
+    : (await loadFileStore()).getPortfolioProjectById(id);
+}
+
+export async function getPortfolioProjectBySlug(slug: string): Promise<PortfolioProject | null> {
+  return isDatabaseMode()
+    ? dbStore.getPortfolioProjectBySlug(slug)
+    : (await loadFileStore()).getPortfolioProjectBySlug(slug);
+}
+
+export async function createPortfolioProject(
+  payload?: Partial<PortfolioProject>
+): Promise<PortfolioProject> {
+  return isDatabaseMode()
+    ? dbStore.createPortfolioProject(payload)
+    : (await loadFileStore()).createPortfolioProject(payload);
+}
+
+export async function updatePortfolioProject(
+  id: string,
+  payload: PortfolioProject
+): Promise<PortfolioProject | null> {
+  return isDatabaseMode()
+    ? dbStore.updatePortfolioProject(id, payload)
+    : (await loadFileStore()).updatePortfolioProject(id, payload);
+}
+
+export async function deletePortfolioProject(id: string): Promise<boolean> {
+  return isDatabaseMode()
+    ? dbStore.deletePortfolioProject(id)
+    : (await loadFileStore()).deletePortfolioProject(id);
+}
+
+export async function setPortfolioProjectStatus(
+  id: string,
+  status: 'draft' | 'published'
+): Promise<PortfolioProject | null> {
+  return isDatabaseMode()
+    ? dbStore.setPortfolioProjectStatus(id, status)
+    : (await loadFileStore()).setPortfolioProjectStatus(id, status);
 }
 
 export async function getCategories(): Promise<Category[]> {

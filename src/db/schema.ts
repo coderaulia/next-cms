@@ -6,6 +6,8 @@ import type {
   HomeBlock,
   PageId,
   PageSection,
+  PortfolioProject,
+  PortfolioStatus,
   SeoFields,
   SiteSettings
 } from '@/features/cms/types';
@@ -53,6 +55,38 @@ export const blogPostsTable = pgTable(
   (table) => ({
     slugUnique: uniqueIndex('blog_posts_slug_unique').on(table.slug),
     statusIdx: index('blog_posts_status_idx').on(table.status)
+  })
+);
+
+export const portfolioProjectsTable = pgTable(
+  'portfolio_projects',
+  {
+    id: text('id').primaryKey(),
+    title: text('title').notNull(),
+    slug: text('slug').notNull(),
+    summary: text('summary').notNull(),
+    challenge: text('challenge').notNull(),
+    solution: text('solution').notNull(),
+    outcome: text('outcome').notNull(),
+    clientName: text('client_name').notNull(),
+    serviceType: text('service_type').notNull(),
+    industry: text('industry').notNull(),
+    projectUrl: text('project_url').notNull(),
+    coverImage: text('cover_image').notNull(),
+    gallery: jsonb('gallery').$type<string[]>().notNull(),
+    tags: jsonb('tags').$type<string[]>().notNull(),
+    featured: boolean('featured').notNull(),
+    status: text('status').$type<PortfolioStatus>().notNull(),
+    sortOrder: integer('sort_order').notNull(),
+    publishedAt: timestamp('published_at', { withTimezone: true, mode: 'string' }),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull(),
+    seo: jsonb('seo').$type<PortfolioProject['seo']>().notNull()
+  },
+  (table) => ({
+    slugUnique: uniqueIndex('portfolio_projects_slug_unique').on(table.slug),
+    statusIdx: index('portfolio_projects_status_idx').on(table.status),
+    featuredIdx: index('portfolio_projects_featured_idx').on(table.featured),
+    sortOrderIdx: index('portfolio_projects_sort_order_idx').on(table.sortOrder)
   })
 );
 
