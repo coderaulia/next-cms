@@ -4,7 +4,7 @@
 
 1. Open `/admin/login`.
 2. Sign in with `CMS_ADMIN_EMAIL` and `CMS_ADMIN_PASSWORD` from `.env.local`.
-3. On the first successful login in Neon mode, the app bootstraps the first admin user if `admin_users` is empty.
+3. On the first successful login in database mode, the app bootstraps the first admin user if `admin_users` is empty.
 4. Use the left sidebar modules:
 - Dashboard
 - Posts
@@ -70,4 +70,3 @@ Before publishing page/post:
 - Confirm canonical strategy
 - Confirm social image URL
 - Confirm `noindex` is disabled for public content
-

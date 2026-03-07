@@ -1,4 +1,9 @@
-import type { AdminAuthResponse, AdminLoginPayload, AdminSessionUser } from './adminTypes';
+import type {
+  AdminAuthResponse,
+  AdminErrorResponse,
+  AdminLoginPayload,
+  AdminSessionUser
+} from './adminTypes';
 
 export async function getAdminSession(): Promise<AdminSessionUser | null> {
   const response = await fetch('/api/admin/auth', {
@@ -14,7 +19,7 @@ export async function getAdminSession(): Promise<AdminSessionUser | null> {
   return payload.user;
 }
 
-export async function loginAdmin(input: AdminLoginPayload): Promise<AdminSessionUser | null> {
+export async function loginAdmin(input: AdminLoginPayload): Promise<{ user: AdminSessionUser | null; error: string | null }> {
   const response = await fetch('/api/admin/auth', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -22,11 +27,12 @@ export async function loginAdmin(input: AdminLoginPayload): Promise<AdminSession
   });
 
   if (!response.ok) {
-    return null;
+    const payload = (await response.json().catch(() => null)) as AdminErrorResponse | null;
+    return { user: null, error: payload?.error || 'Unable to sign in.' };
   }
 
   const payload = (await response.json()) as AdminAuthResponse;
-  return payload.user;
+  return { user: payload.user, error: null };
 }
 
 export async function logoutAdmin() {

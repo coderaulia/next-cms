@@ -19,6 +19,7 @@ const emptyMediaAsset: MediaAsset = {
   height: null,
   sizeBytes: null,
   storageProvider: 'external-url',
+  storageKey: null,
   createdAt: '',
   updatedAt: ''
 };
@@ -55,7 +56,7 @@ function MediaLibraryManager() {
     const needle = query.trim().toLowerCase();
     if (!needle) return mediaAssets;
     return mediaAssets.filter((asset) => {
-      const haystack = `${asset.title} ${asset.url} ${asset.altText} ${asset.mimeType} ${asset.storageProvider}`.toLowerCase();
+      const haystack = `${asset.title} ${asset.url} ${asset.altText} ${asset.mimeType} ${asset.storageProvider} ${asset.storageKey ?? ''}`.toLowerCase();
       return haystack.includes(needle);
     });
   }, [mediaAssets, query]);
@@ -87,7 +88,8 @@ function MediaLibraryManager() {
     setSaving(false);
 
     if (!response.ok) {
-      setError('Failed to save media asset.');
+      const body = (await response.json().catch(() => null)) as { error?: string } | null;
+      setError(body?.error || 'Failed to save media asset.');
       return;
     }
 
@@ -105,7 +107,8 @@ function MediaLibraryManager() {
     });
 
     if (!response.ok) {
-      setError('Failed to delete media asset.');
+      const body = (await response.json().catch(() => null)) as { error?: string } | null;
+      setError(body?.error || 'Failed to delete media asset.');
       return;
     }
 
@@ -173,9 +176,13 @@ function MediaLibraryManager() {
           </label>
           <label>
             Storage provider
+            <input value={form.storageProvider} onChange={(event) => setForm({ ...form, storageProvider: event.target.value })} />
+          </label>
+          <label style={{ gridColumn: '1 / -1' }}>
+            Storage key
             <input
-              value={form.storageProvider}
-              onChange={(event) => setForm({ ...form, storageProvider: event.target.value })}
+              value={form.storageKey ?? ''}
+              onChange={(event) => setForm({ ...form, storageKey: event.target.value || null })}
             />
           </label>
         </div>
@@ -220,6 +227,7 @@ function MediaLibraryManager() {
               <h3>{asset.title}</h3>
               <p className="admin-subtle">{asset.mimeType}</p>
               <p className="admin-subtle">{asset.storageProvider}</p>
+              <p className="admin-subtle">{asset.storageKey || 'manual asset'}</p>
               <p className="admin-subtle">{asset.width ?? '-'} x {asset.height ?? '-'}</p>
               <div className="admin-actions">
                 <button type="button" onClick={() => setForm(asset)}>
@@ -240,7 +248,7 @@ function MediaLibraryManager() {
 
 export default function AdminMediaPage() {
   return (
-    <AdminShell title="Media Library" description="Manage reusable media metadata and URL-based assets.">
+    <AdminShell title="Media Library" description="Manage reusable media metadata and external asset URLs.">
       {() => <MediaLibraryManager />}
     </AdminShell>
   );

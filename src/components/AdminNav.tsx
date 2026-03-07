@@ -8,6 +8,7 @@ import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
 const siteManagementLinks = [
   { href: '/admin/settings', label: 'Settings' },
+  { href: '/admin/contact-submissions', label: 'Contact Leads' },
   { href: '/admin/categories', label: 'Categories' },
   { href: '/admin/media', label: 'Media Library' },
   { href: '/admin/settings?tab=discussion', label: 'Comments' }

@@ -1,13 +1,3 @@
-import { existsSync } from 'node:fs';
-
-import { config as loadEnv } from 'dotenv';
-
-for (const file of ['.env.local', '.env']) {
-  if (existsSync(file)) {
-    loadEnv({ path: file, override: false, quiet: true });
-  }
-}
-
 const fallbackBaseUrl = 'http://localhost:3000';
 
 const clean = (value: string | undefined) => value?.trim().replace(/^['"]|['"]$/g, '') || '';
@@ -41,4 +31,3 @@ export const env = {
     return clean(process.env.DATABASE_URL_MIGRATION) || clean(process.env.DATABASE_URL);
   }
 };
-

@@ -24,10 +24,10 @@ npm run dev
 Current default is file storage (`data/content.json`).
 
 Recommended for production clients:
-1. Move to Neon PostgreSQL.
+1. Move to Supabase PostgreSQL or another managed Postgres service.
 2. Keep the same CMS payload shapes (`settings`, `pages`, `blogPosts`) so UI/admin stays compatible.
 3. Use JSONB for flexible fields (`seo`, `sections`, `homeBlocks`).
-4. Use Neon-backed admin sessions instead of local token storage.
+4. Use database-backed admin sessions instead of local token storage.
 
 ## 3) Define Client Content Model
 

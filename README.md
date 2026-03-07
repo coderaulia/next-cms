@@ -9,8 +9,9 @@ It includes:
 - Separate admin login + dedicated admin shell (no public header/footer in admin)
 - Website Settings module (General, Writing, Reading, Discussion, Media, Permalinks, Meta Tags, Sitemaps)
 - Technical SEO defaults: metadata, canonicals, OG/Twitter tags, sitemap, robots, JSON-LD
-- Dual persistence mode: local file store by default, Neon Postgres when `DATABASE_URL` is configured
-- Neon-backed admin users and cookie sessions when database mode is enabled`r`n- Working admin modules for categories and media library metadata
+- Dual persistence mode: local file store by default, Postgres when `DATABASE_URL` is configured
+- Database-backed admin users and cookie sessions when database mode is enabled
+- Working admin modules for categories, contact submissions, and media library metadata
 
 ## Stack Decision
 
@@ -18,7 +19,7 @@ It includes:
 - Language: TypeScript (strict)
 - Package manager: npm
 - Test baseline: Vitest
-- Database: Neon Postgres + Drizzle ORM
+- Database: PostgreSQL-compatible database (recommended: Supabase) + Drizzle ORM
 
 ## Getting Started
 
@@ -52,7 +53,7 @@ Preferred setup:
 - Optional: set `CMS_ADMIN_NAME`
 
 Behavior:
-- The first admin login bootstraps an admin user into Neon if `admin_users` is empty.
+- The first admin login bootstraps an admin user into the database if `admin_users` is empty.
 - Admin UI uses secure cookie sessions.
 - Legacy `CMS_ADMIN_TOKEN` / `x-admin-token` support remains only as a compatibility fallback for migration and tests.
 
@@ -69,7 +70,7 @@ Behavior:
 - `npm run db:migrate` - apply migrations
 - `npm run db:push` - push schema directly to database
 - `npm run db:studio` - open Drizzle Studio
-- `npm run db:seed:file` - import `data/content.json` into Neon
+- `npm run db:seed:file` - import `data/content.json` into the configured database
 
 ## Content Model
 
@@ -165,16 +166,17 @@ docs/
 
 - Set `NEXT_PUBLIC_SITE_URL` to production domain.
 - Set `CMS_ADMIN_EMAIL`, `CMS_ADMIN_PASSWORD`, and `CMS_ADMIN_NAME`.
-- For Neon mode, set `DATABASE_URL` and optionally `DATABASE_URL_MIGRATION`.
-- Local file persistence still works when `DATABASE_URL` is not set, but Neon is the recommended production path.
-- For Hostinger deployment, database mode is the recommended path.
+- For database mode, set `DATABASE_URL` and optionally `DATABASE_URL_MIGRATION`.
+- Local file persistence still works when `DATABASE_URL` is not set, but a database is the recommended production path.
+- For Hostinger deployment, use database mode instead of file-backed CMS data.
 
 See:
 - [Admin usage guide](./docs/admin-usage.md)
 - [Deployment handoff](./docs/deployment-handoff.md)
 - [Phase 4 testing checklist](./docs/testing-phase-4.md)
 - [Client reuse playbook](./docs/client-reuse-playbook.md)
-- [Neon + Hostinger setup](./docs/neon-hostinger-setup.md)
+- [Supabase + Hostinger setup](./docs/supabase-hostinger-setup.md)
+- [Security hardening notes](./docs/security-hardening.md)
 
 ## Assumptions
 
@@ -183,6 +185,5 @@ See:
 
 ## Risks
 
-- Media uploads still need a production storage provider.
+- Media files are currently managed as external URLs, not binary uploads.
 - SEO outcomes depend on content quality and ongoing strategy.
-

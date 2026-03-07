@@ -78,6 +78,9 @@ function DashboardPanel() {
           <Link href="/admin/categories" className="v2-btn v2-btn-secondary">
             Manage categories
           </Link>
+          <Link href="/admin/contact-submissions" className="v2-btn v2-btn-secondary">
+            Review leads
+          </Link>
           <Link href="/admin/media" className="v2-btn v2-btn-secondary">
             Media library
           </Link>

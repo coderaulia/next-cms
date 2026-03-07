@@ -1,13 +1,6 @@
-import { existsSync } from 'node:fs';
-
-import { config as loadEnv } from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
 
-for (const file of ['.env.local', '.env']) {
-  if (existsSync(file)) {
-    loadEnv({ path: file, override: false, quiet: true });
-  }
-}
+import './src/services/loadLocalEnv';
 
 const clean = (value: string | undefined) => value?.trim().replace(/^['"]|['"]$/g, '') || '';
 const connectionString = clean(process.env.DATABASE_URL_MIGRATION) || clean(process.env.DATABASE_URL);
@@ -26,4 +19,3 @@ export default defineConfig({
   strict: true,
   verbose: true
 });
-

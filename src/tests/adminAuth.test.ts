@@ -1,26 +1,35 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-const originalToken = process.env.CMS_ADMIN_TOKEN;
+const processEnv = process.env as Record<string, string | undefined>;
+const originalToken = processEnv.CMS_ADMIN_TOKEN;
+const originalNodeEnv = processEnv.NODE_ENV;
 
 afterEach(() => {
   if (typeof originalToken === 'undefined') {
-    delete process.env.CMS_ADMIN_TOKEN;
+    delete processEnv.CMS_ADMIN_TOKEN;
   } else {
-    process.env.CMS_ADMIN_TOKEN = originalToken;
+    processEnv.CMS_ADMIN_TOKEN = originalToken;
   }
+
+  if (typeof originalNodeEnv === 'undefined') {
+    delete processEnv.NODE_ENV;
+  } else {
+    processEnv.NODE_ENV = originalNodeEnv;
+  }
+
   vi.resetModules();
 });
 
 describe('admin auth', () => {
   it('accepts valid token with surrounding whitespace', async () => {
-    process.env.CMS_ADMIN_TOKEN = 'my-secret-token';
+    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
     vi.resetModules();
     const { isValidAdminToken } = await import('@/features/cms/adminAuth');
     expect(isValidAdminToken(' my-secret-token ')).toBe(true);
   });
 
   it('rejects invalid token and returns unauthorized response', async () => {
-    process.env.CMS_ADMIN_TOKEN = 'my-secret-token';
+    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
     vi.resetModules();
     const { assertAdminRequest } = await import('@/features/cms/adminAuth');
 
@@ -34,8 +43,9 @@ describe('admin auth', () => {
     expect(result?.status).toBe(401);
   });
 
-  it('returns null when authorized', async () => {
-    process.env.CMS_ADMIN_TOKEN = 'my-secret-token';
+  it('returns null when authorized in non-production mode', async () => {
+    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
+    processEnv.NODE_ENV = 'test';
     vi.resetModules();
     const { assertAdminRequest } = await import('@/features/cms/adminAuth');
 
@@ -47,5 +57,22 @@ describe('admin auth', () => {
 
     const result = await assertAdminRequest(request);
     expect(result).toBeNull();
+  });
+
+  it('does not accept legacy header token in production mode', async () => {
+    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
+    processEnv.NODE_ENV = 'production';
+    vi.resetModules();
+    const { assertAdminRequest } = await import('@/features/cms/adminAuth');
+
+    const request = new Request('https://vanaila.com/api/admin/pages', {
+      headers: {
+        origin: 'https://vanaila.com',
+        'x-admin-token': 'my-secret-token'
+      }
+    });
+
+    const result = await assertAdminRequest(request);
+    expect(result?.status).toBe(401);
   });
 });

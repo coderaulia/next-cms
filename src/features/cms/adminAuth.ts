@@ -7,6 +7,7 @@ import { NextResponse } from 'next/server';
 import { getDb } from '@/db/client';
 import { adminSessionsTable, adminUsersTable } from '@/db/schema';
 import { env } from '@/services/env';
+import { assertTrustedMutationRequest } from '@/services/requestSecurity';
 
 import type { AdminSessionUser } from './adminTypes';
 import { nowIso } from './storeShared';
@@ -166,7 +167,7 @@ export function isValidAdminToken(token: string | null) {
 }
 
 export async function getAdminSession(request: Request): Promise<AdminSession | null> {
-  const headerToken = request.headers.get('x-admin-token');
+  const headerToken = process.env.NODE_ENV !== 'production' ? request.headers.get('x-admin-token') : null;
   if (isValidAdminToken(headerToken)) {
     const bootstrapped = env.databaseUrl ? await ensureAdminBootstrap() : null;
     if (bootstrapped) {
@@ -224,6 +225,11 @@ export async function getAdminSession(request: Request): Promise<AdminSession | 
 }
 
 export async function assertAdminRequest(request: Request): Promise<NextResponse | null> {
+  const originFailure = assertTrustedMutationRequest(request);
+  if (originFailure) {
+    return originFailure;
+  }
+
   const session = await getAdminSession(request);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

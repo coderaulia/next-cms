@@ -41,6 +41,7 @@ function rowToMediaAsset(row: typeof mediaAssetsTable.$inferSelect): MediaAsset 
     height: row.height,
     sizeBytes: row.sizeBytes,
     storageProvider: row.storageProvider,
+    storageKey: row.storageKey,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt
   };

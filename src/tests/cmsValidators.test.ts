@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { validateBlogPost, validateLandingPage } from '@/features/cms/validators';
+import { validateBlogPost, validateLandingPage, validateMediaAsset } from '@/features/cms/validators';
 
 describe('CMS validators', () => {
   it('validates a landing page payload', () => {
@@ -125,5 +125,49 @@ describe('CMS validators', () => {
     expect(post).not.toBeNull();
     expect(post?.status).toBe('draft');
     expect(post?.tags).toEqual(['seo', 'cms']);
+  });
+
+  it('sanitizes unsafe javascript URLs from CMS payloads', () => {
+    const page = validateLandingPage({
+      id: 'home',
+      title: 'Home',
+      navLabel: 'Home',
+      published: true,
+      seo: {
+        metaTitle: 'Home',
+        metaDescription: 'desc',
+        slug: '',
+        canonical: 'javascript:alert(1)',
+        socialImage: 'javascript:alert(1)',
+        noIndex: false
+      },
+      sections: [
+        {
+          id: 'hero',
+          heading: 'Hero',
+          body: 'Body',
+          ctaLabel: 'CTA',
+          ctaHref: 'javascript:alert(1)',
+          mediaImage: 'javascript:alert(1)',
+          layout: 'split',
+          theme: {
+            background: '#fff',
+            text: '#000',
+            accent: '#00f'
+          }
+        }
+      ]
+    });
+
+    const media = validateMediaAsset({
+      title: 'Asset',
+      url: 'javascript:alert(1)'
+    });
+
+    expect(page?.seo.canonical).toBe('');
+    expect(page?.seo.socialImage).toBe('');
+    expect(page?.sections[0].ctaHref).toBe('');
+    expect(page?.sections[0].mediaImage).toBe('');
+    expect(media).toBeNull();
   });
 });

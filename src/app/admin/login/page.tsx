@@ -38,11 +38,11 @@ export default function AdminLoginPage() {
     setPending(true);
     setError('');
 
-    const user = await loginAdmin({ email, password });
+    const result = await loginAdmin({ email, password });
     setPending(false);
 
-    if (!user) {
-      setError('Invalid email or password.');
+    if (!result.user) {
+      setError(result.error || 'Invalid email or password.');
       return;
     }
 

@@ -1,6 +1,8 @@
 import type {
   BlogPost,
   Category,
+  ContactSubmission,
+  ContactSubmissionStatus,
   CtaStyleToken,
   HomeBlock,
   HomeBlockType,
@@ -25,6 +27,7 @@ const PAGE_IDS: PageId[] = [
 ];
 const HOME_THEMES: HomeThemeToken[] = ['light', 'blue-soft', 'mist'];
 const CTA_STYLES: CtaStyleToken[] = ['primary', 'secondary', 'ghost'];
+const CONTACT_SUBMISSION_STATUSES: ContactSubmissionStatus[] = ['new', 'in_review', 'closed'];
 const HOME_BLOCK_TYPES: HomeBlockType[] = [
   'hero',
   'value_triplet',
@@ -62,6 +65,9 @@ const isHomeTheme = (value: string): value is HomeThemeToken =>
 const isCtaStyle = (value: string): value is CtaStyleToken =>
   CTA_STYLES.includes(value as CtaStyleToken);
 
+const isContactSubmissionStatus = (value: string): value is ContactSubmissionStatus =>
+  CONTACT_SUBMISSION_STATUSES.includes(value as ContactSubmissionStatus);
+
 const normalizeSlugValue = (value: string) =>
   value
     .trim()
@@ -71,6 +77,34 @@ const normalizeSlugValue = (value: string) =>
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 
+const isSafeAbsoluteUrl = (value: string, allowedProtocols: string[]) => {
+  try {
+    const parsed = new URL(value);
+    return allowedProtocols.includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+};
+
+const asSafeHref = (value: unknown) => {
+  const trimmed = asString(value).trim();
+  if (!trimmed) return '';
+  if (trimmed.startsWith('/') || trimmed.startsWith('#')) return trimmed;
+  return isSafeAbsoluteUrl(trimmed, ['http:', 'https:', 'mailto:', 'tel:']) ? trimmed : '';
+};
+
+const asSafeAssetUrl = (value: unknown) => {
+  const trimmed = asString(value).trim();
+  if (!trimmed) return '';
+  if (trimmed.startsWith('/')) return trimmed;
+  return isSafeAbsoluteUrl(trimmed, ['http:', 'https:']) ? trimmed : '';
+};
+
+const asSafeBaseUrl = (value: unknown) => {
+  const trimmed = asString(value).trim();
+  return isSafeAbsoluteUrl(trimmed, ['http:', 'https:']) ? trimmed : '';
+};
+
 const asTheme = (value: unknown): HomeThemeToken => {
   const token = asString(value);
   return isHomeTheme(token) ? token : 'light';
@@ -79,6 +113,14 @@ const asTheme = (value: unknown): HomeThemeToken => {
 const asCtaStyle = (value: unknown, fallback: CtaStyleToken = 'primary'): CtaStyleToken => {
   const token = asString(value);
   return isCtaStyle(token) ? token : fallback;
+};
+
+const asContactSubmissionStatus = (
+  value: unknown,
+  fallback: ContactSubmissionStatus = 'new'
+): ContactSubmissionStatus => {
+  const token = asString(value);
+  return isContactSubmissionStatus(token) ? token : fallback;
 };
 
 function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
@@ -95,6 +137,12 @@ function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
   };
 
   if (type === 'hero') {
+    const animatedWords = Array.isArray(input.animatedWords)
+      ? input.animatedWords
+          .map((word) => asString(word))
+          .filter((word) => word.length > 0)
+      : undefined;
+
     return {
       ...common,
       type: 'hero',
@@ -103,11 +151,12 @@ function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
       titleAccent: asString(input.titleAccent),
       description: asString(input.description),
       primaryCtaLabel: asString(input.primaryCtaLabel),
-      primaryCtaHref: asString(input.primaryCtaHref),
+      primaryCtaHref: asSafeHref(input.primaryCtaHref),
       primaryCtaStyle: asCtaStyle(input.primaryCtaStyle, 'primary'),
       secondaryCtaLabel: asString(input.secondaryCtaLabel),
-      secondaryCtaHref: asString(input.secondaryCtaHref),
-      secondaryCtaStyle: asCtaStyle(input.secondaryCtaStyle, 'secondary')
+      secondaryCtaHref: asSafeHref(input.secondaryCtaHref),
+      secondaryCtaStyle: asCtaStyle(input.secondaryCtaStyle, 'secondary'),
+      animatedWords
     };
   }
 
@@ -140,7 +189,7 @@ function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
             title: asString(row.title),
             text: asString(row.text),
             ctaLabel: asString(row.ctaLabel),
-            ctaHref: asString(row.ctaHref)
+            ctaHref: asSafeHref(row.ctaHref)
           };
         })
       : [];
@@ -170,7 +219,7 @@ function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
       heading: asString(input.heading),
       description: asString(input.description),
       bullets,
-      mediaImage: asString(input.mediaImage),
+      mediaImage: asSafeAssetUrl(input.mediaImage),
       mediaAlt: asString(input.mediaAlt)
     };
   }
@@ -191,9 +240,9 @@ function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
       heading: asString(input.heading),
       logos,
       primaryCtaLabel: asString(input.primaryCtaLabel),
-      primaryCtaHref: asString(input.primaryCtaHref),
+      primaryCtaHref: asSafeHref(input.primaryCtaHref),
       secondaryCtaLabel: asString(input.secondaryCtaLabel),
-      secondaryCtaHref: asString(input.secondaryCtaHref)
+      secondaryCtaHref: asSafeHref(input.secondaryCtaHref)
     };
   }
 
@@ -204,7 +253,7 @@ function parseHomeBlock(input: unknown, index: number): HomeBlock | null {
     accentText: asString(input.accentText),
     description: asString(input.description),
     ctaLabel: asString(input.ctaLabel),
-    ctaHref: asString(input.ctaHref),
+    ctaHref: asSafeHref(input.ctaHref),
     ctaStyle: asCtaStyle(input.ctaStyle, 'primary')
   };
 }
@@ -230,8 +279,8 @@ export function validateLandingPage(payload: unknown): LandingPage | null {
       heading: asString(section.heading),
       body: asString(section.body),
       ctaLabel: asString(section.ctaLabel),
-      ctaHref: asString(section.ctaHref),
-      mediaImage: asString(section.mediaImage),
+      ctaHref: asSafeHref(section.ctaHref),
+      mediaImage: asSafeAssetUrl(section.mediaImage),
       mediaAlt: asString(section.mediaAlt),
       layout: layoutCandidate === 'split' ? 'split' : 'stacked',
       theme: {
@@ -258,8 +307,8 @@ export function validateLandingPage(payload: unknown): LandingPage | null {
       metaTitle: asString(rawSeo.metaTitle),
       metaDescription: asString(rawSeo.metaDescription),
       slug: asString(rawSeo.slug),
-      canonical: asString(rawSeo.canonical),
-      socialImage: asString(rawSeo.socialImage),
+      canonical: asSafeBaseUrl(rawSeo.canonical),
+      socialImage: asSafeAssetUrl(rawSeo.socialImage),
       noIndex: asBoolean(rawSeo.noIndex)
     },
     sections,
@@ -284,7 +333,7 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
     content: asString(payload.content),
     author: asString(payload.author),
     tags,
-    coverImage: asString(payload.coverImage),
+    coverImage: asSafeAssetUrl(payload.coverImage),
     status,
     publishedAt: payload.publishedAt ? asString(payload.publishedAt) : null,
     updatedAt: asString(payload.updatedAt),
@@ -292,8 +341,8 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
       metaTitle: asString(rawSeo.metaTitle),
       metaDescription: asString(rawSeo.metaDescription),
       slug: asString(rawSeo.slug),
-      canonical: asString(rawSeo.canonical),
-      socialImage: asString(rawSeo.socialImage),
+      canonical: asSafeBaseUrl(rawSeo.canonical),
+      socialImage: asSafeAssetUrl(rawSeo.socialImage),
       noIndex: asBoolean(rawSeo.noIndex)
     }
   };
@@ -326,7 +375,7 @@ export function validateMediaAsset(payload: unknown): MediaAsset | null {
   if (!isObject(payload)) return null;
 
   const title = asString(payload.title).trim();
-  const url = asString(payload.url).trim();
+  const url = asSafeAssetUrl(payload.url);
   if (!title || !url) {
     return null;
   }
@@ -336,6 +385,8 @@ export function validateMediaAsset(payload: unknown): MediaAsset | null {
     const candidate = Math.round(asNumber(value, NaN));
     return Number.isFinite(candidate) ? candidate : null;
   };
+
+  const storageKey = asString(payload.storageKey).trim();
 
   return {
     id: asString(payload.id) || crypto.randomUUID(),
@@ -347,9 +398,41 @@ export function validateMediaAsset(payload: unknown): MediaAsset | null {
     height: asNullableInteger(payload.height),
     sizeBytes: asNullableInteger(payload.sizeBytes),
     storageProvider: asString(payload.storageProvider) || 'external-url',
+    storageKey: storageKey || null,
     createdAt: asString(payload.createdAt) || new Date().toISOString(),
     updatedAt: asString(payload.updatedAt) || new Date().toISOString()
   };
+}
+
+export function validateContactSubmission(payload: unknown): ContactSubmission | null {
+  if (!isObject(payload)) return null;
+
+  const name = asString(payload.name).trim();
+  const email = asString(payload.email).trim().toLowerCase();
+  const serviceCategory = asString(payload.serviceCategory).trim();
+  const projectOverview = asString(payload.projectOverview).trim();
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!name || !emailOk || !serviceCategory || !projectOverview) {
+    return null;
+  }
+
+
+  return {
+    id: asString(payload.id) || crypto.randomUUID(),
+    name,
+    company: asString(payload.company).trim(),
+    email,
+    serviceCategory,
+    projectOverview,
+    status: asContactSubmissionStatus(payload.status, 'new'),
+    createdAt: asString(payload.createdAt) || new Date().toISOString()
+  };
+}
+
+export function validateContactSubmissionStatus(value: unknown): ContactSubmissionStatus | null {
+  const status = asString(value);
+  return isContactSubmissionStatus(status) ? status : null;
 }
 
 export function validateSiteSettings(payload: unknown): SiteSettings | null {
@@ -365,8 +448,8 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
   const sitemap = isObject(payload.sitemap) ? payload.sitemap : {};
 
   const siteName = asString(general.siteName) || asString(payload.siteName);
-  const baseUrl = asString(general.baseUrl) || asString(payload.baseUrl);
-  const defaultOgImage = asString(seo.defaultOgImage) || asString(payload.defaultOgImage);
+  const baseUrl = asSafeBaseUrl(general.baseUrl) || asSafeBaseUrl(payload.baseUrl);
+  const defaultOgImage = asSafeAssetUrl(seo.defaultOgImage) || asSafeAssetUrl(payload.defaultOgImage);
 
   const homepageDisplay = asString(reading.homepageDisplay) === 'latest_posts' ? 'latest_posts' : 'static_page';
   const homepagePageId = asString(reading.homepagePageId);
@@ -451,10 +534,11 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
     siteName,
     baseUrl,
     organizationName: asString(payload.organizationName),
-    organizationLogo: asString(payload.organizationLogo),
+    organizationLogo: asSafeAssetUrl(payload.organizationLogo),
     defaultOgImage
   };
 }
+
 
 
 

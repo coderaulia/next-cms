@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import '../src/services/loadLocalEnv';
 import type { CmsContent } from '../src/features/cms/types';
 import { replaceAllCmsContent } from '../src/features/cms/dbStore';
 
@@ -14,7 +15,7 @@ async function main() {
   console.log(
     `Imported ${Object.keys(content.pages).length} pages, ${content.blogPosts.length} posts, ${
       content.categories?.length ?? 0
-    } categories, and ${content.mediaAssets?.length ?? 0} media assets into Neon.`
+    } categories, and ${content.mediaAssets?.length ?? 0} media assets into database.`
   );
 }
 
@@ -22,3 +23,4 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
+

@@ -87,6 +87,7 @@ export const mediaAssetsTable = pgTable('media_assets', {
   height: integer('height'),
   sizeBytes: integer('size_bytes'),
   storageProvider: text('storage_provider').notNull(),
+  storageKey: text('storage_key'),
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull()
 });

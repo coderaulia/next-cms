@@ -50,6 +50,7 @@ export function normalizeMediaAssetRecord(
     height: asNullableNumber(input.height),
     sizeBytes: asNullableNumber(input.sizeBytes),
     storageProvider: input.storageProvider?.trim() || 'external-url',
+    storageKey: input.storageKey?.trim() || null,
     createdAt: input.createdAt || timestamp,
     updatedAt: timestamp
   };

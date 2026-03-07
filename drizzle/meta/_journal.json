@@ -8,6 +8,13 @@
       "when": 1772801469810,
       "tag": "0000_fuzzy_medusa",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772810166537,
+      "tag": "0001_salty_ironclad",
+      "breakpoints": true
     }
   ]
 }

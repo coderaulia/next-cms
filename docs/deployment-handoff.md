@@ -33,7 +33,7 @@ npm run start
 ## Hosting Notes
 
 Recommended production setup:
-- Neon for CMS data and admin sessions
+- Supabase Postgres for CMS data and admin sessions
 - Hostinger Node.js hosting for the Next.js app
 
 Do not rely on local file writes for production CMS data on shared hosting.

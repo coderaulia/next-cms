@@ -44,6 +44,11 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
+  const mediaAsset = await getMediaAssetById(id);
+  if (!mediaAsset) {
+    return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
+  }
+
   const removed = await deleteMediaAsset(id);
   if (!removed) {
     return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });

@@ -72,8 +72,8 @@ export type HeroBlock = HomeBlockBase & {
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   secondaryCtaStyle: CtaStyleToken;
+  animatedWords?: string[];
 };
-
 export type ValueTripletBlock = HomeBlockBase & {
   type: 'value_triplet';
   items: Array<{
@@ -186,8 +186,22 @@ export type MediaAsset = {
   height: number | null;
   sizeBytes: number | null;
   storageProvider: string;
+  storageKey: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type ContactSubmissionStatus = 'new' | 'in_review' | 'closed';
+
+export type ContactSubmission = {
+  id: string;
+  name: string;
+  company: string;
+  email: string;
+  serviceCategory: string;
+  projectOverview: string;
+  status: ContactSubmissionStatus;
+  createdAt: string;
 };
 
 export type GeneralSettings = {
@@ -287,3 +301,6 @@ export type CmsContent = {
   categories: Category[];
   mediaAssets: MediaAsset[];
 };
+
+
+

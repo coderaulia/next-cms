@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { ContactBriefForm } from '@/components/forms/ContactBriefForm';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
@@ -139,54 +140,12 @@ export function ContactPageView({ page }: ContactPageViewProps) {
 
       <section className="py-20 relative">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <div className="glass-panel p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-2xl shadow-blue-900/5">
-            <div className="flex items-center justify-between mb-12 gap-6">
-              <h2 className="text-3xl font-display font-black text-deepSlate italic">{brief.heading}</h2>
-              <span className="material-symbols-outlined text-slate-200 text-4xl">description</span>
-            </div>
-            <p className="text-slate-500 mb-12 font-light">{brief.body}</p>
-
-            <form className="space-y-8" action={brief.ctaHref || '/contact'} method="get">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-4">Name / Company</label>
-                  <input type="text" placeholder="John Doe or Acme Inc." className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate" />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-4">Business Email</label>
-                  <input type="email" placeholder="hello@yourbrand.com" className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate" />
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-4">I am interested in</label>
-                <select className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate appearance-none">
-                  <option value="">Select a service category</option>
-                  <option>Website Development</option>
-                  <option>Custom Web App</option>
-                  <option>Mobile App Development</option>
-                  <option>Business Infrastructure</option>
-                  <option>Secure Online Shop</option>
-                  <option>Official Business Email</option>
-                </select>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-4">Project Overview</label>
-                <textarea rows={4} placeholder="Tell us about your project goals, timeline, and current pain points..." className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate resize-none" />
-              </div>
-
-              <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-electricBlue text-sm">verified_user</span>
-                  {brief.mediaAlt || 'Response in 24 business hours'}
-                </div>
-                <button type="submit" className="w-full md:w-auto px-12 py-5 bg-deepSlate text-white font-display font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-black hover:shadow-2xl transition-all duration-300">
-                  {brief.ctaLabel || 'Submit Project Brief'}
-                </button>
-              </div>
-            </form>
-          </div>
+          <ContactBriefForm
+            heading={brief.heading}
+            body={brief.body}
+            submitLabel={brief.ctaLabel || 'Submit Project Brief'}
+            helperText={brief.mediaAlt || 'Response in 24 business hours'}
+          />
         </div>
       </section>
 

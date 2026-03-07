@@ -28,7 +28,8 @@ const defaultBlockPayload: Record<HomeBlockType, Record<string, unknown>> = {
     primaryCtaStyle: 'primary',
     secondaryCtaLabel: 'Secondary CTA',
     secondaryCtaHref: '/service',
-    secondaryCtaStyle: 'secondary'
+    secondaryCtaStyle: 'secondary',
+    animatedWords: ['amazing', 'new', 'wonderful', 'beautiful', 'smart']
   },
   value_triplet: {
     items: [{ id: 'item-1', icon: '⚡', title: 'Speed', text: 'Value text' }]
@@ -517,3 +518,4 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
     </div>
   );
 }
+

@@ -74,6 +74,7 @@ const mediaAsset = (
   height: 630,
   sizeBytes: null,
   storageProvider: 'external-url',
+  storageKey: null,
   createdAt: nowIso(),
   updatedAt: nowIso()
 });

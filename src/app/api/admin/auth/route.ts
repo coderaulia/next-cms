@@ -8,6 +8,7 @@ import {
   logoutAdminUser
 } from '@/features/cms/adminAuth';
 import type { AdminLoginPayload } from '@/features/cms/adminTypes';
+import { assertRateLimit, assertTrustedMutationRequest } from '@/services/requestSecurity';
 
 export async function GET(request: Request) {
   const session = await getAdminSession(request);
@@ -19,6 +20,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const originFailure = assertTrustedMutationRequest(request);
+  if (originFailure) return originFailure;
+
+  const rateLimitFailure = assertRateLimit(request, 'admin-login', 5, 60_000);
+  if (rateLimitFailure) return rateLimitFailure;
+
   const body = (await request.json().catch(() => null)) as Partial<AdminLoginPayload> | null;
   const email = body?.email ?? '';
   const password = body?.password ?? '';
@@ -33,6 +40,9 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const originFailure = assertTrustedMutationRequest(request);
+  if (originFailure) return originFailure;
+
   await logoutAdminUser(request);
   const response = NextResponse.json({ ok: true });
   return clearAdminSessionCookie(response);

@@ -1,5 +1,10 @@
 @import '@material-symbols/font-400/outlined.css';
 
+.text-spektr-cyan-50 {
+  color: #67e8f9;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -1581,5 +1586,6 @@ button:disabled {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 
 

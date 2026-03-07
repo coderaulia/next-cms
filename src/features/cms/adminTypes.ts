@@ -10,6 +10,10 @@ export type AdminAuthResponse = {
   user: AdminSessionUser;
 };
 
+export type AdminErrorResponse = {
+  error: string;
+};
+
 export type AdminLoginPayload = {
   email: string;
   password: string;
