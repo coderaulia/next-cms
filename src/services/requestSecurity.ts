@@ -77,7 +77,13 @@ export function getClientIdentifier(request: Request) {
 
 export function readCookieValue(request: Request, name: string) {
   const cookies = parseCookies(request.headers.get('cookie'));
-  return (cookies.get(name) || '').trim();
+  const raw = (cookies.get(name) || '').trim();
+
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
 }
 
 export function assertTrustedMutationRequest(request: Request) {
@@ -226,3 +232,5 @@ export function serializeJsonForScript(data: unknown) {
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029');
 }
+
+

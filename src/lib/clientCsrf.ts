@@ -12,10 +12,42 @@ function readCookie(name: string) {
     const separator = pair.indexOf('=');
     const key = separator === -1 ? pair : pair.slice(0, separator);
     if (key !== name) continue;
-    return separator === -1 ? '' : pair.slice(separator + 1);
+
+    const raw = separator === -1 ? '' : pair.slice(separator + 1);
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      return raw;
+    }
   }
 
   return '';
+}
+
+function writeCookie(name: string, value: string) {
+  if (typeof document === 'undefined') return;
+
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${name}=${encodeURIComponent(value)}; Path=/; SameSite=Lax${secure}`;
+}
+
+function generateToken() {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+}
+
+function ensureCsrfToken() {
+  const existing = readCookie(CSRF_COOKIE_NAME);
+  if (existing) {
+    return existing;
+  }
+
+  const generated = generateToken();
+  writeCookie(CSRF_COOKIE_NAME, generated);
+  return generated;
 }
 
 function isMutationMethod(method: string | undefined) {
@@ -24,13 +56,13 @@ function isMutationMethod(method: string | undefined) {
 }
 
 export function getCsrfToken() {
-  return readCookie(CSRF_COOKIE_NAME);
+  return ensureCsrfToken();
 }
 
 export function withCsrfHeaders(headers: HeadersInit | undefined, method: string | undefined) {
   const next = new Headers(headers ?? {});
   if (isMutationMethod(method)) {
-    const token = getCsrfToken();
+    const token = ensureCsrfToken();
     if (token) {
       next.set(CSRF_HEADER_NAME, token);
     }

@@ -70,3 +70,12 @@ Before publishing page/post:
 - Confirm canonical strategy
 - Confirm social image URL
 - Confirm `noindex` is disabled for public content
+
+## Editor UX (Stage 2.2)
+
+- Page editor and blog editor now show a sticky action toolbar with save state (Saved / Unsaved changes).
+- Keyboard shortcut: Ctrl+S / Cmd+S saves current draft in both editors.
+- Browser close/reload warning appears when there are unsaved changes.
+- Both editors include Preview and Discard actions for faster review loops.
+- SEO fields now display live character counters for title/description guidance.
+
