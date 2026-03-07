@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { LandingPage, PageId } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
+import { Reveal } from '@/components/animations/Reveal';
 
 type ServiceDetailPageId =
   | 'service-website-development'
@@ -436,24 +437,24 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
 
   return (
     <main>
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
           <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-blue-50/50 border border-blue-100/50 mb-8 backdrop-blur-sm mx-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-electricBlue animate-pulse" />
             <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-600">{hero.ctaLabel}</span>
           </div>
-          <h1 className="text-6xl md:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
+          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
             {heroPrimary}
             <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light pr-4">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
               {heroAccent}
             </span>
           </h1>
           <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">{hero.body}</p>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-20 relative">
+      <Reveal as="section" className="py-20 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {plans.map((plan, index) => {
@@ -506,9 +507,9 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
             })}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-24 relative overflow-hidden">
+      <Reveal as="section" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="text-center mb-16">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 block">
@@ -529,9 +530,9 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-24 relative overflow-hidden bg-slate-50/30">
+      <Reveal as="section" className="py-24 relative overflow-hidden bg-slate-50/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="text-center mb-20">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 block">
@@ -556,16 +557,16 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="relative py-40 overflow-hidden">
+      <Reveal as="section" className="relative py-40 overflow-hidden">
         <div className="max-w-5xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
           <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white w-full shadow-2xl shadow-blue-900/5 border border-white">
             <div className="relative z-10 w-full max-w-4xl mx-auto">
-              <h2 className="text-5xl md:text-7xl font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
+              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
                 {ctaPrimary}
                 <br />
-                <span className="text-brand-gradient italic font-light">{ctaAccent}</span>
+                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
               </h2>
               <p className="text-slate-500 text-lg font-light mb-12 max-w-xl mx-auto">{cta.body}</p>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
@@ -579,9 +580,15 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }
+
+
+
+
+
+
 
 

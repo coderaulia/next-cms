@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { LandingPage } from '@/features/cms/types';
 
 import { paragraphs, sectionWithFallback, splitAccent } from './sectionContent';
+import { Reveal } from '@/components/animations/Reveal';
 
 type AboutPageViewProps = {
   page: LandingPage;
@@ -125,7 +126,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
 
   return (
     <main>
-      <section className="relative min-h-[80vh] flex items-center pt-32 pb-20 overflow-hidden">
+      <Reveal as="section" className="relative min-h-[80vh] flex items-center pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[700px] bg-gradient-to-tr from-vanailaNavy via-electricBlue to-royalPurple opacity-20 filter blur-[100px] rounded-full animate-pulse duration-[10s]" />
           <div className="absolute top-10 left-10 w-64 h-64 bg-electricBlue opacity-20 filter blur-[80px] rounded-full mix-blend-multiply" />
@@ -143,10 +144,10 @@ export function AboutPageView({ page }: AboutPageViewProps) {
                 {hero.ctaLabel || 'Vanaila Digital:'}
               </span>
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[1.0] tracking-tighter mb-8 drop-shadow-sm">
+            <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[1.0] tracking-tighter mb-8 drop-shadow-sm">
               {heroPrimary}
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light pr-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
                 {heroAccent}
               </span>
             </h1>
@@ -155,9 +156,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
             </p>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-24 relative" id="story">
+      <Reveal as="section" className="py-24 relative" id="story">
         <div className="absolute top-[10%] right-[-10%] w-[50%] h-[60%] shard-gradient-soft -rotate-12 z-0" />
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="glass-card rounded-[3rem] p-10 md:p-16 overflow-hidden relative">
@@ -189,9 +190,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-20 relative bg-white/30 backdrop-blur-sm" id="vision">
+      <Reveal as="section" className="py-20 relative bg-white/30 backdrop-blur-sm" id="vision">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/50 opacity-60 z-0" />
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
@@ -211,9 +212,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-32 relative" id="values">
+      <Reveal as="section" className="py-32 relative" id="values">
         <div className="absolute bottom-0 left-0 w-full h-full shard-gradient-soft opacity-30 pointer-events-none z-0" />
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="text-center mb-20">
@@ -234,9 +235,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-20 bg-white relative overflow-hidden">
+      <Reveal as="section" className="py-20 bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-50/80 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
           <span className="material-symbols-outlined text-6xl text-slate-200 mb-8">{quote.ctaLabel || 'format_quote'}</span>
@@ -246,9 +247,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
           <div className="w-24 h-1 bg-gradient-to-r from-electricBlue to-vanailaNavy mx-auto rounded-full mb-8" />
           <p className="text-lg text-slate-500 leading-relaxed">{quote.body}</p>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="relative py-32 overflow-hidden" id="contact">
+      <Reveal as="section" className="relative py-32 overflow-hidden" id="contact">
         <div className="absolute inset-0 z-0 bg-slate-50">
           <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-30" />
           <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-30" />
@@ -256,10 +257,10 @@ export function AboutPageView({ page }: AboutPageViewProps) {
         <div className="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 w-full">
           <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white/50 w-full">
             <div className="relative z-10">
-              <h2 className="text-5xl md:text-7xl font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
+              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
                 {ctaPrimary}
                 <br />
-                <span className="text-brand-gradient italic font-light">{ctaAccent}</span>
+                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
               </h2>
               <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">
                 {cta.body}
@@ -273,8 +274,14 @@ export function AboutPageView({ page }: AboutPageViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }
+
+
+
+
+
+
 

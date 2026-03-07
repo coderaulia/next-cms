@@ -1,5 +1,8 @@
 import type { WhySplitBlock } from '@/features/cms/types';
 
+import { Reveal } from '@/components/animations/Reveal';
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
+
 type WhySplitBlockViewProps = {
   block: WhySplitBlock;
 };
@@ -24,19 +27,19 @@ export function WhySplitBlockView({ block }: WhySplitBlockViewProps) {
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
           <div className="space-y-16">
-            <div className="glass-panel p-10 rounded-[2.5rem] -ml-6 border-l-4 border-l-electricBlue">
+            <Reveal className="glass-panel p-10 rounded-[2.5rem] -ml-6 border-l-4 border-l-electricBlue" preset="fadeUp">
               <h2 className="text-5xl md:text-6xl font-display font-black text-deepSlate mb-6 leading-[0.9] tracking-tighter">
                 {block.heading}
               </h2>
               <p className="text-lg text-slate-500 font-light leading-relaxed">{block.description}</p>
-            </div>
+            </Reveal>
 
-            <div className="space-y-8 pl-4">
+            <StaggerGroup className="space-y-8 pl-4" delayChildren={0.05}>
               {block.bullets.map((bullet, index) => {
                 const icon = ITEM_ICONS[index % ITEM_ICONS.length];
                 const colorClass = ITEM_COLORS[index % ITEM_COLORS.length];
                 return (
-                  <div className="flex gap-8 items-start group" key={bullet.id}>
+                  <StaggerItem className="flex gap-8 items-start group" key={bullet.id}>
                     <div
                       className={`flex-shrink-0 w-16 h-16 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-slate-100 group-hover:text-white transition-all duration-500 group-hover:shadow-xl ${colorClass}`}
                     >
@@ -46,13 +49,13 @@ export function WhySplitBlockView({ block }: WhySplitBlockViewProps) {
                       <h4 className="text-xl font-black text-deepSlate mb-2 font-display">{bullet.title}</h4>
                       <p className="text-slate-500 font-light text-base leading-relaxed">{bullet.text}</p>
                     </div>
-                  </div>
+                  </StaggerItem>
                 );
               })}
-            </div>
+            </StaggerGroup>
           </div>
 
-          <div className="relative h-full min-h-[500px] flex items-center justify-center">
+          <Reveal className="relative h-full min-h-[500px] flex items-center justify-center" preset="scaleInSoft">
             <div className="absolute inset-0 bg-gradient-to-br from-electricBlue via-indigo-400 to-slate-400 opacity-20 blur-[80px] rounded-full" />
             <div className="glass-panel w-full aspect-square max-w-md rounded-[3rem] rotate-3 flex items-center justify-center p-12 border border-white/80 relative z-10">
               <div className="relative w-full h-full flex items-center justify-center">
@@ -78,7 +81,7 @@ export function WhySplitBlockView({ block }: WhySplitBlockViewProps) {
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

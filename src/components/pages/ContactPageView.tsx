@@ -4,6 +4,7 @@ import { ContactBriefForm } from '@/components/forms/ContactBriefForm';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
+import { Reveal } from '@/components/animations/Reveal';
 
 type ContactPageViewProps = {
   page: LandingPage;
@@ -119,7 +120,7 @@ export function ContactPageView({ page }: ContactPageViewProps) {
 
   return (
     <main>
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
           <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-blue-50/50 border border-blue-100/50 mb-8 backdrop-blur-sm mx-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-electricBlue animate-pulse" />
@@ -127,18 +128,18 @@ export function ContactPageView({ page }: ContactPageViewProps) {
               {hero.ctaLabel || 'Connect with the lab'}
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
+          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
             {heroPrimary}
             <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light pr-4">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
               {heroAccent}
             </span>
           </h1>
           <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">{hero.body}</p>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-20 relative">
+      <Reveal as="section" className="py-20 relative">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <ContactBriefForm
             heading={brief.heading}
@@ -147,9 +148,9 @@ export function ContactPageView({ page }: ContactPageViewProps) {
             helperText={brief.mediaAlt || 'Response in 24 business hours'}
           />
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-24 bg-deepSlate relative overflow-hidden">
+      <Reveal as="section" className="py-24 bg-deepSlate relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-10" />
           <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-10" />
@@ -226,7 +227,11 @@ export function ContactPageView({ page }: ContactPageViewProps) {
             </Link>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }
+
+
+
+

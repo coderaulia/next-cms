@@ -1589,3 +1589,19 @@ button:disabled {
 
 
 
+
+.hero-heading-safe {
+  font-size: clamp(2.15rem, 9.2vw, 5.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  padding-inline: clamp(4px, 1.1vw, 12px);
+  overflow-wrap: anywhere;
+}
+
+.cta-heading-safe {
+  font-size: clamp(1.95rem, 8.2vw, 4.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  padding-inline: clamp(4px, 1vw, 10px);
+  overflow-wrap: anywhere;
+}

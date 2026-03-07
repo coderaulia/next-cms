@@ -2,6 +2,9 @@ import Link from 'next/link';
 
 import type { LogoCloudBlock } from '@/features/cms/types';
 
+import { Reveal } from '@/components/animations/Reveal';
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
+
 type LogoCloudBlockViewProps = {
   block: LogoCloudBlock;
 };
@@ -17,22 +20,22 @@ export function LogoCloudBlockView({ block }: LogoCloudBlockViewProps) {
         <div className="absolute top-1/2 right-0 w-[40%] h-[1px] bg-gradient-to-l from-transparent via-slate-200 to-transparent" />
       </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
+        <Reveal className="text-center mb-24" preset="fadeIn">
           <h2 className="text-slate-400 font-bold tracking-[0.6em] uppercase text-xs">{block.heading}</h2>
-        </div>
+        </Reveal>
 
-        <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700 mb-24">
+        <StaggerGroup className="flex flex-wrap justify-center items-center gap-x-16 gap-y-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700 mb-24" delayChildren={0.05}>
           {block.logos.map((logo, index) => (
-            <div className="flex items-center gap-3 text-2xl font-display font-black text-deepSlate" key={logo.id}>
+            <StaggerItem className="flex items-center gap-3 text-2xl font-display font-black text-deepSlate" key={logo.id}>
               <span className={`material-symbols-outlined text-3xl ${LOGO_ICON_COLORS[index % LOGO_ICON_COLORS.length]}`}>
                 {LOGO_ICONS[index % LOGO_ICONS.length]}
               </span>
               {logo.name}
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
 
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
+        <Reveal className="flex flex-col sm:flex-row justify-center items-center gap-6" preset="fadeUp" delay={0.1}>
           <Link
             href={block.primaryCtaHref || '/blog'}
             className="px-10 py-5 bg-white border-2 border-slate-100 text-deepSlate font-bold text-xs uppercase tracking-[0.2em] hover:border-electricBlue hover:text-electricBlue transition-all rounded-full shadow-sm"
@@ -45,7 +48,7 @@ export function LogoCloudBlockView({ block }: LogoCloudBlockViewProps) {
           >
             {block.secondaryCtaLabel}
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -61,14 +61,14 @@ function Hero({
     <div className="relative z-10 w-full">
       <div className="flex flex-col items-center justify-center gap-8 py-8 lg:py-12">
         <div className="flex w-full flex-col gap-4">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter text-center drop-shadow-sm">
+          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter text-center drop-shadow-sm">
             {titlePrimary}
           </h1>
           <div className="relative h-14 md:h-20 lg:h-24 overflow-hidden">
             {titles.map((title, index) => (
               <motion.span
                 key={title}
-                className="absolute inset-x-0 text-center text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter"
+                className="absolute inset-x-0 text-center hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter"
                 initial={{ opacity: 0, y: -100 }}
                 transition={{ type: 'spring', stiffness: 50 }}
                 animate={
@@ -109,3 +109,4 @@ function Hero({
 }
 
 export { Hero };
+

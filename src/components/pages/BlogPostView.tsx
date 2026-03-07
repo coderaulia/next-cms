@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { BlogPost } from '@/features/cms/types';
 
 import { formatDateLabel } from './sectionContent';
+import { Reveal } from '@/components/animations/Reveal';
 
 type BlogPostViewProps = {
   post: BlogPost;
@@ -17,7 +18,7 @@ function toMinutes(content: string) {
 export function BlogPostView({ post, related }: BlogPostViewProps) {
   return (
     <main className="bg-slate-50/30">
-      <section className="relative h-[60vh] min-h-[500px] w-full overflow-hidden bg-deepSlate">
+      <Reveal as="section" className="relative h-[60vh] min-h-[500px] w-full overflow-hidden bg-deepSlate">
         {post.coverImage ? <img src={post.coverImage} alt={post.title} className="absolute inset-0 w-full h-full object-cover opacity-40" /> : null}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-deepSlate/20 to-deepSlate/60" />
 
@@ -42,9 +43,9 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-32">
+      <Reveal as="section" className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-32">
         <div className="flex flex-col lg:flex-row gap-16">
           <aside className="hidden lg:block w-64 shrink-0">
             <div className="sticky top-32 space-y-12">
@@ -91,10 +92,10 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {related.length > 0 ? (
-        <section className="bg-white border-t border-slate-100 py-32">
+        <Reveal as="section" className="bg-white border-t border-slate-100 py-32">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <div className="flex justify-between items-end mb-16">
               <div>
@@ -127,9 +128,11 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
               ))}
             </div>
           </div>
-        </section>
+        </Reveal>
       ) : null}
     </main>
   );
 }
+
+
 

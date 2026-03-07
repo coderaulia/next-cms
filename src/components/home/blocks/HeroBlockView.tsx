@@ -1,5 +1,6 @@
 import type { HeroBlock } from '@/features/cms/types';
 
+import { Reveal } from '@/components/animations/Reveal';
 import { Hero } from '@/components/ui/animated-hero';
 
 type HeroBlockViewProps = {
@@ -26,19 +27,21 @@ export function HeroBlockView({ block }: HeroBlockViewProps) {
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
         <div className="bg-white/30 backdrop-blur-2xl p-12 md:p-24 rounded-[3rem] relative overflow-hidden ring-1 ring-white/40 shadow-[0_8px_60px_-12px_rgba(37,99,235,0.15)]">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/50 via-white/10 to-blue-50/20 pointer-events-none" />
-          <Hero
-            badge={block.badge}
-            titlePrimary={block.titlePrimary}
-            titleAccent={block.titleAccent}
-            description={block.description}
-            primaryCtaLabel={block.primaryCtaLabel}
-            primaryCtaHref={block.primaryCtaHref}
-            secondaryCtaLabel={block.secondaryCtaLabel}
-            secondaryCtaHref={block.secondaryCtaHref}
-            animatedWords={block.animatedWords}
-            primaryButtonClass={primaryButtonClass}
-            secondaryButtonClass={secondaryButtonClass}
-          />
+          <Reveal preset="fadeUp">
+            <Hero
+              badge={block.badge}
+              titlePrimary={block.titlePrimary}
+              titleAccent={block.titleAccent}
+              description={block.description}
+              primaryCtaLabel={block.primaryCtaLabel}
+              primaryCtaHref={block.primaryCtaHref}
+              secondaryCtaLabel={block.secondaryCtaLabel}
+              secondaryCtaHref={block.secondaryCtaHref}
+              animatedWords={block.animatedWords}
+              primaryButtonClass={primaryButtonClass}
+              secondaryButtonClass={secondaryButtonClass}
+            />
+          </Reveal>
         </div>
       </div>
     </section>

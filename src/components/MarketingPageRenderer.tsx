@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 import type { LandingPage } from '@/features/cms/types';
 
+import { Reveal } from '@/components/animations/Reveal';
+
 type MarketingPageRendererProps = {
   page: LandingPage;
 };
@@ -18,7 +20,7 @@ export function MarketingPageRenderer({ page }: MarketingPageRendererProps) {
           backgroundColor: section.theme.accent
         };
         return (
-          <section className="marketing-section" key={section.id} style={sectionStyle}>
+          <Reveal as="section" className="marketing-section" key={section.id} style={sectionStyle}>
             <div className={`container section-grid ${section.layout}`}>
               <div>
                 <h1 className="section-title">{section.heading}</h1>
@@ -35,7 +37,7 @@ export function MarketingPageRenderer({ page }: MarketingPageRendererProps) {
                 </div>
               ) : null}
             </div>
-          </section>
+          </Reveal>
         );
       })}
     </main>

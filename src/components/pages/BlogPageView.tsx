@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { BlogPost } from '@/features/cms/types';
 
 import { formatDateLabel } from './sectionContent';
+import { Reveal } from '@/components/animations/Reveal';
 
 type BlogPageViewProps = {
   posts: BlogPost[];
@@ -57,15 +58,15 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
 
   return (
     <main>
-      <section className="relative pt-32 pb-12 overflow-hidden">
+      <Reveal as="section" className="relative pt-32 pb-12 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
           <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-slate-50/50 border border-slate-100/50 mb-8 backdrop-blur-sm mx-auto">
             <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-400">Digital Intelligence</span>
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
+          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
             Insights on
             <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light pr-4">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
               Engineering &amp; Growth
             </span>
           </h1>
@@ -73,10 +74,10 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
             Technical leadership, performance optimization, and digital strategy for the engineering-minded entrepreneur.
           </p>
         </div>
-      </section>
+      </Reveal>
 
       {featured ? (
-        <section className="py-12 relative">
+        <Reveal as="section" className="py-12 relative">
           <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
             <Link
               href={`/blog/${featured.seo.slug}`}
@@ -129,10 +130,10 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
               </div>
             </Link>
           </div>
-        </section>
+        </Reveal>
       ) : null}
 
-      <section className="py-20 relative">
+      <Reveal as="section" className="py-20 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
             <div className="flex gap-4 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
@@ -245,9 +246,9 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
             </div>
           ) : null}
         </div>
-      </section>
+      </Reveal>
 
-      <section className="relative py-40 overflow-hidden">
+      <Reveal as="section" className="relative py-40 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-slate-50">
           <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-30" />
           <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-30" />
@@ -255,10 +256,10 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
         <div className="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 w-full">
           <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white/50 w-full">
             <div className="relative z-10 w-full max-w-4xl mx-auto">
-              <h2 className="text-5xl md:text-7xl font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
+              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
                 Ready to build your
                 <br />
-                <span className="text-brand-gradient italic font-light">own success story?</span>
+                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">own success story?</span>
               </h2>
               <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">
                 Let&apos;s discuss how our engineering approach can solve your specific business challenges.
@@ -275,8 +276,14 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }
+
+
+
+
+
+
 

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
+import { Reveal } from '@/components/animations/Reveal';
 
 type PartnershipPageViewProps = {
   page: LandingPage;
@@ -180,7 +181,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
 
   return (
     <main>
-      <section className="relative pt-32 pb-20 overflow-hidden bg-vanailaNavy text-white">
+      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden bg-vanailaNavy text-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#3B82F6,transparent)]" />
         </div>
@@ -192,7 +193,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
             </span>
             {hero.ctaLabel}
           </div>
-          <h1 className="text-5xl md:text-7xl font-display font-black leading-[1.1] mb-8 tracking-tighter">
+          <h1 className="hero-heading-safe font-display font-black leading-[1.1] mb-8 tracking-tighter">
             {heroPrimary}
             <br />
             <span className="bg-gradient-to-r from-electricBlue via-vibrantCyan to-electricBlue bg-clip-text text-transparent">
@@ -203,9 +204,9 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
             {hero.body}
           </p>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-24 bg-white">
+      <Reveal as="section" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <h2 className="text-4xl md:text-5xl font-display font-black text-deepSlate mb-4">{programIntro.heading}</h2>
@@ -227,9 +228,9 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-24 relative overflow-hidden">
+      <Reveal as="section" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="glass-panel p-12 md:p-20 rounded-[4rem] border border-white/60 shadow-2xl shadow-blue-500/5 bg-white/40 backdrop-blur-3xl">
             <div className="max-w-3xl mb-16">
@@ -249,9 +250,9 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="py-32 bg-vanailaNavy text-white">
+      <Reveal as="section" className="py-32 bg-vanailaNavy text-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-20 space-y-4">
             <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight italic">{perksIntro.heading}</h2>
@@ -267,9 +268,9 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="relative py-40 overflow-hidden">
+      <Reveal as="section" className="relative py-40 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-slate-50">
           <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-30" />
           <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-30" />
@@ -277,10 +278,10 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
         <div className="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 w-full">
           <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white/50 w-full">
             <div className="relative z-10 w-full max-w-4xl mx-auto">
-              <h2 className="text-5xl md:text-7xl font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
+              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
                 {ctaPrimary}
                 <br />
-                <span className="text-brand-gradient italic font-light">{ctaAccent}</span>
+                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
               </h2>
               <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">{cta.body}</p>
               <Link
@@ -293,7 +294,12 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }
+
+
+
+
+
