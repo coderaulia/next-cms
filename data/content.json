@@ -13,12 +13,20 @@
       "navLabel": "Home",
       "published": true,
       "seo": {
-        "metaTitle": "Faster Tech. Smarter Work. Scaled Results. | Vanaila Digital",
-        "metaDescription": "Premium engineering-focused digital agency for high-performance infrastructure.",
+        "metaTitle": "Vanaila Digital | Web Development, Custom Software, and Business Automation",
+        "metaDescription": "Vanaila Digital helps businesses scale with high-performance websites, custom software, ecommerce systems, and mobile apps.",
         "slug": "",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "web development agency",
+          "custom software development",
+          "business automation",
+          "mobile app development",
+          "ecommerce development",
+          "digital agency indonesia"
+        ]
       },
       "sections": [],
       "homeBlocks": [
@@ -205,12 +213,18 @@
       "navLabel": "About",
       "published": true,
       "seo": {
-        "metaTitle": "About Our Team | Acme Marketing",
-        "metaDescription": "Meet the team behind your website growth system.",
+        "metaTitle": "About Vanaila Digital | Engineering-First Digital Partner",
+        "metaDescription": "Learn about Vanaila Digital, an engineering-first team building scalable websites, software products, and growth systems.",
         "slug": "about",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "about vanaila digital",
+          "digital engineering team",
+          "website development partner",
+          "custom software team"
+        ]
       },
       "sections": [
         {
@@ -372,12 +386,19 @@
       "navLabel": "Services",
       "published": true,
       "seo": {
-        "metaTitle": "Services | Acme Marketing",
-        "metaDescription": "Website and growth services built for modern marketing teams.",
+        "metaTitle": "Digital Services | Website, Custom Software, Ecommerce, Mobile Apps",
+        "metaDescription": "Explore Vanaila Digital services including website development, custom tools, ecommerce, mobile apps, and business email setup.",
         "slug": "service",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "digital services",
+          "website development services",
+          "custom software services",
+          "ecommerce development",
+          "mobile app services"
+        ]
       },
       "sections": [
         {
@@ -569,12 +590,18 @@
       "navLabel": "Website Development",
       "published": true,
       "seo": {
-        "metaTitle": "Website Development | Vanaila Digital",
-        "metaDescription": "Engineering your digital growth with high-performance web architecture.",
+        "metaTitle": "Website Development Services | Fast, SEO-Ready Business Websites",
+        "metaDescription": "Get a fast, responsive, SEO-ready business website built for conversions and long-term growth.",
         "slug": "website-development",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "website development services",
+          "seo website development",
+          "business website design",
+          "fast loading website"
+        ]
       },
       "sections": [
         {
@@ -826,12 +853,18 @@
       "navLabel": "Custom Business Tools",
       "published": true,
       "seo": {
-        "metaTitle": "Custom Business Tools | Vanaila Digital",
-        "metaDescription": "Automate workflows with bespoke internal tools and systems.",
+        "metaTitle": "Custom Business Tools | Workflow Automation and Internal Systems",
+        "metaDescription": "Build custom dashboards, internal tools, and workflow automation systems tailored to your business operations.",
         "slug": "custom-business-tools",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "custom business tools",
+          "workflow automation",
+          "internal dashboard development",
+          "business process automation"
+        ]
       },
       "sections": [
         {
@@ -1083,12 +1116,18 @@
       "navLabel": "Secure Online Shops",
       "published": true,
       "seo": {
-        "metaTitle": "Secure Online Shops | Vanaila Digital",
-        "metaDescription": "Build secure, scalable ecommerce infrastructure for growth.",
+        "metaTitle": "Secure Online Shop Development | Ecommerce Website Solutions",
+        "metaDescription": "Launch a secure ecommerce website with reliable payments, inventory sync, and performance-focused architecture.",
         "slug": "secure-online-shops",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "secure online shop",
+          "ecommerce website development",
+          "woocommerce development",
+          "online store security"
+        ]
       },
       "sections": [
         {
@@ -1340,12 +1379,18 @@
       "navLabel": "Mobile Business App",
       "published": true,
       "seo": {
-        "metaTitle": "Mobile Business App | Vanaila Digital",
-        "metaDescription": "Deliver high-fidelity mobile apps for iOS and Android.",
+        "metaTitle": "Mobile Business App Development | iOS and Android Solutions",
+        "metaDescription": "Develop mobile business apps for iOS and Android with scalable backend integration and smooth user experience.",
         "slug": "mobile-business-app",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "mobile app development",
+          "ios android app",
+          "react native development",
+          "business mobile app"
+        ]
       },
       "sections": [
         {
@@ -1597,12 +1642,18 @@
       "navLabel": "Official Business Email",
       "published": true,
       "seo": {
-        "metaTitle": "Official Business Email | Vanaila Digital",
-        "metaDescription": "Professional business email infrastructure with deliverability and security.",
+        "metaTitle": "Official Business Email Setup | Secure Domain Email Infrastructure",
+        "metaDescription": "Set up secure domain-based business email with SPF, DKIM, and DMARC for stronger trust and deliverability.",
         "slug": "official-business-email",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "business email setup",
+          "domain email setup",
+          "google workspace setup",
+          "spf dkim dmarc"
+        ]
       },
       "sections": [
         {
@@ -1854,12 +1905,18 @@
       "navLabel": "Partnership",
       "published": true,
       "seo": {
-        "metaTitle": "Partnership Program | Vanaila Digital",
-        "metaDescription": "Join our technical alliance and referral partner network.",
+        "metaTitle": "Partnership Program | Agency and Technical Alliance with Vanaila Digital",
+        "metaDescription": "Partner with Vanaila Digital through referral and technical alliance programs to deliver high-performance solutions.",
         "slug": "partnership",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "digital agency partnership",
+          "technical alliance program",
+          "referral partnership",
+          "white label development"
+        ]
       },
       "sections": [
         {
@@ -2096,12 +2153,18 @@
       "navLabel": "Contact",
       "published": true,
       "seo": {
-        "metaTitle": "Contact | Acme Marketing",
-        "metaDescription": "Get in touch to discuss your next campaign or website project.",
+        "metaTitle": "Contact Vanaila Digital | Book a Strategy Call",
+        "metaDescription": "Contact Vanaila Digital to discuss your website, software, or automation goals and get a practical implementation plan.",
         "slug": "contact",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "contact vanaila digital",
+          "book strategy call",
+          "web development consultation",
+          "software consultation"
+        ]
       },
       "sections": [
         {
@@ -2280,7 +2343,12 @@
         "slug": "high-converting-service-landing-page",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "service landing page",
+          "conversion optimization",
+          "technical seo"
+        ]
       }
     },
     {
@@ -2303,7 +2371,12 @@
         "slug": "editorial-workflow-checklist",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
-        "noIndex": false
+        "noIndex": false,
+        "keywords": [
+          "editorial workflow",
+          "cms publishing",
+          "content operations"
+        ]
       }
     }
   ]

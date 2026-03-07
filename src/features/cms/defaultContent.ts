@@ -23,13 +23,14 @@ const section = (
   }
 });
 
-const seo = (slug: string, title: string, description: string): SeoFields => ({
+const seo = (slug: string, title: string, description: string, keywords: string[] = []): SeoFields => ({
   metaTitle: title,
   metaDescription: description,
   slug,
   canonical: '',
   socialImage: 'https://placehold.co/1200x630/png',
-  noIndex: false
+  noIndex: false,
+  keywords
 });
 
 const page = (
@@ -38,17 +39,26 @@ const page = (
   navLabel: string,
   description: string,
   sections: PageSection[],
-  options?: { slug?: string }
+  options?: {
+    slug?: string;
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+  }
 ): LandingPage => ({
   id,
   title,
   navLabel,
   published: true,
-  seo: seo(options?.slug ?? (id === 'home' ? '' : id), `${title} | Vanaila Digital`, description),
+  seo: seo(
+    options?.slug ?? (id === 'home' ? '' : id),
+    options?.metaTitle ?? `${title} | Vanaila Digital`,
+    options?.metaDescription ?? description,
+    options?.keywords ?? []
+  ),
   sections,
   updatedAt: nowIso()
 });
-
 const category = (name: string, slug: string, description: string) => ({
   id: `category-${slug}`,
   name,
@@ -172,7 +182,20 @@ const home = page(
   'Faster Tech. Smarter Work. Scaled Results.',
   'Home',
   'Premium engineering-focused digital agency for high-performance infrastructure.',
-  []
+  [],
+  {
+    metaTitle: 'Vanaila Digital | Web Development, Custom Software, and Business Automation',
+    metaDescription:
+      'Vanaila Digital helps businesses scale with high-performance websites, custom software, ecommerce systems, and mobile apps.',
+    keywords: [
+      'web development agency',
+      'custom software development',
+      'business automation',
+      'mobile app development',
+      'ecommerce development',
+      'digital agency indonesia'
+    ]
+  }
 );
 home.homeBlocks = [
   {
@@ -397,7 +420,12 @@ const serviceWebsite = page(
     ctaDescription:
       'Whether you are a scaling startup or an established enterprise, technical clarity will guide your next breakthrough.'
   }),
-  { slug: 'website-development' }
+  {
+    slug: 'website-development',
+    metaTitle: 'Website Development Services | Fast, SEO-Ready Business Websites',
+    metaDescription: 'Get a fast, responsive, SEO-ready business website built for conversions and long-term growth.',
+    keywords: ['website development services', 'seo website development', 'business website design', 'fast loading website']
+  }
 );
 
 const serviceTools = page(
@@ -458,7 +486,12 @@ const serviceTools = page(
     ctaAccent: 'operational friction?',
     ctaDescription: 'Turn technical complexity into a competitive advantage.'
   }),
-  { slug: 'custom-business-tools' }
+  {
+    slug: 'custom-business-tools',
+    metaTitle: 'Custom Business Tools | Workflow Automation and Internal Systems',
+    metaDescription: 'Build custom dashboards, internal tools, and workflow automation systems tailored to your business operations.',
+    keywords: ['custom business tools', 'workflow automation', 'internal dashboard development', 'business process automation']
+  }
 );
 
 const serviceShop = page(
@@ -519,7 +552,12 @@ const serviceShop = page(
     ctaAccent: 'digital market?',
     ctaDescription: 'Build a shop that sells while you sleep with reliable ecommerce infrastructure.'
   }),
-  { slug: 'secure-online-shops' }
+  {
+    slug: 'secure-online-shops',
+    metaTitle: 'Secure Online Shop Development | Ecommerce Website Solutions',
+    metaDescription: 'Launch a secure ecommerce website with reliable payments, inventory sync, and performance-focused architecture.',
+    keywords: ['secure online shop', 'ecommerce website development', 'woocommerce development', 'online store security']
+  }
 );
 
 const serviceMobile = page(
@@ -580,7 +618,12 @@ const serviceMobile = page(
     ctaAccent: 'in their pocket?',
     ctaDescription: 'Discuss your mobile strategy and start building high-performance apps today.'
   }),
-  { slug: 'mobile-business-app' }
+  {
+    slug: 'mobile-business-app',
+    metaTitle: 'Mobile Business App Development | iOS and Android Solutions',
+    metaDescription: 'Develop mobile business apps for iOS and Android with scalable backend integration and smooth user experience.',
+    keywords: ['mobile app development', 'ios android app', 'react native development', 'business mobile app']
+  }
 );
 
 const serviceEmail = page(
@@ -641,7 +684,12 @@ const serviceEmail = page(
     ctaAccent: 'your communication?',
     ctaDescription: 'Set up secure, high-authority email infrastructure and communicate with confidence.'
   }),
-  { slug: 'official-business-email' }
+  {
+    slug: 'official-business-email',
+    metaTitle: 'Official Business Email Setup | Secure Domain Email Infrastructure',
+    metaDescription: 'Set up secure domain-based business email with SPF, DKIM, and DMARC for stronger trust and deliverability.',
+    keywords: ['business email setup', 'domain email setup', 'google workspace setup', 'spf dkim dmarc']
+  }
 );
 
 const partnership = page(
@@ -756,7 +804,12 @@ const partnership = page(
       layout: 'stacked'
     })
   ],
-  { slug: 'partnership' }
+  {
+    slug: 'partnership',
+    metaTitle: 'Partnership Program | Agency and Technical Alliance with Vanaila Digital',
+    metaDescription: 'Partner with Vanaila Digital through referral and technical alliance programs to deliver high-performance solutions.',
+    keywords: ['digital agency partnership', 'technical alliance program', 'referral partnership', 'white label development']
+  }
 );
 
 export const defaultContent: CmsContent = {
@@ -848,7 +901,13 @@ export const defaultContent: CmsContent = {
             ctaHref: '/blog'
           }
         )
-      ]
+      ],
+      {
+        metaTitle: 'About Vanaila Digital | Engineering-First Digital Partner',
+        metaDescription:
+          'Learn about Vanaila Digital, an engineering-first team building scalable websites, software products, and growth systems.',
+        keywords: ['about vanaila digital', 'digital engineering team', 'website development partner', 'custom software team']
+      }
     ),
     service: page(
       'service',
@@ -865,7 +924,13 @@ export const defaultContent: CmsContent = {
             ctaHref: '/contact'
           }
         )
-      ]
+      ],
+      {
+        metaTitle: 'Digital Services | Website, Custom Software, Ecommerce, Mobile Apps',
+        metaDescription:
+          'Explore Vanaila Digital services including website development, custom tools, ecommerce, mobile apps, and business email setup.',
+        keywords: ['digital services', 'website development services', 'custom software services', 'ecommerce development', 'mobile app services']
+      }
     ),
     'service-website-development': serviceWebsite,
     'service-custom-business-tools': serviceTools,
@@ -888,7 +953,13 @@ export const defaultContent: CmsContent = {
             ctaHref: 'mailto:hello@example.com'
           }
         )
-      ]
+      ],
+      {
+        metaTitle: 'Contact Vanaila Digital | Book a Strategy Call',
+        metaDescription:
+          'Contact Vanaila Digital to discuss your website, software, or automation goals and get a practical implementation plan.',
+        keywords: ['contact vanaila digital', 'book strategy call', 'web development consultation', 'software consultation']
+      }
     )
   },
   blogPosts: [
@@ -922,7 +993,8 @@ Keep sections simple and measurable.`,
         slug: 'high-converting-service-landing-page',
         canonical: '',
         socialImage: 'https://placehold.co/1200x630/png',
-        noIndex: false
+        noIndex: false,
+        keywords: ['service landing page', 'conversion optimization', 'technical seo']
       }
     },
     {
@@ -947,7 +1019,8 @@ Draft quickly, review carefully, then publish with SEO checks.`,
         slug: 'editorial-workflow-checklist',
         canonical: '',
         socialImage: 'https://placehold.co/1200x630/png',
-        noIndex: false
+        noIndex: false,
+        keywords: ['editorial workflow', 'cms publishing', 'content operations']
       }
     }
   ],
@@ -980,4 +1053,12 @@ Draft quickly, review carefully, then publish with SEO checks.`,
     )
   ]
 };
+
+
+
+
+
+
+
+
 

@@ -181,6 +181,24 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               onChange={(e) => setPage({ ...page, seo: { ...page.seo, socialImage: e.target.value } })}
             />
           </label>
+          <label>
+            Keywords (comma separated)
+            <input
+              value={(page.seo.keywords ?? []).join(', ')}
+              onChange={(e) =>
+                setPage({
+                  ...page,
+                  seo: {
+                    ...page.seo,
+                    keywords: e.target.value
+                      .split(',')
+                      .map((item) => item.trim().toLowerCase())
+                      .filter(Boolean)
+                  }
+                })
+              }
+            />
+          </label>
         </div>
         <label>
           Meta description
@@ -518,4 +536,5 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
     </div>
   );
 }
+
 

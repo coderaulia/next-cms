@@ -15,15 +15,16 @@ export async function generateMetadata() {
   return buildMetadata(
     settings,
     {
-      metaTitle: 'Insights',
-      metaDescription: 'Technical leadership, performance optimization, and digital strategy insights.',
+      metaTitle: 'Insights | Web Development, SEO, and Digital Growth Resources',
+      metaDescription: 'Actionable insights on website performance, SEO, custom software, and digital growth strategy for modern businesses.',
       slug: 'blog',
       canonical: '',
       socialImage: settings.defaultOgImage,
-      noIndex: false
+      noIndex: false,
+      keywords: ['web development insights', 'technical seo', 'digital growth strategy', 'custom software']
     },
-    'Insights',
-    'Technical leadership, performance optimization, and digital strategy insights.'
+    'Insights | Web Development, SEO, and Digital Growth Resources',
+    'Actionable insights on website performance, SEO, custom software, and digital growth strategy for modern businesses.'
   );
 }
 
@@ -48,3 +49,4 @@ export default async function BlogListPage({ searchParams }: BlogListPageProps) 
     />
   );
 }
+

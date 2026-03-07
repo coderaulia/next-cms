@@ -44,6 +44,19 @@ const asString = (value: unknown) => (typeof value === 'string' ? value : '');
 
 const asBoolean = (value: unknown) => Boolean(value);
 
+const asKeywords = (value: unknown): string[] => {
+  const values = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.split(',')
+      : [];
+
+  return values
+    .map((entry) => asString(entry).trim().toLowerCase())
+    .filter((entry) => entry.length > 0)
+    .filter((entry, index, list) => list.indexOf(entry) === index);
+};
+
 const asNumber = (value: unknown, fallback = 0) => {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string' && value.trim().length > 0) {
@@ -309,7 +322,8 @@ export function validateLandingPage(payload: unknown): LandingPage | null {
       slug: asString(rawSeo.slug),
       canonical: asSafeBaseUrl(rawSeo.canonical),
       socialImage: asSafeAssetUrl(rawSeo.socialImage),
-      noIndex: asBoolean(rawSeo.noIndex)
+      noIndex: asBoolean(rawSeo.noIndex),
+      keywords: asKeywords(rawSeo.keywords)
     },
     sections,
     homeBlocks,
@@ -343,7 +357,8 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
       slug: asString(rawSeo.slug),
       canonical: asSafeBaseUrl(rawSeo.canonical),
       socialImage: asSafeAssetUrl(rawSeo.socialImage),
-      noIndex: asBoolean(rawSeo.noIndex)
+      noIndex: asBoolean(rawSeo.noIndex),
+      keywords: asKeywords(rawSeo.keywords)
     }
   };
 }
@@ -538,6 +553,9 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
     defaultOgImage
   };
 }
+
+
+
 
 
 

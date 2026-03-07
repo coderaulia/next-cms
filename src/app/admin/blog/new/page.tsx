@@ -33,7 +33,8 @@ function CreateBlogPost() {
           slug: 'untitled-post',
           canonical: '',
           socialImage: '',
-          noIndex: false
+          noIndex: false,
+          keywords: []
         }
       })
     });
@@ -68,3 +69,4 @@ export default function AdminBlogCreatePage() {
     </AdminShell>
   );
 }
+

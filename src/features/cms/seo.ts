@@ -46,11 +46,17 @@ export function buildMetadata(
     seo.metaDescription || fallbackDescription || site.seo.defaultMetaDescription || '';
   const canonical = buildCanonical(site.baseUrl, seo.slug, seo.canonical);
   const ogImage = seo.socialImage || site.seo.defaultOgImage || site.defaultOgImage;
+  const keywords = Array.isArray(seo.keywords)
+    ? seo.keywords
+        .map((keyword) => keyword.trim())
+        .filter((keyword, index, list) => keyword.length > 0 && list.indexOf(keyword) === index)
+    : [];
   const noIndex = seo.noIndex || site.seo.defaultNoIndex || site.reading.discourageSearchEngines;
 
   return {
     title,
     description,
+    keywords: keywords.length > 0 ? keywords : undefined,
     alternates: {
       canonical
     },
@@ -70,3 +76,4 @@ export function buildMetadata(
     }
   };
 }
+

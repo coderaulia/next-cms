@@ -25,6 +25,7 @@ export type SeoFields = {
   canonical: string;
   socialImage: string;
   noIndex: boolean;
+  keywords?: string[];
 };
 
 export type SectionTheme = {
@@ -301,6 +302,7 @@ export type CmsContent = {
   categories: Category[];
   mediaAssets: MediaAsset[];
 };
+
 
 
 

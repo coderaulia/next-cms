@@ -243,6 +243,24 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
           />
         </label>
         <label>
+          Keywords (comma separated)
+          <input
+            value={(post.seo.keywords ?? []).join(', ')}
+            onChange={(event) =>
+              setPost({
+                ...post,
+                seo: {
+                  ...post.seo,
+                  keywords: event.target.value
+                    .split(',')
+                    .map((item) => item.trim().toLowerCase())
+                    .filter(Boolean)
+                }
+              })
+            }
+          />
+        </label>
+        <label>
           Noindex
           <input
             type="checkbox"
@@ -278,3 +296,4 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
     </div>
   );
 }
+

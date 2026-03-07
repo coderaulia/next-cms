@@ -332,7 +332,8 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
       slug,
       canonical: payload?.seo?.canonical || '',
       socialImage: payload?.seo?.socialImage || '',
-      noIndex: payload?.seo?.noIndex ?? false
+      noIndex: payload?.seo?.noIndex ?? false,
+      keywords: payload?.seo?.keywords ?? []
     }
   };
 
@@ -385,6 +386,7 @@ export async function setPostStatus(id: string, status: 'draft' | 'published'): 
   await getDb().update(blogPostsTable).set(postToRow(next)).where(eq(blogPostsTable.id, id));
   return next;
 }
+
 
 
 

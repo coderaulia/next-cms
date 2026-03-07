@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps) {
   }
   return buildMetadata(
     settings,
-    { ...post.seo, slug: `blog/${post.seo.slug}` },
+    { ...post.seo, slug: `blog/${post.seo.slug}`, keywords: post.seo.keywords ?? post.tags },
     post.title,
     post.excerpt
   );
@@ -79,3 +79,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     </>
   );
 }
+
+
+
+

@@ -3,38 +3,32 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { MoveRight, PhoneCall } from 'lucide-react';
+import { MoveRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
 type HeroProps = {
-  badge: string;
+  badge?: string;
   titlePrimary: string;
-  titleAccent: string;
+  titleAccent?: string;
   description: string;
   primaryCtaLabel: string;
   primaryCtaHref: string;
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   animatedWords?: string[];
-  microCtaLabel?: string;
-  microCtaHref?: string;
   primaryButtonClass?: string;
   secondaryButtonClass?: string;
 };
 
 function Hero({
-  badge,
   titlePrimary,
-  titleAccent,
   description,
   primaryCtaLabel,
   primaryCtaHref,
   secondaryCtaLabel,
   secondaryCtaHref,
   animatedWords,
-  microCtaLabel,
-  microCtaHref,
   primaryButtonClass,
   secondaryButtonClass
 }: HeroProps) {
@@ -50,14 +44,10 @@ function Hero({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (titleNumber === titles.length - 1) {
-        setTitleNumber(0);
-      } else {
-        setTitleNumber(titleNumber + 1);
-      }
+      setTitleNumber((previous) => (previous === titles.length - 1 ? 0 : previous + 1));
     }, 2000);
     return () => clearTimeout(timeoutId);
-  }, [titleNumber, titles]);
+  }, [titleNumber, titles.length]);
 
   const renderPrimaryButtonClass =
     primaryButtonClass ??
@@ -67,75 +57,51 @@ function Hero({
     secondaryButtonClass ??
     'px-8 py-4 bg-white/50 backdrop-blur-sm border border-slate-200 text-deepSlate font-display font-bold text-sm uppercase tracking-widest rounded-full hover:bg-white hover:border-electricBlue/30 hover:text-electricBlue transition-all flex items-center justify-center gap-2 group shadow-sm hover:shadow-md no-underline';
 
-  const microHref = microCtaHref || primaryCtaHref;
-  const microLabel = microCtaLabel || primaryCtaLabel;
-
   return (
-    <div className="w-full">
-      <div className="container mx-auto">
-        <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
-          {microCtaLabel ? (
-            <div>
-              <Button asChild variant="secondary" size="sm" className="gap-4">
-                <Link href={microHref}>
-                  {microLabel}
-                  <MoveRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          ) : null}
-          <div className="flex gap-4 flex-col">
-            <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
-              <span className="text-spektr-cyan-50">{titlePrimary}</span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
-                &nbsp;
-                {titles.map((title, index) => (
-                  <motion.span
-                    key={title}
-                    className="absolute font-semibold"
-                    initial={{ opacity: 0, y: -100 }}
-                    transition={{ type: 'spring', stiffness: 50 }}
-                    animate={
-                      titleNumber === index
-                        ? {
-                            y: 0,
-                            opacity: 1
-                          }
-                        : {
-                            y: titleNumber > index ? -150 : 150,
-                            opacity: 0
-                          }
-                    }
-                  >
-                    {title}
-                  </motion.span>
-                ))}
-              </span>
-            </h1>
+    <div className="relative z-10 w-full">
+      <div className="flex flex-col items-center justify-center gap-8 py-8 lg:py-12">
+        <div className="flex w-full flex-col gap-4">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter text-center drop-shadow-sm">
+            {titlePrimary}
+          </h1>
+          <div className="relative h-14 md:h-20 lg:h-24 overflow-hidden">
+            {titles.map((title, index) => (
+              <motion.span
+                key={title}
+                className="absolute inset-x-0 text-center text-5xl md:text-7xl lg:text-8xl font-display font-black text-deepSlate leading-[0.95] tracking-tighter"
+                initial={{ opacity: 0, y: -100 }}
+                transition={{ type: 'spring', stiffness: 50 }}
+                animate={
+                  titleNumber === index
+                    ? {
+                        y: 0,
+                        opacity: 1
+                      }
+                    : {
+                        y: titleNumber > index ? -150 : 150,
+                        opacity: 0
+                      }
+                }
+              >
+                {title}
+              </motion.span>
+            ))}
+          </div>
+          <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 font-light leading-relaxed text-center">
+            {description}
+          </p>
+        </div>
 
-            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-              {description}
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-sm uppercase tracking-[0.35em] text-slate-600 font-semibold">
-              {badge}
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-display font-black text-deepSlate leading-[0.95] drop-shadow-sm">
-              <span className="text-brand-gradient">{titleAccent}</span>
-            </h2>
-          </div>
-          <div className="flex flex-row gap-3">
-            <Button asChild size="lg" className={renderPrimaryButtonClass}>
-              <Link href={primaryCtaHref}>{primaryCtaLabel}</Link>
-            </Button>
-            <Button asChild size="lg" className={`gap-4 ${renderSecondaryButtonClass}`}>
-              <Link href={secondaryCtaHref}>
-                {secondaryCtaLabel}
-                <PhoneCall className="w-4 h-4" />
-              </Link>
-            </Button>
-          </div>
+        <div className="hero-actions flex flex-col sm:flex-row gap-5 justify-center items-center">
+          <Button asChild variant="ghost" size="lg" className={renderPrimaryButtonClass}>
+            <Link href={primaryCtaHref}>{primaryCtaLabel}</Link>
+          </Button>
+          <Button asChild variant="ghost" size="lg" className={renderSecondaryButtonClass}>
+            <Link href={secondaryCtaHref}>
+              {secondaryCtaLabel}
+              <MoveRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
@@ -143,5 +109,3 @@ function Hero({
 }
 
 export { Hero };
-
-
