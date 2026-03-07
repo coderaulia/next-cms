@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getPageById, upsertPage } from '@/features/cms/contentStore';
 import { isValidPageId, validateLandingPage } from '@/features/cms/validators';
 
@@ -37,6 +37,23 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Invalid page payload' }, { status: 400 });
   }
   const page = await upsertPage(payload);
+  const session = await getAdminSession(request);
+
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'page.update',
+      entityType: 'page',
+      entityId: page.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        title: page.title,
+        slug: page.seo.slug,
+        published: page.published
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ page });
 }
-

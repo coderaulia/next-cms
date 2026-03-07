@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
@@ -62,9 +63,9 @@ function SettingsEditor() {
       setLoading(true);
       setError('');
       const [settingsRes, pagesRes, categoriesRes] = await Promise.all([
-        fetch('/api/admin/settings'),
-        fetch('/api/admin/pages'),
-        fetch('/api/admin/categories')
+        csrfFetch('/api/admin/settings'),
+        csrfFetch('/api/admin/pages'),
+        csrfFetch('/api/admin/categories')
       ]);
 
       if (!settingsRes.ok || !pagesRes.ok || !categoriesRes.ok) {
@@ -111,7 +112,7 @@ function SettingsEditor() {
     setNotice('');
     setError('');
 
-    const response = await fetch('/api/admin/settings', {
+    const response = await csrfFetch('/api/admin/settings', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -932,6 +933,7 @@ export default function AdminSettingsPage() {
     </AdminShell>
   );
 }
+
 
 
 

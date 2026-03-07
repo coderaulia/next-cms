@@ -5,8 +5,11 @@ import { sql } from 'drizzle-orm';
 import { getDb } from '@/db/client';
 
 const TABLES = [
+  'admin_audit_logs',
+  'admin_login_lockouts',
   'admin_sessions',
   'admin_users',
+  'request_rate_limits',
   'post_categories',
   'blog_posts',
   'categories',

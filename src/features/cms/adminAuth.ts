@@ -5,9 +5,14 @@ import { and, eq, gt } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
 import { getDb } from '@/db/client';
-import { adminSessionsTable, adminUsersTable } from '@/db/schema';
+import { adminAuditLogsTable, adminLoginLockoutsTable, adminSessionsTable, adminUsersTable } from '@/db/schema';
 import { env } from '@/services/env';
-import { assertTrustedMutationRequest } from '@/services/requestSecurity';
+import {
+  assertCsrfToken,
+  assertTrustedMutationRequest,
+  getClientIdentifier
+} from '@/services/requestSecurity';
+import { ADMIN_LOGIN_LOCK_THRESHOLD, ADMIN_LOGIN_LOCK_WINDOW_MS } from '@/services/securityConstants';
 
 import type { AdminSessionUser } from './adminTypes';
 import { nowIso } from './storeShared';
@@ -32,8 +37,43 @@ type AdminLoginResult = {
   expiresAt: string;
 };
 
+type LoginLockState = {
+  locked: boolean;
+  retryAfter: number;
+};
+
+type LoginLockEntry = {
+  failedCount: number;
+  lockoutUntil: number | null;
+};
+
+type AdminAuditEvent = {
+  action: string;
+  entityType: string;
+  entityId?: string | null;
+  userId?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
+declare global {
+  var __cmsAdminLoginLockouts: Map<string, LoginLockEntry> | undefined;
+}
+
 function normalize(value: string | null | undefined) {
   return (value ?? '').trim();
+}
+
+function getLoginLockStore() {
+  if (!globalThis.__cmsAdminLoginLockouts) {
+    globalThis.__cmsAdminLoginLockouts = new Map<string, LoginLockEntry>();
+  }
+
+  return globalThis.__cmsAdminLoginLockouts;
+}
+
+function normalizeLoginIdentifier(email: string) {
+  const normalized = normalize(email).toLowerCase();
+  return normalized.length > 0 ? normalized : 'unknown';
 }
 
 function mapAdminUser(row: AdminUserRow): AdminSessionUser {
@@ -160,10 +200,185 @@ async function deleteSessionByRawToken(rawToken: string) {
     .where(eq(adminSessionsTable.sessionToken, hashSessionToken(token)));
 }
 
+async function getLoginLockStateFromDb(identifier: string): Promise<LoginLockState> {
+  const now = Date.now();
+  const rows = await getDb()
+    .select()
+    .from(adminLoginLockoutsTable)
+    .where(eq(adminLoginLockoutsTable.identifier, identifier))
+    .limit(1);
+
+  const lockout = rows[0];
+  if (!lockout) {
+    return { locked: false, retryAfter: 0 };
+  }
+
+  const lockoutUntil = lockout.lockoutUntil ? new Date(lockout.lockoutUntil).getTime() : 0;
+  if (lockoutUntil > now) {
+    return {
+      locked: true,
+      retryAfter: Math.max(1, Math.ceil((lockoutUntil - now) / 1000))
+    };
+  }
+
+  if (lockout.failedCount !== 0 || lockout.lockoutUntil) {
+    await getDb()
+      .update(adminLoginLockoutsTable)
+      .set({ failedCount: 0, lockoutUntil: null, updatedAt: nowIso() })
+      .where(eq(adminLoginLockoutsTable.identifier, identifier));
+  }
+
+  return { locked: false, retryAfter: 0 };
+}
+
+async function registerFailedLoginFromDb(identifier: string): Promise<LoginLockState> {
+  const state = await getLoginLockStateFromDb(identifier);
+  if (state.locked) {
+    return state;
+  }
+
+  const rows = await getDb()
+    .select()
+    .from(adminLoginLockoutsTable)
+    .where(eq(adminLoginLockoutsTable.identifier, identifier))
+    .limit(1);
+
+  const current = rows[0];
+  const nextFailedCount = (current?.failedCount ?? 0) + 1;
+  const lockoutUntilIso =
+    nextFailedCount >= ADMIN_LOGIN_LOCK_THRESHOLD
+      ? new Date(Date.now() + ADMIN_LOGIN_LOCK_WINDOW_MS).toISOString()
+      : null;
+
+  await getDb()
+    .insert(adminLoginLockoutsTable)
+    .values({
+      identifier,
+      failedCount: nextFailedCount,
+      lockoutUntil: lockoutUntilIso,
+      updatedAt: nowIso()
+    })
+    .onConflictDoUpdate({
+      target: adminLoginLockoutsTable.identifier,
+      set: {
+        failedCount: nextFailedCount,
+        lockoutUntil: lockoutUntilIso,
+        updatedAt: nowIso()
+      }
+    });
+
+  if (!lockoutUntilIso) {
+    return { locked: false, retryAfter: 0 };
+  }
+
+  return {
+    locked: true,
+    retryAfter: Math.max(1, Math.ceil((new Date(lockoutUntilIso).getTime() - Date.now()) / 1000))
+  };
+}
+
+function getLoginLockStateFromMemory(identifier: string): LoginLockState {
+  const now = Date.now();
+  const entry = getLoginLockStore().get(identifier);
+
+  if (!entry) {
+    return { locked: false, retryAfter: 0 };
+  }
+
+  if (!entry.lockoutUntil || entry.lockoutUntil <= now) {
+    if (entry.failedCount > 0 || entry.lockoutUntil) {
+      getLoginLockStore().set(identifier, { failedCount: 0, lockoutUntil: null });
+    }
+    return { locked: false, retryAfter: 0 };
+  }
+
+  return {
+    locked: true,
+    retryAfter: Math.max(1, Math.ceil((entry.lockoutUntil - now) / 1000))
+  };
+}
+
+function registerFailedLoginFromMemory(identifier: string): LoginLockState {
+  const current = getLoginLockStore().get(identifier) ?? { failedCount: 0, lockoutUntil: null };
+  const state = getLoginLockStateFromMemory(identifier);
+  if (state.locked) {
+    return state;
+  }
+
+  const nextFailedCount = current.failedCount + 1;
+  const lockoutUntil =
+    nextFailedCount >= ADMIN_LOGIN_LOCK_THRESHOLD ? Date.now() + ADMIN_LOGIN_LOCK_WINDOW_MS : null;
+
+  getLoginLockStore().set(identifier, {
+    failedCount: nextFailedCount,
+    lockoutUntil
+  });
+
+  if (!lockoutUntil) {
+    return { locked: false, retryAfter: 0 };
+  }
+
+  return {
+    locked: true,
+    retryAfter: Math.max(1, Math.ceil((lockoutUntil - Date.now()) / 1000))
+  };
+}
+
 export function isValidAdminToken(token: string | null) {
   const input = normalize(token);
   const expected = normalize(env.adminToken);
   return input.length > 0 && expected.length > 0 && input === expected;
+}
+
+export async function getLoginLockoutState(email: string): Promise<LoginLockState> {
+  const identifier = normalizeLoginIdentifier(email);
+
+  if (env.databaseUrl) {
+    return getLoginLockStateFromDb(identifier);
+  }
+
+  return getLoginLockStateFromMemory(identifier);
+}
+
+export async function registerFailedLoginAttempt(email: string): Promise<LoginLockState> {
+  const identifier = normalizeLoginIdentifier(email);
+
+  if (env.databaseUrl) {
+    return registerFailedLoginFromDb(identifier);
+  }
+
+  return registerFailedLoginFromMemory(identifier);
+}
+
+export async function clearLoginLockout(email: string): Promise<void> {
+  const identifier = normalizeLoginIdentifier(email);
+
+  if (env.databaseUrl) {
+    await getDb().delete(adminLoginLockoutsTable).where(eq(adminLoginLockoutsTable.identifier, identifier));
+    return;
+  }
+
+  getLoginLockStore().delete(identifier);
+}
+
+export async function logAdminAuditEvent(request: Request, event: AdminAuditEvent) {
+  if (!env.databaseUrl) {
+    return;
+  }
+
+  const metadata = event.metadata && typeof event.metadata === 'object' ? event.metadata : {};
+
+  await getDb().insert(adminAuditLogsTable).values({
+    id: randomUUID(),
+    userId: event.userId ?? null,
+    action: event.action,
+    entityType: event.entityType,
+    entityId: event.entityId ?? null,
+    metadata,
+    ip: getClientIdentifier(request),
+    userAgent: normalize(request.headers.get('user-agent')) || 'unknown',
+    createdAt: nowIso()
+  });
 }
 
 export async function getAdminSession(request: Request): Promise<AdminSession | null> {
@@ -228,6 +443,11 @@ export async function assertAdminRequest(request: Request): Promise<NextResponse
   const originFailure = assertTrustedMutationRequest(request);
   if (originFailure) {
     return originFailure;
+  }
+
+  const csrfFailure = assertCsrfToken(request);
+  if (csrfFailure) {
+    return csrfFailure;
   }
 
   const session = await getAdminSession(request);

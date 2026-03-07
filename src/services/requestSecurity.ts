@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
+import { eq } from 'drizzle-orm';
 
+import { getDb } from '@/db/client';
+import { requestRateLimitsTable } from '@/db/schema';
 import { env } from '@/services/env';
+import { CSRF_COOKIE_NAME, CSRF_HEADER_NAME } from '@/services/securityConstants';
 
 type RateLimitEntry = {
   count: number;
@@ -24,11 +28,15 @@ function getAllowedOrigins(request: Request) {
 
   try {
     origins.add(new URL(request.url).origin);
-  } catch {}
+  } catch {
+    // ignore invalid request URL
+  }
 
   try {
     origins.add(new URL(env.siteUrl).origin);
-  } catch {}
+  } catch {
+    // ignore invalid configured site URL
+  }
 
   return origins;
 }
@@ -41,6 +49,35 @@ function extractOrigin(value: string | null) {
   } catch {
     return '';
   }
+}
+
+function parseCookies(cookieHeader: string | null) {
+  if (!cookieHeader) return new Map<string, string>();
+
+  const entries = cookieHeader
+    .split(';')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const separator = part.indexOf('=');
+      if (separator === -1) return [part, ''] as const;
+      const key = part.slice(0, separator).trim();
+      const value = part.slice(separator + 1).trim();
+      return [key, value] as const;
+    });
+
+  return new Map(entries);
+}
+
+export function getClientIdentifier(request: Request) {
+  const forwardedFor = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '';
+  const firstIp = forwardedFor.split(',')[0]?.trim();
+  return firstIp || 'unknown';
+}
+
+export function readCookieValue(request: Request, name: string) {
+  const cookies = parseCookies(request.headers.get('cookie'));
+  return (cookies.get(name) || '').trim();
 }
 
 export function assertTrustedMutationRequest(request: Request) {
@@ -59,13 +96,87 @@ export function assertTrustedMutationRequest(request: Request) {
   return NextResponse.json({ error: 'Cross-site request blocked.' }, { status: 403 });
 }
 
-function getClientIdentifier(request: Request) {
-  const forwardedFor = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '';
-  const firstIp = forwardedFor.split(',')[0]?.trim();
-  return firstIp || 'unknown';
+export function assertCsrfToken(request: Request) {
+  if (!['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method.toUpperCase())) {
+    return null;
+  }
+
+  const cookieToken = readCookieValue(request, CSRF_COOKIE_NAME);
+  const headerToken = request.headers.get(CSRF_HEADER_NAME)?.trim() || '';
+
+  if (!cookieToken || !headerToken || cookieToken !== headerToken) {
+    return NextResponse.json({ error: 'CSRF token validation failed.' }, { status: 403 });
+  }
+
+  return null;
 }
 
-export function assertRateLimit(request: Request, scope: string, limit: number, windowMs: number) {
+async function assertRateLimitInDatabase(
+  request: Request,
+  scope: string,
+  limit: number,
+  windowMs: number
+) {
+  const now = Date.now();
+  const key = `${scope}:${getClientIdentifier(request)}`;
+  const nowIso = new Date(now).toISOString();
+  const resetAtIso = new Date(now + windowMs).toISOString();
+
+  const rows = await getDb()
+    .select()
+    .from(requestRateLimitsTable)
+    .where(eq(requestRateLimitsTable.key, key))
+    .limit(1);
+
+  const current = rows[0];
+
+  if (!current || new Date(current.resetAt).getTime() <= now) {
+    await getDb()
+      .insert(requestRateLimitsTable)
+      .values({
+        key,
+        count: 1,
+        resetAt: resetAtIso,
+        updatedAt: nowIso
+      })
+      .onConflictDoUpdate({
+        target: requestRateLimitsTable.key,
+        set: {
+          count: 1,
+          resetAt: resetAtIso,
+          updatedAt: nowIso
+        }
+      });
+
+    return null;
+  }
+
+  if (current.count >= limit) {
+    const retryAfter = Math.max(1, Math.ceil((new Date(current.resetAt).getTime() - now) / 1000));
+    return NextResponse.json(
+      { error: 'Too many requests. Please retry later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(retryAfter),
+          'Cache-Control': 'no-store'
+        }
+      }
+    );
+  }
+
+  await getDb()
+    .update(requestRateLimitsTable)
+    .set({
+      count: current.count + 1,
+      updatedAt: nowIso
+    })
+    .where(eq(requestRateLimitsTable.key, key));
+
+  return null;
+}
+
+function assertRateLimitInMemory(request: Request, scope: string, limit: number, windowMs: number) {
   const store = getRateLimitStore();
   const now = Date.now();
   const key = `${scope}:${getClientIdentifier(request)}`;
@@ -93,6 +204,18 @@ export function assertRateLimit(request: Request, scope: string, limit: number, 
   current.count += 1;
   store.set(key, current);
   return null;
+}
+
+export async function assertRateLimit(request: Request, scope: string, limit: number, windowMs: number) {
+  if (env.databaseUrl) {
+    try {
+      return await assertRateLimitInDatabase(request, scope, limit, windowMs);
+    } catch {
+      // fallback if database is temporarily unavailable
+    }
+  }
+
+  return assertRateLimitInMemory(request, scope, limit, windowMs);
 }
 
 export function serializeJsonForScript(data: unknown) {

@@ -15,6 +15,13 @@
       "when": 1772810166537,
       "tag": "0001_salty_ironclad",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772871913906,
+      "tag": "0002_flat_shard",
+      "breakpoints": true
     }
   ]
 }

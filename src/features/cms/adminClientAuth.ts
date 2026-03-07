@@ -1,3 +1,5 @@
+import { csrfFetch } from '@/lib/clientCsrf';
+
 import type {
   AdminAuthResponse,
   AdminErrorResponse,
@@ -6,7 +8,7 @@ import type {
 } from './adminTypes';
 
 export async function getAdminSession(): Promise<AdminSessionUser | null> {
-  const response = await fetch('/api/admin/auth', {
+  const response = await csrfFetch('/api/admin/auth', {
     method: 'GET',
     cache: 'no-store'
   });
@@ -20,7 +22,7 @@ export async function getAdminSession(): Promise<AdminSessionUser | null> {
 }
 
 export async function loginAdmin(input: AdminLoginPayload): Promise<{ user: AdminSessionUser | null; error: string | null }> {
-  const response = await fetch('/api/admin/auth', {
+  const response = await csrfFetch('/api/admin/auth', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input)
@@ -36,7 +38,8 @@ export async function loginAdmin(input: AdminLoginPayload): Promise<{ user: Admi
 }
 
 export async function logoutAdmin() {
-  await fetch('/api/admin/auth', {
+  await csrfFetch('/api/admin/auth', {
     method: 'DELETE'
   });
 }
+

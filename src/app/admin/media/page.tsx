@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { MediaAsset } from '@/features/cms/types';
@@ -36,7 +37,7 @@ function MediaLibraryManager() {
   const load = async () => {
     setLoading(true);
     setError('');
-    const response = await fetch('/api/admin/media');
+    const response = await csrfFetch('/api/admin/media');
     if (!response.ok) {
       setLoading(false);
       setError('Failed to load media library.');
@@ -79,7 +80,7 @@ function MediaLibraryManager() {
       id: form.id || crypto.randomUUID()
     };
 
-    const response = await fetch(endpoint, {
+    const response = await csrfFetch(endpoint, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -102,7 +103,7 @@ function MediaLibraryManager() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this media asset?')) return;
 
-    const response = await fetch(`/api/admin/media/${id}`, {
+    const response = await csrfFetch(`/api/admin/media/${id}`, {
       method: 'DELETE'
     });
 
@@ -253,3 +254,4 @@ export default function AdminMediaPage() {
     </AdminShell>
   );
 }
+

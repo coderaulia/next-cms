@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { BlogPost, Category } from '@/features/cms/types';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 type BlogEditorFormProps = {
   initialPost: BlogPost;
@@ -22,7 +23,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/admin/categories')
+    csrfFetch('/api/admin/categories')
       .then((response) => (response.ok ? response.json() : null))
       .then((payload) => {
         if (!payload) return;
@@ -46,7 +47,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   const savePost = async () => {
     setSaving(true);
     setNotice('');
-    const response = await fetch(`/api/admin/blog/${post.id}`, {
+    const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -67,7 +68,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   };
 
   const publish = async () => {
-    const response = await fetch(`/api/admin/blog/${post.id}/publish`, {
+    const response = await csrfFetch(`/api/admin/blog/${post.id}/publish`, {
       method: 'POST'
     });
     if (!response.ok) {
@@ -80,7 +81,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   };
 
   const unpublish = async () => {
-    const response = await fetch(`/api/admin/blog/${post.id}/unpublish`, {
+    const response = await csrfFetch(`/api/admin/blog/${post.id}/unpublish`, {
       method: 'POST'
     });
     if (!response.ok) {
@@ -94,7 +95,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
 
   const deletePost = async () => {
     if (!confirm('Delete this post?')) return;
-    const response = await fetch(`/api/admin/blog/${post.id}`, {
+    const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
       method: 'DELETE'
     });
     if (!response.ok) {
@@ -296,4 +297,5 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
     </div>
   );
 }
+
 

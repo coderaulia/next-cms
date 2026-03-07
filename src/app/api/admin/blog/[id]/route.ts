@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteBlogPost, getBlogPostById, updateBlogPost } from '@/features/cms/contentStore';
 import { validateBlogPost } from '@/features/cms/validators';
 
@@ -33,6 +33,24 @@ export async function PUT(request: Request, { params }: RouteContext) {
   if (!post) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
+
+  const session = await getAdminSession(request);
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'blog.update',
+      entityType: 'blog_post',
+      entityId: post.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        title: post.title,
+        slug: post.seo.slug,
+        status: post.status
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ post });
 }
 
@@ -41,10 +59,33 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
+  const post = await getBlogPostById(id);
+  if (!post) {
+    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+  }
+
   const removed = await deleteBlogPost(id);
   if (!removed) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
+
+  const session = await getAdminSession(request);
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'blog.delete',
+      entityType: 'blog_post',
+      entityId: post.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        title: post.title,
+        slug: post.seo.slug,
+        status: post.status
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ ok: true });
 }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { Category } from '@/features/cms/types';
@@ -30,7 +31,7 @@ function CategoriesManager() {
   const load = async () => {
     setLoading(true);
     setError('');
-    const response = await fetch('/api/admin/categories');
+    const response = await csrfFetch('/api/admin/categories');
     if (!response.ok) {
       setLoading(false);
       setError('Failed to load categories.');
@@ -73,7 +74,7 @@ function CategoriesManager() {
       id: form.id || crypto.randomUUID()
     };
 
-    const response = await fetch(endpoint, {
+    const response = await csrfFetch(endpoint, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -95,7 +96,7 @@ function CategoriesManager() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this category? Posts using it will be updated.')) return;
 
-    const response = await fetch(`/api/admin/categories/${id}`, {
+    const response = await csrfFetch(`/api/admin/categories/${id}`, {
       method: 'DELETE'
     });
 
@@ -219,3 +220,4 @@ export default function AdminCategoriesPage() {
     </AdminShell>
   );
 }
+

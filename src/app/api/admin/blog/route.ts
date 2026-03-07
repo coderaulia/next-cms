@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createBlogPost, queryBlogPosts } from '@/features/cms/contentStore';
 import type { BlogPost } from '@/features/cms/types';
 
@@ -35,6 +35,24 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => null)) as Partial<BlogPost> | null;
   const post = await createBlogPost(payload ?? {});
+  const session = await getAdminSession(request);
+
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'blog.create',
+      entityType: 'blog_post',
+      entityId: post.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        title: post.title,
+        slug: post.seo.slug,
+        status: post.status
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ post }, { status: 201 });
 }
 

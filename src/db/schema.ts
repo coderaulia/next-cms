@@ -145,3 +145,35 @@ export const adminSessionsTable = pgTable(
   })
 );
 
+export const requestRateLimitsTable = pgTable('request_rate_limits', {
+  key: text('key').primaryKey(),
+  count: integer('count').notNull(),
+  resetAt: timestamp('reset_at', { withTimezone: true, mode: 'string' }).notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull()
+});
+
+export const adminLoginLockoutsTable = pgTable('admin_login_lockouts', {
+  identifier: text('identifier').primaryKey(),
+  failedCount: integer('failed_count').notNull(),
+  lockoutUntil: timestamp('lockout_until', { withTimezone: true, mode: 'string' }),
+  updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull()
+});
+
+export const adminAuditLogsTable = pgTable(
+  'admin_audit_logs',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id'),
+    action: text('action').notNull(),
+    entityType: text('entity_type').notNull(),
+    entityId: text('entity_id'),
+    metadata: jsonb('metadata').$type<Record<string, unknown>>().notNull(),
+    ip: text('ip').notNull(),
+    userAgent: text('user_agent').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    actionIdx: index('admin_audit_logs_action_idx').on(table.action),
+    createdAtIdx: index('admin_audit_logs_created_at_idx').on(table.createdAt)
+  })
+);

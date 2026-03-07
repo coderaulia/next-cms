@@ -3,13 +3,16 @@ import { NextResponse } from 'next/server';
 import { createContactSubmission } from '@/features/cms/contactSubmissionsStore';
 import { validateContactSubmission } from '@/features/cms/validators';
 import { env } from '@/services/env';
-import { assertRateLimit, assertTrustedMutationRequest } from '@/services/requestSecurity';
+import { assertCsrfToken, assertRateLimit, assertTrustedMutationRequest } from '@/services/requestSecurity';
 
 export async function POST(request: Request) {
   const originFailure = assertTrustedMutationRequest(request);
   if (originFailure) return originFailure;
 
-  const rateLimitFailure = assertRateLimit(request, 'contact-form', 10, 60_000);
+  const csrfFailure = assertCsrfToken(request);
+  if (csrfFailure) return csrfFailure;
+
+  const rateLimitFailure = await assertRateLimit(request, 'contact-form', 10, 60_000);
   if (rateLimitFailure) return rateLimitFailure;
 
   if (!env.databaseUrl) {

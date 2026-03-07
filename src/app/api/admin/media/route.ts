@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createMediaAsset, getMediaAssets } from '@/features/cms/contentStore';
 import { validateMediaAsset } from '@/features/cms/validators';
 
@@ -22,5 +22,23 @@ export async function POST(request: Request) {
   }
 
   const mediaAsset = await createMediaAsset(payload);
+  const session = await getAdminSession(request);
+
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'media.create',
+      entityType: 'media_asset',
+      entityId: mediaAsset.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        title: mediaAsset.title,
+        url: mediaAsset.url,
+        mimeType: mediaAsset.mimeType
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ mediaAsset }, { status: 201 });
 }

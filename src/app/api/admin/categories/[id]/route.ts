@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteCategory, getCategoryById, updateCategory } from '@/features/cms/contentStore';
 import { validateCategory } from '@/features/cms/validators';
 
@@ -36,6 +36,22 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Category not found' }, { status: 404 });
   }
 
+  const session = await getAdminSession(request);
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'category.update',
+      entityType: 'category',
+      entityId: category.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        name: category.name,
+        slug: category.slug
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ category });
 }
 
@@ -44,9 +60,30 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
+  const category = await getCategoryById(id);
+  if (!category) {
+    return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+  }
+
   const removed = await deleteCategory(id);
   if (!removed) {
     return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+  }
+
+  const session = await getAdminSession(request);
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'category.delete',
+      entityType: 'category',
+      entityId: category.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        name: category.name,
+        slug: category.slug
+      }
+    });
+  } catch {
+    // swallow audit log failures
   }
 
   return NextResponse.json({ ok: true });

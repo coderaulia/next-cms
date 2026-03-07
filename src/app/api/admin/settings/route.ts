@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getSettings, updateSettings } from '@/features/cms/contentStore';
 import { validateSiteSettings } from '@/features/cms/validators';
 
@@ -22,6 +22,24 @@ export async function PUT(request: Request) {
   }
 
   const settings = await updateSettings(payload);
+  const session = await getAdminSession(request);
+
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'settings.update',
+      entityType: 'site_settings',
+      entityId: 'global',
+      userId: session?.user.id ?? null,
+      metadata: {
+        siteName: settings.siteName,
+        baseUrl: settings.general.baseUrl,
+        timezone: settings.general.timezone
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ settings });
 }
 

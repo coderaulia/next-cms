@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { ContactSubmission, ContactSubmissionStatus } from '@/features/cms/types';
@@ -22,7 +23,7 @@ function ContactSubmissionsManager() {
   const load = async () => {
     setLoading(true);
     setError('');
-    const response = await fetch('/api/admin/contact-submissions');
+    const response = await csrfFetch('/api/admin/contact-submissions');
     if (!response.ok) {
       setLoading(false);
       setError('Failed to load contact submissions.');
@@ -60,7 +61,7 @@ function ContactSubmissionsManager() {
   const updateStatus = async (id: string, status: ContactSubmissionStatus) => {
     setSavingId(id);
     setError('');
-    const response = await fetch(`/api/admin/contact-submissions/${id}`, {
+    const response = await csrfFetch(`/api/admin/contact-submissions/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
@@ -176,3 +177,4 @@ export default function AdminContactSubmissionsPage() {
     </AdminShell>
   );
 }
+

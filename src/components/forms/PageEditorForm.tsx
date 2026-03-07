@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 
 import type { HomeBlock, HomeBlockType, LandingPage, PageSection } from '@/features/cms/types';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 type PageEditorFormProps = {
   initialPage: LandingPage;
@@ -114,7 +115,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
   const savePage = async () => {
     setSaving(true);
     setNotice('');
-    const response = await fetch(`/api/admin/pages/${page.id}`, {
+    const response = await csrfFetch(`/api/admin/pages/${page.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(page)
@@ -536,5 +537,6 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
     </div>
   );
 }
+
 
 

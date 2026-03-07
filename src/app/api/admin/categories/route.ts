@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest } from '@/features/cms/adminAuth';
+import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createCategory, getCategories } from '@/features/cms/contentStore';
 import { validateCategory } from '@/features/cms/validators';
 
@@ -22,5 +22,22 @@ export async function POST(request: Request) {
   }
 
   const category = await createCategory(payload);
+  const session = await getAdminSession(request);
+
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'category.create',
+      entityType: 'category',
+      entityId: category.id,
+      userId: session?.user.id ?? null,
+      metadata: {
+        name: category.name,
+        slug: category.slug
+      }
+    });
+  } catch {
+    // swallow audit log failures
+  }
+
   return NextResponse.json({ category }, { status: 201 });
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import { BlogEditorForm } from '@/components/forms/BlogEditorForm';
@@ -14,7 +15,7 @@ function CreateBlogPost() {
   const createDraft = async () => {
     setPending(true);
     setError('');
-    const response = await fetch('/api/admin/blog', {
+    const response = await csrfFetch('/api/admin/blog', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -69,4 +70,5 @@ export default function AdminBlogCreatePage() {
     </AdminShell>
   );
 }
+
 

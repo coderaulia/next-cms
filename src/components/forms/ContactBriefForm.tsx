@@ -1,6 +1,7 @@
 'use client';
 
 import { type FormEvent, useState } from 'react';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 type ContactBriefFormProps = {
   heading: string;
@@ -38,7 +39,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
     setStatus('saving');
     setMessage('');
 
-    const response = await fetch('/api/contact', {
+    const response = await csrfFetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -144,3 +145,4 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
     </div>
   );
 }
+
