@@ -29,5 +29,17 @@ export const env = {
   },
   get databaseMigrationUrl() {
     return clean(process.env.DATABASE_URL_MIGRATION) || clean(process.env.DATABASE_URL);
+  },
+  get mediaPublicBaseUrl() {
+    return clean(process.env.MEDIA_PUBLIC_BASE_URL) || clean(process.env.NEXT_PUBLIC_MEDIA_BASE_URL) || '';
+  },
+  get contactNotificationWebhookUrl() {
+    return clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_URL);
+  },
+  get contactNotificationWebhookMethod() {
+    return (clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_METHOD) || 'POST').toUpperCase() as 'POST' | 'PUT' | 'PATCH';
+  },
+  get contactNotificationWebhookToken() {
+    return clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_TOKEN);
   }
 };

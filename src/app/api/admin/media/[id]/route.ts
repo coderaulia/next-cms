@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteMediaAsset, getMediaAssetById, updateMediaAsset } from '@/features/cms/contentStore';
+import { deleteUploadedMedia } from '@/services/mediaStorage';
 import { validateMediaAsset } from '@/features/cms/validators';
 
 type RouteContext = {
@@ -26,14 +27,29 @@ export async function PUT(request: Request, { params }: RouteContext) {
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
+  const existing = await getMediaAssetById(id);
+  if (!existing) {
+    return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
+  }
+
   const payload = validateMediaAsset(await request.json().catch(() => null));
   if (!payload || payload.id !== id) {
     return NextResponse.json({ error: 'Invalid media asset payload' }, { status: 400 });
   }
 
+  const wasLocal = existing.storageProvider === 'local' && !!existing.storageKey;
+  const shouldCleanup =
+    wasLocal &&
+    (payload.storageProvider !== existing.storageProvider ||
+      (payload.storageProvider === 'local' && payload.storageKey !== existing.storageKey));
+
   const mediaAsset = await updateMediaAsset(id, payload);
   if (!mediaAsset) {
     return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
+  }
+
+  if (shouldCleanup) {
+    await deleteUploadedMedia(existing.storageKey || '');
   }
 
   const session = await getAdminSession(request);
@@ -69,6 +85,14 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   const removed = await deleteMediaAsset(id);
   if (!removed) {
     return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
+  }
+
+  if (mediaAsset.storageProvider === 'local' && mediaAsset.storageKey) {
+    try {
+      await deleteUploadedMedia(mediaAsset.storageKey);
+    } catch {
+      // keep deletion behavior stable even if file cleanup fails
+    }
   }
 
   const session = await getAdminSession(request);

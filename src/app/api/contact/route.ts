@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { createContactSubmission } from '@/features/cms/contactSubmissionsStore';
 import { validateContactSubmission } from '@/features/cms/validators';
 import { env } from '@/services/env';
+import { notifyContactSubmission } from '@/services/contactNotifications';
 import { assertCsrfToken, assertRateLimit, assertTrustedMutationRequest } from '@/services/requestSecurity';
 
 export async function POST(request: Request) {
@@ -31,6 +32,12 @@ export async function POST(request: Request) {
     serviceCategory: payload.serviceCategory,
     projectOverview: payload.projectOverview
   });
+
+  try {
+    await notifyContactSubmission(submission);
+  } catch {
+    // notification is non-blocking
+  }
 
   return NextResponse.json({ ok: true, submission }, { status: 201 });
 }

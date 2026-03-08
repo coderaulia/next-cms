@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
@@ -34,6 +35,14 @@ function MediaLibraryManager() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadTitle, setUploadTitle] = useState('');
+  const [uploadAltText, setUploadAltText] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const [uploadNotice, setUploadNotice] = useState('');
+  const uploadInputRef = useRef<HTMLInputElement>(null);
+
   const load = async () => {
     setLoading(true);
     setError('');
@@ -66,6 +75,57 @@ function MediaLibraryManager() {
     setForm(emptyMediaAsset);
     setNotice('');
     setError('');
+  };
+
+  const onSelectUploadFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const next = event.target.files?.[0] ?? null;
+    setUploadFile(next);
+    if (next) {
+      setUploadTitle((prev) => prev || next.name.replace(/\.[^.]+$/, ''));
+      setUploadAltText((prev) => prev || next.name.replace(/\.[^.]+$/, ''));
+    }
+    setUploadNotice('');
+    setUploadError('');
+  };
+
+  const handleUpload = async () => {
+    if (!uploadFile) {
+      setUploadError('Please select a file.');
+      return;
+    }
+
+    const body = new FormData();
+    body.append('file', uploadFile);
+    if (uploadTitle.trim()) body.append('title', uploadTitle.trim());
+    if (uploadAltText.trim()) body.append('altText', uploadAltText.trim());
+
+    setUploading(true);
+    setUploadNotice('');
+    setUploadError('');
+
+    const response = await csrfFetch('/api/admin/media/upload', {
+      method: 'POST',
+      body
+    });
+
+    setUploading(false);
+    if (!response.ok) {
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      setUploadError(payload?.error || 'Failed to upload media.');
+      return;
+    }
+
+    const payload = (await response.json()) as { mediaAsset: MediaAsset };
+    setForm(payload.mediaAsset);
+    setUploadFile(null);
+    setUploadTitle('');
+    setUploadAltText('');
+    setUploadNotice('Media uploaded successfully.');
+    setNotice('');
+    if (uploadInputRef.current) {
+      uploadInputRef.current.value = '';
+    }
+    await load();
   };
 
   const handleSave = async () => {
@@ -126,6 +186,40 @@ function MediaLibraryManager() {
   return (
     <div className="admin-form-wrap">
       <section className="admin-card">
+        <h2>Upload media file</h2>
+        <div className="admin-grid-3">
+          <label>
+            Title
+            <input value={uploadTitle} onChange={(event) => setUploadTitle(event.target.value)} placeholder="Featured banner" />
+          </label>
+          <label>
+            Alt text
+            <input
+              value={uploadAltText}
+              onChange={(event) => setUploadAltText(event.target.value)}
+              placeholder="Alt text for accessibility"
+            />
+          </label>
+          <label>
+            File
+            <input
+              type="file"
+              ref={uploadInputRef}
+              accept="image/*"
+              onChange={onSelectUploadFile}
+            />
+          </label>
+        </div>
+        <div className="admin-actions" style={{ marginTop: 8 }}>
+          <button type="button" onClick={handleUpload} disabled={!uploadFile || uploading}>
+            {uploading ? 'Uploading...' : 'Upload file'}
+          </button>
+        </div>
+        {uploadNotice ? <p className="admin-subtle">{uploadNotice}</p> : null}
+        {uploadError ? <p className="error">{uploadError}</p> : null}
+      </section>
+
+      <section className="admin-card">
         <div className="admin-inline-header">
           <h2>{form.id ? 'Edit media asset' : 'New media asset'}</h2>
           <button type="button" onClick={resetForm} className="v2-btn v2-btn-secondary">
@@ -179,7 +273,7 @@ function MediaLibraryManager() {
             Storage provider
             <input value={form.storageProvider} onChange={(event) => setForm({ ...form, storageProvider: event.target.value })} />
           </label>
-          <label style={{ gridColumn: '1 / -1' }}>
+          <label>
             Storage key
             <input
               value={form.storageKey ?? ''}
@@ -254,4 +348,3 @@ export default function AdminMediaPage() {
     </AdminShell>
   );
 }
-
