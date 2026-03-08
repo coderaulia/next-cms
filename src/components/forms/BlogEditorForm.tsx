@@ -1,10 +1,10 @@
-
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { BlogPost, Category } from '@/features/cms/types';
+import { formatSavedAtLabel, toFieldErrorMap, validateBlogEditor } from '@/features/cms/editorValidation';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 type BlogEditorFormProps = {
@@ -15,6 +15,12 @@ type BlogEditorFormProps = {
 type CategoriesResponse = {
   categories: Category[];
 };
+
+type SaveMode = 'manual' | 'autosave';
+
+type AutoSaveState = 'idle' | 'scheduled' | 'saving' | 'blocked';
+
+const AUTO_SAVE_DELAY_MS = 30_000;
 
 function normalizePreviewHref(post: BlogPost) {
   const slug = post.seo.slug.trim();
@@ -46,11 +52,19 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   const [categories, setCategories] = useState<Category[]>([]);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialPost.updatedAt ?? null);
+  const [autoSaveState, setAutoSaveState] = useState<AutoSaveState>('idle');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     setPost(initialPost);
     setBaseline(initialPost);
+    setLastSavedAt(initialPost.updatedAt ?? null);
+    setAutoSaveState('idle');
+    setShowDeleteConfirm(false);
+    setDeleteConfirmText('');
   }, [initialPost]);
 
   useEffect(() => {
@@ -65,6 +79,10 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   const selectedCategories = useMemo(() => new Set(post.tags), [post.tags]);
   const isDirty = useMemo(() => JSON.stringify(post) !== JSON.stringify(baseline), [post, baseline]);
   const previewHref = normalizePreviewHref(post);
+  const validationIssues = useMemo(() => validateBlogEditor(post), [post]);
+  const fieldErrors = useMemo(() => toFieldErrorMap(validationIssues), [validationIssues]);
+  const canSave = validationIssues.length === 0;
+  const canDelete = deleteConfirmText.trim().toUpperCase() === 'DELETE';
 
   const toggleCategory = (slug: string) => {
     const next = new Set(selectedCategories);
@@ -77,34 +95,69 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
     setPost({ ...post, tags: Array.from(next) });
   };
 
-  const savePost = useCallback(async () => {
-    setSaving(true);
-    setNotice('');
-    const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(post)
-    });
-    setSaving(false);
+  const savePost = useCallback(
+    async (mode: SaveMode = 'manual') => {
+      if (!canSave) {
+        if (mode === 'manual') {
+          setNotice(`Fix ${validationIssues.length} validation issue(s) before saving.`);
+        }
+        setAutoSaveState('blocked');
+        return false;
+      }
 
-    if (!response.ok) {
-      setNotice('Failed to save post');
+      if (!isDirty && mode === 'autosave') {
+        setAutoSaveState('idle');
+        return true;
+      }
+
+      setSaving(true);
+      if (mode === 'autosave') {
+        setAutoSaveState('saving');
+      }
+      setNotice('');
+
+      const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post)
+      });
+      setSaving(false);
+
+      if (!response.ok) {
+        setNotice('Failed to save post');
+        if (mode === 'autosave') {
+          setAutoSaveState('blocked');
+        }
+        return false;
+      }
+
+      const payload = (await response.json()) as { post: BlogPost };
+      setPost(payload.post);
+      setBaseline(payload.post);
+      setLastSavedAt(payload.post.updatedAt);
+      setAutoSaveState('idle');
+
+      if (mode === 'manual') {
+        setNotice('Post saved');
+      }
+
+      if (isNew) {
+        router.replace(`/admin/blog/${payload.post.id}`);
+      }
+
+      return true;
+    },
+    [canSave, isDirty, isNew, post, router, validationIssues.length]
+  );
+
+  const publish = async () => {
+    if (!canSave) {
+      setNotice('Resolve validation issues before publishing.');
       return;
     }
 
-    const payload = (await response.json()) as { post: BlogPost };
-    setPost(payload.post);
-    setBaseline(payload.post);
-    setNotice('Post saved');
-
-    if (isNew) {
-      router.replace(`/admin/blog/${payload.post.id}`);
-    }
-  }, [isNew, post, router]);
-
-  const publish = async () => {
     const response = await csrfFetch(`/api/admin/blog/${post.id}/publish`, {
       method: 'POST'
     });
@@ -115,6 +168,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
     const payload = (await response.json()) as { post: BlogPost };
     setPost(payload.post);
     setBaseline(payload.post);
+    setLastSavedAt(payload.post.updatedAt);
     setNotice('Post published');
   };
 
@@ -129,11 +183,16 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
     const payload = (await response.json()) as { post: BlogPost };
     setPost(payload.post);
     setBaseline(payload.post);
+    setLastSavedAt(payload.post.updatedAt);
     setNotice('Post moved to draft');
   };
 
   const deletePost = async () => {
-    if (!confirm('Delete this post?')) return;
+    if (!canDelete) {
+      setNotice('Type DELETE to confirm permanent deletion.');
+      return;
+    }
+
     const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
       method: 'DELETE'
     });
@@ -162,13 +221,34 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
       if (!isSaveShortcut) return;
       event.preventDefault();
       if (!saving) {
-        void savePost();
+        void savePost('manual');
       }
     };
 
     window.addEventListener('keydown', onKeydown);
     return () => window.removeEventListener('keydown', onKeydown);
   }, [savePost, saving]);
+
+  useEffect(() => {
+    if (!isDirty) {
+      setAutoSaveState('idle');
+      return;
+    }
+
+    if (!canSave) {
+      setAutoSaveState('blocked');
+      return;
+    }
+
+    setAutoSaveState('scheduled');
+    const timer = window.setTimeout(() => {
+      if (!saving) {
+        void savePost('autosave');
+      }
+    }, AUTO_SAVE_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [canSave, isDirty, savePost, saving]);
 
   return (
     <div className="admin-form-wrap">
@@ -177,24 +257,28 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
           <div>
             <h2>{post.title || 'Untitled post'}</h2>
             <p className="admin-subtle">
-              Ctrl/Cmd + S to save. Status: {post.status}. {countWords(post.content)} words.
+              Ctrl/Cmd + S to save. Status: {post.status}. {countWords(post.content)} words. {formatSavedAtLabel(lastSavedAt)}.
+            </p>
+            <p className="admin-subtle">
+              Autosave: {autoSaveState === 'blocked' ? 'blocked by validation' : autoSaveState}
             </p>
           </div>
           <div className="admin-actions">
             <span className={`admin-chip ${isDirty ? 'admin-chip-warning' : 'admin-chip-success'}`}>
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
+            {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
             <a className="v2-btn v2-btn-secondary" href={previewHref} target="_blank" rel="noreferrer">
               Preview post
             </a>
             <button type="button" disabled={!isDirty || saving} onClick={() => setPost(baseline)}>
               Discard
             </button>
-            <button type="button" onClick={savePost} disabled={saving}>
+            <button type="button" onClick={() => void savePost('manual')} disabled={saving || !canSave}>
               {saving ? 'Saving...' : 'Save post'}
             </button>
             {post.status === 'draft' ? (
-              <button type="button" onClick={publish}>
+              <button type="button" onClick={publish} disabled={!canSave}>
                 Publish
               </button>
             ) : (
@@ -202,19 +286,52 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
                 Unpublish
               </button>
             )}
-            <button type="button" onClick={deletePost}>
-              Delete
+            <button
+              type="button"
+              className="admin-danger-btn"
+              onClick={() => {
+                setShowDeleteConfirm((current) => !current);
+                setDeleteConfirmText('');
+              }}
+            >
+              {showDeleteConfirm ? 'Cancel delete' : 'Delete'}
             </button>
           </div>
         </div>
         {notice ? <p className="admin-subtle">{notice}</p> : null}
+        {validationIssues.length > 0 ? (
+          <p className="admin-error-text">{validationIssues[0].message}</p>
+        ) : null}
       </section>
+
+      {showDeleteConfirm ? (
+        <section className="admin-card admin-danger-card">
+          <h3>Confirm deletion</h3>
+          <p className="admin-subtle">Type DELETE to permanently remove this post.</p>
+          <div className="admin-actions">
+            <input
+              value={deleteConfirmText}
+              onChange={(event) => setDeleteConfirmText(event.target.value)}
+              placeholder="Type DELETE"
+            />
+            <button type="button" className="admin-danger-btn" disabled={!canDelete} onClick={deletePost}>
+              Permanently delete post
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <section className="admin-card">
         <h2>Content</h2>
         <label>
           Title
-          <input value={post.title} onChange={(event) => setPost({ ...post, title: event.target.value })} />
+          <input
+            className={fieldErrors.title ? 'admin-input-error' : ''}
+            aria-invalid={Boolean(fieldErrors.title)}
+            value={post.title}
+            onChange={(event) => setPost({ ...post, title: event.target.value })}
+          />
+          {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
         </label>
         <label>
           Excerpt
@@ -223,15 +340,24 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
         <label>
           Content
           <textarea
+            className={fieldErrors.content ? 'admin-input-error' : ''}
+            aria-invalid={Boolean(fieldErrors.content)}
             value={post.content}
             onChange={(event) => setPost({ ...post, content: event.target.value })}
             rows={14}
           />
           <span className="admin-subtle">Word count: {countWords(post.content)}</span>
+          {fieldErrors.content ? <span className="admin-error-text">{fieldErrors.content}</span> : null}
         </label>
         <label>
           Author
-          <input value={post.author} onChange={(event) => setPost({ ...post, author: event.target.value })} />
+          <input
+            className={fieldErrors.author ? 'admin-input-error' : ''}
+            aria-invalid={Boolean(fieldErrors.author)}
+            value={post.author}
+            onChange={(event) => setPost({ ...post, author: event.target.value })}
+          />
+          {fieldErrors.author ? <span className="admin-error-text">{fieldErrors.author}</span> : null}
         </label>
         <div>
           <p className="admin-kpi-label">Categories</p>
@@ -277,6 +403,8 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
         <label>
           Meta title
           <input
+            className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
+            aria-invalid={Boolean(fieldErrors['seo.metaTitle'])}
             value={post.seo.metaTitle}
             onChange={(event) =>
               setPost({
@@ -286,10 +414,13 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
             }
           />
           <span className="admin-subtle">{post.seo.metaTitle.length}/60 recommended</span>
+          {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
         </label>
         <label>
           Meta description
           <textarea
+            className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
+            aria-invalid={Boolean(fieldErrors['seo.metaDescription'])}
             value={post.seo.metaDescription}
             onChange={(event) =>
               setPost({
@@ -299,10 +430,15 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
             }
           />
           <span className="admin-subtle">{post.seo.metaDescription.length}/160 recommended</span>
+          {fieldErrors['seo.metaDescription'] ? (
+            <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span>
+          ) : null}
         </label>
         <label>
           Slug
           <input
+            className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
+            aria-invalid={Boolean(fieldErrors['seo.slug'])}
             value={post.seo.slug}
             onChange={(event) =>
               setPost({
@@ -311,6 +447,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
               })
             }
           />
+          {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
         </label>
         <label>
           Canonical URL
@@ -368,7 +505,3 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
     </div>
   );
 }
-
-
-
-

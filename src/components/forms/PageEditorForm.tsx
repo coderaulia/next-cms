@@ -1,14 +1,20 @@
-
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { CtaStyleToken, HomeBlock, HomeBlockType, LandingPage, PageSection } from '@/features/cms/types';
+import { formatSavedAtLabel, toFieldErrorMap, validatePageEditor } from '@/features/cms/editorValidation';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 type PageEditorFormProps = {
   initialPage: LandingPage;
 };
+
+type SaveMode = 'manual' | 'autosave';
+
+type AutoSaveState = 'idle' | 'scheduled' | 'saving' | 'blocked';
+
+const AUTO_SAVE_DELAY_MS = 30_000;
 
 const blockTypes: HomeBlockType[] = [
   'hero',
@@ -138,37 +144,74 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
   const [nextType, setNextType] = useState<HomeBlockType>('hero');
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialPage.updatedAt ?? null);
+  const [autoSaveState, setAutoSaveState] = useState<AutoSaveState>('idle');
 
   useEffect(() => {
     setPage(initialPage);
     setBaseline(initialPage);
+    setLastSavedAt(initialPage.updatedAt ?? null);
+    setAutoSaveState('idle');
   }, [initialPage]);
 
   const isHome = page.id === 'home';
   const blocks = useMemo(() => page.homeBlocks ?? [], [page.homeBlocks]);
   const isDirty = useMemo(() => JSON.stringify(page) !== JSON.stringify(baseline), [page, baseline]);
   const previewHref = normalizePreviewHref(page);
+  const validationIssues = useMemo(() => validatePageEditor(page), [page]);
+  const fieldErrors = useMemo(() => toFieldErrorMap(validationIssues), [validationIssues]);
+  const canSave = validationIssues.length === 0;
 
-  const savePage = useCallback(async () => {
-    setSaving(true);
-    setNotice('');
-    const response = await csrfFetch(`/api/admin/pages/${page.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(page)
-    });
-    setSaving(false);
+  const savePage = useCallback(
+    async (mode: SaveMode = 'manual') => {
+      if (!canSave) {
+        if (mode === 'manual') {
+          setNotice(`Fix ${validationIssues.length} validation issue(s) before saving.`);
+        }
+        setAutoSaveState('blocked');
+        return false;
+      }
 
-    if (!response.ok) {
-      setNotice('Failed to save page');
-      return;
-    }
+      if (!isDirty && mode === 'autosave') {
+        setAutoSaveState('idle');
+        return true;
+      }
 
-    const payload = (await response.json()) as { page: LandingPage };
-    setPage(payload.page);
-    setBaseline(payload.page);
-    setNotice('Page saved');
-  }, [page]);
+      setSaving(true);
+      if (mode === 'autosave') {
+        setAutoSaveState('saving');
+      }
+      setNotice('');
+
+      const response = await csrfFetch(`/api/admin/pages/${page.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(page)
+      });
+      setSaving(false);
+
+      if (!response.ok) {
+        setNotice('Failed to save page');
+        if (mode === 'autosave') {
+          setAutoSaveState('blocked');
+        }
+        return false;
+      }
+
+      const payload = (await response.json()) as { page: LandingPage };
+      setPage(payload.page);
+      setBaseline(payload.page);
+      setLastSavedAt(payload.page.updatedAt);
+      setAutoSaveState('idle');
+
+      if (mode === 'manual') {
+        setNotice('Page saved');
+      }
+
+      return true;
+    },
+    [canSave, isDirty, page, validationIssues.length]
+  );
 
   useEffect(() => {
     const onBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -187,13 +230,34 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
       if (!isSaveShortcut) return;
       event.preventDefault();
       if (!saving) {
-        void savePage();
+        void savePage('manual');
       }
     };
 
     window.addEventListener('keydown', onKeydown);
     return () => window.removeEventListener('keydown', onKeydown);
   }, [savePage, saving]);
+
+  useEffect(() => {
+    if (!isDirty) {
+      setAutoSaveState('idle');
+      return;
+    }
+
+    if (!canSave) {
+      setAutoSaveState('blocked');
+      return;
+    }
+
+    setAutoSaveState('scheduled');
+    const timer = window.setTimeout(() => {
+      if (!saving) {
+        void savePage('autosave');
+      }
+    }, AUTO_SAVE_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [canSave, isDirty, savePage, saving]);
 
   const updateBlock = (index: number, patch: Partial<HomeBlock>) => {
     const next = [...blocks];
@@ -208,16 +272,24 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
           <label>
             Title primary
             <input
+              className={fieldErrors[`homeBlocks.${index}.titlePrimary`] ? 'admin-input-error' : ''}
               value={String((block as Record<string, unknown>).titlePrimary ?? '')}
               onChange={(event) => updateBlock(index, { titlePrimary: event.target.value } as Partial<HomeBlock>)}
             />
+            {fieldErrors[`homeBlocks.${index}.titlePrimary`] ? (
+              <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.titlePrimary`]}</span>
+            ) : null}
           </label>
           <label>
             Title accent
             <input
+              className={fieldErrors[`homeBlocks.${index}.titleAccent`] ? 'admin-input-error' : ''}
               value={String((block as Record<string, unknown>).titleAccent ?? '')}
               onChange={(event) => updateBlock(index, { titleAccent: event.target.value } as Partial<HomeBlock>)}
             />
+            {fieldErrors[`homeBlocks.${index}.titleAccent`] ? (
+              <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.titleAccent`]}</span>
+            ) : null}
           </label>
           <label>
             Animated words (comma)
@@ -249,9 +321,13 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
           <label>
             Heading
             <input
+              className={fieldErrors[`homeBlocks.${index}.heading`] ? 'admin-input-error' : ''}
               value={String((block as Record<string, unknown>).heading ?? '')}
               onChange={(event) => updateBlock(index, { heading: event.target.value } as Partial<HomeBlock>)}
             />
+            {fieldErrors[`homeBlocks.${index}.heading`] ? (
+              <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.heading`]}</span>
+            ) : null}
           </label>
           <label>
             Subheading
@@ -270,9 +346,13 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
           <label>
             Heading
             <input
+              className={fieldErrors[`homeBlocks.${index}.heading`] ? 'admin-input-error' : ''}
               value={String((block as Record<string, unknown>).heading ?? '')}
               onChange={(event) => updateBlock(index, { heading: event.target.value } as Partial<HomeBlock>)}
             />
+            {fieldErrors[`homeBlocks.${index}.heading`] ? (
+              <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.heading`]}</span>
+            ) : null}
           </label>
           {block.type === 'primary_cta' ? (
             <label>
@@ -302,24 +382,33 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
         <div className="admin-inline-header">
           <div>
             <h2>{page.title}</h2>
-            <p className="admin-subtle">Ctrl/Cmd + S to save. {page.published ? 'Published' : 'Draft'} page.</p>
+            <p className="admin-subtle">
+              Ctrl/Cmd + S to save. {page.published ? 'Published' : 'Draft'} page. {formatSavedAtLabel(lastSavedAt)}.
+            </p>
+            <p className="admin-subtle">
+              Autosave: {autoSaveState === 'blocked' ? 'blocked by validation' : autoSaveState}
+            </p>
           </div>
           <div className="admin-actions">
             <span className={`admin-chip ${isDirty ? 'admin-chip-warning' : 'admin-chip-success'}`}>
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
+            {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
             <a className="v2-btn v2-btn-secondary" href={previewHref} target="_blank" rel="noreferrer">
               Preview page
             </a>
             <button type="button" disabled={!isDirty || saving} onClick={() => setPage(baseline)}>
               Discard
             </button>
-            <button type="button" disabled={saving} onClick={savePage}>
+            <button type="button" disabled={saving || !canSave} onClick={() => void savePage('manual')}>
               {saving ? 'Saving...' : 'Save page'}
             </button>
           </div>
         </div>
         {notice ? <p className="admin-subtle">{notice}</p> : null}
+        {validationIssues.length > 0 ? (
+          <p className="admin-error-text">{validationIssues[0].message}</p>
+        ) : null}
       </section>
 
       <section className="admin-card">
@@ -327,11 +416,21 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
         <div className="admin-grid-2">
           <label>
             Title
-            <input value={page.title} onChange={(event) => setPage({ ...page, title: event.target.value })} />
+            <input
+              className={fieldErrors.title ? 'admin-input-error' : ''}
+              value={page.title}
+              onChange={(event) => setPage({ ...page, title: event.target.value })}
+            />
+            {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
           </label>
           <label>
             Nav label
-            <input value={page.navLabel} onChange={(event) => setPage({ ...page, navLabel: event.target.value })} />
+            <input
+              className={fieldErrors.navLabel ? 'admin-input-error' : ''}
+              value={page.navLabel}
+              onChange={(event) => setPage({ ...page, navLabel: event.target.value })}
+            />
+            {fieldErrors.navLabel ? <span className="admin-error-text">{fieldErrors.navLabel}</span> : null}
           </label>
         </div>
         <label>
@@ -350,17 +449,21 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
           <label>
             Meta title
             <input
+              className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
               value={page.seo.metaTitle}
               onChange={(event) => setPage({ ...page, seo: { ...page.seo, metaTitle: event.target.value } })}
             />
             <span className="admin-subtle">{page.seo.metaTitle.length}/60 recommended</span>
+            {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
           </label>
           <label>
             Slug
             <input
+              className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
               value={page.seo.slug}
               onChange={(event) => setPage({ ...page, seo: { ...page.seo, slug: event.target.value } })}
             />
+            {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
           </label>
           <label>
             Canonical
@@ -395,10 +498,14 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
         <label>
           Meta description
           <textarea
+            className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
             value={page.seo.metaDescription}
             onChange={(event) => setPage({ ...page, seo: { ...page.seo, metaDescription: event.target.value } })}
           />
           <span className="admin-subtle">{page.seo.metaDescription.length}/160 recommended</span>
+          {fieldErrors['seo.metaDescription'] ? (
+            <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span>
+          ) : null}
         </label>
       </section>
 
@@ -422,9 +529,11 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               </button>
             </div>
           </div>
+          {fieldErrors.homeBlocks ? <p className="admin-error-text">{fieldErrors.homeBlocks}</p> : null}
 
           {blocks.map((block, index) => {
             const payload = JSON.stringify(extractBlockPayload(block), null, 2);
+            const blockIssues = validationIssues.filter((issue) => issue.path.startsWith(`homeBlocks.${index}.`));
 
             return (
               <article className="section-editor" key={block.id}>
@@ -464,7 +573,14 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                 <div className="admin-grid-3">
                   <label>
                     ID
-                    <input value={block.id} onChange={(event) => updateBlock(index, { id: event.target.value })} />
+                    <input
+                      className={fieldErrors[`homeBlocks.${index}.id`] ? 'admin-input-error' : ''}
+                      value={block.id}
+                      onChange={(event) => updateBlock(index, { id: event.target.value })}
+                    />
+                    {fieldErrors[`homeBlocks.${index}.id`] ? (
+                      <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.id`]}</span>
+                    ) : null}
                   </label>
                   <label>
                     Enabled
@@ -500,6 +616,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                     }}
                   />
                 </label>
+                {blockIssues.length > 0 ? <p className="admin-error-text">{blockIssues[0].message}</p> : null}
               </article>
             );
           })}
@@ -512,6 +629,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               Add section
             </button>
           </div>
+          {fieldErrors.sections ? <p className="admin-error-text">{fieldErrors.sections}</p> : null}
 
           {page.sections.map((section, index) => (
             <article className="section-editor" key={section.id}>
@@ -531,6 +649,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                 <label>
                   Heading
                   <input
+                    className={fieldErrors[`sections.${index}.heading`] ? 'admin-input-error' : ''}
                     value={section.heading}
                     onChange={(event) => {
                       const next = [...page.sections];
@@ -538,10 +657,14 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                       setPage({ ...page, sections: next });
                     }}
                   />
+                  {fieldErrors[`sections.${index}.heading`] ? (
+                    <span className="admin-error-text">{fieldErrors[`sections.${index}.heading`]}</span>
+                  ) : null}
                 </label>
                 <label>
                   CTA URL
                   <input
+                    className={fieldErrors[`sections.${index}.ctaHref`] ? 'admin-input-error' : ''}
                     value={section.ctaHref}
                     onChange={(event) => {
                       const next = [...page.sections];
@@ -549,12 +672,16 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                       setPage({ ...page, sections: next });
                     }}
                   />
+                  {fieldErrors[`sections.${index}.ctaHref`] ? (
+                    <span className="admin-error-text">{fieldErrors[`sections.${index}.ctaHref`]}</span>
+                  ) : null}
                 </label>
               </div>
 
               <label>
                 Body
                 <textarea
+                  className={fieldErrors[`sections.${index}.body`] ? 'admin-input-error' : ''}
                   rows={5}
                   value={section.body}
                   onChange={(event) => {
@@ -563,6 +690,9 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                     setPage({ ...page, sections: next });
                   }}
                 />
+                {fieldErrors[`sections.${index}.body`] ? (
+                  <span className="admin-error-text">{fieldErrors[`sections.${index}.body`]}</span>
+                ) : null}
               </label>
             </article>
           ))}
@@ -571,7 +701,3 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
     </div>
   );
 }
-
-
-
-

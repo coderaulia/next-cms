@@ -1388,6 +1388,29 @@ button:disabled {
   color: #5c6f8f;
 }
 
+.admin-input-error {
+  border-color: var(--danger);
+  background: #fff7f8;
+}
+
+.admin-error-text {
+  color: var(--danger);
+  font-size: 0.82rem;
+}
+
+.admin-danger-btn {
+  background: #7f1d2d;
+}
+
+.admin-danger-btn:hover {
+  background: #6b1324;
+}
+
+.admin-danger-card {
+  border-color: #f0c9d1;
+  background: #fff8fa;
+}
+
 .admin-filter-bar {
   display: grid;
   grid-template-columns: 1.35fr repeat(4, minmax(0, 1fr));
@@ -1478,6 +1501,15 @@ button:disabled {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.admin-selection-cell {
+  width: 38px;
+}
+
+.admin-selection-cell input {
+  width: 16px;
+  height: 16px;
 }
 
 .error {
@@ -1629,6 +1661,7 @@ button:disabled {
   padding-inline: clamp(4px, 1vw, 10px);
   overflow-wrap: anywhere;
 }
+
 
 
 

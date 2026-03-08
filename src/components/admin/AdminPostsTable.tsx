@@ -10,6 +10,9 @@ type AdminPostsTableProps = {
   totalPages: number;
   onPrev: () => void;
   onNext: () => void;
+  selectedIds?: string[];
+  onToggleSelect?: (id: string, checked: boolean) => void;
+  onToggleSelectAll?: (checked: boolean) => void;
 };
 
 export function AdminPostsTable({
@@ -19,9 +22,14 @@ export function AdminPostsTable({
   pageSize,
   totalPages,
   onPrev,
-  onNext
+  onNext,
+  selectedIds = [],
+  onToggleSelect,
+  onToggleSelectAll
 }: AdminPostsTableProps) {
   const hasPosts = posts.length > 0;
+  const selectedSet = new Set(selectedIds);
+  const allSelected = hasPosts && posts.every((post) => selectedSet.has(post.id));
 
   return (
     <>
@@ -29,6 +37,14 @@ export function AdminPostsTable({
         <table className="admin-table">
           <thead>
             <tr>
+              <th className="admin-selection-cell">
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  aria-label="Select all posts"
+                  onChange={(event) => onToggleSelectAll?.(event.target.checked)}
+                />
+              </th>
               <th>Title</th>
               <th>Author</th>
               <th>Categories</th>
@@ -41,6 +57,14 @@ export function AdminPostsTable({
             <tbody>
               {posts.map((post) => (
                 <tr key={post.id}>
+                  <td className="admin-selection-cell">
+                    <input
+                      type="checkbox"
+                      checked={selectedSet.has(post.id)}
+                      aria-label={`Select post ${post.title}`}
+                      onChange={(event) => onToggleSelect?.(post.id, event.target.checked)}
+                    />
+                  </td>
                   <td>
                     <strong>{post.title}</strong>
                     <span className="admin-subtle">ID: {post.id.slice(0, 8)}</span>
@@ -74,7 +98,7 @@ export function AdminPostsTable({
           ) : (
             <tbody>
               <tr>
-                <td colSpan={6} className="admin-subtle">
+                <td colSpan={7} className="admin-subtle">
                   No posts found for this filter.
                 </td>
               </tr>

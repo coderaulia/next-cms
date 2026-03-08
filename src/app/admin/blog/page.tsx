@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { AdminPostsTable } from '@/components/admin/AdminPostsTable';
 import type { BlogPost } from '@/features/cms/types';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 type BlogListPayload = {
   posts: BlogPost[];
@@ -38,6 +39,9 @@ function BlogList() {
   const [data, setData] = useState<BlogListPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [bulkPending, setBulkPending] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -51,41 +55,79 @@ function BlogList() {
     router.replace(next ? `${pathname}?${next}` : pathname, { scroll: false });
   }, [q, status, category, dateSort, page, pageSize, pathname, router]);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true);
-        const params = new URLSearchParams({
-          includeDrafts: '1',
-          q,
-          status,
-          category,
-          dateSort,
-          page: String(page),
-          pageSize: String(pageSize)
-        });
-        const response = await fetch(`/api/admin/blog?${params.toString()}`);
-        if (!response.ok) {
-          setError('Failed to load posts.');
-          return;
-        }
-        const payload = (await response.json()) as BlogListPayload;
-        setData(payload);
-        setError('');
-      } finally {
-        setLoading(false);
+  const loadPosts = useCallback(async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams({
+        includeDrafts: '1',
+        q,
+        status,
+        category,
+        dateSort,
+        page: String(page),
+        pageSize: String(pageSize)
+      });
+      const response = await fetch(`/api/admin/blog?${params.toString()}`);
+      if (!response.ok) {
+        setError('Failed to load posts.');
+        return;
       }
+      const payload = (await response.json()) as BlogListPayload;
+      setData(payload);
+      setError('');
+    } finally {
+      setLoading(false);
     }
-    load();
-  }, [q, status, category, dateSort, page, pageSize]);
+  }, [category, dateSort, page, pageSize, q, status]);
+
+  useEffect(() => {
+    void loadPosts();
+  }, [loadPosts]);
+
+  useEffect(() => {
+    if (!data) return;
+    const visible = new Set(data.posts.map((post) => post.id));
+    setSelectedIds((current) => current.filter((id) => visible.has(id)));
+  }, [data]);
 
   const totalPages = useMemo(() => {
     if (!data) return 1;
     return Math.max(1, Math.ceil(data.meta.total / data.meta.pageSize));
   }, [data]);
 
+  const selectedCount = selectedIds.length;
+
+  const applyBulkStatus = async (target: 'published' | 'draft') => {
+    if (!data || selectedIds.length === 0) return;
+
+    setBulkPending(true);
+    setNotice('');
+    setError('');
+
+    const suffix = target === 'published' ? 'publish' : 'unpublish';
+    const responses = await Promise.all(
+      selectedIds.map((id) =>
+        csrfFetch(`/api/admin/blog/${id}/${suffix}`, {
+          method: 'POST'
+        })
+      )
+    );
+
+    const failed = responses.filter((response) => !response.ok).length;
+
+    if (failed > 0) {
+      setError(`Updated ${selectedIds.length - failed}/${selectedIds.length} posts. ${failed} failed.`);
+    } else {
+      setNotice(`Updated ${selectedIds.length} post(s) to ${target}.`);
+    }
+
+    setSelectedIds([]);
+    setBulkPending(false);
+    await loadPosts();
+  };
+
   if (loading) return <p>Loading posts...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (error && !data) return <p className="error">{error}</p>;
   if (!data) return null;
 
   return (
@@ -165,12 +207,44 @@ function BlogList() {
       </section>
 
       <section className="admin-card">
+        <div className="admin-inline-header">
+          <p className="admin-subtle">{selectedCount} selected</p>
+          <div className="admin-actions">
+            <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => void applyBulkStatus('published')}>
+              Publish selected
+            </button>
+            <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => void applyBulkStatus('draft')}>
+              Move selected to draft
+            </button>
+            <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => setSelectedIds([])}>
+              Clear selection
+            </button>
+          </div>
+        </div>
+        {notice ? <p className="admin-subtle">{notice}</p> : null}
+        {error ? <p className="error">{error}</p> : null}
         <AdminPostsTable
           posts={data.posts}
           total={data.meta.total}
           page={page}
           pageSize={data.meta.pageSize}
           totalPages={totalPages}
+          selectedIds={selectedIds}
+          onToggleSelect={(id, checked) => {
+            setSelectedIds((current) => {
+              if (checked) {
+                return current.includes(id) ? current : [...current, id];
+              }
+              return current.filter((currentId) => currentId !== id);
+            });
+          }}
+          onToggleSelectAll={(checked) => {
+            if (checked) {
+              setSelectedIds(data.posts.map((post) => post.id));
+            } else {
+              setSelectedIds([]);
+            }
+          }}
           onPrev={() => setPage((current) => current - 1)}
           onNext={() => setPage((current) => current + 1)}
         />
