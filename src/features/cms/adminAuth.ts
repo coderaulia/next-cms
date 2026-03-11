@@ -21,7 +21,7 @@ const scrypt = promisify(nodeScrypt);
 
 const ADMIN_SESSION_COOKIE = 'cms_admin_session';
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
-const DEFAULT_ADMIN_EMAIL = 'admin@vanaila.local';
+const DEFAULT_ADMIN_EMAIL = 'admin@example.local';
 const DEFAULT_ADMIN_NAME = 'Administrator';
 
 type AdminUserRow = typeof adminUsersTable.$inferSelect;
@@ -510,3 +510,4 @@ export function clearAdminSessionCookie(response: NextResponse) {
   response.cookies.set(ADMIN_SESSION_COOKIE, '', getSessionCookieOptions());
   return response;
 }
+

@@ -52,7 +52,7 @@ const page = (
   published: true,
   seo: seo(
     options?.slug ?? (id === 'home' ? '' : id),
-    options?.metaTitle ?? `${title} | Vanaila Digital`,
+    options?.metaTitle ?? `${title} | Example Studio`,
     options?.metaDescription ?? description,
     options?.keywords ?? []
   ),
@@ -184,9 +184,9 @@ const home = page(
   'Premium engineering-focused digital agency for high-performance infrastructure.',
   [],
   {
-    metaTitle: 'Vanaila Digital | Web Development, Custom Software, and Business Automation',
+    metaTitle: 'Example Studio | Web Development, Custom Software, and Business Automation',
     metaDescription:
-      'Vanaila Digital helps businesses scale with high-performance websites, custom software, ecommerce systems, and mobile apps.',
+      'Example Studio helps businesses scale with high-performance websites, custom software, ecommerce systems, and mobile apps.',
     keywords: [
       'web development agency',
       'custom software development',
@@ -207,7 +207,7 @@ home.homeBlocks = [
     titlePrimary: 'Faster Tech. Smarter Work.',
     titleAccent: 'Scaled Results.',
     description:
-      'Vanaila Digital builds the high-performance digital tools your business deserves. We specialize in lightning-fast websites and custom software that automates your unique workflows, giving you the elite-level tech you need at SME-friendly rates.',
+      'Example Studio builds the high-performance digital tools your business deserves. We specialize in lightning-fast websites and custom software that automates your unique workflows, giving you the elite-level tech you need at SME-friendly rates.',
     primaryCtaLabel: 'Get a free strategy call',
     primaryCtaHref: '/contact',
     primaryCtaStyle: 'primary',
@@ -297,7 +297,7 @@ home.homeBlocks = [
     type: 'why_split',
     enabled: true,
     theme: 'blue-soft',
-    heading: 'Why Vanaila Digital?',
+    heading: 'Why Example Studio?',
     description: "We don't just build software; we build the engine for your future growth. Here's what sets our consultancy apart.",
     bullets: [
       {
@@ -353,7 +353,7 @@ home.homeBlocks = [
     enabled: true,
     theme: 'blue-soft',
     heading: 'Ready to Grow?',
-    accentText: 'Join the organizations that trust Vanaila Digital.',
+    accentText: 'Join the organizations that trust Example Studio.',
     description: "Let's build something that works as hard as you do.",
     ctaLabel: 'Claim free consultation call',
     ctaHref: '/contact',
@@ -806,8 +806,8 @@ const partnership = page(
   ],
   {
     slug: 'partnership',
-    metaTitle: 'Partnership Program | Agency and Technical Alliance with Vanaila Digital',
-    metaDescription: 'Partner with Vanaila Digital through referral and technical alliance programs to deliver high-performance solutions.',
+    metaTitle: 'Partnership Program | Agency and Technical Alliance with Example Studio',
+    metaDescription: 'Partner with Example Studio through referral and technical alliance programs to deliver high-performance solutions.',
     keywords: ['digital agency partnership', 'technical alliance program', 'referral partnership', 'white label development']
   }
 );
@@ -815,10 +815,10 @@ const partnership = page(
 export const defaultContent: CmsContent = {
   settings: {
     general: {
-      siteName: 'Vanaila Digital.',
+      siteName: 'Example Studio.',
       siteTagline: 'Engineering-focused digital agency for ambitious brands.',
       baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
-      adminEmail: process.env.CMS_ADMIN_EMAIL ?? 'care@vanaila.com',
+      adminEmail: process.env.CMS_ADMIN_EMAIL ?? 'hello@example.com',
       timezone: process.env.CMS_TIMEZONE ?? 'Asia/Jakarta',
       language: 'en-US',
       dateFormat: 'MMMM d, yyyy',
@@ -854,32 +854,32 @@ export const defaultContent: CmsContent = {
       ]
     },
     contact: {
-      companyName: 'PT Vanaila Digital Vision',
-      addressLine1: 'Bogor Raya Digital Park, Block A-12',
-      addressLine2: 'West Java, Indonesia 16143',
+      companyName: 'Example Studio LLC',
+      addressLine1: '123 Example Avenue',
+      addressLine2: 'Remote-first team, Global delivery',
       globalReachLabel: 'Global Reach',
       globalReachText: 'Supporting partners across SEA, Europe, and North America.',
       emailLabel: 'Email Us',
-      emailValue: 'care@vanaila.com',
-      emailHref: 'mailto:care@vanaila.com',
+      emailValue: 'hello@example.com',
+      emailHref: 'mailto:hello@example.com',
       whatsappLabel: 'WhatsApp Business',
-      whatsappValue: '+62 851 7441 3323',
-      whatsappHref: 'https://wa.me/6285174413323',
+      whatsappValue: '+62 800 0000 0000',
+      whatsappHref: 'https://wa.me/620000000000',
       instagramLabel: 'Instagram',
-      instagramValue: '@vanaila.digital',
-      instagramHref: 'https://instagram.com/vanaila.digital'
+      instagramValue: '@example.studio',
+      instagramHref: 'https://instagram.com/example.studio'
     },
     social: {
       chatHref: '/contact',
-      instagramHref: 'https://instagram.com/vanaila.digital',
-      websiteHref: 'https://vanaila.com',
-      emailHref: 'mailto:care@vanaila.com'
+      instagramHref: 'https://instagram.com/example.studio',
+      websiteHref: 'https://example.com',
+      emailHref: 'mailto:hello@example.com'
     },
     branding: {
       footerTagline: 'Engineering-focused digital agency delivering high-performance infrastructure.',
       footerBadgePrimary: 'Glassmorphism Edition',
       footerBadgeSecondary: 'Premium Engineering',
-      copyrightText: '© 2026 Vanaila Digital.'
+      copyrightText: '© 2026 Example Studio.'
     },
     writing: {
       defaultPostCategory: 'general',
@@ -935,9 +935,9 @@ export const defaultContent: CmsContent = {
       includePortfolio: true,
       includeLastModified: true
     },
-    siteName: 'Vanaila Digital.',
+    siteName: 'Example Studio.',
     baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
-    organizationName: process.env.CMS_ORG_NAME ?? 'Vanaila Digital',
+    organizationName: process.env.CMS_ORG_NAME ?? 'Example Studio',
     organizationLogo: process.env.CMS_ORG_LOGO ?? 'https://placehold.co/120x120/png',
     defaultOgImage: 'https://placehold.co/1200x630/png'
   },
@@ -960,9 +960,9 @@ export const defaultContent: CmsContent = {
         )
       ],
       {
-        metaTitle: 'About Vanaila Digital | Engineering-First Digital Partner',
+        metaTitle: 'About Example Studio | Engineering-First Digital Partner',
         metaDescription:
-          'Learn about Vanaila Digital, an engineering-first team building scalable websites, software products, and growth systems.',
+          'Learn about Example Studio, an engineering-first team building scalable websites, software products, and growth systems.',
         keywords: ['about vanaila digital', 'digital engineering team', 'website development partner', 'custom software team']
       }
     ),
@@ -985,7 +985,7 @@ export const defaultContent: CmsContent = {
       {
         metaTitle: 'Digital Services | Website, Custom Software, Ecommerce, Mobile Apps',
         metaDescription:
-          'Explore Vanaila Digital services including website development, custom tools, ecommerce, mobile apps, and business email setup.',
+          'Explore Example Studio services including website development, custom tools, ecommerce, mobile apps, and business email setup.',
         keywords: ['digital services', 'website development services', 'custom software services', 'ecommerce development', 'mobile app services']
       }
     ),
@@ -1012,9 +1012,9 @@ export const defaultContent: CmsContent = {
         )
       ],
       {
-        metaTitle: 'Contact Vanaila Digital | Book a Strategy Call',
+        metaTitle: 'Contact Example Studio | Book a Strategy Call',
         metaDescription:
-          'Contact Vanaila Digital to discuss your website, software, or automation goals and get a practical implementation plan.',
+          'Contact Example Studio to discuss your website, software, or automation goals and get a practical implementation plan.',
         keywords: ['contact vanaila digital', 'book strategy call', 'web development consultation', 'software consultation']
       }
     )
@@ -1108,7 +1108,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       seo: {
         metaTitle: 'B2B Lead Funnel Platform Case Study',
         metaDescription:
-          'How Vanaila Digital improved lead quality with a performance-first website and automated lead workflow.',
+          'How Example Studio improved lead quality with a performance-first website and automated lead workflow.',
         slug: 'b2b-lead-funnel-platform',
         canonical: '',
         socialImage: 'https://placehold.co/1200x630/png',
@@ -1165,7 +1165,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       'media-brand-mark',
       'Vanaila Brand Mark',
       'https://placehold.co/240x80/png',
-      'Vanaila Digital brand mark'
+      'Example Studio brand mark'
     ),
     mediaAsset(
       'media-blog-cover',
@@ -1175,6 +1175,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
     )
   ]
 };
+
 
 
 

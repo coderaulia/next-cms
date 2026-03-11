@@ -14,7 +14,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     id: 'about-hero',
     heading: 'A Decade of|Engineering Excellence',
     body: 'Founded on the principles of precision and scalability, we have spent over 8 years perfecting the digital infrastructure that powers ambitious brands.',
-    ctaLabel: 'Vanaila Digital:',
+    ctaLabel: 'Example Studio:',
     ctaHref: '/about',
     mediaImage: '',
     mediaAlt: '',
@@ -23,9 +23,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const story = sectionWithFallback(page, 1, {
     id: 'about-story',
     heading: 'Our Technical DNA',
-    body: 'Vanaila Digital was born from a simple observation: the gap between aesthetic design and robust engineering was widening.\n\nFor over 8 years, we have cultivated a culture of architectural foresight, building not just for today\'s launch, but for next year\'s scale.',
+    body: 'Example Studio was formed around a simple observation: many teams were forced to choose between visual polish and reliable engineering.\n\nFor over 8 years, we have cultivated a culture of architectural foresight, building not just for today\'s launch, but for next year\'s scale.',
     ctaLabel: '2023',
-    ctaHref: 'Established in Bogor',
+    ctaHref: 'Established remotely',
     mediaImage: '',
     mediaAlt: 'We prioritize speed, security, and stability above all else, ensuring your digital presence is as reliable as it is beautiful.',
     layout: 'split'
@@ -52,7 +52,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const pillarsIntro = sectionWithFallback(page, 4, {
     id: 'about-pillars-intro',
-    heading: 'The Pillars of Vanaila',
+    heading: 'The Pillars of Example Studio',
     body: 'Three core principles that have guided our engineering decisions for nearly a decade.',
     ctaLabel: '',
     ctaHref: '',
@@ -141,7 +141,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-electricBlue" />
               </span>
               <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-600">
-                {hero.ctaLabel || 'Vanaila Digital:'}
+                {hero.ctaLabel || 'Example Studio:'}
               </span>
             </div>
             <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[1.0] tracking-tighter mb-8 drop-shadow-sm">
@@ -175,7 +175,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
                 </div>
                 <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electricBlue/10 text-electricBlue font-bold uppercase tracking-widest text-xs">
                   <span className="material-symbols-outlined text-sm">flag</span>
-                  {story.ctaHref || 'Established in Bogor'}
+                  {story.ctaHref || 'Established remotely'}
                 </div>
               </div>
               <div className="lg:col-span-7 space-y-6">
@@ -278,6 +278,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     </main>
   );
 }
+
 
 
 

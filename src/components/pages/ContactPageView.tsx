@@ -39,7 +39,7 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
     heading: 'Prefer a face-to-face|discussion?',
     body: "Skip the form and jump straight into a strategy session. We'll explore your technical requirements and business goals in real-time.",
     ctaLabel: 'Book a Google Meet Session',
-    ctaHref: contactSettings?.emailHref || 'mailto:care@vanaila.com?subject=Google%20Meet%20Consultation',
+    ctaHref: contactSettings?.emailHref || 'mailto:hello@example.com?subject=Google%20Meet%20Consultation',
     mediaImage: '',
     mediaAlt: 'Instant Booking',
     layout: 'split'
@@ -77,9 +77,9 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
 
   const company = sectionWithFallback(page, 6, {
     id: 'contact-company',
-    heading: contactSettings?.companyName || 'PT Vanaila Digital Vision',
-    body: `${contactSettings?.addressLine1 || 'Bogor Raya Digital Park, Block A-12'}\n${
-      contactSettings?.addressLine2 || 'West Java, Indonesia 16143'
+    heading: contactSettings?.companyName || 'Example Studio LLC',
+    body: `${contactSettings?.addressLine1 || '123 Example Avenue'}\n${
+      contactSettings?.addressLine2 || 'Remote-first team, Global delivery'
     }\n\n${contactSettings?.globalReachLabel || 'Global reach'}\n${
       contactSettings?.globalReachText || 'Supporting partners across SEA, Europe, and North America.'
     }`,
@@ -92,9 +92,9 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
   const email = sectionWithFallback(page, 7, {
     id: 'contact-email',
     heading: contactSettings?.emailLabel || 'Email Us',
-    body: contactSettings?.emailValue || 'care@vanaila.com',
+    body: contactSettings?.emailValue || 'hello@example.com',
     ctaLabel: 'alternate_email',
-    ctaHref: contactSettings?.emailHref || 'mailto:care@vanaila.com',
+    ctaHref: contactSettings?.emailHref || 'mailto:hello@example.com',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
@@ -102,9 +102,9 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
   const whatsapp = sectionWithFallback(page, 8, {
     id: 'contact-whatsapp',
     heading: contactSettings?.whatsappLabel || 'WhatsApp Business',
-    body: contactSettings?.whatsappValue || '+62 851 7441 3323',
+    body: contactSettings?.whatsappValue || '+62 800 0000 0000',
     ctaLabel: 'chat',
-    ctaHref: contactSettings?.whatsappHref || 'https://wa.me/6285174413323',
+    ctaHref: contactSettings?.whatsappHref || 'https://wa.me/620000000000',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
@@ -112,9 +112,9 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
   const instagram = sectionWithFallback(page, 9, {
     id: 'contact-instagram',
     heading: contactSettings?.instagramLabel || 'Instagram',
-    body: contactSettings?.instagramValue || '@vanaila.digital',
+    body: contactSettings?.instagramValue || '@example.studio',
     ctaLabel: 'photo_camera',
-    ctaHref: contactSettings?.instagramHref || 'https://instagram.com/vanaila.digital',
+    ctaHref: contactSettings?.instagramHref || 'https://instagram.com/example.studio',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
@@ -238,3 +238,4 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
     </main>
   );
 }
+

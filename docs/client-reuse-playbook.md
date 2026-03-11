@@ -21,7 +21,7 @@ npm run dev
 
 ## 2) Choose Content Storage
 
-Current default is file storage (`data/content.json`).
+Current default is file storage (`data/content.json`, generated locally and gitignored).
 
 Recommended for production clients:
 1. Move to Supabase PostgreSQL or another managed Postgres service.
@@ -39,7 +39,7 @@ For each new client:
 3. Add page seeds in:
 - `src/features/cms/defaultContent.ts`
 4. Ensure initial runtime content includes those pages:
-- `data/content.json` (or seed/migration script if DB-backed)
+- local `data/content.json` or `data/content.local.json` (gitignored), or a database seed script if DB-backed
 
 Rule: every public page must be represented in CMS and editable in Admin.
 
@@ -145,3 +145,4 @@ npm run build
 5. Deploy to staging.
 6. Client UAT.
 7. Production release.
+

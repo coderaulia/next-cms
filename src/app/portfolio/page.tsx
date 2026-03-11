@@ -17,7 +17,7 @@ export async function generateMetadata() {
     {
       metaTitle: 'Portfolio | Case Studies, Web Development, and Digital Infrastructure Results',
       metaDescription:
-        'Explore Vanaila Digital portfolio case studies across websites, automation systems, ecommerce, and mobile solutions.',
+        'Explore portfolio case studies across websites, automation systems, ecommerce, and mobile solutions.',
       slug: 'portfolio',
       canonical: '',
       socialImage: settings.defaultOgImage,
@@ -25,7 +25,7 @@ export async function generateMetadata() {
       keywords: ['portfolio case study', 'web development portfolio', 'digital agency projects']
     },
     'Portfolio | Case Studies, Web Development, and Digital Infrastructure Results',
-    'Explore Vanaila Digital portfolio case studies across websites, automation systems, ecommerce, and mobile solutions.'
+    'Explore portfolio case studies across websites, automation systems, ecommerce, and mobile solutions.'
   );
 }
 
@@ -51,3 +51,4 @@ export default async function PortfolioListPage({ searchParams }: PortfolioListP
     />
   );
 }
+

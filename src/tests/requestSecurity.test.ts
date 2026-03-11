@@ -13,7 +13,7 @@ afterEach(() => {
 
 describe('request security', () => {
   it('blocks cross-site mutation requests', async () => {
-    const request = new Request('https://vanaila.com/api/admin/blog', {
+    const request = new Request('https://example.com/api/admin/blog', {
       method: 'POST',
       headers: {
         origin: 'https://evil.example'
@@ -25,10 +25,10 @@ describe('request security', () => {
   });
 
   it('allows same-origin mutation requests', async () => {
-    const request = new Request('https://vanaila.com/api/admin/blog', {
+    const request = new Request('https://example.com/api/admin/blog', {
       method: 'POST',
       headers: {
-        origin: 'https://vanaila.com'
+        origin: 'https://example.com'
       }
     });
 
@@ -36,10 +36,10 @@ describe('request security', () => {
   });
 
   it('rejects mutation requests without valid csrf token', async () => {
-    const request = new Request('https://vanaila.com/api/contact', {
+    const request = new Request('https://example.com/api/contact', {
       method: 'POST',
       headers: {
-        origin: 'https://vanaila.com'
+        origin: 'https://example.com'
       }
     });
 
@@ -49,10 +49,10 @@ describe('request security', () => {
 
   it('accepts mutation requests with matching csrf cookie and header', async () => {
     const token = 'csrf-token-123';
-    const request = new Request('https://vanaila.com/api/contact', {
+    const request = new Request('https://example.com/api/contact', {
       method: 'POST',
       headers: {
-        origin: 'https://vanaila.com',
+        origin: 'https://example.com',
         cookie: `cms_csrf_token=${token}`,
         'x-csrf-token': token
       }
@@ -62,10 +62,10 @@ describe('request security', () => {
   });
 
   it('rate limits repeated requests from the same client', async () => {
-    const request = new Request('https://vanaila.com/api/contact', {
+    const request = new Request('https://example.com/api/contact', {
       method: 'POST',
       headers: {
-        origin: 'https://vanaila.com',
+        origin: 'https://example.com',
         'x-forwarded-for': '203.0.113.10'
       }
     });
@@ -81,3 +81,4 @@ describe('request security', () => {
     expect(html).toContain('\\u003c/script\\u003e');
   });
 });
+

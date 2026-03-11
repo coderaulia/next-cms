@@ -86,7 +86,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
               <div className="text-center md:text-left space-y-4">
                 <h4 className="text-xl font-display font-black text-deepSlate">{post.author}</h4>
                 <p className="text-slate-500 font-light leading-relaxed">
-                  Technical contributor at Vanaila Digital. Focused on performance-first architecture and scalable delivery.
+                  Technical contributor focused on performance-first architecture and scalable delivery.
                 </p>
               </div>
             </div>
@@ -133,6 +133,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
     </main>
   );
 }
+
 
 
 

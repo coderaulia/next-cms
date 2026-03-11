@@ -10,7 +10,7 @@ export const env = {
     return clean(process.env.CMS_ADMIN_TOKEN) || '';
   },
   get adminEmail() {
-    return clean(process.env.CMS_ADMIN_EMAIL) || 'admin@vanaila.local';
+    return clean(process.env.CMS_ADMIN_EMAIL) || 'admin@example.local';
   },
   get adminPassword() {
     return clean(process.env.CMS_ADMIN_PASSWORD) || clean(process.env.CMS_ADMIN_TOKEN);

@@ -70,7 +70,7 @@ Behavior:
 - `npm run db:migrate` - apply migrations
 - `npm run db:push` - push schema directly to database
 - `npm run db:studio` - open Drizzle Studio
-- `npm run db:seed:file` - import `data/content.json` into the configured database
+- `npm run db:seed:file` - import local `data/content.json` if present, otherwise seed sanitized defaults
 
 ## Content Model
 
@@ -156,7 +156,7 @@ src/
   services/
   tests/
 data/
-  content.json
+  content.json (generated locally, gitignored)
 docs/
   admin-usage.md
   deployment-handoff.md
@@ -187,3 +187,4 @@ See:
 
 - Media files are currently managed as external URLs, not binary uploads.
 - SEO outcomes depend on content quality and ongoing strategy.
+

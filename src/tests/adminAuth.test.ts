@@ -65,9 +65,9 @@ describe('admin auth', () => {
     vi.resetModules();
     const { assertAdminRequest } = await import('@/features/cms/adminAuth');
 
-    const request = new Request('https://vanaila.com/api/admin/pages', {
+    const request = new Request('https://example.com/api/admin/pages', {
       headers: {
-        origin: 'https://vanaila.com',
+        origin: 'https://example.com',
         'x-admin-token': 'my-secret-token'
       }
     });
@@ -76,3 +76,4 @@ describe('admin auth', () => {
     expect(result?.status).toBe(401);
   });
 });
+

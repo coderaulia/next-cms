@@ -8,7 +8,7 @@ import {
 describe('contact submission validation', () => {
   it('accepts a valid contact submission payload', () => {
     const payload = validateContactSubmission({
-      name: 'Aulia',
+      name: 'Alex',
       company: 'Vanaila',
       email: 'hello@example.com',
       serviceCategory: 'Website Development',
@@ -36,3 +36,4 @@ describe('contact submission validation', () => {
     expect(validateContactSubmissionStatus('unknown')).toBeNull();
   });
 });
+

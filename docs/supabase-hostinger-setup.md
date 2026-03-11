@@ -20,7 +20,7 @@ Current status in this repo:
 - Dual storage mode:
   - file mode for local fallback
   - database mode for runtime persistence
-- Import script to move `data/content.json` into the database
+- Import script to move local CMS content into the database, or fall back to sanitized defaults
 - `admin_users` and `admin_sessions` usage for real login/session auth
 
 ## Hostinger prerequisites
@@ -75,7 +75,7 @@ Alternative for first-time setup only:
 npm run db:push
 ```
 
-Import current CMS content from `data/content.json`:
+Import current CMS content from local `data/content.json` / `data/content.local.json`, or fall back to sanitized defaults:
 
 ```bash
 npm run db:seed:file
@@ -154,4 +154,5 @@ What it does:
 Important:
 - On Hostinger Business Node.js Web App, the preferred deployment path is still the built-in Node.js deployment service with GitHub integration.
 - Use the webhook deploy step only if your Hostinger setup provides a redeploy webhook. Otherwise keep the workflow as CI only and let Hostinger auto-deploy directly from GitHub.
+
 
