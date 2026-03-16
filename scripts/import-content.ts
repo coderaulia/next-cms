@@ -5,6 +5,7 @@ import '../src/services/loadLocalEnv';
 import { defaultContent } from '../src/features/cms/defaultContent';
 import type { CmsContent } from '../src/features/cms/types';
 import { replaceAllCmsContent } from '../src/features/cms/dbStore';
+import { mergeWithDefaults } from '../src/features/cms/storeShared';
 
 async function readSeedContent() {
   const candidates = [
@@ -16,7 +17,7 @@ async function readSeedContent() {
     try {
       const raw = await readFile(filePath, 'utf-8');
       return {
-        content: JSON.parse(raw) as CmsContent,
+        content: mergeWithDefaults(JSON.parse(raw) as CmsContent),
         source: path.relative(process.cwd(), filePath)
       };
     } catch {

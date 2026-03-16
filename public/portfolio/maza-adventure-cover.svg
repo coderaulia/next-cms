@@ -1,0 +1,63 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E5EAF3"/>
+      <stop offset="1" stop-color="#F8FAFC"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="240" y1="150" x2="980" y2="660" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9DCFF"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <filter id="blur" x="0" y="0" width="1200" height="800" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="shadow" x="70" y="100" width="1060" height="620" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="22"/>
+      <feGaussianBlur stdDeviation="22"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0588235 0 0 0 0 0.0941176 0 0 0 0 0.168627 0 0 0 0.16 0"/>
+      <feBlend in2="SourceGraphic" result="shape"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="210" cy="150" r="120" fill="#DEE4F2" filter="url(#blur)"/>
+  <circle cx="1030" cy="680" r="160" fill="#C9DCFF" filter="url(#blur)"/>
+  <circle cx="940" cy="160" r="110" fill="#D9F0FF" filter="url(#blur)"/>
+
+  <rect x="210" y="68" width="320" height="220" rx="28" fill="#15203A" opacity="0.72"/>
+  <rect x="700" y="72" width="260" height="180" rx="28" fill="#EEF6FF" opacity="0.64"/>
+  <rect x="864" y="208" width="210" height="132" rx="24" fill="#EBF5FF" opacity="0.5"/>
+
+  <g filter="url(#shadow)">
+    <rect x="120" y="150" width="960" height="540" rx="38" fill="#FFFFFF"/>
+    <rect x="120" y="150" width="960" height="64" rx="38" fill="#FFFFFF" fill-opacity="0.78"/>
+    <circle cx="162" cy="182" r="8" fill="#5F6C80" fill-opacity="0.38"/>
+    <circle cx="190" cy="182" r="8" fill="#5F6C80" fill-opacity="0.24"/>
+    <circle cx="218" cy="182" r="8" fill="#5F6C80" fill-opacity="0.18"/>
+
+    <rect x="170" y="258" width="860" height="182" rx="30" fill="url(#accent)"/>
+    <rect x="170" y="478" width="250" height="138" rx="24" fill="#FFFFFF" fill-opacity="0.84"/>
+    <rect x="450" y="478" width="250" height="138" rx="24" fill="#FFFFFF" fill-opacity="0.84"/>
+    <rect x="730" y="478" width="250" height="138" rx="24" fill="#FFFFFF" fill-opacity="0.84"/>
+
+    <rect x="190" y="284" width="166" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.18"/>
+    <rect x="190" y="344" width="430" height="22" rx="11" fill="#FFFFFF" fill-opacity="0.88"/>
+    <rect x="190" y="380" width="330" height="16" rx="8" fill="#FFFFFF" fill-opacity="0.54"/>
+    <rect x="190" y="412" width="188" height="42" rx="21" fill="#FFFFFF"/>
+
+    <rect x="192" y="504" width="86" height="16" rx="8" fill="#C9DCFF"/>
+    <rect x="192" y="536" width="176" height="20" rx="10" fill="#162132"/>
+    <rect x="192" y="570" width="196" height="12" rx="6" fill="#5F6C80" fill-opacity="0.4"/>
+
+    <rect x="472" y="504" width="86" height="16" rx="8" fill="#C9DCFF"/>
+    <rect x="472" y="536" width="176" height="20" rx="10" fill="#162132"/>
+    <rect x="472" y="570" width="196" height="12" rx="6" fill="#5F6C80" fill-opacity="0.4"/>
+
+    <rect x="752" y="504" width="86" height="16" rx="8" fill="#C9DCFF"/>
+    <rect x="752" y="536" width="176" height="20" rx="10" fill="#162132"/>
+    <rect x="752" y="570" width="196" height="12" rx="6" fill="#5F6C80" fill-opacity="0.4"/>
+  </g>
+
+  <text x="180" y="115" fill="#162132" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700">Maza Adventure</text>
+  <text x="180" y="680" fill="#5F6C80" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="600" letter-spacing="2">Tour and event organizer company profile website</text>
+</svg>

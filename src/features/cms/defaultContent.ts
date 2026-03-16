@@ -1083,70 +1083,244 @@ Draft quickly, review carefully, then publish with SEO checks.`,
   ],
   portfolioProjects: [
     {
-      id: 'portfolio-1',
-      title: 'B2B Lead Funnel Platform',
+      id: 'portfolio-assessment-app',
+      title: 'Assessment App',
       summary:
-        'Designed and shipped a conversion-focused website and lead workflow for a regional industrial supplier.',
+        'Custom web application built for psychologists to collect structured socio-cultural research data. The product was later discontinued in 2022 after the research cycle ended.',
       challenge:
-        'The client had fragmented landing pages, slow load times, and no clear lead qualification flow.',
+        'The research team needed a secure and easy way to distribute assessments, capture participant responses, and reduce manual spreadsheet handling during the data-collection phase.',
       solution:
-        'We rebuilt the information architecture, added CMS-managed landing modules, and integrated automated lead routing.',
+        'We designed a custom web app with guided participant flows, form-based intake screens, and a lightweight admin workflow that made field data collection easier for non-technical researchers.',
       outcome:
-        'Lead quality improved and inquiry response time dropped after launch.',
-      clientName: 'Astra Industrial Supply',
-      serviceType: 'Website Development + Automation',
-      industry: 'Manufacturing',
-      projectUrl: 'https://example.com',
-      coverImage: 'https://placehold.co/1200x800/png',
-      gallery: ['https://placehold.co/1200x800/png', 'https://placehold.co/1200x800/png'],
-      tags: ['website-development', 'automation', 'seo'],
+        'The team gained a cleaner collection workflow for research operations. The platform is now inactive because the program concluded in 2022, but it remains a strong example of a purpose-built internal application.',
+      clientName: 'Assessment App',
+      serviceType: 'Custom Web App',
+      industry: 'Psychology Research',
+      projectUrl: '/custom-business-tools',
+      coverImage: '/portfolio/assessment-app-cover.svg',
+      gallery: ['/portfolio/assessment-app-cover.svg'],
+      tags: ['Custom App', 'Research', 'Psychology'],
+      featured: false,
+      status: 'published',
+      sortOrder: 2,
+      publishedAt: nowIso(),
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'Assessment App Case Study | Research Data Collection Web App',
+        metaDescription:
+          'Case study of a custom assessment web app built to help psychologists collect structured research data more efficiently.',
+        slug: 'assessment-app',
+        canonical: '',
+        socialImage: '/portfolio/assessment-app-cover.svg',
+        noIndex: false,
+        keywords: ['assessment web app', 'research data collection', 'psychology app', 'custom web app']
+      }
+    },
+    {
+      id: 'portfolio-biliamind',
+      title: 'Biliamind',
+      summary:
+        'Learning management website designed to publish mentor-led courses, course listings, and educational landing pages in a clean commercial format.',
+      challenge:
+        'The brand needed a structured web presence that could present courses clearly, support conversion-oriented messaging, and make the learning offer easier to browse.',
+      solution:
+        'We built a polished LMS-style website layout with content hierarchy for courses, mentors, and learning benefits, keeping the interface approachable for first-time visitors.',
+      outcome:
+        'Biliamind gained a clearer online storefront for digital learning offers and a stronger foundation for content-driven growth.',
+      clientName: 'Biliamind',
+      serviceType: 'Website Development',
+      industry: 'Education',
+      projectUrl: '/website-development',
+      coverImage: '/portfolio/biliamind-cover.svg',
+      gallery: ['/portfolio/biliamind-cover.svg'],
+      tags: ['LMS', 'Education', 'Website'],
+      featured: false,
+      status: 'published',
+      sortOrder: 3,
+      publishedAt: nowIso(),
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'Biliamind Case Study | LMS Website Development',
+        metaDescription:
+          'LMS website case study for Biliamind, focused on course presentation, educational content structure, and lead generation.',
+        slug: 'biliamind',
+        canonical: '',
+        socialImage: '/portfolio/biliamind-cover.svg',
+        noIndex: false,
+        keywords: ['lms website', 'education website', 'course platform', 'website development']
+      }
+    },
+    {
+      id: 'portfolio-greenretech',
+      title: 'Greenretech',
+      summary:
+        'WooCommerce website created to sell wood pellet products to international buyers with a cleaner product showcase and export-oriented positioning.',
+      challenge:
+        'The business needed a professional ecommerce presence that could communicate product credibility, showcase catalog information, and support international buying interest.',
+      solution:
+        'We built a WooCommerce-based storefront with product sections, trust messaging, and a global-friendly presentation tailored to industrial export customers.',
+      outcome:
+        'Greenretech gained a more credible ecommerce channel for premium wood pellet sales and a stronger digital presentation for international inquiries.',
+      clientName: 'Greenretech',
+      serviceType: 'Secure Online Shops',
+      industry: 'Energy Export',
+      projectUrl: '/secure-online-shops',
+      coverImage: '/portfolio/greenretech-cover.svg',
+      gallery: ['/portfolio/greenretech-cover.svg'],
+      tags: ['WooCommerce', 'Ecommerce', 'Export'],
+      featured: false,
+      status: 'published',
+      sortOrder: 4,
+      publishedAt: nowIso(),
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'Greenretech Case Study | WooCommerce Export Website',
+        metaDescription:
+          'WooCommerce case study for Greenretech, built to sell wood pellet products for international customers with a professional ecommerce experience.',
+        slug: 'greenretech',
+        canonical: '',
+        socialImage: '/portfolio/greenretech-cover.svg',
+        noIndex: false,
+        keywords: ['woocommerce website', 'export ecommerce', 'wood pellet website', 'online shop']
+      }
+    },
+    {
+      id: 'portfolio-hr-performance',
+      title: 'HR Performance',
+      summary:
+        'Custom HR performance suite for KPI management, analytics dashboards, employee performance tracking, and training need analysis.',
+      challenge:
+        'The organization needed a centralized internal system to manage KPI measurement, reporting visibility, and competency tracking across teams.',
+      solution:
+        'We developed a custom web application with performance dashboards, KPI management modules, records, and role-based operational views for HR workflows.',
+      outcome:
+        'HR teams received a dedicated internal platform to monitor performance and training priorities with clearer reporting and operational consistency.',
+      clientName: 'HR Performance',
+      serviceType: 'Custom Web App',
+      industry: 'Human Resources',
+      projectUrl: '/custom-business-tools',
+      coverImage: '/portfolio/hr-performance-cover.svg',
+      gallery: ['/portfolio/hr-performance-cover.svg'],
+      tags: ['HR System', 'Analytics', 'Custom App'],
       featured: true,
       status: 'published',
       sortOrder: 1,
       publishedAt: nowIso(),
       updatedAt: nowIso(),
       seo: {
-        metaTitle: 'B2B Lead Funnel Platform Case Study',
+        metaTitle: 'HR Performance Case Study | KPI and HR Analytics System',
         metaDescription:
-          'How Example Studio improved lead quality with a performance-first website and automated lead workflow.',
-        slug: 'b2b-lead-funnel-platform',
+          'Custom HR system case study covering KPI management, analytics dashboards, employee performance monitoring, and training need analysis.',
+        slug: 'hr-performance',
         canonical: '',
-        socialImage: 'https://placehold.co/1200x630/png',
+        socialImage: '/portfolio/hr-performance-cover.svg',
         noIndex: false,
-        keywords: ['case study', 'b2b website', 'lead funnel', 'marketing automation']
+        keywords: ['hr system', 'kpi dashboard', 'performance management', 'custom web app']
       }
     },
     {
-      id: 'portfolio-2',
-      title: 'Omnichannel Commerce Revamp',
-      summary: 'Modernized checkout and inventory sync for a fast-growing retail brand.',
-      challenge: 'Cart abandonment and stock mismatch across channels.',
-      solution: 'Implemented headless storefront architecture and synchronized inventory workflows.',
-      outcome: 'Improved purchase completion and operational accuracy.',
-      clientName: 'Nova Retail Group',
-      serviceType: 'Secure Online Shops',
-      industry: 'Retail',
-      projectUrl: '',
-      coverImage: 'https://placehold.co/1200x800/png',
-      gallery: [],
-      tags: ['ecommerce', 'performance'],
+      id: 'portfolio-langgeng-sejahtera',
+      title: 'Langgeng Sejahtera',
+      summary:
+        'Company profile website for a furniture manufacturing business, designed to present operations, capabilities, and brand credibility online.',
+      challenge:
+        'The company needed a more professional digital presence to explain its manufacturing background and support trust with prospective business partners.',
+      solution:
+        'We produced a structured company profile website with a stronger visual hierarchy, corporate storytelling, and clear access points for business inquiries.',
+      outcome:
+        'Langgeng Sejahtera gained a more polished company profile site that better communicates its manufacturing identity and business positioning.',
+      clientName: 'Langgeng Sejahtera',
+      serviceType: 'Website Development',
+      industry: 'Furniture Manufacturing',
+      projectUrl: '/website-development',
+      coverImage: '/portfolio/langgeng-sejahtera-cover.svg',
+      gallery: ['/portfolio/langgeng-sejahtera-cover.svg'],
+      tags: ['Company Profile', 'Manufacturing', 'Website'],
       featured: false,
-      status: 'draft',
-      sortOrder: 2,
-      publishedAt: null,
+      status: 'published',
+      sortOrder: 5,
+      publishedAt: nowIso(),
       updatedAt: nowIso(),
       seo: {
-        metaTitle: 'Omnichannel Commerce Revamp Case Study',
-        metaDescription: 'Commerce modernization with synchronized inventory and a faster buying experience.',
-        slug: 'omnichannel-commerce-revamp',
+        metaTitle: 'Langgeng Sejahtera Case Study | Company Profile Website',
+        metaDescription:
+          'Company profile website case study for Langgeng Sejahtera, focused on corporate credibility, business storytelling, and lead-ready presentation.',
+        slug: 'langgeng-sejahtera',
         canonical: '',
-        socialImage: 'https://placehold.co/1200x630/png',
+        socialImage: '/portfolio/langgeng-sejahtera-cover.svg',
         noIndex: false,
-        keywords: ['ecommerce case study', 'headless commerce', 'checkout optimization']
+        keywords: ['company profile website', 'manufacturing website', 'corporate website', 'website development']
+      }
+    },
+    {
+      id: 'portfolio-maza-adventure',
+      title: 'Maza Adventure',
+      summary:
+        'Company profile website for an event and tour organizer, featuring outdoor programs, travel packages, and a more energetic visual direction.',
+      challenge:
+        'The brand needed a modern web presence that could showcase experiences, build trust quickly, and make the core programs easier to understand online.',
+      solution:
+        'We built a tourism-focused company profile website with hero storytelling, program highlights, and clearer pathways for potential customers to explore activities.',
+      outcome:
+        'Maza Adventure gained a stronger promotional website that presents its event and tour services with more confidence and clearer conversion paths.',
+      clientName: 'Maza Adventure',
+      serviceType: 'Website Development',
+      industry: 'Tourism & Events',
+      projectUrl: '/website-development',
+      coverImage: '/portfolio/maza-adventure-cover.svg',
+      gallery: ['/portfolio/maza-adventure-cover.svg'],
+      tags: ['Tourism', 'Events', 'Website'],
+      featured: false,
+      status: 'published',
+      sortOrder: 6,
+      publishedAt: nowIso(),
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'Maza Adventure Case Study | Tour Organizer Website',
+        metaDescription:
+          'Website case study for Maza Adventure, built to present event and tour programs with clearer storytelling and conversion-focused structure.',
+        slug: 'maza-adventure',
+        canonical: '',
+        socialImage: '/portfolio/maza-adventure-cover.svg',
+        noIndex: false,
+        keywords: ['tour website', 'event organizer website', 'travel company profile', 'website development']
+      }
+    },
+    {
+      id: 'portfolio-rumah-psikologi',
+      title: 'Rumah Psikologi',
+      summary:
+        'Company profile website for a psychology practice, designed to communicate services, consultation pathways, and a calm approachable brand identity.',
+      challenge:
+        'The practice needed a friendlier and more trustworthy website to introduce its services and help visitors understand how to start a consultation.',
+      solution:
+        'We created a soft visual system and a structured company profile website that highlights the practice, service offerings, and primary consultation actions.',
+      outcome:
+        'Rumah Psikologi gained a clearer digital front door for prospective clients and a more approachable service presentation.',
+      clientName: 'Rumah Psikologi',
+      serviceType: 'Website Development',
+      industry: 'Psychology Practice',
+      projectUrl: '/website-development',
+      coverImage: '/portfolio/rumah-psikologi-cover.svg',
+      gallery: ['/portfolio/rumah-psikologi-cover.svg'],
+      tags: ['Psychology', 'Company Profile', 'Website'],
+      featured: false,
+      status: 'published',
+      sortOrder: 7,
+      publishedAt: nowIso(),
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: 'Rumah Psikologi Case Study | Psychology Practice Website',
+        metaDescription:
+          'Psychology company profile website case study focused on service clarity, trust-building, and consultation readiness.',
+        slug: 'rumah-psikologi',
+        canonical: '',
+        socialImage: '/portfolio/rumah-psikologi-cover.svg',
+        noIndex: false,
+        keywords: ['psychology website', 'company profile website', 'consultation website', 'website development']
       }
     }
-  ],
-  categories: [
+  ],  categories: [
     category('General', 'general', 'Default publishing category for uncategorized content.'),
     category('Engineering', 'engineering', 'Technical engineering insights and implementation notes.'),
     category('Performance', 'performance', 'Web performance, speed, and optimization topics.'),

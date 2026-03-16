@@ -57,8 +57,12 @@ export function PortfolioProjectView({ project, related }: PortfolioProjectViewP
             <p className="admin-subtle">{project.serviceType || 'Implementation'}</p>
             <p className="admin-subtle">{project.industry || 'Industry not specified'}</p>
             {project.projectUrl ? (
-              <Link href={project.projectUrl} className="v2-btn v2-btn-secondary" target="_blank" rel="noreferrer">
-                Visit Project
+              <Link
+                href={project.projectUrl}
+                className="v2-btn v2-btn-secondary"
+                {...(project.projectUrl.startsWith('/') ? {} : { target: '_blank', rel: 'noreferrer' })}
+              >
+                {project.projectUrl.startsWith('/') ? 'View Related Service' : 'Visit Project'}
               </Link>
             ) : null}
           </article>
