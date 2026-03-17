@@ -7,7 +7,7 @@ import { PartnershipPageView } from '@/components/pages/PartnershipPageView';
 import { ServiceDetailPageView } from '@/components/pages/ServiceDetailPageView';
 import { ServicePageView } from '@/components/pages/ServicePageView';
 import { buildMetadata } from '@/features/cms/seo';
-import { getPublishedPageBySlug, getSiteSettings } from '@/features/cms/publicApi';
+import { getPublishedPageBySlug, getPublishedPortfolioProjects, getSiteSettings } from '@/features/cms/publicApi';
 
 type DynamicPageProps = {
   params: Promise<{ slug: string }>;
@@ -46,7 +46,8 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
     return <PartnershipPageView page={page} />;
   }
   if (serviceDetailIds.has(page.id)) {
-    return <ServiceDetailPageView page={page} />;
+    const portfolioProjects = await getPublishedPortfolioProjects();
+    return <ServiceDetailPageView page={page} portfolioProjects={portfolioProjects} />;
   }
   if (page.id === 'contact') {
     return <ContactPageView page={page} settings={settings} />;

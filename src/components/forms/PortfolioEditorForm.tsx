@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import type { PortfolioProject } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { MediaGalleryField, MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PortfolioEditorFormProps = {
   initialProject: PortfolioProject;
@@ -28,16 +29,6 @@ function fromKeywordInput(value: string) {
     .filter(Boolean);
 }
 
-function toGalleryInput(items: string[] | undefined) {
-  return (items ?? []).join('\n');
-}
-
-function fromGalleryInput(value: string) {
-  return value
-    .split('\n')
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
 
 export function PortfolioEditorForm({ initialProject, isNew = false }: PortfolioEditorFormProps) {
   const [project, setProject] = useState(initialProject);
@@ -264,13 +255,14 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
               onChange={(event) => setProject({ ...project, projectUrl: event.target.value })}
             />
           </label>
-          <label>
-            Cover image URL
-            <input
+          <div style={{ gridColumn: '1 / -1' }}>
+            <MediaPickerField
+              label="Cover image"
               value={project.coverImage}
-              onChange={(event) => setProject({ ...project, coverImage: event.target.value })}
+              onChange={(value) => setProject({ ...project, coverImage: value })}
+              helperText="Use an uploaded file from the media library or paste an external image URL."
             />
-          </label>
+          </div>
           <label>
             Sort order
             <input
@@ -301,19 +293,12 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
             }
           />
         </label>
-        <label>
-          Gallery image URLs (one per line)
-          <textarea
-            rows={4}
-            value={toGalleryInput(project.gallery)}
-            onChange={(event) =>
-              setProject({
-                ...project,
-                gallery: fromGalleryInput(event.target.value)
-              })
-            }
-          />
-        </label>
+        <MediaGalleryField
+          label="Project gallery"
+          values={project.gallery}
+          onChange={(gallery) => setProject({ ...project, gallery })}
+          helperText="Add gallery images from the media library. The first image is not required because the cover image is already used in cards and hero sections."
+        />
       </section>
 
       <section className="admin-card">
@@ -367,18 +352,17 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
             }
           />
         </label>
-        <label>
-          Social image URL
-          <input
-            value={project.seo.socialImage}
-            onChange={(event) =>
-              setProject({
-                ...project,
-                seo: { ...project.seo, socialImage: event.target.value }
-              })
-            }
-          />
-        </label>
+        <MediaPickerField
+          label="Social image"
+          value={project.seo.socialImage}
+          onChange={(value) =>
+            setProject({
+              ...project,
+              seo: { ...project.seo, socialImage: value }
+            })
+          }
+          helperText="Optional image used for portfolio social sharing cards."
+        />
         <label>
           Keywords (comma separated)
           <input

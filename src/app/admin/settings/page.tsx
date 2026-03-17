@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
+import { NavigationLinksEditor } from '@/components/admin/NavigationLinksEditor';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
 
 type SettingsResponse = {
@@ -290,36 +291,20 @@ function SettingsEditor() {
                 onChange={(event) => setSettings({ ...settings, organizationLogo: event.target.value })}
               />
             </label>
-            <label style={{ gridColumn: '1 / -1' }}>
-              Header menu links (one per line: label|href|enabled(1/0))
-              <textarea
-                rows={5}
-                value={settings.navigation.headerLinks
-                  .map((link) => [link.label, link.href, link.enabled ? '1' : '0'].join('|'))
-                  .join('\n')}
-                onChange={(event) => {
-                  const nextLinks = event.target.value
-                    .split('\n')
-                    .map((line, index) => {
-                      const [labelRaw, hrefRaw, enabledRaw] = line.split('|').map((part) => part.trim());
-                      if (!labelRaw || !hrefRaw) return null;
-                      const existing = settings.navigation.headerLinks[index];
-                      return {
-                        id: existing?.id || 'header-link-' + (index + 1),
-                        label: labelRaw,
-                        href: hrefRaw,
-                        enabled: enabledRaw === '0' ? false : true
-                      };
-                    })
-                    .filter((item): item is SiteSettings['navigation']['headerLinks'][number] => Boolean(item));
-
+            <div style={{ gridColumn: '1 / -1' }}>
+              <NavigationLinksEditor
+                label="Header menu links"
+                description="Primary navigation links shown in the site header."
+                items={settings.navigation.headerLinks}
+                prefix="header-link"
+                onChange={(nextLinks: SiteSettings['navigation']['headerLinks']) =>
                   setSettings({
                     ...settings,
                     navigation: { ...settings.navigation, headerLinks: nextLinks }
-                  });
-                }}
+                  })
+                }
               />
-            </label>
+            </div>
             <label>
               Header CTA label
               <input
@@ -344,66 +329,34 @@ function SettingsEditor() {
                 }
               />
             </label>
-            <label style={{ gridColumn: '1 / -1' }}>
-              Footer navigator links (one per line: label|href|enabled(1/0))
-              <textarea
-                rows={5}
-                value={settings.navigation.footerNavigatorLinks
-                  .map((link) => [link.label, link.href, link.enabled ? '1' : '0'].join('|'))
-                  .join('\n')}
-                onChange={(event) => {
-                  const nextLinks = event.target.value
-                    .split('\n')
-                    .map((line, index) => {
-                      const [labelRaw, hrefRaw, enabledRaw] = line.split('|').map((part) => part.trim());
-                      if (!labelRaw || !hrefRaw) return null;
-                      const existing = settings.navigation.footerNavigatorLinks[index];
-                      return {
-                        id: existing?.id || 'footer-nav-' + (index + 1),
-                        label: labelRaw,
-                        href: hrefRaw,
-                        enabled: enabledRaw === '0' ? false : true
-                      };
-                    })
-                    .filter((item): item is SiteSettings['navigation']['footerNavigatorLinks'][number] => Boolean(item));
-
+            <div style={{ gridColumn: '1 / -1' }}>
+              <NavigationLinksEditor
+                label="Footer navigator links"
+                description="General footer links for company, blog, contact, and portfolio navigation."
+                items={settings.navigation.footerNavigatorLinks}
+                prefix="footer-nav"
+                onChange={(nextLinks: SiteSettings['navigation']['footerNavigatorLinks']) =>
                   setSettings({
                     ...settings,
                     navigation: { ...settings.navigation, footerNavigatorLinks: nextLinks }
-                  });
-                }}
+                  })
+                }
               />
-            </label>
-            <label style={{ gridColumn: '1 / -1' }}>
-              Footer service links (one per line: label|href|enabled(1/0))
-              <textarea
-                rows={5}
-                value={settings.navigation.footerServiceLinks
-                  .map((link) => [link.label, link.href, link.enabled ? '1' : '0'].join('|'))
-                  .join('\n')}
-                onChange={(event) => {
-                  const nextLinks = event.target.value
-                    .split('\n')
-                    .map((line, index) => {
-                      const [labelRaw, hrefRaw, enabledRaw] = line.split('|').map((part) => part.trim());
-                      if (!labelRaw || !hrefRaw) return null;
-                      const existing = settings.navigation.footerServiceLinks[index];
-                      return {
-                        id: existing?.id || 'footer-service-' + (index + 1),
-                        label: labelRaw,
-                        href: hrefRaw,
-                        enabled: enabledRaw === '0' ? false : true
-                      };
-                    })
-                    .filter((item): item is SiteSettings['navigation']['footerServiceLinks'][number] => Boolean(item));
-
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <NavigationLinksEditor
+                label="Footer service links"
+                description="Service shortcuts shown in the footer."
+                items={settings.navigation.footerServiceLinks}
+                prefix="footer-service"
+                onChange={(nextLinks: SiteSettings['navigation']['footerServiceLinks']) =>
                   setSettings({
                     ...settings,
                     navigation: { ...settings.navigation, footerServiceLinks: nextLinks }
-                  });
-                }}
+                  })
+                }
               />
-            </label>
+            </div>
             <label>
               Company name
               <input

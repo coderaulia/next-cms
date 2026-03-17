@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { getAdminSession } from '@/features/cms/adminClientAuth';
+import { getAdminSession, getCachedAdminSession } from '@/features/cms/adminClientAuth';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
 type AdminAuthGateProps = {
@@ -18,8 +18,9 @@ function loginHref(pathname: string) {
 export function AdminAuthGate({ children }: AdminAuthGateProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<AdminSessionUser | null>(null);
-  const [ready, setReady] = useState(false);
+  const cachedUser = getCachedAdminSession();
+  const [user, setUser] = useState<AdminSessionUser | null>(cachedUser ?? null);
+  const [ready, setReady] = useState(cachedUser !== undefined);
 
   useEffect(() => {
     let cancelled = false;
@@ -33,6 +34,7 @@ export function AdminAuthGate({ children }: AdminAuthGateProps) {
           return;
         }
 
+        setUser(null);
         router.replace(loginHref(pathname));
       })
       .finally(() => {
@@ -46,8 +48,19 @@ export function AdminAuthGate({ children }: AdminAuthGateProps) {
     };
   }, [pathname, router]);
 
-  if (!ready || !user) {
-    return <p>Checking admin access...</p>;
+  if (!ready) {
+    return (
+      <div className="admin-auth-loading">
+        <div className="admin-auth-loading-panel">
+          <span className="admin-chip admin-chip-muted">Loading admin</span>
+          <p className="admin-subtle">Restoring your session.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
   }
 
   return <>{children(user)}</>;

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import type { BlogPost, Category } from '@/features/cms/types';
 import { formatSavedAtLabel, toFieldErrorMap, validateBlogEditor } from '@/features/cms/editorValidation';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type BlogEditorFormProps = {
   initialPost: BlogPost;
@@ -389,13 +390,12 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
             }
           />
         </label>
-        <label>
-          Cover image URL
-          <input
-            value={post.coverImage}
-            onChange={(event) => setPost({ ...post, coverImage: event.target.value })}
-          />
-        </label>
+        <MediaPickerField
+          label="Cover image"
+          value={post.coverImage}
+          onChange={(value) => setPost({ ...post, coverImage: value })}
+          helperText="Pick an uploaded file or paste an external image URL."
+        />
       </section>
 
       <section className="admin-card">
@@ -461,18 +461,17 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
             }
           />
         </label>
-        <label>
-          Social image URL
-          <input
-            value={post.seo.socialImage}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: { ...post.seo, socialImage: event.target.value }
-              })
-            }
-          />
-        </label>
+        <MediaPickerField
+          label="Social image"
+          value={post.seo.socialImage}
+          onChange={(value) =>
+            setPost({
+              ...post,
+              seo: { ...post.seo, socialImage: value }
+            })
+          }
+          helperText="Optional Open Graph/Twitter image for social sharing."
+        />
         <label>
           Keywords (comma separated)
           <input

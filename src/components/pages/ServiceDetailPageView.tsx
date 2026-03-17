@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import type { LandingPage, PageId } from '@/features/cms/types';
+import type { LandingPage, PageId, PortfolioProject } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
 import { Reveal } from '@/components/animations/Reveal';
@@ -334,15 +334,24 @@ const servicePageIds: ServiceDetailPageId[] = [
   'service-official-business-email'
 ];
 
+const publicServiceRouteByPageId: Record<ServiceDetailPageId, string> = {
+  'service-website-development': '/website-development',
+  'service-custom-business-tools': '/custom-business-tools',
+  'service-secure-online-shops': '/secure-online-shops',
+  'service-mobile-business-app': '/mobile-business-app',
+  'service-official-business-email': '/official-business-email'
+};
+
 function isServiceDetailPageId(id: PageId): id is ServiceDetailPageId {
   return servicePageIds.includes(id as ServiceDetailPageId);
 }
 
 type ServiceDetailPageViewProps = {
   page: LandingPage;
+  portfolioProjects?: PortfolioProject[];
 };
 
-export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
+export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceDetailPageViewProps) {
   if (!isServiceDetailPageId(page.id)) {
     return null;
   }
@@ -431,6 +440,17 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
     mediaImage: preset.ctaSecondaryHref,
     layout: 'stacked'
   });
+
+  const servicePageId = page.id as ServiceDetailPageId;
+
+  const relatedProjects = portfolioProjects
+    .filter((project) => project.projectUrl === publicServiceRouteByPageId[servicePageId])
+    .sort((a, b) => {
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
+      if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+      return a.updatedAt < b.updatedAt ? 1 : -1;
+    })
+    .slice(0, 3);
 
   const { primary: heroPrimary, accent: heroAccent } = splitAccent(hero.heading, 'Engineering Excellence');
   const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(cta.heading, 'Digital Growth');
@@ -558,6 +578,34 @@ export function ServiceDetailPageView({ page }: ServiceDetailPageViewProps) {
           </div>
         </div>
       </Reveal>
+
+      {relatedProjects.length > 0 ? (
+        <Reveal as="section" className="py-24 bg-white border-y border-slate-100">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="text-center mb-14">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 block">Delivered work</span>
+              <h2 className="text-4xl font-display font-black text-deepSlate">Related projects for this service</h2>
+              <p className="max-w-2xl mx-auto text-slate-500 font-light leading-relaxed mt-4">Recent case studies connected to the service you are viewing.</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {relatedProjects.map((project) => (
+                <Link
+                  key={project.id}
+                  href={`/portfolio/${project.seo.slug}`}
+                  className="glass-panel p-4 rounded-[2rem] bg-white hover:shadow-xl transition-all"
+                >
+                  <div className="aspect-video rounded-[1.5rem] bg-slate-100 overflow-hidden mb-4">
+                    {project.coverImage ? <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" /> : null}
+                  </div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-electricBlue mb-2">{project.clientName || project.serviceType || 'Project'}</p>
+                  <h3 className="text-lg font-display font-black text-deepSlate leading-tight mb-2">{project.title}</h3>
+                  <p className="text-slate-500 text-sm font-light leading-relaxed">{project.summary}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      ) : null}
 
       <Reveal as="section" className="relative py-40 overflow-hidden">
         <div className="max-w-5xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">

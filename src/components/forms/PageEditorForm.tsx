@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CtaStyleToken, HomeBlock, HomeBlockType, LandingPage, PageSection } from '@/features/cms/types';
 import { formatSavedAtLabel, toFieldErrorMap, validatePageEditor } from '@/features/cms/editorValidation';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PageEditorFormProps = {
   initialPage: LandingPage;
@@ -265,6 +266,12 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
     setPage({ ...page, homeBlocks: next });
   };
 
+  const updateSection = (index: number, patch: Partial<PageSection>) => {
+    const next = [...page.sections];
+    next[index] = { ...next[index], ...patch };
+    setPage({ ...page, sections: next });
+  };
+
   const renderHomeQuickFields = (block: HomeBlock, index: number) => {
     if (block.type === 'hero') {
       return (
@@ -340,7 +347,43 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
       );
     }
 
-    if (block.type === 'why_split' || block.type === 'logo_cloud' || block.type === 'primary_cta') {
+    if (block.type === 'why_split') {
+      return (
+        <div className="admin-grid-2">
+          <label>
+            Heading
+            <input
+              className={fieldErrors[`homeBlocks.${index}.heading`] ? 'admin-input-error' : ''}
+              value={String((block as Record<string, unknown>).heading ?? '')}
+              onChange={(event) => updateBlock(index, { heading: event.target.value } as Partial<HomeBlock>)}
+            />
+            {fieldErrors[`homeBlocks.${index}.heading`] ? (
+              <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.heading`]}</span>
+            ) : null}
+          </label>
+          <label>
+            Description
+            <textarea
+              value={String((block as Record<string, unknown>).description ?? '')}
+              onChange={(event) => updateBlock(index, { description: event.target.value } as Partial<HomeBlock>)}
+            />
+          </label>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <MediaPickerField
+              label="Split media image"
+              value={String((block as Record<string, unknown>).mediaImage ?? '')}
+              onChange={(value) => updateBlock(index, { mediaImage: value } as Partial<HomeBlock>)}
+              altLabel="Split media alt text"
+              altValue={String((block as Record<string, unknown>).mediaAlt ?? '')}
+              onAltChange={(value) => updateBlock(index, { mediaAlt: value } as Partial<HomeBlock>)}
+              helperText="Used by the homepage why-split block."
+            />
+          </div>
+        </div>
+      );
+    }
+
+    if (block.type === 'logo_cloud' || block.type === 'primary_cta') {
       return (
         <div className="admin-grid-2">
           <label>
@@ -472,13 +515,14 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               onChange={(event) => setPage({ ...page, seo: { ...page.seo, canonical: event.target.value } })}
             />
           </label>
-          <label>
-            Social image
-            <input
+          <div style={{ gridColumn: '1 / -1' }}>
+            <MediaPickerField
+              label="Social image"
               value={page.seo.socialImage}
-              onChange={(event) => setPage({ ...page, seo: { ...page.seo, socialImage: event.target.value } })}
+              onChange={(value) => setPage({ ...page, seo: { ...page.seo, socialImage: value } })}
+              helperText="Optional Open Graph/Twitter image used when this page is shared."
             />
-          </label>
+          </div>
           <label>
             Keywords (comma separated)
             <input
@@ -647,34 +691,53 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
 
               <div className="admin-grid-2">
                 <label>
+                  Section ID
+                  <input value={section.id} onChange={(event) => updateSection(index, { id: event.target.value })} />
+                </label>
+                <label>
+                  Layout
+                  <select value={section.layout} onChange={(event) => updateSection(index, { layout: event.target.value as PageSection['layout'] })}>
+                    <option value="stacked">stacked</option>
+                    <option value="split">split</option>
+                  </select>
+                </label>
+                <label>
                   Heading
                   <input
                     className={fieldErrors[`sections.${index}.heading`] ? 'admin-input-error' : ''}
                     value={section.heading}
-                    onChange={(event) => {
-                      const next = [...page.sections];
-                      next[index] = { ...next[index], heading: event.target.value };
-                      setPage({ ...page, sections: next });
-                    }}
+                    onChange={(event) => updateSection(index, { heading: event.target.value })}
                   />
                   {fieldErrors[`sections.${index}.heading`] ? (
                     <span className="admin-error-text">{fieldErrors[`sections.${index}.heading`]}</span>
                   ) : null}
                 </label>
                 <label>
+                  CTA label
+                  <input value={section.ctaLabel} onChange={(event) => updateSection(index, { ctaLabel: event.target.value })} />
+                </label>
+                <label>
                   CTA URL
                   <input
                     className={fieldErrors[`sections.${index}.ctaHref`] ? 'admin-input-error' : ''}
                     value={section.ctaHref}
-                    onChange={(event) => {
-                      const next = [...page.sections];
-                      next[index] = { ...next[index], ctaHref: event.target.value };
-                      setPage({ ...page, sections: next });
-                    }}
+                    onChange={(event) => updateSection(index, { ctaHref: event.target.value })}
                   />
                   {fieldErrors[`sections.${index}.ctaHref`] ? (
                     <span className="admin-error-text">{fieldErrors[`sections.${index}.ctaHref`]}</span>
                   ) : null}
+                </label>
+                <label>
+                  Theme background
+                  <input value={section.theme.background} onChange={(event) => updateSection(index, { theme: { ...section.theme, background: event.target.value } })} />
+                </label>
+                <label>
+                  Theme text
+                  <input value={section.theme.text} onChange={(event) => updateSection(index, { theme: { ...section.theme, text: event.target.value } })} />
+                </label>
+                <label>
+                  Theme accent
+                  <input value={section.theme.accent} onChange={(event) => updateSection(index, { theme: { ...section.theme, accent: event.target.value } })} />
                 </label>
               </div>
 
@@ -684,16 +747,22 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                   className={fieldErrors[`sections.${index}.body`] ? 'admin-input-error' : ''}
                   rows={5}
                   value={section.body}
-                  onChange={(event) => {
-                    const next = [...page.sections];
-                    next[index] = { ...next[index], body: event.target.value };
-                    setPage({ ...page, sections: next });
-                  }}
+                  onChange={(event) => updateSection(index, { body: event.target.value })}
                 />
                 {fieldErrors[`sections.${index}.body`] ? (
                   <span className="admin-error-text">{fieldErrors[`sections.${index}.body`]}</span>
                 ) : null}
               </label>
+
+              <MediaPickerField
+                label="Section image"
+                value={section.mediaImage}
+                onChange={(value) => updateSection(index, { mediaImage: value })}
+                altLabel="Section image alt text"
+                altValue={section.mediaAlt}
+                onAltChange={(value) => updateSection(index, { mediaAlt: value })}
+                helperText="Optional media shown in split or stacked page sections."
+              />
             </article>
           ))}
         </section>
