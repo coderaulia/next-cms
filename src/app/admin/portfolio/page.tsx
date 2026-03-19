@@ -5,6 +5,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
+import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
 import type { PortfolioProject } from '@/features/cms/types';
 
 type PortfolioListPayload = {
@@ -22,7 +24,11 @@ function parsePositiveInt(value: string | null, fallback: number) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-function PortfolioList() {
+type PortfolioListProps = {
+  user: AdminSessionUser;
+};
+
+function PortfolioList({ user }: PortfolioListProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -92,6 +98,18 @@ function PortfolioList() {
 
   return (
     <div className="admin-form-wrap">
+      {data.meta.total === 0 ? (
+        <section className="admin-card admin-empty-state">
+          <h2>No portfolio projects yet</h2>
+          <p className="admin-subtle">Create the first case study, add a managed cover image, and use scheduling when launches need a specific date.</p>
+          {user.permissions.includes('content:edit') ? (
+            <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
+              Create first project
+            </Link>
+          ) : null}
+        </section>
+      ) : null}
+
       <section className="admin-card">
         <div className="admin-filter-bar">
           <label>
@@ -196,38 +214,42 @@ function PortfolioList() {
             </thead>
             <tbody>
               {data.projects.length > 0 ? (
-                data.projects.map((project) => (
-                  <tr key={project.id}>
-                    <td>
-                      <strong>{project.title}</strong>
-                      <span className="admin-subtle">/portfolio/{project.seo.slug}</span>
-                    </td>
-                    <td>{project.clientName || '-'}</td>
-                    <td>{project.serviceType || '-'}</td>
-                    <td>
-                      <span
-                        className={`admin-chip ${
-                          project.status === 'published' ? 'admin-chip-success' : 'admin-chip-warning'
-                        }`}
-                      >
-                        {project.status}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`admin-chip ${project.featured ? 'admin-chip-success' : 'admin-chip-muted'}`}>
-                        {project.featured ? 'yes' : 'no'}
-                      </span>
-                    </td>
-                    <td>{new Date(project.updatedAt).toLocaleDateString()}</td>
-                    <td>
-                      <Link href={`/admin/portfolio/${project.id}`}>Edit</Link>
-                    </td>
-                  </tr>
-                ))
+                data.projects.map((project) => {
+                  const publicationLabel = getPortfolioProjectPublicationLabel(project);
+                  const chipClass =
+                    publicationLabel === 'published'
+                      ? 'admin-chip-success'
+                      : publicationLabel === 'scheduled' || publicationLabel === 'scheduled-unpublish'
+                        ? 'admin-chip-warning'
+                        : 'admin-chip-muted';
+
+                  return (
+                    <tr key={project.id}>
+                      <td>
+                        <strong>{project.title}</strong>
+                        <span className="admin-subtle">/portfolio/{project.seo.slug}</span>
+                      </td>
+                      <td>{project.clientName || '-'}</td>
+                      <td>{project.serviceType || '-'}</td>
+                      <td>
+                        <span className={`admin-chip ${chipClass}`}>{publicationLabel}</span>
+                      </td>
+                      <td>
+                        <span className={`admin-chip ${project.featured ? 'admin-chip-success' : 'admin-chip-muted'}`}>
+                          {project.featured ? 'yes' : 'no'}
+                        </span>
+                      </td>
+                      <td>{new Date(project.updatedAt).toLocaleDateString()}</td>
+                      <td>
+                        <Link href={`/admin/portfolio/${project.id}`}>Edit</Link>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan={7} className="admin-subtle">
-                    No portfolio projects found for this filter.
+                    No portfolio projects match the current filters. Clear filters or create a new case study.
                   </td>
                 </tr>
               )}
@@ -262,13 +284,15 @@ export default function AdminPortfolioPage() {
     <AdminShell
       title="Portfolio"
       description="Manage case studies and portfolio project publishing."
-      actions={
-        <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
-          + New project
-        </Link>
+      actions={(user) =>
+        user.permissions.includes('content:edit') ? (
+          <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
+            + New project
+          </Link>
+        ) : null
       }
     >
-      {() => <PortfolioList />}
+      {(user) => <PortfolioList user={user} />}
     </AdminShell>
   );
 }

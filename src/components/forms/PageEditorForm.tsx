@@ -3,12 +3,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { CtaStyleToken, HomeBlock, HomeBlockType, LandingPage, PageSection } from '@/features/cms/types';
+import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/editorSchedule';
 import { formatSavedAtLabel, toFieldErrorMap, validatePageEditor } from '@/features/cms/editorValidation';
+import { getLandingPagePublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PageEditorFormProps = {
   initialPage: LandingPage;
+  canPublish?: boolean;
 };
 
 type SaveMode = 'manual' | 'autosave';
@@ -122,6 +125,10 @@ function normalizePreviewHref(page: LandingPage) {
   return slug ? `/${slug.replace(/^\/+/, '')}` : '/';
 }
 
+function previewModeHref(path: string) {
+  return `/api/admin/preview?action=enable&path=${encodeURIComponent(path)}`;
+}
+
 function toKeywordInput(items: string[] | undefined) {
   return (items ?? []).join(', ');
 }
@@ -139,7 +146,7 @@ function extractBlockPayload(block: HomeBlock) {
   );
 }
 
-export function PageEditorForm({ initialPage }: PageEditorFormProps) {
+export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFormProps) {
   const [page, setPage] = useState(initialPage);
   const [baseline, setBaseline] = useState(initialPage);
   const [saving, setSaving] = useState(false);
@@ -159,6 +166,8 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
   const blocks = useMemo(() => page.homeBlocks ?? [], [page.homeBlocks]);
   const isDirty = useMemo(() => JSON.stringify(page) !== JSON.stringify(baseline), [page, baseline]);
   const previewHref = normalizePreviewHref(page);
+  const previewModePath = previewModeHref(previewHref);
+  const publicationLabel = getLandingPagePublicationLabel(page);
   const validationIssues = useMemo(() => validatePageEditor(page), [page]);
   const fieldErrors = useMemo(() => toFieldErrorMap(validationIssues), [validationIssues]);
   const canSave = validationIssues.length === 0;
@@ -377,6 +386,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               altValue={String((block as Record<string, unknown>).mediaAlt ?? '')}
               onAltChange={(value) => updateBlock(index, { mediaAlt: value } as Partial<HomeBlock>)}
               helperText="Used by the homepage why-split block."
+              aspectRatioHint="4:3 or square crops work best in the homepage split layout."
             />
           </div>
         </div>
@@ -426,7 +436,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
           <div>
             <h2>{page.title}</h2>
             <p className="admin-subtle">
-              Ctrl/Cmd + S to save. {page.published ? 'Published' : 'Draft'} page. {formatSavedAtLabel(lastSavedAt)}.
+              Ctrl/Cmd + S to save. Status: {publicationLabel}. {formatSavedAtLabel(lastSavedAt)}.
             </p>
             <p className="admin-subtle">
               Autosave: {autoSaveState === 'blocked' ? 'blocked by validation' : autoSaveState}
@@ -437,8 +447,8 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
             {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
-            <a className="v2-btn v2-btn-secondary" href={previewHref} target="_blank" rel="noreferrer">
-              Preview page
+            <a className="v2-btn v2-btn-secondary" href={previewModePath} target="_blank" rel="noreferrer">
+              Preview draft
             </a>
             <button type="button" disabled={!isDirty || saving} onClick={() => setPage(baseline)}>
               Discard
@@ -452,6 +462,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
         {validationIssues.length > 0 ? (
           <p className="admin-error-text">{validationIssues[0].message}</p>
         ) : null}
+        <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or sections.</p>
       </section>
 
       <section className="admin-card">
@@ -481,9 +492,53 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
           <input
             type="checkbox"
             checked={page.published}
+            disabled={!canPublish}
             onChange={(event) => setPage({ ...page, published: event.target.checked })}
           />
         </label>
+        <div className="admin-grid-2">
+          <label>
+            Scheduled publish time
+            <input
+              className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
+              type="datetime-local"
+              value={toDatetimeLocalValue(page.scheduledPublishAt)}
+              disabled={!canPublish}
+              onChange={(event) =>
+                setPage({
+                  ...page,
+                  scheduledPublishAt: fromDatetimeLocalValue(event.target.value)
+                })
+              }
+            />
+            {fieldErrors.scheduledPublishAt ? (
+              <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
+            ) : (
+              <span className="admin-subtle">Set this when a page should go live automatically.</span>
+            )}
+          </label>
+          <label>
+            Scheduled unpublish time
+            <input
+              className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
+              type="datetime-local"
+              value={toDatetimeLocalValue(page.scheduledUnpublishAt)}
+              disabled={!canPublish}
+              onChange={(event) =>
+                setPage({
+                  ...page,
+                  scheduledUnpublishAt: fromDatetimeLocalValue(event.target.value)
+                })
+              }
+            />
+            {fieldErrors.scheduledUnpublishAt ? (
+              <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
+            ) : (
+              <span className="admin-subtle">Useful for temporary campaign pages or limited-time offers.</span>
+            )}
+          </label>
+        </div>
+        {!canPublish ? <p className="admin-subtle">Your role can edit content but cannot change page publication timing.</p> : null}
       </section>
 
       <section className="admin-card">
@@ -521,6 +576,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
               value={page.seo.socialImage}
               onChange={(value) => setPage({ ...page, seo: { ...page.seo, socialImage: value } })}
               helperText="Optional Open Graph/Twitter image used when this page is shared."
+              aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
             />
           </div>
           <label>
@@ -762,6 +818,7 @@ export function PageEditorForm({ initialPage }: PageEditorFormProps) {
                 altValue={section.mediaAlt}
                 onAltChange={(value) => updateSection(index, { mediaAlt: value })}
                 helperText="Optional media shown in split or stacked page sections."
+                aspectRatioHint="16:9 for wide sections or 4:3 for editorial layouts."
               />
             </article>
           ))}

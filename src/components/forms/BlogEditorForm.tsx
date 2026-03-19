@@ -4,13 +4,17 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { BlogPost, Category } from '@/features/cms/types';
+import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/editorSchedule';
 import { formatSavedAtLabel, toFieldErrorMap, validateBlogEditor } from '@/features/cms/editorValidation';
+import { getBlogPostPublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type BlogEditorFormProps = {
   initialPost: BlogPost;
   isNew?: boolean;
+  canPublish?: boolean;
+  canDelete?: boolean;
 };
 
 type CategoriesResponse = {
@@ -27,6 +31,10 @@ function normalizePreviewHref(post: BlogPost) {
   const slug = post.seo.slug.trim();
   if (!slug) return '/blog';
   return `/blog/${slug.replace(/^\/+/, '')}`;
+}
+
+function previewModeHref(path: string) {
+  return `/api/admin/preview?action=enable&path=${encodeURIComponent(path)}`;
 }
 
 function toKeywordInput(items: string[] | undefined) {
@@ -47,7 +55,12 @@ function countWords(value: string) {
     .filter(Boolean).length;
 }
 
-export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormProps) {
+export function BlogEditorForm({
+  initialPost,
+  isNew = false,
+  canPublish = true,
+  canDelete = true
+}: BlogEditorFormProps) {
   const [post, setPost] = useState(initialPost);
   const [baseline, setBaseline] = useState(initialPost);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -80,10 +93,12 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   const selectedCategories = useMemo(() => new Set(post.tags), [post.tags]);
   const isDirty = useMemo(() => JSON.stringify(post) !== JSON.stringify(baseline), [post, baseline]);
   const previewHref = normalizePreviewHref(post);
+  const previewModePath = previewModeHref(previewHref);
+  const publicationLabel = getBlogPostPublicationLabel(post);
   const validationIssues = useMemo(() => validateBlogEditor(post), [post]);
   const fieldErrors = useMemo(() => toFieldErrorMap(validationIssues), [validationIssues]);
   const canSave = validationIssues.length === 0;
-  const canDelete = deleteConfirmText.trim().toUpperCase() === 'DELETE';
+  const canDeleteConfirm = deleteConfirmText.trim().toUpperCase() === 'DELETE';
 
   const toggleCategory = (slug: string) => {
     const next = new Set(selectedCategories);
@@ -189,7 +204,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
   };
 
   const deletePost = async () => {
-    if (!canDelete) {
+    if (!canDeleteConfirm) {
       setNotice('Type DELETE to confirm permanent deletion.');
       return;
     }
@@ -258,7 +273,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
           <div>
             <h2>{post.title || 'Untitled post'}</h2>
             <p className="admin-subtle">
-              Ctrl/Cmd + S to save. Status: {post.status}. {countWords(post.content)} words. {formatSavedAtLabel(lastSavedAt)}.
+              Ctrl/Cmd + S to save. Status: {publicationLabel}. {countWords(post.content)} words. {formatSavedAtLabel(lastSavedAt)}.
             </p>
             <p className="admin-subtle">
               Autosave: {autoSaveState === 'blocked' ? 'blocked by validation' : autoSaveState}
@@ -269,8 +284,8 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
             {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
-            <a className="v2-btn v2-btn-secondary" href={previewHref} target="_blank" rel="noreferrer">
-              Preview post
+            <a className="v2-btn v2-btn-secondary" href={previewModePath} target="_blank" rel="noreferrer">
+              Preview draft
             </a>
             <button type="button" disabled={!isDirty || saving} onClick={() => setPost(baseline)}>
               Discard
@@ -278,31 +293,38 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
             <button type="button" onClick={() => void savePost('manual')} disabled={saving || !canSave}>
               {saving ? 'Saving...' : 'Save post'}
             </button>
-            {post.status === 'draft' ? (
-              <button type="button" onClick={publish} disabled={!canSave}>
-                Publish
-              </button>
+            {canPublish ? (
+              post.status === 'draft' ? (
+                <button type="button" onClick={publish} disabled={!canSave}>
+                  Publish
+                </button>
+              ) : (
+                <button type="button" onClick={unpublish}>
+                  Unpublish
+                </button>
+              )
             ) : (
-              <button type="button" onClick={unpublish}>
-                Unpublish
-              </button>
+              <span className="admin-chip admin-chip-muted">No publish access</span>
             )}
-            <button
-              type="button"
-              className="admin-danger-btn"
-              onClick={() => {
-                setShowDeleteConfirm((current) => !current);
-                setDeleteConfirmText('');
-              }}
-            >
-              {showDeleteConfirm ? 'Cancel delete' : 'Delete'}
-            </button>
+            {canDelete ? (
+              <button
+                type="button"
+                className="admin-danger-btn"
+                onClick={() => {
+                  setShowDeleteConfirm((current) => !current);
+                  setDeleteConfirmText('');
+                }}
+              >
+                {showDeleteConfirm ? 'Cancel delete' : 'Delete'}
+              </button>
+            ) : null}
           </div>
         </div>
         {notice ? <p className="admin-subtle">{notice}</p> : null}
         {validationIssues.length > 0 ? (
           <p className="admin-error-text">{validationIssues[0].message}</p>
         ) : null}
+        <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or content.</p>
       </section>
 
       {showDeleteConfirm ? (
@@ -315,7 +337,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
               onChange={(event) => setDeleteConfirmText(event.target.value)}
               placeholder="Type DELETE"
             />
-            <button type="button" className="admin-danger-btn" disabled={!canDelete} onClick={deletePost}>
+            <button type="button" className="admin-danger-btn" disabled={!canDeleteConfirm} onClick={deletePost}>
               Permanently delete post
             </button>
           </div>
@@ -395,7 +417,57 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
           value={post.coverImage}
           onChange={(value) => setPost({ ...post, coverImage: value })}
           helperText="Pick an uploaded file or paste an external image URL."
+          aspectRatioHint="16:9 for blog cards and post hero sections."
         />
+      </section>
+
+      <section className="admin-card">
+        <h2>Publishing</h2>
+        <div className="admin-grid-2">
+          <label>
+            Scheduled publish time
+            <input
+              className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
+              aria-invalid={Boolean(fieldErrors.scheduledPublishAt)}
+              type="datetime-local"
+              value={toDatetimeLocalValue(post.scheduledPublishAt)}
+              disabled={!canPublish}
+              onChange={(event) =>
+                setPost({
+                  ...post,
+                  scheduledPublishAt: fromDatetimeLocalValue(event.target.value)
+                })
+              }
+            />
+            {fieldErrors.scheduledPublishAt ? (
+              <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
+            ) : (
+              <span className="admin-subtle">Leave blank to control publishing manually.</span>
+            )}
+          </label>
+          <label>
+            Scheduled unpublish time
+            <input
+              className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
+              aria-invalid={Boolean(fieldErrors.scheduledUnpublishAt)}
+              type="datetime-local"
+              value={toDatetimeLocalValue(post.scheduledUnpublishAt)}
+              disabled={!canPublish}
+              onChange={(event) =>
+                setPost({
+                  ...post,
+                  scheduledUnpublishAt: fromDatetimeLocalValue(event.target.value)
+                })
+              }
+            />
+            {fieldErrors.scheduledUnpublishAt ? (
+              <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
+            ) : (
+              <span className="admin-subtle">Useful for time-limited announcements or campaign pages.</span>
+            )}
+          </label>
+        </div>
+        {!canPublish ? <p className="admin-subtle">Your role can edit content but cannot change publishing timing.</p> : null}
       </section>
 
       <section className="admin-card">
@@ -471,6 +543,7 @@ export function BlogEditorForm({ initialPost, isNew = false }: BlogEditorFormPro
             })
           }
           helperText="Optional Open Graph/Twitter image for social sharing."
+          aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
         />
         <label>
           Keywords (comma separated)

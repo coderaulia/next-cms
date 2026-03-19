@@ -5,12 +5,25 @@ import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import { BlogEditorForm } from '@/components/forms/BlogEditorForm';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
 
-function CreateBlogPost() {
+type CreateBlogPostProps = {
+  user: AdminSessionUser;
+};
+
+function CreateBlogPost({ user }: CreateBlogPostProps) {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+
+  if (!user.permissions.includes('content:edit')) {
+    return (
+      <section className="admin-card">
+        <p className="admin-subtle">Your role cannot create or edit blog posts.</p>
+      </section>
+    );
+  }
 
   const createDraft = async () => {
     setPending(true);
@@ -60,15 +73,20 @@ function CreateBlogPost() {
     );
   }
 
-  return <BlogEditorForm initialPost={post} isNew />;
+  return (
+    <BlogEditorForm
+      initialPost={post}
+      isNew
+      canPublish={user.permissions.includes('content:publish')}
+      canDelete={user.permissions.includes('content:delete')}
+    />
+  );
 }
 
 export default function AdminBlogCreatePage() {
   return (
     <AdminShell title="New Post" description="Create a draft, then complete content and SEO fields.">
-      {() => <CreateBlogPost />}
+      {(user) => <CreateBlogPost user={user} />}
     </AdminShell>
   );
 }
-
-

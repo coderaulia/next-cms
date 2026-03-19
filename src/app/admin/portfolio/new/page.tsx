@@ -4,13 +4,26 @@ import { useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { PortfolioEditorForm } from '@/components/forms/PortfolioEditorForm';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { PortfolioProject } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
 
-function CreatePortfolioProject() {
+type CreatePortfolioProjectProps = {
+  user: AdminSessionUser;
+};
+
+function CreatePortfolioProject({ user }: CreatePortfolioProjectProps) {
   const [project, setProject] = useState<PortfolioProject | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+
+  if (!user.permissions.includes('content:edit')) {
+    return (
+      <section className="admin-card">
+        <p className="admin-subtle">Your role cannot create or edit portfolio projects.</p>
+      </section>
+    );
+  }
 
   const createDraft = async () => {
     setPending(true);
@@ -72,13 +85,20 @@ function CreatePortfolioProject() {
     );
   }
 
-  return <PortfolioEditorForm initialProject={project} isNew />;
+  return (
+    <PortfolioEditorForm
+      initialProject={project}
+      isNew
+      canPublish={user.permissions.includes('content:publish')}
+      canDelete={user.permissions.includes('content:delete')}
+    />
+  );
 }
 
 export default function AdminPortfolioCreatePage() {
   return (
     <AdminShell title="New Portfolio Project" description="Create a draft, then complete content and SEO fields.">
-      {() => <CreatePortfolioProject />}
+      {(user) => <CreatePortfolioProject user={user} />}
     </AdminShell>
   );
 }

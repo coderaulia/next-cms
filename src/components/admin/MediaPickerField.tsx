@@ -23,6 +23,7 @@ type MediaPickerFieldProps = {
   altValue?: string;
   onAltChange?: (value: string) => void;
   helperText?: string;
+  aspectRatioHint?: string;
   pickLabel?: string;
   placeholder?: string;
 };
@@ -66,6 +67,20 @@ async function loadMediaAssets(force = false): Promise<MediaAsset[]> {
 function previewAltText(url: string) {
   const parts = url.split('/');
   return parts[parts.length - 1] || 'Selected media asset';
+}
+
+function formatAspectRatio(width: number | null, height: number | null) {
+  if (!width || !height) {
+    return '';
+  }
+
+  const gcd = (left: number, right: number): number => {
+    if (!right) return left;
+    return gcd(right, left % right);
+  };
+
+  const divisor = gcd(width, height);
+  return `${Math.round(width / divisor)}:${Math.round(height / divisor)}`;
 }
 
 function MediaAssetBrowser({ buttonLabel = 'Choose from media', onSelect, selectedUrl = '' }: MediaAssetBrowserProps) {
@@ -143,6 +158,11 @@ function MediaAssetBrowser({ buttonLabel = 'Choose from media', onSelect, select
                   <div>
                     <strong>{asset.title}</strong>
                     <span>{asset.altText || asset.url}</span>
+                    {asset.width && asset.height ? (
+                      <span>
+                        {asset.width} x {asset.height} ({formatAspectRatio(asset.width, asset.height)})
+                      </span>
+                    ) : null}
                   </div>
                 </button>
               );
@@ -162,9 +182,38 @@ export function MediaPickerField({
   altValue = '',
   onAltChange,
   helperText,
+  aspectRatioHint,
   pickLabel,
   placeholder = 'https://example.com/asset.jpg'
 }: MediaPickerFieldProps) {
+  const [selectedAsset, setSelectedAsset] = useState<MediaAsset | null>(() => {
+    if (!value || !mediaAssetCache) return null;
+    return mediaAssetCache.find((asset) => asset.url === value) ?? null;
+  });
+
+  useEffect(() => {
+    if (!value) {
+      setSelectedAsset(null);
+      return;
+    }
+
+    if (mediaAssetCache) {
+      const match = mediaAssetCache.find((asset) => asset.url === value) ?? null;
+      setSelectedAsset(match);
+      if (match) {
+        return;
+      }
+    }
+
+    loadMediaAssets()
+      .then((assets) => {
+        setSelectedAsset(assets.find((asset) => asset.url === value) ?? null);
+      })
+      .catch(() => {
+        setSelectedAsset(null);
+      });
+  }, [value]);
+
   return (
     <div className="admin-media-field">
       <label>
@@ -176,6 +225,7 @@ export function MediaPickerField({
             selectedUrl={value}
             onSelect={(asset) => {
               onChange(asset.url);
+              setSelectedAsset(asset);
               if (onAltChange) {
                 onAltChange(asset.altText || asset.title || '');
               }
@@ -190,10 +240,25 @@ export function MediaPickerField({
       </label>
 
       {helperText ? <p className="admin-subtle">{helperText}</p> : null}
+      {aspectRatioHint ? <p className="admin-subtle">Recommended ratio: {aspectRatioHint}</p> : null}
 
       {value ? (
         <div className="admin-media-preview">
           <img src={value} alt={altValue || previewAltText(value)} />
+        </div>
+      ) : null}
+
+      {selectedAsset ? (
+        <div className="admin-media-meta">
+          <span>{selectedAsset.title}</span>
+          <span>{selectedAsset.altText || 'No alt text on the selected asset yet.'}</span>
+          {selectedAsset.width && selectedAsset.height ? (
+            <span>
+              {selectedAsset.width} x {selectedAsset.height} ({formatAspectRatio(selectedAsset.width, selectedAsset.height)})
+            </span>
+          ) : (
+            <span>Stored dimensions are not available for this asset.</span>
+          )}
         </div>
       ) : null}
 

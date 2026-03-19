@@ -26,6 +26,8 @@ export const pagesTable = pgTable(
     navLabel: text('nav_label').notNull(),
     slug: text('slug').notNull(),
     published: boolean('published').notNull(),
+    scheduledPublishAt: timestamp('scheduled_publish_at', { withTimezone: true, mode: 'string' }),
+    scheduledUnpublishAt: timestamp('scheduled_unpublish_at', { withTimezone: true, mode: 'string' }),
     seo: jsonb('seo').$type<SeoFields>().notNull(),
     sections: jsonb('sections').$type<PageSection[]>().notNull(),
     homeBlocks: jsonb('home_blocks').$type<HomeBlock[] | null>(),
@@ -49,6 +51,8 @@ export const blogPostsTable = pgTable(
     coverImage: text('cover_image').notNull(),
     status: text('status').$type<BlogStatus>().notNull(),
     publishedAt: timestamp('published_at', { withTimezone: true, mode: 'string' }),
+    scheduledPublishAt: timestamp('scheduled_publish_at', { withTimezone: true, mode: 'string' }),
+    scheduledUnpublishAt: timestamp('scheduled_unpublish_at', { withTimezone: true, mode: 'string' }),
     updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull(),
     seo: jsonb('seo').$type<BlogPost['seo']>().notNull()
   },
@@ -79,6 +83,8 @@ export const portfolioProjectsTable = pgTable(
     status: text('status').$type<PortfolioStatus>().notNull(),
     sortOrder: integer('sort_order').notNull(),
     publishedAt: timestamp('published_at', { withTimezone: true, mode: 'string' }),
+    scheduledPublishAt: timestamp('scheduled_publish_at', { withTimezone: true, mode: 'string' }),
+    scheduledUnpublishAt: timestamp('scheduled_unpublish_at', { withTimezone: true, mode: 'string' }),
     updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull(),
     seo: jsonb('seo').$type<PortfolioProject['seo']>().notNull()
   },
@@ -154,6 +160,7 @@ export const mediaAssetsTable = pgTable('media_assets', {
   width: integer('width'),
   height: integer('height'),
   sizeBytes: integer('size_bytes'),
+  checksumSha256: text('checksum_sha256'),
   storageProvider: text('storage_provider').notNull(),
   storageKey: text('storage_key'),
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull(),
@@ -243,5 +250,29 @@ export const adminAuditLogsTable = pgTable(
   (table) => ({
     actionIdx: index('admin_audit_logs_action_idx').on(table.action),
     createdAtIdx: index('admin_audit_logs_created_at_idx').on(table.createdAt)
+  })
+);
+
+export const analyticsEventsTable = pgTable(
+  'analytics_events',
+  {
+    id: text('id').primaryKey(),
+    path: text('path').notNull(),
+    entityType: text('entity_type').notNull(),
+    entityId: text('entity_id'),
+    referrer: text('referrer').notNull(),
+    utmSource: text('utm_source'),
+    utmMedium: text('utm_medium'),
+    utmCampaign: text('utm_campaign'),
+    visitorId: text('visitor_id').notNull(),
+    sessionId: text('session_id').notNull(),
+    userAgent: text('user_agent').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    pathIdx: index('analytics_events_path_idx').on(table.path),
+    entityIdx: index('analytics_events_entity_idx').on(table.entityType, table.entityId),
+    visitorIdx: index('analytics_events_visitor_idx').on(table.visitorId),
+    createdAtIdx: index('analytics_events_created_at_idx').on(table.createdAt)
   })
 );

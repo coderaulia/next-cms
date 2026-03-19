@@ -14,6 +14,19 @@ export type SectionLayout = 'stacked' | 'split';
 
 export type BlogStatus = 'draft' | 'published';
 export type PortfolioStatus = 'draft' | 'published';
+export type PublicationStatusLabel = 'draft' | 'scheduled' | 'published' | 'scheduled-unpublish' | 'expired';
+export type AdminRole = 'super_admin' | 'admin' | 'editor' | 'analyst';
+export type AdminPermission =
+  | 'dashboard:view'
+  | 'analytics:view'
+  | 'audit:view'
+  | 'content:edit'
+  | 'content:publish'
+  | 'content:delete'
+  | 'settings:edit'
+  | 'media:edit'
+  | 'taxonomy:edit'
+  | 'team:manage';
 
 export type HomeThemeToken = 'light' | 'blue-soft' | 'mist';
 
@@ -149,6 +162,8 @@ export type LandingPage = {
   title: string;
   navLabel: string;
   published: boolean;
+  scheduledPublishAt?: string | null;
+  scheduledUnpublishAt?: string | null;
   seo: SeoFields;
   sections: PageSection[];
   homeBlocks?: HomeBlock[];
@@ -165,6 +180,8 @@ export type BlogPost = {
   coverImage: string;
   status: BlogStatus;
   publishedAt: string | null;
+  scheduledPublishAt?: string | null;
+  scheduledUnpublishAt?: string | null;
   updatedAt: string;
   seo: SeoFields;
 };
@@ -187,6 +204,8 @@ export type PortfolioProject = {
   status: PortfolioStatus;
   sortOrder: number;
   publishedAt: string | null;
+  scheduledPublishAt?: string | null;
+  scheduledUnpublishAt?: string | null;
   updatedAt: string;
   seo: SeoFields;
 };
@@ -209,6 +228,7 @@ export type MediaAsset = {
   width: number | null;
   height: number | null;
   sizeBytes: number | null;
+  checksumSha256?: string | null;
   storageProvider: string;
   storageKey: string | null;
   createdAt: string;

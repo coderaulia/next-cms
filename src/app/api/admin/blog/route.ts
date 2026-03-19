@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createBlogPost, queryBlogPosts } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import type { BlogPost } from '@/features/cms/types';
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
+  const unauthorized = await assertAdminPermission(request, 'content:edit');
   if (unauthorized) return unauthorized;
 
   const payload = (await request.json().catch(() => null)) as Partial<BlogPost> | null;

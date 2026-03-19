@@ -1,8 +1,11 @@
+import type { AdminPermission, AdminRole } from './types';
+
 export type AdminSessionUser = {
   id: string;
   email: string;
   displayName: string;
-  role: string;
+  role: AdminRole;
+  permissions: AdminPermission[];
 };
 
 export type AdminAuthResponse = {

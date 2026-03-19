@@ -1,9 +1,13 @@
+import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { PortfolioProjectView } from '@/components/pages/PortfolioProjectView';
+import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { buildCanonical, buildMetadata } from '@/features/cms/seo';
 import {
+  getPreviewPortfolioProjectBySlug,
+  getPreviewPortfolioProjects,
   getPublishedPortfolioProjectBySlug,
   getPublishedPortfolioProjects,
   getSiteSettings
@@ -22,9 +26,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PortfolioDetailPageProps) {
   const { slug } = await params;
+  const isPreview = (await draftMode()).isEnabled;
   const [settings, project] = await Promise.all([
     getSiteSettings(),
-    getPublishedPortfolioProjectBySlug(slug)
+    isPreview ? getPreviewPortfolioProjectBySlug(slug) : getPublishedPortfolioProjectBySlug(slug)
   ]);
   if (!project) {
     return {
@@ -41,10 +46,11 @@ export async function generateMetadata({ params }: PortfolioDetailPageProps) {
 
 export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
   const { slug } = await params;
+  const isPreview = (await draftMode()).isEnabled;
   const [settings, project, allProjects] = await Promise.all([
     getSiteSettings(),
-    getPublishedPortfolioProjectBySlug(slug),
-    getPublishedPortfolioProjects()
+    isPreview ? getPreviewPortfolioProjectBySlug(slug) : getPublishedPortfolioProjectBySlug(slug),
+    isPreview ? getPreviewPortfolioProjects() : getPublishedPortfolioProjects()
   ]);
   if (!project) notFound();
 
@@ -77,6 +83,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
 
   return (
     <>
+      {isPreview ? <PreviewModeBanner path={`/portfolio/${slug}`} /> : null}
       <SeoJsonLd data={jsonLd} />
       <PortfolioProjectView project={project} related={related} />
     </>

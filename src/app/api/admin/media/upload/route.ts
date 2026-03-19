@@ -1,7 +1,9 @@
+import { createHash } from 'node:crypto';
+
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
-import { createMediaAsset } from '@/features/cms/contentStore';
+import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { createMediaAsset, getMediaAssets } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia, saveUploadedMedia } from '@/services/mediaStorage';
 
@@ -13,8 +15,16 @@ function nowIso() {
   return new Date().toISOString();
 }
 
+function sha256ForBuffer(buffer: Buffer) {
+  return createHash('sha256').update(buffer).digest('hex');
+}
+
+function isImageMimeType(value: string) {
+  return value.toLowerCase().startsWith('image/');
+}
+
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
+  const unauthorized = await assertAdminPermission(request, 'media:edit');
   if (unauthorized) return unauthorized;
 
   try {
@@ -27,10 +37,28 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No media file provided.' }, { status: 400 });
     }
 
+    if (isImageMimeType(rawFile.type || 'image/png') && !altText) {
+      return NextResponse.json({ error: 'Alt text is required for image uploads.' }, { status: 400 });
+    }
+
     const safeTitle = title || rawFile.name || 'Uploaded media';
     const safeAlt = altText || '';
+    const buffer = Buffer.from(await rawFile.arrayBuffer());
+    const checksumSha256 = sha256ForBuffer(buffer);
 
-    const stored = await saveUploadedMedia(rawFile);
+    const existingAssets = await getMediaAssets();
+    const duplicate = existingAssets.find((asset) => asset.checksumSha256 === checksumSha256);
+    if (duplicate) {
+      return NextResponse.json(
+        {
+          error: 'Duplicate media detected.',
+          duplicateOf: duplicate
+        },
+        { status: 409 }
+      );
+    }
+
+    const stored = await saveUploadedMedia(new File([buffer], rawFile.name, { type: rawFile.type }));
     try {
       const mediaAsset = await createMediaAsset({
         id: crypto.randomUUID(),
@@ -41,6 +69,7 @@ export async function POST(request: Request) {
         width: null,
         height: null,
         sizeBytes: stored.sizeBytes,
+        checksumSha256,
         storageProvider: stored.storageProvider,
         storageKey: stored.storageKey,
         createdAt: nowIso(),

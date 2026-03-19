@@ -4,18 +4,27 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { PortfolioProject } from '@/features/cms/types';
+import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/editorSchedule';
+import { toFieldErrorMap, validatePortfolioEditor } from '@/features/cms/editorValidation';
+import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { MediaGalleryField, MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PortfolioEditorFormProps = {
   initialProject: PortfolioProject;
   isNew?: boolean;
+  canPublish?: boolean;
+  canDelete?: boolean;
 };
 
 function normalizePreviewHref(project: PortfolioProject) {
   const slug = project.seo.slug.trim();
   if (!slug) return '/portfolio';
   return `/portfolio/${slug.replace(/^\/+/, '')}`;
+}
+
+function previewModeHref(path: string) {
+  return `/api/admin/preview?action=enable&path=${encodeURIComponent(path)}`;
 }
 
 function toKeywordInput(items: string[] | undefined) {
@@ -30,7 +39,12 @@ function fromKeywordInput(value: string) {
 }
 
 
-export function PortfolioEditorForm({ initialProject, isNew = false }: PortfolioEditorFormProps) {
+export function PortfolioEditorForm({
+  initialProject,
+  isNew = false,
+  canPublish = true,
+  canDelete = true
+}: PortfolioEditorFormProps) {
   const [project, setProject] = useState(initialProject);
   const [baseline, setBaseline] = useState(initialProject);
   const [saving, setSaving] = useState(false);
@@ -47,8 +61,18 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
     [project, baseline]
   );
   const previewHref = normalizePreviewHref(project);
+  const previewModePath = previewModeHref(previewHref);
+  const publicationLabel = getPortfolioProjectPublicationLabel(project);
+  const validationIssues = useMemo(() => validatePortfolioEditor(project), [project]);
+  const fieldErrors = useMemo(() => toFieldErrorMap(validationIssues), [validationIssues]);
+  const canSave = validationIssues.length === 0;
 
   const saveProject = useCallback(async () => {
+    if (!canSave) {
+      setNotice(`Fix ${validationIssues.length} validation issue(s) before saving.`);
+      return;
+    }
+
     setSaving(true);
     setNotice('');
 
@@ -75,9 +99,14 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
     if (isNew) {
       router.replace(`/admin/portfolio/${payload.project.id}`);
     }
-  }, [isNew, project, router]);
+  }, [canSave, isNew, project, router, validationIssues.length]);
 
   const publish = async () => {
+    if (!canSave) {
+      setNotice('Resolve validation issues before publishing.');
+      return;
+    }
+
     const response = await csrfFetch(`/api/admin/portfolio/${project.id}/publish`, {
       method: 'POST'
     });
@@ -156,90 +185,116 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
         <div className="admin-inline-header">
           <div>
             <h2>{project.title || 'Untitled project'}</h2>
-            <p className="admin-subtle">Ctrl/Cmd + S to save. Status: {project.status}.</p>
+            <p className="admin-subtle">Ctrl/Cmd + S to save. Status: {publicationLabel}.</p>
           </div>
           <div className="admin-actions">
             <span className={`admin-chip ${isDirty ? 'admin-chip-warning' : 'admin-chip-success'}`}>
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
-            <a className="v2-btn v2-btn-secondary" href={previewHref} target="_blank" rel="noreferrer">
-              Preview project
+            {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
+            <a className="v2-btn v2-btn-secondary" href={previewModePath} target="_blank" rel="noreferrer">
+              Preview draft
             </a>
             <button type="button" disabled={!isDirty || saving} onClick={() => setProject(baseline)}>
               Discard
             </button>
-            <button type="button" onClick={saveProject} disabled={saving}>
+            <button type="button" onClick={saveProject} disabled={saving || !canSave}>
               {saving ? 'Saving...' : 'Save project'}
             </button>
-            {project.status === 'draft' ? (
-              <button type="button" onClick={publish}>
-                Publish
-              </button>
+            {canPublish ? (
+              project.status === 'draft' ? (
+                <button type="button" onClick={publish} disabled={!canSave}>
+                  Publish
+                </button>
+              ) : (
+                <button type="button" onClick={unpublish}>
+                  Unpublish
+                </button>
+              )
             ) : (
-              <button type="button" onClick={unpublish}>
-                Unpublish
-              </button>
+              <span className="admin-chip admin-chip-muted">No publish access</span>
             )}
-            <button type="button" onClick={deleteProject}>
-              Delete
-            </button>
+            {canDelete ? (
+              <button type="button" onClick={deleteProject}>
+                Delete
+              </button>
+            ) : null}
           </div>
         </div>
         {notice ? <p className="admin-subtle">{notice}</p> : null}
+        {validationIssues.length > 0 ? <p className="admin-error-text">{validationIssues[0].message}</p> : null}
+        <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or content.</p>
       </section>
 
       <section className="admin-card">
         <h2>Content</h2>
         <label>
           Title
-          <input value={project.title} onChange={(event) => setProject({ ...project, title: event.target.value })} />
+          <input
+            className={fieldErrors.title ? 'admin-input-error' : ''}
+            value={project.title}
+            onChange={(event) => setProject({ ...project, title: event.target.value })}
+          />
+          {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
         </label>
         <label>
           Summary
           <textarea
+            className={fieldErrors.summary ? 'admin-input-error' : ''}
             rows={4}
             value={project.summary}
             onChange={(event) => setProject({ ...project, summary: event.target.value })}
           />
+          {fieldErrors.summary ? <span className="admin-error-text">{fieldErrors.summary}</span> : null}
         </label>
         <label>
           Challenge
           <textarea
+            className={fieldErrors.challenge ? 'admin-input-error' : ''}
             rows={5}
             value={project.challenge}
             onChange={(event) => setProject({ ...project, challenge: event.target.value })}
           />
+          {fieldErrors.challenge ? <span className="admin-error-text">{fieldErrors.challenge}</span> : null}
         </label>
         <label>
           Solution
           <textarea
+            className={fieldErrors.solution ? 'admin-input-error' : ''}
             rows={5}
             value={project.solution}
             onChange={(event) => setProject({ ...project, solution: event.target.value })}
           />
+          {fieldErrors.solution ? <span className="admin-error-text">{fieldErrors.solution}</span> : null}
         </label>
         <label>
           Outcome
           <textarea
+            className={fieldErrors.outcome ? 'admin-input-error' : ''}
             rows={5}
             value={project.outcome}
             onChange={(event) => setProject({ ...project, outcome: event.target.value })}
           />
+          {fieldErrors.outcome ? <span className="admin-error-text">{fieldErrors.outcome}</span> : null}
         </label>
         <div className="admin-grid-2">
           <label>
             Client name
             <input
+              className={fieldErrors.clientName ? 'admin-input-error' : ''}
               value={project.clientName}
               onChange={(event) => setProject({ ...project, clientName: event.target.value })}
             />
+            {fieldErrors.clientName ? <span className="admin-error-text">{fieldErrors.clientName}</span> : null}
           </label>
           <label>
             Service type
             <input
+              className={fieldErrors.serviceType ? 'admin-input-error' : ''}
               value={project.serviceType}
               onChange={(event) => setProject({ ...project, serviceType: event.target.value })}
             />
+            {fieldErrors.serviceType ? <span className="admin-error-text">{fieldErrors.serviceType}</span> : null}
           </label>
           <label>
             Industry
@@ -261,6 +316,7 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
               value={project.coverImage}
               onChange={(value) => setProject({ ...project, coverImage: value })}
               helperText="Use an uploaded file from the media library or paste an external image URL."
+              aspectRatioHint="4:3 or 16:9 for case-study cards and portfolio headers."
             />
           </div>
           <label>
@@ -302,10 +358,58 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
       </section>
 
       <section className="admin-card">
+        <h2>Publishing</h2>
+        <div className="admin-grid-2">
+          <label>
+            Scheduled publish time
+            <input
+              className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
+              type="datetime-local"
+              value={toDatetimeLocalValue(project.scheduledPublishAt)}
+              disabled={!canPublish}
+              onChange={(event) =>
+                setProject({
+                  ...project,
+                  scheduledPublishAt: fromDatetimeLocalValue(event.target.value)
+                })
+              }
+            />
+            {fieldErrors.scheduledPublishAt ? (
+              <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
+            ) : (
+              <span className="admin-subtle">Set this when a case study should go live automatically.</span>
+            )}
+          </label>
+          <label>
+            Scheduled unpublish time
+            <input
+              className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
+              type="datetime-local"
+              value={toDatetimeLocalValue(project.scheduledUnpublishAt)}
+              disabled={!canPublish}
+              onChange={(event) =>
+                setProject({
+                  ...project,
+                  scheduledUnpublishAt: fromDatetimeLocalValue(event.target.value)
+                })
+              }
+            />
+            {fieldErrors.scheduledUnpublishAt ? (
+              <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
+            ) : (
+              <span className="admin-subtle">Use this for time-boxed promotions or temporary portfolio highlights.</span>
+            )}
+          </label>
+        </div>
+        {!canPublish ? <p className="admin-subtle">Your role can edit case-study content but cannot change publishing timing.</p> : null}
+      </section>
+
+      <section className="admin-card">
         <h2>SEO</h2>
         <label>
           Meta title
           <input
+            className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
             value={project.seo.metaTitle}
             onChange={(event) =>
               setProject({
@@ -314,10 +418,12 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
               })
             }
           />
+          {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
         </label>
         <label>
           Meta description
           <textarea
+            className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
             rows={4}
             value={project.seo.metaDescription}
             onChange={(event) =>
@@ -327,10 +433,14 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
               })
             }
           />
+          {fieldErrors['seo.metaDescription'] ? (
+            <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span>
+          ) : null}
         </label>
         <label>
           Slug
           <input
+            className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
             value={project.seo.slug}
             onChange={(event) =>
               setProject({
@@ -339,6 +449,7 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
               })
             }
           />
+          {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
         </label>
         <label>
           Canonical URL
@@ -362,6 +473,7 @@ export function PortfolioEditorForm({ initialProject, isNew = false }: Portfolio
             })
           }
           helperText="Optional image used for portfolio social sharing cards."
+          aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
         />
         <label>
           Keywords (comma separated)

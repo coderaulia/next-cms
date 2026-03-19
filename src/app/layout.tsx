@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Sora } from 'next/font/google';
+import { Suspense } from 'react';
 
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { AppShell } from '@/components/AppShell';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { siteProfile } from '@/config/site-profile';
@@ -88,6 +90,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${fontBody.variable} ${fontAccent.variable}`}>
       <body className="v2-site">
+        <Suspense fallback={null}>
+          <AnalyticsTracker />
+        </Suspense>
         <SeoJsonLd data={[orgSchema, siteSchema]} />
         <AppShell siteName={settings.siteName} navItems={navItems} settings={settings}>
           {children}

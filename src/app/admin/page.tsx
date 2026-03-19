@@ -4,53 +4,67 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
-import type { BlogPost, LandingPage, PortfolioProject } from '@/features/cms/types';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
+import type { DashboardSummary } from '@/features/cms/dashboardSummary';
+import {
+  getBlogPostPublicationLabel,
+  getLandingPagePublicationLabel,
+  getPortfolioProjectPublicationLabel
+} from '@/features/cms/publicationState';
+import type { AdminPermission } from '@/features/cms/types';
 
-type DashboardData = {
-  pages: LandingPage[];
-  blogPosts: BlogPost[];
-  portfolioProjects: PortfolioProject[];
+type DashboardPanelProps = {
+  user: AdminSessionUser;
 };
 
-function DashboardPanel() {
-  const [data, setData] = useState<DashboardData | null>(null);
+const quickActions = [
+  { href: '/admin/pages', label: 'Edit landing pages', permission: 'content:edit' },
+  { href: '/admin/blog', label: 'Manage posts', permission: 'content:edit' },
+  { href: '/admin/portfolio', label: 'Manage portfolio', permission: 'content:edit' },
+  { href: '/admin/categories', label: 'Manage categories', permission: 'taxonomy:edit' },
+  { href: '/admin/contact-submissions', label: 'Review leads' },
+  { href: '/admin/media', label: 'Media library', permission: 'media:edit' },
+  { href: '/admin/analytics', label: 'Analytics', permission: 'analytics:view' },
+  { href: '/admin/audit', label: 'Audit log', permission: 'audit:view' },
+  { href: '/admin/settings', label: 'Site settings', permission: 'settings:edit' }
+] satisfies Array<{ href: string; label: string; permission?: AdminPermission }>;
+
+function DashboardPanel({ user }: DashboardPanelProps) {
+  const [data, setData] = useState<DashboardSummary | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    async function load() {
-      const [pagesResponse, blogResponse, portfolioResponse] = await Promise.all([
-        fetch('/api/admin/pages'),
-        fetch('/api/admin/blog?includeDrafts=1&page=1&pageSize=5'),
-        fetch('/api/admin/portfolio?includeDrafts=1&page=1&pageSize=5')
-      ]);
-
-      if (!pagesResponse.ok || !blogResponse.ok || !portfolioResponse.ok) {
-        setError('Failed to load dashboard.');
-        return;
-      }
-
-      const pagesPayload = (await pagesResponse.json()) as { pages: LandingPage[] };
-      const blogPayload = (await blogResponse.json()) as { posts: BlogPost[] };
-      const portfolioPayload = (await portfolioResponse.json()) as { projects: PortfolioProject[] };
-      setData({
-        pages: pagesPayload.pages,
-        blogPosts: blogPayload.posts,
-        portfolioProjects: portfolioPayload.projects
+    fetch('/api/admin/dashboard')
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Failed to load dashboard.');
+        }
+        setData((await response.json()) as DashboardSummary);
+      })
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard.');
       });
-    }
-    load();
   }, []);
 
   const metrics = useMemo(() => {
     if (!data) return null;
-    const publishedPages = data.pages.filter((page) => page.published).length;
-    const publishedPosts = data.blogPosts.filter((post) => post.status === 'published').length;
-    const draftPosts = data.blogPosts.filter((post) => post.status === 'draft').length;
+    const publishedPages = data.pages.filter((page) => getLandingPagePublicationLabel(page) === 'published').length;
+    const scheduledPages = data.pages.filter((page) => getLandingPagePublicationLabel(page) === 'scheduled').length;
+    const publishedPosts = data.blogPosts.filter((post) => getBlogPostPublicationLabel(post) === 'published').length;
+    const scheduledPosts = data.blogPosts.filter((post) => getBlogPostPublicationLabel(post) === 'scheduled').length;
     const publishedPortfolio = data.portfolioProjects.filter(
-      (project) => project.status === 'published'
+      (project) => getPortfolioProjectPublicationLabel(project) === 'published'
     ).length;
-    return { publishedPages, publishedPosts, draftPosts, publishedPortfolio };
+    const scheduledPortfolio = data.portfolioProjects.filter(
+      (project) => getPortfolioProjectPublicationLabel(project) === 'scheduled'
+    ).length;
+    return { publishedPages, scheduledPages, publishedPosts, scheduledPosts, publishedPortfolio, scheduledPortfolio };
   }, [data]);
+
+  const allowedQuickActions = useMemo(
+    () => quickActions.filter((item) => !item.permission || user.permissions.includes(item.permission)),
+    [user.permissions]
+  );
 
   if (error) return <p className="error">{error}</p>;
   if (!data || !metrics) return <p>Loading dashboard...</p>;
@@ -65,17 +79,42 @@ function DashboardPanel() {
           </p>
         </article>
         <article className="admin-card">
+          <p className="admin-kpi-label">Scheduled pages</p>
+          <p className="admin-kpi-value">{metrics.scheduledPages}</p>
+        </article>
+        <article className="admin-card">
           <p className="admin-kpi-label">Published posts</p>
           <p className="admin-kpi-value">{metrics.publishedPosts}</p>
         </article>
         <article className="admin-card">
-          <p className="admin-kpi-label">Draft posts</p>
-          <p className="admin-kpi-value">{metrics.draftPosts}</p>
+          <p className="admin-kpi-label">Scheduled posts</p>
+          <p className="admin-kpi-value">{metrics.scheduledPosts}</p>
         </article>
         <article className="admin-card">
           <p className="admin-kpi-label">Published portfolio</p>
           <p className="admin-kpi-value">{metrics.publishedPortfolio}</p>
         </article>
+        <article className="admin-card">
+          <p className="admin-kpi-label">Scheduled portfolio</p>
+          <p className="admin-kpi-value">{metrics.scheduledPortfolio}</p>
+        </article>
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-inline-header">
+          <h2>First-run checklist</h2>
+          <span className="admin-subtle">
+            {data.checklist.filter((item) => item.done).length}/{data.checklist.length} complete
+          </span>
+        </div>
+        <ul className="admin-plain-list">
+          {data.checklist.map((item) => (
+            <li key={item.id}>
+              <strong>{item.done ? 'Done' : 'Pending'}: {item.label}</strong>
+              <span>{item.detail}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="admin-card">
@@ -83,74 +122,77 @@ function DashboardPanel() {
           <h2>Quick actions</h2>
         </div>
         <div className="admin-grid-3">
-          <Link href="/admin/pages" className="v2-btn v2-btn-secondary">
-            Edit landing pages
-          </Link>
-          <Link href="/admin/blog" className="v2-btn v2-btn-secondary">
-            Manage posts
-          </Link>
-          <Link href="/admin/portfolio" className="v2-btn v2-btn-secondary">
-            Manage portfolio
-          </Link>
-          <Link href="/admin/categories" className="v2-btn v2-btn-secondary">
-            Manage categories
-          </Link>
-          <Link href="/admin/contact-submissions" className="v2-btn v2-btn-secondary">
-            Review leads
-          </Link>
-          <Link href="/admin/media" className="v2-btn v2-btn-secondary">
-            Media library
-          </Link>
-          <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
-            Create new post
-          </Link>
-          <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
-            Create new project
-          </Link>
-          <Link href="/admin/settings" className="v2-btn v2-btn-secondary">
-            Site settings
-          </Link>
+          {allowedQuickActions.map((item) => (
+            <Link key={item.href} href={item.href} className="v2-btn v2-btn-secondary">
+              {item.label}
+            </Link>
+          ))}
         </div>
+      </section>
+
+      <section className="admin-grid-2">
+        <article className="admin-card">
+          <div className="admin-inline-header">
+            <h2>Scheduled publishing</h2>
+            <span className="admin-subtle">{data.scheduled.length} items</span>
+          </div>
+          <ul className="admin-plain-list">
+            {data.scheduled.slice(0, 8).map((item) => (
+              <li key={`${item.type}-${item.id}`}>
+                <strong>{item.title}</strong>
+                <span>
+                  {item.path} - {item.statusLabel}
+                  {item.publishAt ? ` - publish ${new Date(item.publishAt).toLocaleString()}` : ''}
+                  {item.unpublishAt ? ` - unpublish ${new Date(item.unpublishAt).toLocaleString()}` : ''}
+                </span>
+              </li>
+            ))}
+            {data.scheduled.length === 0 ? <li className="admin-subtle">No scheduled content yet.</li> : null}
+          </ul>
+        </article>
+
+        <article className="admin-card">
+          <div className="admin-inline-header">
+            <h2>Analytics snapshot</h2>
+            <Link href="/admin/analytics">Full report</Link>
+          </div>
+          {data.analytics.available ? (
+            <ul className="admin-plain-list">
+              <li>
+                <strong>{data.analytics.totals.pageViews30d}</strong>
+                <span>page views in the last 30 days</span>
+              </li>
+              <li>
+                <strong>{data.analytics.totals.uniqueVisitors30d}</strong>
+                <span>unique visitors in the last 30 days</span>
+              </li>
+              {data.analytics.topPaths.slice(0, 3).map((item) => (
+                <li key={`${item.entityType}-${item.path}`}>
+                  <strong>{item.path}</strong>
+                  <span>{item.views} views - {item.visitors} visitors</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="admin-subtle">Analytics becomes available automatically in database mode.</p>
+          )}
+        </article>
       </section>
 
       <section className="admin-card">
         <div className="admin-inline-header">
-          <h2>Recent posts</h2>
-          <Link href="/admin/blog">View all</Link>
+          <h2>Recent audit activity</h2>
+          <Link href="/admin/audit">View all</Link>
         </div>
-        <div className="admin-table-wrap">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Status</th>
-                <th>Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.blogPosts.map((post) => (
-                <tr key={post.id}>
-                  <td>
-                    <strong>{post.title}</strong>
-                    <span className="admin-subtle">/blog/{post.seo.slug}</span>
-                  </td>
-                  <td>{post.author}</td>
-                  <td>
-                    <span
-                      className={`admin-chip ${
-                        post.status === 'published' ? 'admin-chip-success' : 'admin-chip-muted'
-                      }`}
-                    >
-                      {post.status}
-                    </span>
-                  </td>
-                  <td>{new Date(post.updatedAt).toLocaleDateString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ul className="admin-plain-list">
+          {data.auditLogs.map((entry) => (
+            <li key={entry.id}>
+              <strong>{entry.action}</strong>
+              <span>{new Date(entry.createdAt).toLocaleString()} - {entry.entityType} - {entry.ip}</span>
+            </li>
+          ))}
+          {data.auditLogs.length === 0 ? <li className="admin-subtle">No audit events yet.</li> : null}
+        </ul>
       </section>
     </div>
   );
@@ -158,8 +200,8 @@ function DashboardPanel() {
 
 export default function AdminDashboardPage() {
   return (
-    <AdminShell title="Dashboard" description="Architectural dashboard and content control center.">
-      {() => <DashboardPanel />}
+    <AdminShell title="Dashboard" description="Content operations, onboarding, analytics, and publishing control center.">
+      {(user) => <DashboardPanel user={user} />}
     </AdminShell>
   );
 }

@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import {
@@ -32,6 +32,10 @@ import type {
 } from './types';
 import type { BlogQueryInput, PortfolioQueryInput } from './storeTypes';
 import {
+  isBlogPostLive,
+  isPortfolioProjectLive
+} from './publicationState';
+import {
   mergeWithDefaults,
   normalizePageForWrite,
   normalizeSettings,
@@ -43,6 +47,7 @@ import {
 
 let bootstrapPromise: Promise<void> | null = null;
 let warnedMissingPortfolioTable = false;
+let warnedMissingScheduleColumns = false;
 
 function extractErrorCode(error: unknown): string | undefined {
   if (!error || typeof error !== 'object') return undefined;
@@ -56,11 +61,21 @@ function isMissingRelationError(error: unknown) {
   return extractErrorCode(error) === '42P01';
 }
 
+function isMissingColumnError(error: unknown) {
+  return extractErrorCode(error) === '42703';
+}
+
 function warnMissingPortfolioTable() {
   if (warnedMissingPortfolioTable) return;
   warnedMissingPortfolioTable = true;
   // Keep build/runtime resilient while migration is rolling out.
   console.warn('portfolio_projects table not found; portfolio features are temporarily disabled.');
+}
+
+function warnMissingScheduleColumns() {
+  if (warnedMissingScheduleColumns) return;
+  warnedMissingScheduleColumns = true;
+  console.warn('Scheduled publish columns are not available yet; falling back to legacy content queries.');
 }
 
 async function withPortfolioTableFallback<T>(task: () => Promise<T>, fallback: T): Promise<T> {
@@ -75,7 +90,69 @@ async function withPortfolioTableFallback<T>(task: () => Promise<T>, fallback: T
   }
 }
 
-function pageToRow(page: LandingPage) {
+async function withLegacyScheduleFallback<T>(task: () => Promise<T>, fallbackTask: () => Promise<T>): Promise<T> {
+  try {
+    return await task();
+  } catch (error) {
+    if (isMissingColumnError(error)) {
+      warnMissingScheduleColumns();
+      return fallbackTask();
+    }
+    throw error;
+  }
+}
+
+type LegacyPageRow = {
+  id: PageId;
+  title: string;
+  navLabel: string;
+  slug: string;
+  published: boolean;
+  seo: LandingPage['seo'];
+  sections: LandingPage['sections'];
+  homeBlocks: LandingPage['homeBlocks'] | null;
+  updatedAt: string;
+};
+
+type LegacyPostRow = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  tags: string[];
+  coverImage: string;
+  status: BlogPost['status'];
+  publishedAt: string | null;
+  updatedAt: string;
+  seo: BlogPost['seo'];
+};
+
+type LegacyPortfolioRow = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  challenge: string;
+  solution: string;
+  outcome: string;
+  clientName: string;
+  serviceType: string;
+  industry: string;
+  projectUrl: string;
+  coverImage: string;
+  gallery: string[];
+  tags: string[];
+  featured: boolean;
+  status: PortfolioProject['status'];
+  sortOrder: number;
+  publishedAt: string | null;
+  updatedAt: string;
+  seo: PortfolioProject['seo'];
+};
+
+function pageToLegacyRow(page: LandingPage) {
   return {
     id: page.id,
     title: page.title,
@@ -89,12 +166,170 @@ function pageToRow(page: LandingPage) {
   };
 }
 
+function rowToLegacyPage(row: LegacyPageRow): LandingPage {
+  return {
+    id: row.id,
+    title: row.title,
+    navLabel: row.navLabel,
+    published: row.published,
+    scheduledPublishAt: null,
+    scheduledUnpublishAt: null,
+    seo: {
+      ...row.seo,
+      slug: row.slug
+    },
+    sections: row.sections,
+    homeBlocks: row.homeBlocks ?? undefined,
+    updatedAt: row.updatedAt
+  };
+}
+
+function postToLegacyRow(post: BlogPost) {
+  return {
+    id: post.id,
+    title: post.title,
+    slug: post.seo.slug,
+    excerpt: post.excerpt,
+    content: post.content,
+    author: post.author,
+    tags: post.tags,
+    coverImage: post.coverImage,
+    status: post.status,
+    publishedAt: post.publishedAt,
+    updatedAt: post.updatedAt,
+    seo: post.seo
+  };
+}
+
+function rowToLegacyPost(row: LegacyPostRow, tags = row.tags): BlogPost {
+  return {
+    id: row.id,
+    title: row.title,
+    excerpt: row.excerpt,
+    content: row.content,
+    author: row.author,
+    tags,
+    coverImage: row.coverImage,
+    status: row.status,
+    publishedAt: row.publishedAt,
+    scheduledPublishAt: null,
+    scheduledUnpublishAt: null,
+    updatedAt: row.updatedAt,
+    seo: {
+      ...row.seo,
+      slug: row.slug
+    }
+  };
+}
+
+function portfolioToLegacyRow(project: PortfolioProject) {
+  return {
+    id: project.id,
+    title: project.title,
+    slug: project.seo.slug,
+    summary: project.summary,
+    challenge: project.challenge,
+    solution: project.solution,
+    outcome: project.outcome,
+    clientName: project.clientName,
+    serviceType: project.serviceType,
+    industry: project.industry,
+    projectUrl: project.projectUrl,
+    coverImage: project.coverImage,
+    gallery: project.gallery,
+    tags: project.tags,
+    featured: project.featured,
+    status: project.status,
+    sortOrder: project.sortOrder,
+    publishedAt: project.publishedAt,
+    updatedAt: project.updatedAt,
+    seo: project.seo
+  };
+}
+
+function rowToLegacyPortfolio(row: LegacyPortfolioRow, tags = row.tags): PortfolioProject {
+  return {
+    id: row.id,
+    title: row.title,
+    summary: row.summary,
+    challenge: row.challenge,
+    solution: row.solution,
+    outcome: row.outcome,
+    clientName: row.clientName,
+    serviceType: row.serviceType,
+    industry: row.industry,
+    projectUrl: row.projectUrl,
+    coverImage: row.coverImage,
+    gallery: row.gallery,
+    tags,
+    featured: row.featured,
+    status: row.status,
+    sortOrder: row.sortOrder,
+    publishedAt: row.publishedAt,
+    scheduledPublishAt: null,
+    scheduledUnpublishAt: null,
+    updatedAt: row.updatedAt,
+    seo: {
+      ...row.seo,
+      slug: row.slug
+    }
+  };
+}
+
+async function readLegacyPages() {
+  const result = await getDb().execute<LegacyPageRow>(sql`
+    select id, title, nav_label as "navLabel", slug, published, seo, sections, home_blocks as "homeBlocks", updated_at as "updatedAt"
+    from pages
+  `);
+  return result.rows.map(rowToLegacyPage);
+}
+
+async function readLegacyPosts() {
+  const result = await getDb().execute<LegacyPostRow>(sql`
+    select id, title, slug, excerpt, content, author, tags, cover_image as "coverImage", status, published_at as "publishedAt", updated_at as "updatedAt", seo
+    from blog_posts
+  `);
+  const tagMap = await mapBlogPostCategorySlugs(result.rows.map((row) => row.id));
+  return result.rows.map((row) => rowToLegacyPost(row, tagMap.get(row.id) ?? row.tags));
+}
+
+async function readLegacyPortfolioProjects() {
+  return withPortfolioTableFallback(async () => {
+    const result = await getDb().execute<LegacyPortfolioRow>(sql`
+      select id, title, slug, summary, challenge, solution, outcome, client_name as "clientName", service_type as "serviceType",
+        industry, project_url as "projectUrl", cover_image as "coverImage", gallery, tags, featured, status, sort_order as "sortOrder",
+        published_at as "publishedAt", updated_at as "updatedAt", seo
+      from portfolio_projects
+    `);
+    const tagMap = await mapPortfolioProjectTags(result.rows.map((row) => row.id));
+    return result.rows.map((row) => rowToLegacyPortfolio(row, tagMap.get(row.id) ?? row.tags));
+  }, []);
+}
+
+function pageToRow(page: LandingPage) {
+  return {
+    id: page.id,
+    title: page.title,
+    navLabel: page.navLabel,
+    slug: page.seo.slug,
+    published: page.published,
+    scheduledPublishAt: page.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: page.scheduledUnpublishAt ?? null,
+    seo: page.seo,
+    sections: page.sections,
+    homeBlocks: page.homeBlocks ?? null,
+    updatedAt: page.updatedAt
+  };
+}
+
 function rowToPage(row: typeof pagesTable.$inferSelect): LandingPage {
   return {
     id: row.id,
     title: row.title,
     navLabel: row.navLabel,
     published: row.published,
+    scheduledPublishAt: row.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: row.scheduledUnpublishAt ?? null,
     seo: {
       ...row.seo,
       slug: row.slug
@@ -117,6 +352,8 @@ function postToRow(post: BlogPost) {
     coverImage: post.coverImage,
     status: post.status,
     publishedAt: post.publishedAt,
+    scheduledPublishAt: post.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: post.scheduledUnpublishAt ?? null,
     updatedAt: post.updatedAt,
     seo: post.seo
   };
@@ -133,6 +370,8 @@ function rowToPost(row: typeof blogPostsTable.$inferSelect, tags = row.tags): Bl
     coverImage: row.coverImage,
     status: row.status,
     publishedAt: row.publishedAt,
+    scheduledPublishAt: row.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: row.scheduledUnpublishAt ?? null,
     updatedAt: row.updatedAt,
     seo: {
       ...row.seo,
@@ -161,6 +400,8 @@ function portfolioToRow(project: PortfolioProject) {
     status: project.status,
     sortOrder: project.sortOrder,
     publishedAt: project.publishedAt,
+    scheduledPublishAt: project.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: project.scheduledUnpublishAt ?? null,
     updatedAt: project.updatedAt,
     seo: project.seo
   };
@@ -188,6 +429,8 @@ function rowToPortfolio(
     status: row.status,
     sortOrder: row.sortOrder,
     publishedAt: row.publishedAt,
+    scheduledPublishAt: row.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: row.scheduledUnpublishAt ?? null,
     updatedAt: row.updatedAt,
     seo: {
       ...row.seo,
@@ -219,12 +462,18 @@ async function ensureDbBootstrap() {
 
     const existingPages = await db.select({ id: pagesTable.id }).from(pagesTable).limit(1);
     if (existingPages.length === 0) {
-      await db.insert(pagesTable).values(Object.values(defaultContent.pages).map(pageToRow)).onConflictDoNothing();
+      await withLegacyScheduleFallback(
+        () => db.insert(pagesTable).values(Object.values(defaultContent.pages).map(pageToRow)).onConflictDoNothing(),
+        () => db.insert(pagesTable).values(Object.values(defaultContent.pages).map(pageToLegacyRow)).onConflictDoNothing()
+      );
     }
 
     const existingPosts = await db.select({ id: blogPostsTable.id }).from(blogPostsTable).limit(1);
     if (existingPosts.length === 0) {
-      await db.insert(blogPostsTable).values(defaultContent.blogPosts.map(postToRow)).onConflictDoNothing();
+      await withLegacyScheduleFallback(
+        () => db.insert(blogPostsTable).values(defaultContent.blogPosts.map(postToRow)).onConflictDoNothing(),
+        () => db.insert(blogPostsTable).values(defaultContent.blogPosts.map(postToLegacyRow)).onConflictDoNothing()
+      );
     }
 
     await withPortfolioTableFallback(async () => {
@@ -233,10 +482,18 @@ async function ensureDbBootstrap() {
         .from(portfolioProjectsTable)
         .limit(1);
       if (existingPortfolio.length === 0) {
-        await db
-          .insert(portfolioProjectsTable)
-          .values(defaultContent.portfolioProjects.map(portfolioToRow))
-          .onConflictDoNothing();
+        await withLegacyScheduleFallback(
+          () =>
+            db
+              .insert(portfolioProjectsTable)
+              .values(defaultContent.portfolioProjects.map(portfolioToRow))
+              .onConflictDoNothing(),
+          () =>
+            db
+              .insert(portfolioProjectsTable)
+              .values(defaultContent.portfolioProjects.map(portfolioToLegacyRow))
+              .onConflictDoNothing()
+        );
       }
     }, undefined);
 
@@ -250,12 +507,18 @@ async function ensureDbBootstrap() {
       await db.insert(mediaAssetsTable).values(defaultContent.mediaAssets).onConflictDoNothing();
     }
 
-    const seededPosts = await db.select().from(blogPostsTable);
-    await syncBlogPostCategoryLinks(seededPosts.map((row) => rowToPost(row)));
+    const seededPosts = await withLegacyScheduleFallback(
+      () => db.select().from(blogPostsTable).then((rows) => rows.map((row) => rowToPost(row))),
+      () => readLegacyPosts()
+    );
+    await syncBlogPostCategoryLinks(seededPosts);
 
     await withPortfolioTableFallback(async () => {
-      const seededPortfolio = await db.select().from(portfolioProjectsTable);
-      await syncPortfolioProjectTagLinks(seededPortfolio.map((row) => rowToPortfolio(row)));
+      const seededPortfolio = await withLegacyScheduleFallback(
+        () => db.select().from(portfolioProjectsTable).then((rows) => rows.map((row) => rowToPortfolio(row))),
+        () => readLegacyPortfolioProjects()
+      );
+      await syncPortfolioProjectTagLinks(seededPortfolio);
     }, undefined);
   })();
 
@@ -267,24 +530,39 @@ async function ensureDbBootstrap() {
 }
 
 async function loadAllPages() {
-  await ensureDbBootstrap();
-  const rows = await getDb().select().from(pagesTable);
-  return rows.map(rowToPage);
+  return withLegacyScheduleFallback(async () => {
+    await ensureDbBootstrap();
+    const rows = await getDb().select().from(pagesTable);
+    return rows.map(rowToPage);
+  }, async () => {
+    await ensureDbBootstrap();
+    return readLegacyPages();
+  });
 }
 
 async function loadAllPosts() {
-  await ensureDbBootstrap();
-  const rows = await getDb().select().from(blogPostsTable);
-  const tagMap = await mapBlogPostCategorySlugs(rows.map((row) => row.id));
-  return rows.map((row) => rowToPost(row, tagMap.get(row.id) ?? row.tags));
+  return withLegacyScheduleFallback(async () => {
+    await ensureDbBootstrap();
+    const rows = await getDb().select().from(blogPostsTable);
+    const tagMap = await mapBlogPostCategorySlugs(rows.map((row) => row.id));
+    return rows.map((row) => rowToPost(row, tagMap.get(row.id) ?? row.tags));
+  }, async () => {
+    await ensureDbBootstrap();
+    return readLegacyPosts();
+  });
 }
 
 async function loadAllPortfolioProjects() {
   return withPortfolioTableFallback(async () => {
-    await ensureDbBootstrap();
-    const rows = await getDb().select().from(portfolioProjectsTable);
-    const tagMap = await mapPortfolioProjectTags(rows.map((row) => row.id));
-    return rows.map((row) => rowToPortfolio(row, tagMap.get(row.id) ?? row.tags));
+    return withLegacyScheduleFallback(async () => {
+      await ensureDbBootstrap();
+      const rows = await getDb().select().from(portfolioProjectsTable);
+      const tagMap = await mapPortfolioProjectTags(rows.map((row) => row.id));
+      return rows.map((row) => rowToPortfolio(row, tagMap.get(row.id) ?? row.tags));
+    }, async () => {
+      await ensureDbBootstrap();
+      return readLegacyPortfolioProjects();
+    });
   }, []);
 }
 
@@ -360,9 +638,20 @@ export async function getPages() {
 }
 
 export async function getPageById(id: PageId): Promise<LandingPage | null> {
-  await ensureDbBootstrap();
-  const row = await getDb().select().from(pagesTable).where(eq(pagesTable.id, id)).limit(1);
-  return row[0] ? rowToPage(row[0]) : null;
+  return withLegacyScheduleFallback(async () => {
+    await ensureDbBootstrap();
+    const row = await getDb().select().from(pagesTable).where(eq(pagesTable.id, id)).limit(1);
+    return row[0] ? rowToPage(row[0]) : null;
+  }, async () => {
+    await ensureDbBootstrap();
+    const result = await getDb().execute<LegacyPageRow>(sql`
+      select id, title, nav_label as "navLabel", slug, published, seo, sections, home_blocks as "homeBlocks", updated_at as "updatedAt"
+      from pages
+      where id = ${id}
+      limit 1
+    `);
+    return result.rows[0] ? rowToLegacyPage(result.rows[0]) : null;
+  });
 }
 
 export async function upsertPage(page: LandingPage): Promise<LandingPage> {
@@ -382,7 +671,7 @@ export async function upsertPage(page: LandingPage): Promise<LandingPage> {
 
 export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
   const posts = await loadAllPosts();
-  const filtered = includeDrafts ? posts : posts.filter((post) => post.status === 'published');
+  const filtered = includeDrafts ? posts : posts.filter((post) => isBlogPostLive(post));
   return filtered.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
 }
 
@@ -411,7 +700,7 @@ export async function queryBlogPosts(input: BlogQueryInput) {
   ).sort((a, b) => (a > b ? 1 : -1));
 
   let filtered = posts.filter((post) => {
-    if (!input.includeDrafts && post.status !== 'published') return false;
+    if (!input.includeDrafts && !isBlogPostLive(post)) return false;
     if (status !== 'all' && post.status !== status) return false;
     if (query.length > 0) {
       const haystack = `${post.title} ${post.author}`.toLowerCase();
@@ -445,21 +734,47 @@ export async function queryBlogPosts(input: BlogQueryInput) {
 }
 
 export async function getBlogPostById(id: string): Promise<BlogPost | null> {
-  await ensureDbBootstrap();
-  const row = await getDb().select().from(blogPostsTable).where(eq(blogPostsTable.id, id)).limit(1);
-  if (!row[0]) return null;
-  const tagMap = await mapBlogPostCategorySlugs([id]);
-  return rowToPost(row[0], tagMap.get(id) ?? row[0].tags);
+  return withLegacyScheduleFallback(async () => {
+    await ensureDbBootstrap();
+    const row = await getDb().select().from(blogPostsTable).where(eq(blogPostsTable.id, id)).limit(1);
+    if (!row[0]) return null;
+    const tagMap = await mapBlogPostCategorySlugs([id]);
+    return rowToPost(row[0], tagMap.get(id) ?? row[0].tags);
+  }, async () => {
+    await ensureDbBootstrap();
+    const result = await getDb().execute<LegacyPostRow>(sql`
+      select id, title, slug, excerpt, content, author, tags, cover_image as "coverImage", status, published_at as "publishedAt", updated_at as "updatedAt", seo
+      from blog_posts
+      where id = ${id}
+      limit 1
+    `);
+    if (!result.rows[0]) return null;
+    const tagMap = await mapBlogPostCategorySlugs([id]);
+    return rowToLegacyPost(result.rows[0], tagMap.get(id) ?? result.rows[0].tags);
+  });
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  await ensureDbBootstrap();
   const normalized = normalizeSlug(slug);
-  const row = await getDb().select().from(blogPostsTable).where(eq(blogPostsTable.slug, normalized)).limit(1);
-  if (!row[0]) return null;
-  if (row[0].status !== 'published') return null;
-  const tagMap = await mapBlogPostCategorySlugs([row[0].id]);
-  return rowToPost(row[0], tagMap.get(row[0].id) ?? row[0].tags);
+  return withLegacyScheduleFallback(async () => {
+    await ensureDbBootstrap();
+    const row = await getDb().select().from(blogPostsTable).where(eq(blogPostsTable.slug, normalized)).limit(1);
+    if (!row[0]) return null;
+    if (!isBlogPostLive(rowToPost(row[0]))) return null;
+    const tagMap = await mapBlogPostCategorySlugs([row[0].id]);
+    return rowToPost(row[0], tagMap.get(row[0].id) ?? row[0].tags);
+  }, async () => {
+    await ensureDbBootstrap();
+    const result = await getDb().execute<LegacyPostRow>(sql`
+      select id, title, slug, excerpt, content, author, tags, cover_image as "coverImage", status, published_at as "publishedAt", updated_at as "updatedAt", seo
+      from blog_posts
+      where slug = ${normalized}
+      limit 1
+    `);
+    if (!result.rows[0]) return null;
+    const tagMap = await mapBlogPostCategorySlugs([result.rows[0].id]);
+    return rowToLegacyPost(result.rows[0], tagMap.get(result.rows[0].id) ?? result.rows[0].tags);
+  });
 }
 
 export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogPost> {
@@ -485,6 +800,8 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
     coverImage: payload?.coverImage || '',
     status,
     publishedAt: status === 'published' ? nowIso() : null,
+    scheduledPublishAt: payload?.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
     updatedAt: nowIso(),
     seo: {
       metaTitle: payload?.seo?.metaTitle || title,
@@ -543,6 +860,8 @@ export async function setPostStatus(id: string, status: 'draft' | 'published'): 
     ...existing,
     status,
     publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+    scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
     updatedAt: nowIso()
   };
 
@@ -552,7 +871,7 @@ export async function setPostStatus(id: string, status: 'draft' | 'published'): 
 
 export async function getPortfolioProjects(includeDrafts = false): Promise<PortfolioProject[]> {
   const projects = await loadAllPortfolioProjects();
-  const filtered = includeDrafts ? projects : projects.filter((project) => project.status === 'published');
+  const filtered = includeDrafts ? projects : projects.filter((project) => isPortfolioProjectLive(project));
 
   return filtered.sort((a, b) => {
     if (a.featured !== b.featured) return a.featured ? -1 : 1;
@@ -590,7 +909,7 @@ export async function queryPortfolioProjects(input: PortfolioQueryInput) {
   ).sort((a, b) => (a > b ? 1 : -1));
 
   let filtered = projects.filter((project) => {
-    if (!input.includeDrafts && project.status !== 'published') return false;
+    if (!input.includeDrafts && !isPortfolioProjectLive(project)) return false;
     if (status !== 'all' && project.status !== status) return false;
     if (featured === 'featured' && !project.featured) return false;
     if (featured === 'standard' && project.featured) return false;
@@ -632,31 +951,61 @@ export async function queryPortfolioProjects(input: PortfolioQueryInput) {
 
 export async function getPortfolioProjectById(id: string): Promise<PortfolioProject | null> {
   return withPortfolioTableFallback(async () => {
-    await ensureDbBootstrap();
-    const row = await getDb()
-      .select()
-      .from(portfolioProjectsTable)
-      .where(eq(portfolioProjectsTable.id, id))
-      .limit(1);
-    if (!row[0]) return null;
-    const tagMap = await mapPortfolioProjectTags([id]);
-    return rowToPortfolio(row[0], tagMap.get(id) ?? row[0].tags);
+    return withLegacyScheduleFallback(async () => {
+      await ensureDbBootstrap();
+      const row = await getDb()
+        .select()
+        .from(portfolioProjectsTable)
+        .where(eq(portfolioProjectsTable.id, id))
+        .limit(1);
+      if (!row[0]) return null;
+      const tagMap = await mapPortfolioProjectTags([id]);
+      return rowToPortfolio(row[0], tagMap.get(id) ?? row[0].tags);
+    }, async () => {
+      await ensureDbBootstrap();
+      const result = await getDb().execute<LegacyPortfolioRow>(sql`
+        select id, title, slug, summary, challenge, solution, outcome, client_name as "clientName", service_type as "serviceType",
+          industry, project_url as "projectUrl", cover_image as "coverImage", gallery, tags, featured, status, sort_order as "sortOrder",
+          published_at as "publishedAt", updated_at as "updatedAt", seo
+        from portfolio_projects
+        where id = ${id}
+        limit 1
+      `);
+      if (!result.rows[0]) return null;
+      const tagMap = await mapPortfolioProjectTags([id]);
+      return rowToLegacyPortfolio(result.rows[0], tagMap.get(id) ?? result.rows[0].tags);
+    });
   }, null);
 }
 
 export async function getPortfolioProjectBySlug(slug: string): Promise<PortfolioProject | null> {
   return withPortfolioTableFallback(async () => {
-    await ensureDbBootstrap();
     const normalized = normalizeSlug(slug);
-    const row = await getDb()
-      .select()
-      .from(portfolioProjectsTable)
-      .where(eq(portfolioProjectsTable.slug, normalized))
-      .limit(1);
-    if (!row[0]) return null;
-    if (row[0].status !== 'published') return null;
-    const tagMap = await mapPortfolioProjectTags([row[0].id]);
-    return rowToPortfolio(row[0], tagMap.get(row[0].id) ?? row[0].tags);
+    return withLegacyScheduleFallback(async () => {
+      await ensureDbBootstrap();
+      const row = await getDb()
+        .select()
+        .from(portfolioProjectsTable)
+        .where(eq(portfolioProjectsTable.slug, normalized))
+        .limit(1);
+      if (!row[0]) return null;
+      if (!isPortfolioProjectLive(rowToPortfolio(row[0]))) return null;
+      const tagMap = await mapPortfolioProjectTags([row[0].id]);
+      return rowToPortfolio(row[0], tagMap.get(row[0].id) ?? row[0].tags);
+    }, async () => {
+      await ensureDbBootstrap();
+      const result = await getDb().execute<LegacyPortfolioRow>(sql`
+        select id, title, slug, summary, challenge, solution, outcome, client_name as "clientName", service_type as "serviceType",
+          industry, project_url as "projectUrl", cover_image as "coverImage", gallery, tags, featured, status, sort_order as "sortOrder",
+          published_at as "publishedAt", updated_at as "updatedAt", seo
+        from portfolio_projects
+        where slug = ${normalized}
+        limit 1
+      `);
+      if (!result.rows[0]) return null;
+      const tagMap = await mapPortfolioProjectTags([result.rows[0].id]);
+      return rowToLegacyPortfolio(result.rows[0], tagMap.get(result.rows[0].id) ?? result.rows[0].tags);
+    });
   }, null);
 }
 
@@ -689,6 +1038,8 @@ export async function createPortfolioProject(
     status,
     sortOrder: payload?.sortOrder ?? maxSort + 1,
     publishedAt: status === 'published' ? nowIso() : null,
+    scheduledPublishAt: payload?.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
     updatedAt: nowIso(),
     seo: {
       metaTitle: payload?.seo?.metaTitle || title,
@@ -765,6 +1116,8 @@ export async function setPortfolioProjectStatus(
     ...existing,
     status,
     publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+    scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
     updatedAt: nowIso()
   };
 

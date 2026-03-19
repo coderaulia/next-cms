@@ -1,9 +1,13 @@
+import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { BlogPostView } from '@/components/pages/BlogPostView';
+import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { buildCanonical, buildMetadata } from '@/features/cms/seo';
 import {
+  getPreviewBlogPostBySlug,
+  getPreviewBlogPosts,
   getPublishedBlogPostBySlug,
   getPublishedBlogPosts,
   getSiteSettings
@@ -22,7 +26,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const [settings, post] = await Promise.all([getSiteSettings(), getPublishedBlogPostBySlug(slug)]);
+  const isPreview = (await draftMode()).isEnabled;
+  const [settings, post] = await Promise.all([
+    getSiteSettings(),
+    isPreview ? getPreviewBlogPostBySlug(slug) : getPublishedBlogPostBySlug(slug)
+  ]);
   if (!post) {
     return {
       title: 'Not found'
@@ -38,10 +46,11 @@ export async function generateMetadata({ params }: BlogDetailPageProps) {
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
+  const isPreview = (await draftMode()).isEnabled;
   const [settings, post, allPosts] = await Promise.all([
     getSiteSettings(),
-    getPublishedBlogPostBySlug(slug),
-    getPublishedBlogPosts()
+    isPreview ? getPreviewBlogPostBySlug(slug) : getPublishedBlogPostBySlug(slug),
+    isPreview ? getPreviewBlogPosts() : getPublishedBlogPosts()
   ]);
   if (!post) notFound();
 
@@ -81,11 +90,11 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   return (
     <>
+      {isPreview ? <PreviewModeBanner path={`/blog/${slug}`} /> : null}
       <SeoJsonLd data={jsonLd} />
       <BlogPostView post={post} related={related} />
     </>
   );
 }
-
 
 

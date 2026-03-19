@@ -75,6 +75,13 @@ const asIntegerClamp = (value: unknown, fallback: number, min: number, max: numb
   return Math.min(max, Math.max(min, candidate));
 };
 
+const asNullableIso = (value: unknown) => {
+  const candidate = asString(value).trim();
+  if (!candidate) return null;
+  const parsed = new Date(candidate);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+};
+
 const isHomeTheme = (value: string): value is HomeThemeToken =>
   HOME_THEMES.includes(value as HomeThemeToken);
 
@@ -337,6 +344,8 @@ export function validateLandingPage(payload: unknown): LandingPage | null {
     title: asString(payload.title),
     navLabel: asString(payload.navLabel),
     published: asBoolean(payload.published),
+    scheduledPublishAt: asNullableIso(payload.scheduledPublishAt),
+    scheduledUnpublishAt: asNullableIso(payload.scheduledUnpublishAt),
     seo: {
       metaTitle: asString(rawSeo.metaTitle),
       metaDescription: asString(rawSeo.metaDescription),
@@ -371,6 +380,8 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
     coverImage: asSafeAssetUrl(payload.coverImage),
     status,
     publishedAt: payload.publishedAt ? asString(payload.publishedAt) : null,
+    scheduledPublishAt: asNullableIso(payload.scheduledPublishAt),
+    scheduledUnpublishAt: asNullableIso(payload.scheduledUnpublishAt),
     updatedAt: asString(payload.updatedAt),
     seo: {
       metaTitle: asString(rawSeo.metaTitle),
@@ -421,6 +432,8 @@ export function validatePortfolioProject(payload: unknown): PortfolioProject | n
     status,
     sortOrder: asIntegerClamp(payload.sortOrder, 0, 0, 10000),
     publishedAt: status === 'published' ? asString(payload.publishedAt) || new Date().toISOString() : null,
+    scheduledPublishAt: asNullableIso(payload.scheduledPublishAt),
+    scheduledUnpublishAt: asNullableIso(payload.scheduledUnpublishAt),
     updatedAt: asString(payload.updatedAt) || new Date().toISOString(),
     seo: {
       metaTitle: asString(rawSeo.metaTitle) || title,
@@ -460,7 +473,12 @@ export function validateMediaAsset(payload: unknown): MediaAsset | null {
 
   const title = asString(payload.title).trim();
   const url = asSafeAssetUrl(payload.url);
+  const mimeType = asString(payload.mimeType) || 'image/png';
+  const altText = asString(payload.altText).trim();
   if (!title || !url) {
+    return null;
+  }
+  if (mimeType.toLowerCase().startsWith('image/') && !altText) {
     return null;
   }
 
@@ -476,11 +494,12 @@ export function validateMediaAsset(payload: unknown): MediaAsset | null {
     id: asString(payload.id) || crypto.randomUUID(),
     title,
     url,
-    altText: asString(payload.altText),
-    mimeType: asString(payload.mimeType) || 'image/png',
+    altText,
+    mimeType,
     width: asNullableInteger(payload.width),
     height: asNullableInteger(payload.height),
     sizeBytes: asNullableInteger(payload.sizeBytes),
+    checksumSha256: asString(payload.checksumSha256).trim() || null,
     storageProvider: asString(payload.storageProvider) || 'external-url',
     storageKey: storageKey || null,
     createdAt: asString(payload.createdAt) || new Date().toISOString(),

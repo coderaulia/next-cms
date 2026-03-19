@@ -10,6 +10,7 @@ const TABLES = [
   'admin_sessions',
   'admin_users',
   'request_rate_limits',
+  'analytics_events',
   'post_categories',
   'portfolio_project_tags',
   'portfolio_tags',

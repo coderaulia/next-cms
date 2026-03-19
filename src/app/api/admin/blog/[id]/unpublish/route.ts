@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { setPostStatus } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 
@@ -9,7 +9,7 @@ type RouteContext = {
 };
 
 export async function POST(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
+  const unauthorized = await assertAdminPermission(request, 'content:publish');
   if (unauthorized) return unauthorized;
 
   const { id } = await params;

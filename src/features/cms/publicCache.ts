@@ -2,6 +2,7 @@ import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
 
 import type { LandingPage, PageId } from './types';
 import * as contentStore from './contentStore';
+import { isPageLive } from './publicationState';
 
 export const cmsPublicCacheTags = {
   all: 'cms-public',
@@ -46,12 +47,12 @@ function safelyRevalidate(action: () => void) {
 
 async function readPublishedPages() {
   const pages = await contentStore.getPages();
-  return Object.values(pages).filter((page) => page.published);
+  return Object.values(pages).filter((page) => isPageLive(page));
 }
 
 async function readPublishedPageById(id: PageId): Promise<LandingPage | null> {
   const page = await contentStore.getPageById(id);
-  if (!page || !page.published) return null;
+  if (!page || !isPageLive(page)) return null;
   return page;
 }
 

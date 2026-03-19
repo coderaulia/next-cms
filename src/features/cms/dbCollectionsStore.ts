@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import { blogPostsTable, categoriesTable, mediaAssetsTable, postCategoriesTable, siteSettingsTable } from '@/db/schema';
@@ -19,6 +19,53 @@ import { defaultContent } from './defaultContent';
 import { mapBlogPostCategorySlugs, syncBlogPostCategoryLinks } from './dbTaxonomy';
 import { normalizeSettings } from './storeShared';
 import type { BlogPost, Category, MediaAsset } from './types';
+
+let warnedMissingMediaChecksumColumn = false;
+
+function extractErrorCode(error: unknown): string | undefined {
+  if (!error || typeof error !== 'object') return undefined;
+  const record = error as { code?: unknown; cause?: unknown };
+  if (typeof record.code === 'string') return record.code;
+  if (record.cause) return extractErrorCode(record.cause);
+  return undefined;
+}
+
+function isMissingColumnError(error: unknown) {
+  return extractErrorCode(error) === '42703';
+}
+
+function warnMissingMediaChecksumColumn() {
+  if (warnedMissingMediaChecksumColumn) return;
+  warnedMissingMediaChecksumColumn = true;
+  console.warn('Media checksum column is not available yet; falling back to legacy media queries.');
+}
+
+async function withLegacyMediaFallback<T>(task: () => Promise<T>, fallbackTask: () => Promise<T>): Promise<T> {
+  try {
+    return await task();
+  } catch (error) {
+    if (isMissingColumnError(error)) {
+      warnMissingMediaChecksumColumn();
+      return fallbackTask();
+    }
+    throw error;
+  }
+}
+
+type LegacyMediaRow = {
+  id: string;
+  title: string;
+  url: string;
+  altText: string;
+  mimeType: string;
+  width: number | null;
+  height: number | null;
+  sizeBytes: number | null;
+  storageProvider: string;
+  storageKey: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 function rowToCategory(row: typeof categoriesTable.$inferSelect): Category {
   return {
@@ -41,11 +88,56 @@ function rowToMediaAsset(row: typeof mediaAssetsTable.$inferSelect): MediaAsset 
     width: row.width,
     height: row.height,
     sizeBytes: row.sizeBytes,
+    checksumSha256: row.checksumSha256,
     storageProvider: row.storageProvider,
     storageKey: row.storageKey,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt
   };
+}
+
+function rowToLegacyMediaAsset(row: LegacyMediaRow): MediaAsset {
+  return {
+    id: row.id,
+    title: row.title,
+    url: row.url,
+    altText: row.altText,
+    mimeType: row.mimeType,
+    width: row.width,
+    height: row.height,
+    sizeBytes: row.sizeBytes,
+    checksumSha256: null,
+    storageProvider: row.storageProvider,
+    storageKey: row.storageKey,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt
+  };
+}
+
+function toLegacyMediaRow(mediaAsset: MediaAsset) {
+  return {
+    id: mediaAsset.id,
+    title: mediaAsset.title,
+    url: mediaAsset.url,
+    altText: mediaAsset.altText,
+    mimeType: mediaAsset.mimeType,
+    width: mediaAsset.width,
+    height: mediaAsset.height,
+    sizeBytes: mediaAsset.sizeBytes,
+    storageProvider: mediaAsset.storageProvider,
+    storageKey: mediaAsset.storageKey,
+    createdAt: mediaAsset.createdAt,
+    updatedAt: mediaAsset.updatedAt
+  };
+}
+
+async function readLegacyMediaAssets() {
+  const result = await getDb().execute<LegacyMediaRow>(sql`
+    select id, title, url, alt_text as "altText", mime_type as "mimeType", width, height, size_bytes as "sizeBytes",
+      storage_provider as "storageProvider", storage_key as "storageKey", created_at as "createdAt", updated_at as "updatedAt"
+    from media_assets
+  `);
+  return result.rows.map(rowToLegacyMediaAsset);
 }
 
 async function readAllPosts(): Promise<BlogPost[]> {
@@ -183,30 +275,60 @@ export async function deleteCategory(id: string): Promise<boolean> {
 }
 
 async function ensureMediaBootstrap() {
-  const rows = await getDb().select().from(mediaAssetsTable).limit(1);
+  const rows = await withLegacyMediaFallback(
+    () => getDb().select().from(mediaAssetsTable).limit(1),
+    async () => {
+      const result = await getDb().execute<LegacyMediaRow>(sql`
+        select id, title, url, alt_text as "altText", mime_type as "mimeType", width, height, size_bytes as "sizeBytes",
+          storage_provider as "storageProvider", storage_key as "storageKey", created_at as "createdAt", updated_at as "updatedAt"
+        from media_assets
+        limit 1
+      `);
+      return result.rows as unknown as typeof mediaAssetsTable.$inferSelect[];
+    }
+  );
   if (rows.length > 0) {
     return;
   }
 
-  await getDb().insert(mediaAssetsTable).values(defaultContent.mediaAssets).onConflictDoNothing();
+  await withLegacyMediaFallback(
+    () => getDb().insert(mediaAssetsTable).values(defaultContent.mediaAssets).onConflictDoNothing(),
+    () => getDb().insert(mediaAssetsTable).values(defaultContent.mediaAssets.map(toLegacyMediaRow)).onConflictDoNothing()
+  );
 }
 
 export async function getMediaAssets(): Promise<MediaAsset[]> {
   await ensureMediaBootstrap();
-  const rows = await getDb().select().from(mediaAssetsTable);
-  return sortMediaAssets(rows.map(rowToMediaAsset));
+  return withLegacyMediaFallback(async () => {
+    const rows = await getDb().select().from(mediaAssetsTable);
+    return sortMediaAssets(rows.map(rowToMediaAsset));
+  }, async () => sortMediaAssets(await readLegacyMediaAssets()));
 }
 
 export async function getMediaAssetById(id: string): Promise<MediaAsset | null> {
   await ensureMediaBootstrap();
-  const rows = await getDb().select().from(mediaAssetsTable).where(eq(mediaAssetsTable.id, id)).limit(1);
-  return rows[0] ? rowToMediaAsset(rows[0]) : null;
+  return withLegacyMediaFallback(async () => {
+    const rows = await getDb().select().from(mediaAssetsTable).where(eq(mediaAssetsTable.id, id)).limit(1);
+    return rows[0] ? rowToMediaAsset(rows[0]) : null;
+  }, async () => {
+    const result = await getDb().execute<LegacyMediaRow>(sql`
+      select id, title, url, alt_text as "altText", mime_type as "mimeType", width, height, size_bytes as "sizeBytes",
+        storage_provider as "storageProvider", storage_key as "storageKey", created_at as "createdAt", updated_at as "updatedAt"
+      from media_assets
+      where id = ${id}
+      limit 1
+    `);
+    return result.rows[0] ? rowToLegacyMediaAsset(result.rows[0]) : null;
+  });
 }
 
 export async function createMediaAsset(payload: MediaAsset): Promise<MediaAsset> {
   await ensureMediaBootstrap();
   const next = normalizeMediaAssetRecord(payload);
-  await getDb().insert(mediaAssetsTable).values(next);
+  await withLegacyMediaFallback(
+    () => getDb().insert(mediaAssetsTable).values(next),
+    () => getDb().insert(mediaAssetsTable).values(toLegacyMediaRow(next))
+  );
   return next;
 }
 
@@ -222,7 +344,10 @@ export async function updateMediaAsset(id: string, payload: MediaAsset): Promise
     createdAt: existing.createdAt
   });
 
-  await getDb().update(mediaAssetsTable).set(next).where(eq(mediaAssetsTable.id, id));
+  await withLegacyMediaFallback(
+    () => getDb().update(mediaAssetsTable).set(next).where(eq(mediaAssetsTable.id, id)),
+    () => getDb().update(mediaAssetsTable).set(toLegacyMediaRow(next)).where(eq(mediaAssetsTable.id, id))
+  );
   return next;
 }
 

@@ -13,6 +13,11 @@ type StoredMedia = {
   sizeBytes: number;
 };
 
+type SaveUploadedMediaOptions = {
+  storageKey?: string | null;
+  upsert?: boolean;
+};
+
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 const MAX_SAFE_FILE_NAME_LENGTH = 64;
 
@@ -117,7 +122,7 @@ function generateStorageKey(file: File) {
   return `media/${year}/${month}/${filename}`;
 }
 
-export async function saveUploadedMedia(file: File) {
+export async function saveUploadedMedia(file: File, options: SaveUploadedMediaOptions = {}) {
   if (!file || file.size <= 0 || file.size > MAX_UPLOAD_BYTES) {
     throw new Error('Invalid file size');
   }
@@ -126,7 +131,7 @@ export async function saveUploadedMedia(file: File) {
     throw new Error('Unsupported file type');
   }
 
-  const storageKey = normalizeStorageKey(generateStorageKey(file));
+  const storageKey = normalizeStorageKey(options.storageKey || generateStorageKey(file));
   const buffer = Buffer.from(await file.arrayBuffer());
 
   if (isSupabaseStorageEnabled()) {
@@ -135,7 +140,7 @@ export async function saveUploadedMedia(file: File) {
     const { error } = await client.storage.from(bucket).upload(storageKey, buffer, {
       cacheControl: '31536000',
       contentType: file.type || undefined,
-      upsert: false
+      upsert: options.upsert ?? false
     });
 
     if (error) {

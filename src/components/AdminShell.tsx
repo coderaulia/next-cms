@@ -10,7 +10,7 @@ import { AdminNav } from './AdminNav';
 type AdminShellProps = {
   title: string;
   description?: string;
-  actions?: ReactNode;
+  actions?: ReactNode | ((user: AdminSessionUser) => ReactNode);
   children: (user: AdminSessionUser) => ReactNode;
 };
 
@@ -27,7 +27,7 @@ export function AdminShell({ title, description, actions, children }: AdminShell
                   <h1>{title}</h1>
                   {description ? <p>{description}</p> : null}
                 </div>
-                {actions ? <div>{actions}</div> : null}
+                {actions ? <div>{typeof actions === 'function' ? actions(user) : actions}</div> : null}
               </header>
               {children(user)}
             </section>

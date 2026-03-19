@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createMediaAsset, getMediaAssets } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { validateMediaAsset } from '@/features/cms/validators';
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
+  const unauthorized = await assertAdminPermission(request, 'media:edit');
   if (unauthorized) return unauthorized;
 
   const payload = validateMediaAsset(await request.json().catch(() => null));

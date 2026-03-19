@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { AdminPostsTable } from '@/components/admin/AdminPostsTable';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
 
@@ -24,7 +25,11 @@ function parsePositiveInt(value: string | null, fallback: number) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-function BlogList() {
+type BlogListProps = {
+  user: AdminSessionUser;
+};
+
+function BlogList({ user }: BlogListProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -96,9 +101,10 @@ function BlogList() {
   }, [data]);
 
   const selectedCount = selectedIds.length;
+  const canPublish = user.permissions.includes('content:publish');
 
   const applyBulkStatus = async (target: 'published' | 'draft') => {
-    if (!data || selectedIds.length === 0) return;
+    if (!data || selectedIds.length === 0 || !canPublish) return;
 
     setBulkPending(true);
     setNotice('');
@@ -132,6 +138,18 @@ function BlogList() {
 
   return (
     <div className="admin-form-wrap">
+      {data.meta.total === 0 ? (
+        <section className="admin-card admin-empty-state">
+          <h2>Start the blog workflow</h2>
+          <p className="admin-subtle">Create the first post, assign categories, and use draft preview before publishing client-facing content.</p>
+          {user.permissions.includes('content:edit') ? (
+            <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
+              Create first post
+            </Link>
+          ) : null}
+        </section>
+      ) : null}
+
       <section className="admin-card">
         <div className="admin-filter-bar">
           <label>
@@ -210,10 +228,10 @@ function BlogList() {
         <div className="admin-inline-header">
           <p className="admin-subtle">{selectedCount} selected</p>
           <div className="admin-actions">
-            <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => void applyBulkStatus('published')}>
+            <button type="button" disabled={selectedCount === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('published')}>
               Publish selected
             </button>
-            <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => void applyBulkStatus('draft')}>
+            <button type="button" disabled={selectedCount === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('draft')}>
               Move selected to draft
             </button>
             <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => setSelectedIds([])}>
@@ -221,6 +239,7 @@ function BlogList() {
             </button>
           </div>
         </div>
+        {!canPublish ? <p className="admin-subtle">Your role can review posts but cannot change publication status.</p> : null}
         {notice ? <p className="admin-subtle">{notice}</p> : null}
         {error ? <p className="error">{error}</p> : null}
         <AdminPostsTable
@@ -258,13 +277,15 @@ export default function AdminBlogPage() {
     <AdminShell
       title="Posts"
       description="Search, filter, and manage editorial content."
-      actions={
-        <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
-          + New post
-        </Link>
+      actions={(user) =>
+        user.permissions.includes('content:edit') ? (
+          <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
+            + New post
+          </Link>
+        ) : null
       }
     >
-      {() => <BlogList />}
+      {(user) => <BlogList user={user} />}
     </AdminShell>
   );
 }

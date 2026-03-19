@@ -1,7 +1,7 @@
 import { createHash, randomBytes, randomUUID, scrypt as nodeScrypt, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 
-import { and, eq, gt } from 'drizzle-orm';
+import { and, desc, eq, gt } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
 import { getDb } from '@/db/client';
@@ -15,7 +15,9 @@ import {
 import { ADMIN_LOGIN_LOCK_THRESHOLD, ADMIN_LOGIN_LOCK_WINDOW_MS } from '@/services/securityConstants';
 
 import type { AdminSessionUser } from './adminTypes';
+import { hasAdminPermission, normalizeAdminRole, permissionsForRole } from './adminPermissions';
 import { nowIso } from './storeShared';
+import type { AdminPermission, AdminRole } from './types';
 
 const scrypt = promisify(nodeScrypt);
 
@@ -55,6 +57,18 @@ type AdminAuditEvent = {
   metadata?: Record<string, unknown>;
 };
 
+export type AdminAuditLogEntry = {
+  id: string;
+  action: string;
+  entityType: string;
+  entityId: string | null;
+  userId: string | null;
+  ip: string;
+  userAgent: string;
+  createdAt: string;
+  metadata: Record<string, unknown>;
+};
+
 declare global {
   var __cmsAdminLoginLockouts: Map<string, LoginLockEntry> | undefined;
 }
@@ -77,11 +91,13 @@ function normalizeLoginIdentifier(email: string) {
 }
 
 function mapAdminUser(row: AdminUserRow): AdminSessionUser {
+  const role = normalizeAdminRole(row.role);
   return {
     id: row.id,
     email: row.email,
     displayName: row.displayName,
-    role: row.role
+    role,
+    permissions: permissionsForRole(role)
   };
 }
 
@@ -394,7 +410,8 @@ export async function getAdminSession(request: Request): Promise<AdminSession | 
         id: 'legacy-token-admin',
         email: normalize(env.adminEmail || DEFAULT_ADMIN_EMAIL).toLowerCase(),
         displayName: normalize(env.adminName || DEFAULT_ADMIN_NAME),
-        role: 'super_admin'
+        role: 'super_admin',
+        permissions: permissionsForRole('super_admin')
       },
       expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString()
     };
@@ -457,6 +474,25 @@ export async function assertAdminRequest(request: Request): Promise<NextResponse
   return null;
 }
 
+export async function assertAdminPermission(
+  request: Request,
+  permission: AdminPermission
+): Promise<NextResponse | null> {
+  const unauthorized = await assertAdminRequest(request);
+  if (unauthorized) return unauthorized;
+
+  const session = await getAdminSession(request);
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!hasAdminPermission(session.user.role, permission)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  return null;
+}
+
 export async function loginAdminUser(email: string, password: string): Promise<AdminLoginResult | null> {
   if (!env.databaseUrl) {
     return null;
@@ -501,6 +537,34 @@ export async function logoutAdminUser(request: Request) {
   }
 }
 
+export async function getAdminAuditLogs(limit = 50): Promise<AdminAuditLogEntry[]> {
+  if (!env.databaseUrl) {
+    return [];
+  }
+
+  const rows = await getDb()
+    .select()
+    .from(adminAuditLogsTable)
+    .orderBy(desc(adminAuditLogsTable.createdAt))
+    .limit(Math.min(Math.max(limit, 1), 200));
+
+  return rows.map((row) => ({
+    id: row.id,
+    action: row.action,
+    entityType: row.entityType,
+    entityId: row.entityId ?? null,
+    userId: row.userId ?? null,
+    ip: row.ip,
+    userAgent: row.userAgent,
+    createdAt: row.createdAt,
+    metadata: row.metadata
+  }));
+}
+
+export function roleLabel(role: AdminRole) {
+  return role.replace(/_/g, ' ');
+}
+
 export function applyAdminSessionCookie(response: NextResponse, sessionToken: string, expiresAt: string) {
   response.cookies.set(ADMIN_SESSION_COOKIE, sessionToken, getSessionCookieOptions(expiresAt));
   return response;
@@ -510,4 +574,3 @@ export function clearAdminSessionCookie(response: NextResponse) {
   response.cookies.set(ADMIN_SESSION_COOKIE, '', getSessionCookieOptions());
   return response;
 }
-

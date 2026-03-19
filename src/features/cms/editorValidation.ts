@@ -1,4 +1,4 @@
-import type { BlogPost, HomeBlock, LandingPage, PageSection } from '@/features/cms/types';
+import type { BlogPost, HomeBlock, LandingPage, PageSection, PortfolioProject } from '@/features/cms/types';
 
 export type EditorValidationIssue = {
   path: string;
@@ -53,6 +53,40 @@ function validateSection(issues: EditorValidationIssue[], section: PageSection, 
     issues.push({
       path: `sections.${index}.ctaHref`,
       message: 'CTA URL is required when CTA label is set.'
+    });
+  }
+
+  if (!isBlank(section.mediaImage) && isBlank(section.mediaAlt)) {
+    issues.push({
+      path: `sections.${index}.mediaAlt`,
+      message: 'Alt text is required when a section image is set.'
+    });
+  }
+}
+
+function validateSchedule(
+  issues: EditorValidationIssue[],
+  pathPrefix: string,
+  schedule: {
+    scheduledPublishAt?: string | null;
+    scheduledUnpublishAt?: string | null;
+  }
+) {
+  const withPrefix = (field: 'scheduledPublishAt' | 'scheduledUnpublishAt') =>
+    pathPrefix ? `${pathPrefix}.${field}` : field;
+  const publishAt = schedule.scheduledPublishAt ? new Date(schedule.scheduledPublishAt).getTime() : null;
+  const unpublishAt = schedule.scheduledUnpublishAt ? new Date(schedule.scheduledUnpublishAt).getTime() : null;
+
+  if (publishAt !== null && Number.isNaN(publishAt)) {
+    issues.push({ path: withPrefix('scheduledPublishAt'), message: 'Scheduled publish time is invalid.' });
+  }
+  if (unpublishAt !== null && Number.isNaN(unpublishAt)) {
+    issues.push({ path: withPrefix('scheduledUnpublishAt'), message: 'Scheduled unpublish time is invalid.' });
+  }
+  if (publishAt !== null && unpublishAt !== null && publishAt >= unpublishAt) {
+    issues.push({
+      path: withPrefix('scheduledUnpublishAt'),
+      message: 'Scheduled unpublish time must be after the scheduled publish time.'
     });
   }
 }
@@ -145,6 +179,12 @@ function validateHomeBlock(issues: EditorValidationIssue[], block: HomeBlock, in
         'Why bullet text'
       );
     });
+    if (!isBlank(block.mediaImage) && isBlank(block.mediaAlt)) {
+      issues.push({
+        path: `homeBlocks.${index}.mediaAlt`,
+        message: 'Alt text is required when the why-split image is set.'
+      });
+    }
     return;
   }
 
@@ -171,6 +211,7 @@ export function validateBlogEditor(post: BlogPost) {
   pushRequired(issues, 'author', post.author, 'Author');
   pushRequired(issues, 'content', post.content, 'Content');
   validateSeo(issues, 'seo', post.seo);
+  validateSchedule(issues, '', post);
   return issues;
 }
 
@@ -179,6 +220,7 @@ export function validatePageEditor(page: LandingPage) {
   pushRequired(issues, 'title', page.title, 'Title');
   pushRequired(issues, 'navLabel', page.navLabel, 'Nav label');
   validateSeo(issues, 'seo', page.seo);
+  validateSchedule(issues, '', page);
 
   if (page.id === 'home') {
     const blocks = page.homeBlocks ?? [];
@@ -207,6 +249,20 @@ export function validatePageEditor(page: LandingPage) {
     validateSection(issues, section, index);
   });
 
+  return issues;
+}
+
+export function validatePortfolioEditor(project: PortfolioProject) {
+  const issues: EditorValidationIssue[] = [];
+  pushRequired(issues, 'title', project.title, 'Title');
+  pushRequired(issues, 'summary', project.summary, 'Summary');
+  pushRequired(issues, 'challenge', project.challenge, 'Challenge');
+  pushRequired(issues, 'solution', project.solution, 'Solution');
+  pushRequired(issues, 'outcome', project.outcome, 'Outcome');
+  pushRequired(issues, 'clientName', project.clientName, 'Client name');
+  pushRequired(issues, 'serviceType', project.serviceType, 'Service type');
+  validateSeo(issues, 'seo', project.seo);
+  validateSchedule(issues, '', project);
   return issues;
 }
 

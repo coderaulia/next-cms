@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteMediaAsset, getMediaAssetById, updateMediaAsset } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia } from '@/services/mediaStorage';
@@ -24,7 +24,7 @@ export async function GET(request: Request, { params }: RouteContext) {
 }
 
 export async function PUT(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
+  const unauthorized = await assertAdminPermission(request, 'media:edit');
   if (unauthorized) return unauthorized;
 
   const { id } = await params;
@@ -76,7 +76,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
+  const unauthorized = await assertAdminPermission(request, 'media:edit');
   if (unauthorized) return unauthorized;
 
   const { id } = await params;

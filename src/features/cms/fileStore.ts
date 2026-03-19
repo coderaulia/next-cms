@@ -11,6 +11,10 @@ import type {
 } from './types';
 import type { BlogQueryInput, PortfolioQueryInput } from './storeTypes';
 import {
+  isBlogPostLive,
+  isPortfolioProjectLive
+} from './publicationState';
+import {
   mergeWithDefaults,
   normalizePageForWrite,
   normalizeSettings,
@@ -103,7 +107,7 @@ export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
   const content = await readContent();
   const filtered = includeDrafts
     ? content.blogPosts
-    : content.blogPosts.filter((post) => post.status === 'published');
+    : content.blogPosts.filter((post) => isBlogPostLive(post));
   return filtered.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
 }
 
@@ -132,7 +136,7 @@ export async function queryBlogPosts(input: BlogQueryInput) {
   ).sort((a, b) => (a > b ? 1 : -1));
 
   let posts = content.blogPosts.filter((post) => {
-    if (!input.includeDrafts && post.status !== 'published') return false;
+    if (!input.includeDrafts && !isBlogPostLive(post)) return false;
     if (status !== 'all' && post.status !== status) return false;
     if (query.length > 0) {
       const haystack = `${post.title} ${post.author}`.toLowerCase();
@@ -175,7 +179,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   const content = await readContent();
   return (
     content.blogPosts.find(
-      (post) => post.seo.slug === normalized && post.status === 'published'
+      (post) => post.seo.slug === normalized && isBlogPostLive(post)
     ) ?? null
   );
 }
@@ -202,6 +206,8 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
     coverImage: payload?.coverImage || '',
     status,
     publishedAt: status === 'published' ? nowIso() : null,
+    scheduledPublishAt: payload?.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
     updatedAt: nowIso(),
     seo: {
       metaTitle: payload?.seo?.metaTitle || title,
@@ -260,6 +266,8 @@ export async function setPostStatus(id: string, status: 'draft' | 'published'): 
     ...existing,
     status,
     publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+    scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
     updatedAt: nowIso()
   };
   content.blogPosts[index] = next;
@@ -271,7 +279,7 @@ export async function getPortfolioProjects(includeDrafts = false): Promise<Portf
   const content = await readContent();
   const filtered = includeDrafts
     ? content.portfolioProjects
-    : content.portfolioProjects.filter((project) => project.status === 'published');
+    : content.portfolioProjects.filter((project) => isPortfolioProjectLive(project));
 
   return filtered.sort((a, b) => {
     if (a.featured !== b.featured) return a.featured ? -1 : 1;
@@ -309,7 +317,7 @@ export async function queryPortfolioProjects(input: PortfolioQueryInput) {
   ).sort((a, b) => (a > b ? 1 : -1));
 
   let projects = content.portfolioProjects.filter((project) => {
-    if (!input.includeDrafts && project.status !== 'published') return false;
+    if (!input.includeDrafts && !isPortfolioProjectLive(project)) return false;
     if (status !== 'all' && project.status !== status) return false;
     if (featured === 'featured' && !project.featured) return false;
     if (featured === 'standard' && project.featured) return false;
@@ -359,7 +367,7 @@ export async function getPortfolioProjectBySlug(slug: string): Promise<Portfolio
   const content = await readContent();
   return (
     content.portfolioProjects.find(
-      (project) => project.seo.slug === normalized && project.status === 'published'
+      (project) => project.seo.slug === normalized && isPortfolioProjectLive(project)
     ) ?? null
   );
 }
@@ -393,6 +401,8 @@ export async function createPortfolioProject(
     status,
     sortOrder: payload?.sortOrder ?? maxSort + 1,
     publishedAt: status === 'published' ? nowIso() : null,
+    scheduledPublishAt: payload?.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
     updatedAt: nowIso(),
     seo: {
       metaTitle: payload?.seo?.metaTitle || title,
@@ -463,6 +473,8 @@ export async function setPortfolioProjectStatus(
     ...existing,
     status,
     publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+    scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
+    scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
     updatedAt: nowIso()
   };
 

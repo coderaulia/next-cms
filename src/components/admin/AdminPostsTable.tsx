@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { getBlogPostPublicationLabel } from '@/features/cms/publicationState';
 import type { BlogPost } from '@/features/cms/types';
 
 type AdminPostsTableProps = {
@@ -81,13 +82,20 @@ export function AdminPostsTable({
                   </td>
                   <td>{new Date(post.updatedAt).toLocaleDateString()}</td>
                   <td>
-                    <span
-                      className={`admin-chip ${
-                        post.status === 'published' ? 'admin-chip-success' : 'admin-chip-warning'
-                      }`}
-                    >
-                      {post.status}
-                    </span>
+                    {(() => {
+                      const publicationLabel = getBlogPostPublicationLabel(post);
+                      const chipClass =
+                        publicationLabel === 'published'
+                          ? 'admin-chip-success'
+                          : publicationLabel === 'scheduled' || publicationLabel === 'scheduled-unpublish'
+                            ? 'admin-chip-warning'
+                            : 'admin-chip-muted';
+                      return (
+                        <span className={`admin-chip ${chipClass}`}>
+                          {publicationLabel}
+                        </span>
+                      );
+                    })()}
                   </td>
                   <td>
                     <Link href={`/admin/blog/${post.id}`}>Edit</Link>
@@ -99,7 +107,7 @@ export function AdminPostsTable({
             <tbody>
               <tr>
                 <td colSpan={7} className="admin-subtle">
-                  No posts found for this filter.
+                  No posts match the current filters. Clear filters or create the first post from the Posts screen.
                 </td>
               </tr>
             </tbody>
