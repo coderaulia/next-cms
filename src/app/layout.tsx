@@ -3,12 +3,20 @@ import { Playfair_Display, Sora } from 'next/font/google';
 
 import { AppShell } from '@/components/AppShell';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
+import { siteProfile } from '@/config/site-profile';
 import { getPublishedPages, getSiteSettings } from '@/features/cms/publicApi';
-import type { PageId } from '@/features/cms/types';
 
 import './globals.css';
 
-export const dynamic = 'force-dynamic';
+const fallbackMetadataBase = 'http://localhost:3000';
+
+function resolveMetadataBase() {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL || fallbackMetadataBase);
+  } catch {
+    return new URL(fallbackMetadataBase);
+  }
+}
 
 const fontBody = Sora({
   subsets: ['latin'],
@@ -24,6 +32,7 @@ const fontAccent = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: resolveMetadataBase(),
   title: {
     default: 'vanaila.',
     template: '%s'
@@ -48,8 +57,7 @@ export default async function RootLayout({
     ])
   );
 
-  const orderedTopLevel: PageId[] = ['home', 'about', 'service', 'partnership', 'contact'];
-  const navItems = orderedTopLevel
+  const navItems = siteProfile.navigation.primaryPageOrder
     .map((id) => pageNavMap.get(id))
     .filter((item): item is { href: string; label: string } => Boolean(item));
   navItems.splice(3, 0, { href: '/blog', label: 'Insights' });

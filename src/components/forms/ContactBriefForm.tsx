@@ -1,6 +1,8 @@
 'use client';
 
 import { type FormEvent, useState } from 'react';
+
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 type ContactBriefFormProps = {
@@ -67,7 +69,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
     <div className="glass-panel p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-2xl shadow-blue-900/5">
       <div className="flex items-center justify-between mb-12 gap-6">
         <h2 className="text-3xl font-display font-black text-deepSlate italic">{heading}</h2>
-        <span className="material-symbols-outlined text-slate-200 text-4xl">description</span>
+        <SymbolIcon className="text-slate-200 text-4xl" name="description" />
       </div>
       <p className="text-slate-500 mb-12 font-light">{body}</p>
 
@@ -126,7 +128,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-            <span className="material-symbols-outlined text-electricBlue text-sm">verified_user</span>
+            <SymbolIcon className="text-electricBlue text-sm" name="verified_user" />
             {helperText}
           </div>
           <button
@@ -145,4 +147,3 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
     </div>
   );
 }
-

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { PortfolioProject } from '@/features/cms/types';
 
 import { formatDateLabel } from './sectionContent';
@@ -134,9 +135,7 @@ export function PortfolioPageView({
                     </div>
                     <span className="text-xs font-bold uppercase tracking-widest text-electricBlue flex items-center gap-2 group/link">
                       View Case Study
-                      <span className="material-symbols-outlined text-sm group-hover/link:translate-x-1 transition-transform">
-                        arrow_forward
-                      </span>
+                      <SymbolIcon className="text-sm group-hover/link:translate-x-1 transition-transform" name="arrow_forward" />
                     </span>
                   </div>
                 </div>
@@ -181,9 +180,7 @@ export function PortfolioPageView({
                 placeholder="Search projects..."
                 className="w-full px-6 py-3 bg-slate-50 border border-slate-100 rounded-full focus:outline-none text-xs font-medium"
               />
-              <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm">
-                search
-              </span>
+              <SymbolIcon className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm" name="search" />
             </form>
           </div>
 
@@ -229,7 +226,7 @@ export function PortfolioPageView({
                     </div>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-deepSlate flex items-center gap-2 pt-4 border-t border-slate-50">
                       View Case Study
-                      <span className="material-symbols-outlined text-xs">arrow_outward</span>
+                      <SymbolIcon className="text-xs" name="arrow_outward" />
                     </span>
                   </div>
                 </Link>
@@ -248,7 +245,7 @@ export function PortfolioPageView({
                 className="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-deepSlate hover:text-white transition-all"
                 aria-label="Previous page"
               >
-                <span className="material-symbols-outlined text-sm">chevron_left</span>
+                <SymbolIcon className="text-sm" name="chevron_left" />
               </Link>
 
               {pageNumbers.map((pageNumber) => (
@@ -266,7 +263,7 @@ export function PortfolioPageView({
                 className="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-deepSlate hover:text-white transition-all"
                 aria-label="Next page"
               >
-                <span className="material-symbols-outlined text-sm">chevron_right</span>
+                <SymbolIcon className="text-sm" name="chevron_right" />
               </Link>
             </div>
           ) : null}

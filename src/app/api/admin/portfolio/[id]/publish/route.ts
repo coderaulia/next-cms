@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getPortfolioProjectById, setPortfolioProjectStatus } from '@/features/cms/contentStore';
+import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -39,5 +40,6 @@ export async function POST(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ project });
 }

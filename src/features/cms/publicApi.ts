@@ -1,47 +1,43 @@
 import {
-  getBlogPostBySlug,
-  getBlogPosts,
-  getPageById,
-  getPages,
-  getPortfolioProjectBySlug,
-  getPortfolioProjects,
-  getSettings
-} from './contentStore';
+  getCachedPublicBlogPostBySlug,
+  getCachedPublicBlogPosts,
+  getCachedPublicPageById,
+  getCachedPublicPageBySlug,
+  getCachedPublicPages,
+  getCachedPublicPortfolioProjectBySlug,
+  getCachedPublicPortfolioProjects,
+  getCachedPublicSiteSettings
+} from './publicCache';
 import type { LandingPage, PageId } from './types';
 
 export async function getSiteSettings() {
-  return getSettings();
+  return getCachedPublicSiteSettings();
 }
 
 export async function getPublishedPage(id: PageId): Promise<LandingPage | null> {
-  const page = await getPageById(id);
-  if (!page || !page.published) return null;
-  return page;
+  return getCachedPublicPageById(id);
 }
 
 export async function getPublishedPages() {
-  const pages = await getPages();
-  return Object.values(pages).filter((page) => page.published);
+  return getCachedPublicPages();
 }
 
 export async function getPublishedPageBySlug(slug: string): Promise<LandingPage | null> {
-  const normalized = slug.trim().replace(/^\/+/, '').toLowerCase();
-  const pages = await getPublishedPages();
-  return pages.find((page) => page.seo.slug.toLowerCase() === normalized) ?? null;
+  return getCachedPublicPageBySlug(slug);
 }
 
 export async function getPublishedBlogPosts() {
-  return getBlogPosts(false);
+  return getCachedPublicBlogPosts();
 }
 
 export async function getPublishedBlogPostBySlug(slug: string) {
-  return getBlogPostBySlug(slug);
+  return getCachedPublicBlogPostBySlug(slug);
 }
 
 export async function getPublishedPortfolioProjects() {
-  return getPortfolioProjects(false);
+  return getCachedPublicPortfolioProjects();
 }
 
 export async function getPublishedPortfolioProjectBySlug(slug: string) {
-  return getPortfolioProjectBySlug(slug);
+  return getCachedPublicPortfolioProjectBySlug(slug);
 }

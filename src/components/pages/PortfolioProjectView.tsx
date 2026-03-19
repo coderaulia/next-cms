@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { PortfolioProject } from '@/features/cms/types';
 
 import { Reveal } from '@/components/animations/Reveal';
@@ -104,7 +105,7 @@ export function PortfolioProjectView({ project, related }: PortfolioProjectViewP
               </div>
               <Link href="/portfolio" className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-deepSlate transition-colors">
                 View All
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                <SymbolIcon className="text-sm" name="arrow_forward" />
               </Link>
             </div>
             <div className="grid md:grid-cols-3 gap-8">

@@ -4,6 +4,7 @@ import type { SolutionsGridBlock } from '@/features/cms/types';
 
 import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 
 type SolutionsGridBlockViewProps = {
   block: SolutionsGridBlock;
@@ -75,7 +76,7 @@ export function SolutionsGridBlockView({ block }: SolutionsGridBlockViewProps) {
                 >
                   <div className="flex justify-between items-start mb-8">
                     <div className={style.iconWrap}>
-                      <span className="material-symbols-outlined text-3xl">{icon}</span>
+                      <SymbolIcon className="text-3xl" name={icon} />
                     </div>
                     <span className="text-5xl font-black text-slate-100/80 -z-10 absolute right-8 top-8">
                       {item.number || String(index + 1).padStart(2, '0')}
@@ -96,7 +97,7 @@ export function SolutionsGridBlockView({ block }: SolutionsGridBlockViewProps) {
         <Reveal className="mt-24 text-center" preset="fadeIn" delay={0.1}>
           <Link className="inline-flex flex-col items-center gap-4 group" href="/service">
             <span className="w-16 h-16 rounded-full border border-slate-300 bg-white/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-electricBlue group-hover:text-white group-hover:border-electricBlue transition-all duration-300 shadow-sm">
-              <span className="material-symbols-outlined text-2xl">expand_more</span>
+              <SymbolIcon className="text-2xl" name="expand_more" />
             </span>
             <span className="text-xs font-black uppercase tracking-[0.3em] text-deepSlate group-hover:text-electricBlue transition-colors">
               Explore All Solutions

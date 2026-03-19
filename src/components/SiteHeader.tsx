@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { siteProfile } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
 
 type NavItem = {
@@ -26,7 +27,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
         <div className="flex justify-between items-center h-20 md:h-24">
           <Link href="/" className="flex items-center gap-3 md:gap-4 group cursor-pointer no-underline">
             <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-vanailaNavy to-deepSlate rounded-xl flex items-center justify-center text-white font-display font-black text-lg md:text-xl rotate-3 shadow-lg group-hover:rotate-12 transition-transform duration-500">
-              V
+              {siteProfile.brand.mark}
             </div>
             <span className="font-display text-lg md:text-xl font-black tracking-tighter text-deepSlate">
               {brandName}

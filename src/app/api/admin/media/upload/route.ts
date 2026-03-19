@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createMediaAsset } from '@/features/cms/contentStore';
+import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia, saveUploadedMedia } from '@/services/mediaStorage';
 
 function parseText(value: FormDataEntryValue | null) {
@@ -63,6 +64,7 @@ export async function POST(request: Request) {
         // swallow audit log failures
       }
 
+      revalidatePublicCmsCache();
       return NextResponse.json({ mediaAsset }, { status: 201 });
     } catch (error) {
       await deleteUploadedMedia(stored.storageKey, stored.storageProvider);

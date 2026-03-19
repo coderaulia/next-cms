@@ -1,6 +1,7 @@
 import type { ValueTripletBlock } from '@/features/cms/types';
 
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 
 type ValueTripletBlockViewProps = {
   block: ValueTripletBlock;
@@ -14,7 +15,7 @@ export function ValueTripletBlockView({ block }: ValueTripletBlockViewProps) {
           {block.items.map((item) => (
             <StaggerItem className="px-4 py-4 group" key={item.id}>
               <div className="mb-6 inline-flex p-4 rounded-full bg-blue-50 text-electricBlue group-hover:bg-electricBlue group-hover:text-white transition-colors duration-300">
-                <span className="material-symbols-outlined text-4xl">{item.icon}</span>
+                <SymbolIcon className="text-4xl" name={item.icon} />
               </div>
               <h3 className="text-2xl font-display font-bold text-deepSlate mb-2">{item.title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">{item.text}</p>

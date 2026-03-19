@@ -2,6 +2,7 @@ import type { WhySplitBlock } from '@/features/cms/types';
 
 import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 
 type WhySplitBlockViewProps = {
   block: WhySplitBlock;
@@ -43,7 +44,7 @@ export function WhySplitBlockView({ block }: WhySplitBlockViewProps) {
                     <div
                       className={`flex-shrink-0 w-16 h-16 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-slate-100 group-hover:text-white transition-all duration-500 group-hover:shadow-xl ${colorClass}`}
                     >
-                      <span className="material-symbols-outlined text-3xl">{icon}</span>
+                      <SymbolIcon className="text-3xl" name={icon} />
                     </div>
                     <div>
                       <h4 className="text-xl font-black text-deepSlate mb-2 font-display">{bullet.title}</h4>
@@ -67,17 +68,15 @@ export function WhySplitBlockView({ block }: WhySplitBlockViewProps) {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={block.mediaImage} alt={block.mediaAlt || block.heading} className="w-full h-full object-cover" />
                   ) : (
-                    <span className="material-symbols-outlined text-6xl text-transparent bg-clip-text bg-gradient-to-br from-electricBlue to-vanailaNavy">
-                      hub
-                    </span>
+                    <SymbolIcon className="text-6xl text-transparent bg-clip-text bg-gradient-to-br from-electricBlue to-vanailaNavy" name="hub" />
                   )}
                 </div>
 
                 <div className="absolute top-10 right-10 p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white rotate-6 animate-bounce [animation-duration:3s]">
-                  <span className="material-symbols-outlined text-electricBlue text-3xl">code</span>
+                  <SymbolIcon className="text-electricBlue text-3xl" name="code" />
                 </div>
                 <div className="absolute bottom-16 left-10 p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white -rotate-6 animate-bounce [animation-duration:4s]">
-                  <span className="material-symbols-outlined text-royalPurple text-3xl">analytics</span>
+                  <SymbolIcon className="text-royalPurple text-3xl" name="analytics" />
                 </div>
               </div>
             </div>

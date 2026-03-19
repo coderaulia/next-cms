@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteCategory, getCategoryById, updateCategory } from '@/features/cms/contentStore';
+import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { validateCategory } from '@/features/cms/validators';
 
 type RouteContext = {
@@ -52,6 +53,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ category });
 }
 
@@ -86,5 +88,6 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ ok: true });
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { BlogPost } from '@/features/cms/types';
 
 import { formatDateLabel } from './sectionContent';
@@ -32,7 +33,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
             </h1>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 overflow-hidden">
-                <span className="material-symbols-outlined">person</span>
+                <SymbolIcon name="person" />
               </div>
               <div>
                 <h4 className="text-sm font-bold text-deepSlate">{post.author}</h4>
@@ -66,7 +67,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
               <div>
                 <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">Back</h4>
                 <Link href="/blog" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-electricBlue hover:text-deepSlate transition-colors">
-                  <span className="material-symbols-outlined text-sm">arrow_back</span>
+                  <SymbolIcon className="text-sm" name="arrow_back" />
                   All insights
                 </Link>
               </div>
@@ -81,7 +82,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
 
             <div className="mt-24 p-10 md:p-12 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row gap-8 items-center md:items-start">
               <div className="w-24 h-24 rounded-[2rem] bg-amber-100 shrink-0 flex items-center justify-center">
-                <span className="material-symbols-outlined text-4xl text-amber-500">person</span>
+                <SymbolIcon className="text-4xl text-amber-500" name="person" />
               </div>
               <div className="text-center md:text-left space-y-4">
                 <h4 className="text-xl font-display font-black text-deepSlate">{post.author}</h4>
@@ -106,7 +107,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
               </div>
               <Link href="/blog" className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-deepSlate transition-colors">
                 View All
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                <SymbolIcon className="text-sm" name="arrow_forward" />
               </Link>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
@@ -133,7 +134,6 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
     </main>
   );
 }
-
 
 
 

@@ -4,6 +4,7 @@ import type { LogoCloudBlock } from '@/features/cms/types';
 
 import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 
 type LogoCloudBlockViewProps = {
   block: LogoCloudBlock;
@@ -27,9 +28,10 @@ export function LogoCloudBlockView({ block }: LogoCloudBlockViewProps) {
         <StaggerGroup className="flex flex-wrap justify-center items-center gap-x-16 gap-y-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700 mb-24" delayChildren={0.05}>
           {block.logos.map((logo, index) => (
             <StaggerItem className="flex items-center gap-3 text-2xl font-display font-black text-deepSlate" key={logo.id}>
-              <span className={`material-symbols-outlined text-3xl ${LOGO_ICON_COLORS[index % LOGO_ICON_COLORS.length]}`}>
-                {LOGO_ICONS[index % LOGO_ICONS.length]}
-              </span>
+              <SymbolIcon
+                className={`text-3xl ${LOGO_ICON_COLORS[index % LOGO_ICON_COLORS.length]}`}
+                name={LOGO_ICONS[index % LOGO_ICONS.length]}
+              />
               {logo.name}
             </StaggerItem>
           ))}

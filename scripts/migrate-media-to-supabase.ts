@@ -4,9 +4,11 @@ import { basename, dirname, extname, relative, resolve } from 'node:path';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 import '../src/services/loadLocalEnv';
-import * as dbCollectionsStore from '../src/features/cms/dbCollectionsStore';
-import * as dbStore from '../src/features/cms/dbStore';
-import * as fileStore from '../src/features/cms/fileStore';
+import {
+  isDatabaseMode,
+  readRawCmsContent,
+  writeRawCmsContent
+} from '../src/features/cms/storeAdapter';
 import type { CmsContent, LandingPage, MediaAsset } from '../src/features/cms/types';
 import { env } from '../src/services/env';
 
@@ -55,10 +57,6 @@ function parseOptions(argv: string[]): MigrationOptions {
     dryRun: args.has('--dry-run'),
     uploadAllPublic: args.has('--upload-all-public')
   };
-}
-
-function isDatabaseMode() {
-  return Boolean(env.databaseUrl);
 }
 
 function getSupabaseStorageClient() {
@@ -138,42 +136,14 @@ function safePublicPath(storageKey: string) {
 }
 
 async function loadRawContent(): Promise<{ content: CmsContent; source: string }> {
-  if (!isDatabaseMode()) {
-    return {
-      content: await fileStore.readContent(),
-      source: 'file:data/content.json'
-    };
-  }
-
-  const [settings, pages, blogPosts, portfolioProjects, categories, mediaAssets] = await Promise.all([
-    dbStore.getSettings(),
-    dbStore.getPages(),
-    dbStore.getBlogPosts(true),
-    dbStore.getPortfolioProjects(true),
-    dbCollectionsStore.getCategories(),
-    dbCollectionsStore.getMediaAssets()
-  ]);
-
   return {
-    content: {
-      settings,
-      pages,
-      blogPosts,
-      portfolioProjects,
-      categories,
-      mediaAssets
-    },
-    source: 'database'
+    content: await readRawCmsContent(),
+    source: isDatabaseMode() ? 'database' : 'file:data/content.json'
   };
 }
 
 async function saveRawContent(content: CmsContent) {
-  if (!isDatabaseMode()) {
-    await fileStore.writeContent(content);
-    return;
-  }
-
-  await dbStore.replaceAllCmsContent(content);
+  await writeRawCmsContent(content);
 }
 
 function collectContentStorageKeys(content: CmsContent) {

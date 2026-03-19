@@ -1,16 +1,11 @@
 import Link from 'next/link';
 
-import type { LandingPage, PageId, PortfolioProject } from '@/features/cms/types';
+import { SymbolIcon } from '@/components/ui/symbol-icon';
+import { type ServiceDetailPageId, isServiceDetailPageId } from '@/config/site-profile';
+import type { LandingPage, PortfolioProject } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
 import { Reveal } from '@/components/animations/Reveal';
-
-type ServiceDetailPageId =
-  | 'service-website-development'
-  | 'service-custom-business-tools'
-  | 'service-secure-online-shops'
-  | 'service-mobile-business-app'
-  | 'service-official-business-email';
 
 type ServicePreset = {
   heroHeading: string;
@@ -326,14 +321,6 @@ const servicePresets: Record<ServiceDetailPageId, ServicePreset> = {
   }
 };
 
-const servicePageIds: ServiceDetailPageId[] = [
-  'service-website-development',
-  'service-custom-business-tools',
-  'service-secure-online-shops',
-  'service-mobile-business-app',
-  'service-official-business-email'
-];
-
 const publicServiceRouteByPageId: Record<ServiceDetailPageId, string> = {
   'service-website-development': '/website-development',
   'service-custom-business-tools': '/custom-business-tools',
@@ -341,10 +328,6 @@ const publicServiceRouteByPageId: Record<ServiceDetailPageId, string> = {
   'service-mobile-business-app': '/mobile-business-app',
   'service-official-business-email': '/official-business-email'
 };
-
-function isServiceDetailPageId(id: PageId): id is ServiceDetailPageId {
-  return servicePageIds.includes(id as ServiceDetailPageId);
-}
 
 type ServiceDetailPageViewProps = {
   page: LandingPage;
@@ -510,7 +493,7 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
                   <ul className="space-y-4 mb-12 flex-grow">
                     {features.map((feature) => (
                       <li className="flex items-center gap-3 text-sm text-slate-500 font-light" key={`${plan.id}-${feature}`}>
-                        <span className="material-symbols-outlined text-electricBlue text-lg">check_circle</span>
+                        <SymbolIcon className="text-electricBlue text-lg" name="check_circle" />
                         {feature}
                       </li>
                     ))}
@@ -542,7 +525,7 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
             {whyItems.map((item) => (
               <div className="glass-panel p-8 rounded-[2rem] bg-white border border-slate-50 hover:shadow-xl transition-all group" key={item.id}>
                 <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-electricBlue mb-6 group-hover:bg-electricBlue group-hover:text-white transition-all">
-                  <span className="material-symbols-outlined">{item.ctaLabel || 'verified'}</span>
+                  <SymbolIcon name={item.ctaLabel || 'verified'} />
                 </div>
                 <h4 className="text-lg font-bold text-deepSlate mb-3">{item.heading}</h4>
                 <p className="text-xs text-slate-500 font-light leading-relaxed">{item.body}</p>
@@ -565,7 +548,7 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
               <div className="text-center group" key={item.id}>
                 <div className="relative inline-block mb-6">
                   <div className="w-16 h-16 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-electricBlue group-hover:border-electricBlue transition-all shadow-sm">
-                    <span className="material-symbols-outlined text-2xl">{item.ctaLabel || 'code'}</span>
+                    <SymbolIcon className="text-2xl" name={item.ctaLabel || 'code'} />
                   </div>
                   <div className="absolute -top-1 -right-1 w-6 h-6 bg-deepSlate text-white text-[10px] font-black rounded-full flex items-center justify-center">
                     {index + 1}
@@ -632,8 +615,6 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
     </main>
   );
 }
-
-
 
 
 

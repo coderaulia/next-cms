@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { ContactBriefForm } from '@/components/forms/ContactBriefForm';
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { LandingPage, SiteSettings } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
@@ -174,14 +175,14 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
               <div className="flex flex-wrap gap-6">
                 <Link href={meet.ctaHref || '/contact'} className="px-8 py-5 bg-white text-deepSlate font-display font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:shadow-2xl transition-all flex items-center gap-3">
                   {meet.ctaLabel || 'Book a Google Meet Session'}
-                  <span className="material-symbols-outlined text-xl">videocam</span>
+                  <SymbolIcon className="text-xl" name="videocam" />
                 </Link>
               </div>
             </div>
 
             <div className="glass-panel bg-white/5 border-white/10 p-12 rounded-[3rem] relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-8">
-                <span className="material-symbols-outlined text-6xl text-white/5 group-hover:text-electricBlue/20 transition-colors duration-500">calendar_month</span>
+                <SymbolIcon className="text-6xl text-white/5 group-hover:text-electricBlue/20 transition-colors duration-500" name="calendar_month" />
               </div>
               <h3 className="text-2xl font-display font-bold text-white mb-2">{meet.mediaAlt || 'Instant Booking'}</h3>
               <p className="text-slate-400 mb-10 text-sm">Synchronize with our engineering team.</p>
@@ -190,7 +191,7 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
                 {[bookingOne, bookingTwo, bookingThree].map((item) => (
                   <li key={item.id} className="flex items-center gap-4 text-slate-300">
                     <span className="w-6 h-6 rounded-full bg-electricBlue/20 flex items-center justify-center text-electricBlue">
-                      <span className="material-symbols-outlined text-sm">{item.ctaLabel || 'check'}</span>
+                      <SymbolIcon className="text-sm" name={item.ctaLabel || 'check'} />
                     </span>
                     <span className="text-sm font-medium">{item.heading}</span>
                   </li>
@@ -216,19 +217,19 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
             </div>
 
             <Link href={email.ctaHref || '/contact'} className="glass-panel bg-white/5 border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors group cursor-pointer block">
-              <span className="material-symbols-outlined text-electricBlue mb-6 group-hover:scale-110 transition-transform">{email.ctaLabel || 'alternate_email'}</span>
+              <SymbolIcon className="text-electricBlue mb-6 group-hover:scale-110 transition-transform" name={email.ctaLabel || 'alternate_email'} />
               <h5 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{email.heading}</h5>
               <p className="text-slate-400 text-sm">{email.body}</p>
             </Link>
 
             <Link href={whatsapp.ctaHref || '/contact'} className="glass-panel bg-white/5 border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors group cursor-pointer block">
-              <span className="material-symbols-outlined text-emerald-400 mb-6 group-hover:scale-110 transition-transform">{whatsapp.ctaLabel || 'chat'}</span>
+              <SymbolIcon className="text-emerald-400 mb-6 group-hover:scale-110 transition-transform" name={whatsapp.ctaLabel || 'chat'} />
               <h5 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{whatsapp.heading}</h5>
               <p className="text-slate-400 text-sm">{whatsapp.body}</p>
             </Link>
 
             <Link href={instagram.ctaHref || '/contact'} className="glass-panel bg-white/5 border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors group cursor-pointer block">
-              <span className="material-symbols-outlined text-pink-400 mb-6 group-hover:scale-110 transition-transform">{instagram.ctaLabel || 'photo_camera'}</span>
+              <SymbolIcon className="text-pink-400 mb-6 group-hover:scale-110 transition-transform" name={instagram.ctaLabel || 'photo_camera'} />
               <h5 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{instagram.heading}</h5>
               <p className="text-slate-400 text-sm">{instagram.body}</p>
             </Link>
@@ -238,4 +239,3 @@ export function ContactPageView({ page, settings }: ContactPageViewProps) {
     </main>
   );
 }
-

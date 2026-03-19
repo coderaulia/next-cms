@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
@@ -220,7 +221,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
                 className={`p-10 rounded-[2.5rem] border border-slate-100 hover:shadow-xl transition-all group block ${card.layout === 'split' ? 'lg:scale-105 bg-white z-10 shadow-2xl shadow-blue-900/5' : 'bg-slate-50'}`}
               >
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform ${PROGRAM_COLORS[index % PROGRAM_COLORS.length]}`}>
-                  <span className="material-symbols-outlined text-3xl">{card.ctaLabel || 'hub'}</span>
+                  <SymbolIcon className="text-3xl" name={card.ctaLabel || 'hub'} />
                 </div>
                 <h3 className="text-2xl font-display font-black text-deepSlate mb-4">{card.heading}</h3>
                 <p className="text-slate-500 font-light leading-relaxed">{card.body}</p>
@@ -261,7 +262,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {perks.map((item) => (
               <div className="p-8 border border-white/10 rounded-3xl hover:bg-white/5 transition-colors" key={item.id}>
-                <span className="material-symbols-outlined text-electricBlue mb-6">{item.ctaLabel || 'architecture'}</span>
+                <SymbolIcon className="text-electricBlue mb-6" name={item.ctaLabel || 'architecture'} />
                 <h4 className="text-xl font-bold mb-4">{item.heading}</h4>
                 <p className="text-slate-400 text-sm font-light">{item.body}</p>
               </div>
@@ -298,7 +299,6 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
     </main>
   );
 }
-
 
 
 

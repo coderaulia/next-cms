@@ -1,28 +1,13 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
+import { siteProfile } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
 
 type SiteFooterProps = {
   siteName: string;
   settings: SiteSettings;
 };
-
-const fallbackNavigator = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/service', label: 'Services' },
-  { href: '/blog', label: 'Insights' },
-  { href: '/partnership', label: 'Partnership' },
-  { href: '/contact', label: 'Contact' }
-];
-
-const fallbackServices = [
-  { href: '/website-development', label: 'Website Development' },
-  { href: '/secure-online-shops', label: 'Secure Online Shops' },
-  { href: '/mobile-business-app', label: 'Mobile Business App' },
-  { href: '/official-business-email', label: 'Official Business Email' },
-  { href: '/custom-business-tools', label: 'Custom Business Tools' }
-];
 
 export function SiteFooter({ siteName, settings }: SiteFooterProps) {
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
@@ -32,11 +17,11 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
   const footerNavigator =
     navigatorLinks.length > 0
       ? navigatorLinks.map((link) => ({ href: link.href, label: link.label }))
-      : fallbackNavigator;
+      : siteProfile.navigation.fallbackNavigator;
   const footerServices =
     serviceLinks.length > 0
       ? serviceLinks.map((link) => ({ href: link.href, label: link.label }))
-      : fallbackServices;
+      : siteProfile.navigation.fallbackServices;
 
   const socialLinks = [
     {
@@ -76,7 +61,7 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-4 mb-8">
               <div className="w-12 h-12 bg-gradient-to-br from-vanailaNavy to-deepSlate rounded-xl flex items-center justify-center text-white font-display font-black text-2xl rotate-3 shadow-lg">
-                V
+                {siteProfile.brand.mark}
               </div>
               <span className="font-display text-3xl font-black tracking-tighter text-deepSlate">
                 {brandName}
@@ -89,7 +74,7 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
             <div className="flex space-x-6">
               {socialLinks.map((item) => (
                 <Link key={`${item.icon}-${item.href}`} className={item.className} href={item.href}>
-                  <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                  <SymbolIcon className="text-3xl" name={item.icon} />
                 </Link>
               ))}
             </div>

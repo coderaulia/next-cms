@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { getAdminSession, loginAdmin } from '@/features/cms/adminClientAuth';
@@ -14,7 +14,7 @@ const sanitizeNext = (value: string | null) => {
   return value;
 };
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
   const router = useRouter();
   const params = useSearchParams();
   const [email, setEmail] = useState('');
@@ -88,5 +88,26 @@ export default function AdminLoginPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+function AdminLoginFallback() {
+  return (
+    <main className="admin-page">
+      <section className="max-w-xl mx-auto px-6 py-20">
+        <div className="admin-card admin-login">
+          <h1 className="text-3xl font-display font-black text-deepSlate mb-3">Admin Login</h1>
+          <p className="admin-subtle mb-8">Preparing sign-in form.</p>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<AdminLoginFallback />}>
+      <AdminLoginContent />
+    </Suspense>
   );
 }

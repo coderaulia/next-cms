@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
@@ -195,7 +196,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                     #{index + 1}
                   </div>
                   <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-electricBlue mb-8 group-hover:bg-electricBlue group-hover:text-white transition-colors shadow-sm">
-                    <span className="material-symbols-outlined">{card.ctaLabel || 'language'}</span>
+                    <SymbolIcon name={card.ctaLabel || 'language'} />
                   </div>
                   <h3 className="text-2xl font-display font-bold text-deepSlate mb-4">{card.heading}</h3>
                   <p className="text-slate-500 font-light text-sm leading-relaxed mb-8 min-h-[80px]">
@@ -227,7 +228,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             {trustItems.map((item) => (
               <div className="space-y-6" key={item.id}>
                 <div className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-electricBlue mx-auto shadow-sm">
-                  <span className="material-symbols-outlined text-3xl">{item.ctaLabel || 'verified'}</span>
+                  <SymbolIcon className="text-3xl" name={item.ctaLabel || 'verified'} />
                 </div>
                 <h4 className="text-xl font-bold font-display text-deepSlate">{item.heading}</h4>
                 <p className="text-slate-500 text-sm leading-relaxed font-light">{item.body}</p>
@@ -267,7 +268,6 @@ export function ServicePageView({ page }: ServicePageViewProps) {
     </main>
   );
 }
-
 
 
 

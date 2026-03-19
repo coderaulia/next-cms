@@ -13,6 +13,13 @@ type PortfolioDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export async function generateStaticParams() {
+  const projects = await getPublishedPortfolioProjects();
+  return projects.map((project) => ({
+    slug: project.seo.slug
+  }));
+}
+
 export async function generateMetadata({ params }: PortfolioDetailPageProps) {
   const { slug } = await params;
   const [settings, project] = await Promise.all([

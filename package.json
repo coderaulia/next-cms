@@ -26,7 +26,6 @@
     "media:migrate:supabase:dry": "tsx scripts/migrate-media-to-supabase.ts --dry-run"
   },
   "dependencies": {
-    "@material-symbols/font-400": "^0.40.2",
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/supabase-js": "^2.99.2",
     "autoprefixer": "^10.4.27",

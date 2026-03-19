@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createBlogPost, queryBlogPosts } from '@/features/cms/contentStore';
+import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import type { BlogPost } from '@/features/cms/types';
 
 export async function GET(request: Request) {
@@ -53,6 +54,6 @@ export async function POST(request: Request) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ post }, { status: 201 });
 }
-

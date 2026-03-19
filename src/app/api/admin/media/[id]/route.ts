@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteMediaAsset, getMediaAssetById, updateMediaAsset } from '@/features/cms/contentStore';
+import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia } from '@/services/mediaStorage';
 import { validateMediaAsset } from '@/features/cms/validators';
 
@@ -70,6 +71,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ mediaAsset });
 }
 
@@ -116,5 +118,6 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ ok: true });
 }

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getPageById, upsertPage } from '@/features/cms/contentStore';
+import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { isValidPageId, validateLandingPage } from '@/features/cms/validators';
 
 type RouteContext = {
@@ -55,5 +56,6 @@ export async function PUT(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
+  revalidatePublicCmsCache();
   return NextResponse.json({ page });
 }

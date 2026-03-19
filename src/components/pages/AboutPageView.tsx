@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { LandingPage } from '@/features/cms/types';
 
 import { paragraphs, sectionWithFallback, splitAccent } from './sectionContent';
@@ -174,7 +175,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
                   </h2>
                 </div>
                 <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electricBlue/10 text-electricBlue font-bold uppercase tracking-widest text-xs">
-                  <span className="material-symbols-outlined text-sm">flag</span>
+                  <SymbolIcon className="text-sm" name="flag" />
                   {story.ctaHref || 'Established remotely'}
                 </div>
               </div>
@@ -198,14 +199,14 @@ export function AboutPageView({ page }: AboutPageViewProps) {
           <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
             <div className="glass-panel rounded-[2.5rem] p-12 hover:-translate-y-2 transition-transform duration-500 border-t-4 border-t-electricBlue">
               <div className="w-16 h-16 rounded-2xl bg-electricBlue/10 flex items-center justify-center text-electricBlue mb-8">
-                <span className="material-symbols-outlined text-3xl">{vision.ctaLabel || 'visibility'}</span>
+                <SymbolIcon className="text-3xl" name={vision.ctaLabel || 'visibility'} />
               </div>
               <h3 className="text-4xl font-display font-bold text-deepSlate mb-6">{vision.heading}</h3>
               <p className="text-slate-600 font-light text-lg leading-relaxed">{vision.body}</p>
             </div>
             <div className="glass-panel rounded-[2.5rem] p-12 hover:-translate-y-2 transition-transform duration-500 border-t-4 border-t-royalPurple">
               <div className="w-16 h-16 rounded-2xl bg-royalPurple/10 flex items-center justify-center text-royalPurple mb-8">
-                <span className="material-symbols-outlined text-3xl">{mission.ctaLabel || 'rocket_launch'}</span>
+                <SymbolIcon className="text-3xl" name={mission.ctaLabel || 'rocket_launch'} />
               </div>
               <h3 className="text-4xl font-display font-bold text-deepSlate mb-6">{mission.heading}</h3>
               <p className="text-slate-600 font-light text-lg leading-relaxed">{mission.body}</p>
@@ -227,7 +228,10 @@ export function AboutPageView({ page }: AboutPageViewProps) {
             {pillars.map((item, index) => (
               <div key={item.id} className="glass-card rounded-3xl p-10 flex flex-col items-center text-center group hover:bg-white transition-colors duration-300">
                 <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center mb-6 group-hover:text-white transition-all shadow-sm text-electricBlue group-hover:bg-electricBlue">
-                  <span className="material-symbols-outlined text-2xl">{item.ctaLabel || (index === 0 ? 'architecture' : index === 1 ? 'psychology' : 'trending_up')}</span>
+                  <SymbolIcon
+                    className="text-2xl"
+                    name={item.ctaLabel || (index === 0 ? 'architecture' : index === 1 ? 'psychology' : 'trending_up')}
+                  />
                 </div>
                 <h4 className="text-xl font-bold font-display text-deepSlate mb-4">{item.heading}</h4>
                 <p className="text-slate-500 text-sm leading-relaxed">{item.body}</p>
@@ -240,7 +244,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
       <Reveal as="section" className="py-20 bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-50/80 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
-          <span className="material-symbols-outlined text-6xl text-slate-200 mb-8">{quote.ctaLabel || 'format_quote'}</span>
+          <SymbolIcon className="text-6xl text-slate-200 mb-8" name={quote.ctaLabel || 'format_quote'} />
           <h2 className="text-3xl md:text-5xl font-display font-light text-slate-700 leading-tight mb-8">
             &ldquo;{quoteHeadline}&rdquo;
           </h2>
@@ -278,7 +282,6 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     </main>
   );
 }
-
 
 
 

@@ -6,25 +6,31 @@ import { ContactPageView } from '@/components/pages/ContactPageView';
 import { PartnershipPageView } from '@/components/pages/PartnershipPageView';
 import { ServiceDetailPageView } from '@/components/pages/ServiceDetailPageView';
 import { ServicePageView } from '@/components/pages/ServicePageView';
+import { isReservedPublicSlug, isServiceDetailPageId } from '@/config/site-profile';
 import { buildMetadata } from '@/features/cms/seo';
-import { getPublishedPageBySlug, getPublishedPortfolioProjects, getSiteSettings } from '@/features/cms/publicApi';
+import {
+  getPublishedPageBySlug,
+  getPublishedPages,
+  getPublishedPortfolioProjects,
+  getSiteSettings
+} from '@/features/cms/publicApi';
 
 type DynamicPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const reserved = new Set(['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt', 'portfolio']);
-const serviceDetailIds = new Set([
-  'service-website-development',
-  'service-custom-business-tools',
-  'service-secure-online-shops',
-  'service-mobile-business-app',
-  'service-official-business-email'
-]);
+export async function generateStaticParams() {
+  const pages = await getPublishedPages();
+  return pages
+    .filter((page) => page.seo.slug.trim().length > 0)
+    .map((page) => ({
+      slug: page.seo.slug
+    }));
+}
 
 export async function generateMetadata({ params }: DynamicPageProps) {
   const { slug } = await params;
-  if (reserved.has(slug)) return {};
+  if (isReservedPublicSlug(slug)) return {};
   const [settings, page] = await Promise.all([getSiteSettings(), getPublishedPageBySlug(slug)]);
   if (!page) return {};
   return buildMetadata(settings, page.seo, page.title, page.seo.metaDescription);
@@ -32,7 +38,7 @@ export async function generateMetadata({ params }: DynamicPageProps) {
 
 export default async function DynamicLandingPage({ params }: DynamicPageProps) {
   const { slug } = await params;
-  if (reserved.has(slug)) notFound();
+  if (isReservedPublicSlug(slug)) notFound();
   const [page, settings] = await Promise.all([getPublishedPageBySlug(slug), getSiteSettings()]);
   if (!page) notFound();
 
@@ -45,7 +51,7 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
   if (page.id === 'partnership') {
     return <PartnershipPageView page={page} />;
   }
-  if (serviceDetailIds.has(page.id)) {
+  if (isServiceDetailPageId(page.id)) {
     const portfolioProjects = await getPublishedPortfolioProjects();
     return <ServiceDetailPageView page={page} portfolioProjects={portfolioProjects} />;
   }

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
+import { siteProfile } from '@/config/site-profile';
 import { logoutAdmin } from '@/features/cms/adminClientAuth';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
@@ -47,8 +48,8 @@ export function AdminNav({ user }: AdminNavProps) {
     <aside className="admin-sidebar">
       <div className="admin-sidebar-scroll">
         <Link href="/admin" className="admin-logo">
-          <span className="v2-brand-mark">V</span>
-          <span>vanaila.</span>
+          <span className="v2-brand-mark">{siteProfile.brand.mark}</span>
+          <span>{siteProfile.brand.wordmark}</span>
         </Link>
 
         <p className="admin-side-title">Core Content</p>

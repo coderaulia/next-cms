@@ -13,6 +13,13 @@ type BlogDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export async function generateStaticParams() {
+  const posts = await getPublishedBlogPosts();
+  return posts.map((post) => ({
+    slug: post.seo.slug
+  }));
+}
+
 export async function generateMetadata({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const [settings, post] = await Promise.all([getSiteSettings(), getPublishedBlogPostBySlug(slug)]);
@@ -79,7 +86,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     </>
   );
 }
-
 
 
 
