@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { MoveRight } from 'lucide-react';
+import { domAnimation, LazyMotion, m } from 'framer-motion';
+import MoveRight from 'lucide-react/dist/esm/icons/move-right';
 
 import { Button } from '@/components/ui/button';
 
@@ -65,27 +65,29 @@ function Hero({
             {titlePrimary}
           </h1>
           <div className="relative h-14 md:h-20 lg:h-24 overflow-hidden">
-            {titles.map((title, index) => (
-              <motion.span
-                key={title}
-                className="absolute inset-x-0 text-center hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter"
-                initial={{ opacity: 0, y: -100 }}
-                transition={{ type: 'spring', stiffness: 50 }}
-                animate={
-                  titleNumber === index
-                    ? {
-                        y: 0,
-                        opacity: 1
-                      }
-                    : {
-                        y: titleNumber > index ? -150 : 150,
-                        opacity: 0
-                      }
-                }
-              >
-                {title}
-              </motion.span>
-            ))}
+            <LazyMotion features={domAnimation}>
+              {titles.map((title, index) => (
+                <m.span
+                  key={title}
+                  className="absolute inset-x-0 text-center hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter"
+                  initial={{ opacity: 0, y: -100 }}
+                  transition={{ type: 'spring', stiffness: 50 }}
+                  animate={
+                    titleNumber === index
+                      ? {
+                          y: 0,
+                          opacity: 1
+                        }
+                      : {
+                          y: titleNumber > index ? -150 : 150,
+                          opacity: 0
+                        }
+                  }
+                >
+                  {title}
+                </m.span>
+              ))}
+            </LazyMotion>
           </div>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 font-light leading-relaxed text-center">
             {description}
@@ -109,4 +111,3 @@ function Hero({
 }
 
 export { Hero };
-

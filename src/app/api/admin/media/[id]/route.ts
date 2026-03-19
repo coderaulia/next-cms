@@ -37,11 +37,12 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Invalid media asset payload' }, { status: 400 });
   }
 
-  const wasLocal = existing.storageProvider === 'local' && !!existing.storageKey;
+  const usesManagedStorage =
+    !!existing.storageKey && (existing.storageProvider === 'local' || existing.storageProvider === 'supabase');
   const shouldCleanup =
-    wasLocal &&
+    usesManagedStorage &&
     (payload.storageProvider !== existing.storageProvider ||
-      (payload.storageProvider === 'local' && payload.storageKey !== existing.storageKey));
+      payload.storageKey !== existing.storageKey);
 
   const mediaAsset = await updateMediaAsset(id, payload);
   if (!mediaAsset) {
@@ -49,7 +50,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
   }
 
   if (shouldCleanup) {
-    await deleteUploadedMedia(existing.storageKey || '');
+    await deleteUploadedMedia(existing.storageKey || '', existing.storageProvider);
   }
 
   const session = await getAdminSession(request);
@@ -87,9 +88,12 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
   }
 
-  if (mediaAsset.storageProvider === 'local' && mediaAsset.storageKey) {
+  if (
+    mediaAsset.storageKey &&
+    (mediaAsset.storageProvider === 'local' || mediaAsset.storageProvider === 'supabase')
+  ) {
     try {
-      await deleteUploadedMedia(mediaAsset.storageKey);
+      await deleteUploadedMedia(mediaAsset.storageKey, mediaAsset.storageProvider);
     } catch {
       // keep deletion behavior stable even if file cleanup fails
     }

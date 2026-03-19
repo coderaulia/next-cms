@@ -1,5 +1,13 @@
 import { env } from '@/services/env';
 
+import {
+  resolveBlogPostAssetUrls,
+  resolveCmsContentAssetUrls,
+  resolveLandingPageAssetUrls,
+  resolveMediaAssetUrls,
+  resolvePortfolioProjectAssetUrls,
+  resolveSettingsAssetUrls
+} from './assetUrls';
 import * as dbCollectionsStore from './dbCollectionsStore';
 import * as dbStore from './dbStore';
 import type {
@@ -21,7 +29,7 @@ const loadFileCollectionsStore = () => import('./fileCollectionsStore');
 
 export async function readContent(): Promise<CmsContent> {
   if (!isDatabaseMode()) {
-    return (await loadFileStore()).readContent();
+    return resolveCmsContentAssetUrls(await (await loadFileStore()).readContent());
   }
 
   const [settings, pages, blogPosts, portfolioProjects, categories, mediaAssets] = await Promise.all([
@@ -33,14 +41,14 @@ export async function readContent(): Promise<CmsContent> {
     dbCollectionsStore.getMediaAssets()
   ]);
 
-  return {
+  return resolveCmsContentAssetUrls({
     settings,
     pages,
     blogPosts,
     portfolioProjects,
     categories,
     mediaAssets
-  };
+  });
 }
 
 export async function writeContent(content: CmsContent): Promise<void> {
@@ -53,7 +61,8 @@ export async function writeContent(content: CmsContent): Promise<void> {
 }
 
 export async function getSettings() {
-  return isDatabaseMode() ? dbStore.getSettings() : (await loadFileStore()).getSettings();
+  const settings = isDatabaseMode() ? await dbStore.getSettings() : await (await loadFileStore()).getSettings();
+  return resolveSettingsAssetUrls(settings);
 }
 
 export async function updateSettings(settings: SiteSettings): Promise<SiteSettings> {
@@ -61,11 +70,15 @@ export async function updateSettings(settings: SiteSettings): Promise<SiteSettin
 }
 
 export async function getPages() {
-  return isDatabaseMode() ? dbStore.getPages() : (await loadFileStore()).getPages();
+  const pages = isDatabaseMode() ? await dbStore.getPages() : await (await loadFileStore()).getPages();
+  return Object.fromEntries(
+    Object.entries(pages).map(([id, page]) => [id, resolveLandingPageAssetUrls(page)])
+  ) as Record<PageId, LandingPage>;
 }
 
 export async function getPageById(id: PageId): Promise<LandingPage | null> {
-  return isDatabaseMode() ? dbStore.getPageById(id) : (await loadFileStore()).getPageById(id);
+  const page = isDatabaseMode() ? await dbStore.getPageById(id) : await (await loadFileStore()).getPageById(id);
+  return page ? resolveLandingPageAssetUrls(page) : null;
 }
 
 export async function upsertPage(page: LandingPage): Promise<LandingPage> {
@@ -73,21 +86,34 @@ export async function upsertPage(page: LandingPage): Promise<LandingPage> {
 }
 
 export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
-  return isDatabaseMode() ? dbStore.getBlogPosts(includeDrafts) : (await loadFileStore()).getBlogPosts(includeDrafts);
+  const posts = isDatabaseMode()
+    ? await dbStore.getBlogPosts(includeDrafts)
+    : await (await loadFileStore()).getBlogPosts(includeDrafts);
+  return posts.map(resolveBlogPostAssetUrls);
 }
 
 export type { BlogQueryInput, PortfolioQueryInput } from './storeTypes';
 
 export async function queryBlogPosts(input: BlogQueryInput) {
-  return isDatabaseMode() ? dbStore.queryBlogPosts(input) : (await loadFileStore()).queryBlogPosts(input);
+  const payload = isDatabaseMode()
+    ? await dbStore.queryBlogPosts(input)
+    : await (await loadFileStore()).queryBlogPosts(input);
+  return {
+    ...payload,
+    posts: payload.posts.map(resolveBlogPostAssetUrls)
+  };
 }
 
 export async function getBlogPostById(id: string): Promise<BlogPost | null> {
-  return isDatabaseMode() ? dbStore.getBlogPostById(id) : (await loadFileStore()).getBlogPostById(id);
+  const post = isDatabaseMode() ? await dbStore.getBlogPostById(id) : await (await loadFileStore()).getBlogPostById(id);
+  return post ? resolveBlogPostAssetUrls(post) : null;
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  return isDatabaseMode() ? dbStore.getBlogPostBySlug(slug) : (await loadFileStore()).getBlogPostBySlug(slug);
+  const post = isDatabaseMode()
+    ? await dbStore.getBlogPostBySlug(slug)
+    : await (await loadFileStore()).getBlogPostBySlug(slug);
+  return post ? resolveBlogPostAssetUrls(post) : null;
 }
 
 export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogPost> {
@@ -107,27 +133,34 @@ export async function setPostStatus(id: string, status: 'draft' | 'published'): 
 }
 
 export async function getPortfolioProjects(includeDrafts = false): Promise<PortfolioProject[]> {
-  return isDatabaseMode()
-    ? dbStore.getPortfolioProjects(includeDrafts)
-    : (await loadFileStore()).getPortfolioProjects(includeDrafts);
+  const projects = isDatabaseMode()
+    ? await dbStore.getPortfolioProjects(includeDrafts)
+    : await (await loadFileStore()).getPortfolioProjects(includeDrafts);
+  return projects.map(resolvePortfolioProjectAssetUrls);
 }
 
 export async function queryPortfolioProjects(input: PortfolioQueryInput) {
-  return isDatabaseMode()
-    ? dbStore.queryPortfolioProjects(input)
-    : (await loadFileStore()).queryPortfolioProjects(input);
+  const payload = isDatabaseMode()
+    ? await dbStore.queryPortfolioProjects(input)
+    : await (await loadFileStore()).queryPortfolioProjects(input);
+  return {
+    ...payload,
+    projects: payload.projects.map(resolvePortfolioProjectAssetUrls)
+  };
 }
 
 export async function getPortfolioProjectById(id: string): Promise<PortfolioProject | null> {
-  return isDatabaseMode()
-    ? dbStore.getPortfolioProjectById(id)
-    : (await loadFileStore()).getPortfolioProjectById(id);
+  const project = isDatabaseMode()
+    ? await dbStore.getPortfolioProjectById(id)
+    : await (await loadFileStore()).getPortfolioProjectById(id);
+  return project ? resolvePortfolioProjectAssetUrls(project) : null;
 }
 
 export async function getPortfolioProjectBySlug(slug: string): Promise<PortfolioProject | null> {
-  return isDatabaseMode()
-    ? dbStore.getPortfolioProjectBySlug(slug)
-    : (await loadFileStore()).getPortfolioProjectBySlug(slug);
+  const project = isDatabaseMode()
+    ? await dbStore.getPortfolioProjectBySlug(slug)
+    : await (await loadFileStore()).getPortfolioProjectBySlug(slug);
+  return project ? resolvePortfolioProjectAssetUrls(project) : null;
 }
 
 export async function createPortfolioProject(
@@ -193,15 +226,17 @@ export async function deleteCategory(id: string): Promise<boolean> {
 }
 
 export async function getMediaAssets(): Promise<MediaAsset[]> {
-  return isDatabaseMode()
-    ? dbCollectionsStore.getMediaAssets()
-    : (await loadFileCollectionsStore()).getMediaAssets();
+  const mediaAssets = isDatabaseMode()
+    ? await dbCollectionsStore.getMediaAssets()
+    : await (await loadFileCollectionsStore()).getMediaAssets();
+  return mediaAssets.map(resolveMediaAssetUrls);
 }
 
 export async function getMediaAssetById(id: string): Promise<MediaAsset | null> {
-  return isDatabaseMode()
-    ? dbCollectionsStore.getMediaAssetById(id)
-    : (await loadFileCollectionsStore()).getMediaAssetById(id);
+  const mediaAsset = isDatabaseMode()
+    ? await dbCollectionsStore.getMediaAssetById(id)
+    : await (await loadFileCollectionsStore()).getMediaAssetById(id);
+  return mediaAsset ? resolveMediaAssetUrls(mediaAsset) : null;
 }
 
 export async function createMediaAsset(payload: MediaAsset): Promise<MediaAsset> {

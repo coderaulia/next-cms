@@ -2,9 +2,12 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, normalize, relative, resolve } from 'node:path';
 
+import { createClient } from '@supabase/supabase-js';
+
 import { env } from '@/services/env';
 
 type StoredMedia = {
+  storageProvider: 'local' | 'supabase';
   storageKey: string;
   url: string;
   sizeBytes: number;
@@ -15,6 +18,7 @@ const MAX_SAFE_FILE_NAME_LENGTH = 64;
 
 const ALLOWED_MIME_PREFIXES = ['image/', 'video/'];
 const FALLBACK_EXTENSION = '.png';
+let supabaseStorageClient: ReturnType<typeof createClient> | null = null;
 
 function sanitizeFilename(value: string) {
   const safe = value
@@ -81,6 +85,27 @@ function publicUrlPrefix() {
   return env.siteUrl.replace(/\/+$/, '');
 }
 
+function isSupabaseStorageEnabled() {
+  return Boolean(env.supabaseUrl && env.supabaseServiceRoleKey && env.supabaseStorageBucket);
+}
+
+function getSupabaseStorageClient() {
+  if (!isSupabaseStorageEnabled()) {
+    throw new Error('Supabase media storage is not configured.');
+  }
+
+  if (!supabaseStorageClient) {
+    supabaseStorageClient = createClient(env.supabaseUrl, env.supabaseServiceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    });
+  }
+
+  return supabaseStorageClient;
+}
+
 function generateStorageKey(file: File) {
   const now = new Date();
   const year = String(now.getFullYear());
@@ -102,26 +127,67 @@ export async function saveUploadedMedia(file: File) {
   }
 
   const storageKey = normalizeStorageKey(generateStorageKey(file));
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  if (isSupabaseStorageEnabled()) {
+    const client = getSupabaseStorageClient();
+    const bucket = env.supabaseStorageBucket;
+    const { error } = await client.storage.from(bucket).upload(storageKey, buffer, {
+      cacheControl: '31536000',
+      contentType: file.type || undefined,
+      upsert: false
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const {
+      data: { publicUrl }
+    } = client.storage.from(bucket).getPublicUrl(storageKey);
+
+    return {
+      storageProvider: 'supabase',
+      storageKey,
+      url: publicUrl,
+      sizeBytes: buffer.length
+    } as StoredMedia;
+  }
+
   const publicRoot = join(process.cwd(), 'public');
   const fullPath = safeJoin(publicRoot, storageKey);
 
   const directory = dirname(fullPath);
   await mkdir(directory, { recursive: true });
 
-  const buffer = Buffer.from(await file.arrayBuffer());
   await writeFile(fullPath, buffer);
 
   return {
+    storageProvider: 'local',
     storageKey,
     url: `${publicUrlPrefix()}/${storageKey}`,
     sizeBytes: buffer.length
   } as StoredMedia;
 }
 
-export async function deleteUploadedMedia(storageKey: string) {
+export async function deleteUploadedMedia(storageKey: string, storageProvider: string) {
   if (!storageKey) return;
 
   const normalized = normalizeStorageKey(storageKey);
+
+  if (storageProvider === 'supabase') {
+    if (!isSupabaseStorageEnabled()) {
+      return;
+    }
+
+    const client = getSupabaseStorageClient();
+    const { error } = await client.storage.from(env.supabaseStorageBucket).remove([normalized]);
+    if (error && !isSupabaseNotFound(error.message)) {
+      throw new Error(error.message);
+    }
+    return;
+  }
+
   const publicRoot = join(process.cwd(), 'public');
   const fullPath = safeJoin(publicRoot, normalized);
 
@@ -138,4 +204,8 @@ export async function deleteUploadedMedia(storageKey: string) {
 
 function isNotFoundError(error: unknown) {
   return typeof error === 'object' && error !== null && (error as NodeJS.ErrnoException).code === 'ENOENT';
+}
+
+function isSupabaseNotFound(message: string) {
+  return /not found/i.test(message);
 }

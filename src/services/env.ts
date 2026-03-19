@@ -27,6 +27,15 @@ export const env = {
   get databaseUrl() {
     return clean(process.env.DATABASE_URL);
   },
+  get supabaseUrl() {
+    return clean(process.env.SUPABASE_URL);
+  },
+  get supabaseServiceRoleKey() {
+    return clean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  },
+  get supabaseStorageBucket() {
+    return clean(process.env.SUPABASE_STORAGE_BUCKET) || 'cms-media';
+  },
   get databaseMigrationUrl() {
     return clean(process.env.DATABASE_URL_MIGRATION) || clean(process.env.DATABASE_URL);
   },

@@ -12,6 +12,7 @@ It includes:
 - Dual persistence mode: local file store by default, Postgres when `DATABASE_URL` is configured
 - Database-backed admin users and cookie sessions when database mode is enabled
 - Working admin modules for categories, contact submissions, and media library metadata
+- Optional Supabase Storage uploads for portfolio, page, and post media assets
 
 ## Stack Decision
 
@@ -61,6 +62,9 @@ Behavior:
 
 - `npm run dev` - start dev server
 - `npm run build` - production build
+- `npm run analyze` - production build with bundle analyzer report
+- `npm run audit:size` - report `public/` and build output sizes
+- `npm run build:audit` - production build followed by size audit
 - `npm run start` - run production server
 - `npm run lint` - eslint
 - `npm run typecheck` - TypeScript checks
@@ -71,6 +75,8 @@ Behavior:
 - `npm run db:push` - push schema directly to database
 - `npm run db:studio` - open Drizzle Studio
 - `npm run db:seed:file` - import local `data/content.json` if present, otherwise seed sanitized defaults
+- `npm run media:migrate:supabase:dry` - preview which `/media/...` and `/portfolio/...` assets will be uploaded and rewritten
+- `npm run media:migrate:supabase` - upload local assets to Supabase Storage and rewrite stored CMS URLs
 
 ## Content Model
 
@@ -167,8 +173,11 @@ docs/
 - Set `NEXT_PUBLIC_SITE_URL` to production domain.
 - Set `CMS_ADMIN_EMAIL`, `CMS_ADMIN_PASSWORD`, and `CMS_ADMIN_NAME`.
 - For database mode, set `DATABASE_URL` and optionally `DATABASE_URL_MIGRATION`.
+- For Supabase-backed media uploads, set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET`.
+- Run `npm run media:migrate:supabase:dry` before production cutover, then `npm run media:migrate:supabase` once the bucket is ready.
+- If you need old `/media/...` or `/portfolio/...` paths to resolve from a CDN or Supabase public bucket, set `MEDIA_PUBLIC_BASE_URL`.
 - Local file persistence still works when `DATABASE_URL` is not set, but a database is the recommended production path.
-- For Hostinger deployment, use database mode instead of file-backed CMS data.
+- For Hostinger deployment, use database mode and Supabase Storage instead of relying on local uploaded files.
 
 See:
 - [Admin usage guide](./docs/admin-usage.md)
@@ -185,6 +194,5 @@ See:
 
 ## Risks
 
-- Media files are currently managed as external URLs, not binary uploads.
+- Existing content entries that point to files no longer available in `public/` cannot be auto-recovered; the migration script will report those missing keys.
 - SEO outcomes depend on content quality and ongoing strategy.
-

@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from 'react';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { domAnimation, LazyMotion, m, useReducedMotion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 
@@ -23,11 +23,11 @@ type RevealProps = {
 };
 
 const motionMap = {
-  div: motion.div,
-  section: motion.section,
-  article: motion.article,
-  li: motion.li,
-  span: motion.span
+  div: m.div,
+  section: m.section,
+  article: m.article,
+  li: m.li,
+  span: m.span
 };
 
 export function Reveal({
@@ -55,17 +55,19 @@ export function Reveal({
   const MotionTag = motionMap[as];
 
   return (
-    <MotionTag
-      className={cn(className)}
-      id={id}
-      style={style}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once, amount }}
-      variants={revealVariants[preset]}
-      transition={{ ...revealTransitions[preset], delay }}
-    >
-      {children}
-    </MotionTag>
+    <LazyMotion features={domAnimation}>
+      <MotionTag
+        className={cn(className)}
+        id={id}
+        style={style}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once, amount }}
+        variants={revealVariants[preset]}
+        transition={{ ...revealTransitions[preset], delay }}
+      >
+        {children}
+      </MotionTag>
+    </LazyMotion>
   );
 }

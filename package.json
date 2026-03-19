@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyze": "node scripts/run-build-analyze.mjs",
+    "audit:size": "node scripts/report-build-sizes.mjs",
+    "build:audit": "npm run build && npm run audit:size",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit --incremental false",
@@ -18,11 +21,14 @@
     "db:purge": "tsx scripts/purge-supabase.ts",
     "db:reset": "tsx scripts/reset-supabase.ts",
     "db:seed:file": "tsx scripts/import-content.ts",
-    "db:reseed": "npm run db:reset -- --force && npm run db:migrate && npm run db:seed:file"
+    "db:reseed": "npm run db:reset -- --force && npm run db:migrate && npm run db:seed:file",
+    "media:migrate:supabase": "tsx scripts/migrate-media-to-supabase.ts",
+    "media:migrate:supabase:dry": "tsx scripts/migrate-media-to-supabase.ts --dry-run"
   },
   "dependencies": {
     "@material-symbols/font-400": "^0.40.2",
     "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/supabase-js": "^2.99.2",
     "autoprefixer": "^10.4.27",
     "class-variance-authority": "^0.7.1",
     "drizzle-orm": "^0.45.1",
@@ -36,6 +42,7 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",

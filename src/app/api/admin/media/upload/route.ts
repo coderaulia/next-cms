@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         width: null,
         height: null,
         sizeBytes: stored.sizeBytes,
-        storageProvider: 'local',
+        storageProvider: stored.storageProvider,
         storageKey: stored.storageKey,
         createdAt: nowIso(),
         updatedAt: nowIso()
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json({ mediaAsset }, { status: 201 });
     } catch (error) {
-      await deleteUploadedMedia(stored.storageKey);
+      await deleteUploadedMedia(stored.storageKey, stored.storageProvider);
       throw error;
     }
   } catch (error) {

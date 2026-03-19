@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { domAnimation, LazyMotion, m, useReducedMotion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 
@@ -27,15 +27,15 @@ type StaggerItemProps = {
 };
 
 const groupMap = {
-  div: motion.div,
-  section: motion.section,
-  ul: motion.ul
+  div: m.div,
+  section: m.section,
+  ul: m.ul
 };
 
 const itemMap = {
-  div: motion.div,
-  article: motion.article,
-  li: motion.li
+  div: m.div,
+  article: m.article,
+  li: m.li
 };
 
 export function StaggerGroup({
@@ -57,24 +57,26 @@ export function StaggerGroup({
   const MotionTag = groupMap[as];
 
   return (
-    <MotionTag
-      className={cn(className)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once, amount }}
-      variants={{
-        hidden: { opacity: 1 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren,
-            delayChildren
+    <LazyMotion features={domAnimation}>
+      <MotionTag
+        className={cn(className)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once, amount }}
+        variants={{
+          hidden: { opacity: 1 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren,
+              delayChildren
+            }
           }
-        }
-      }}
-    >
-      {children}
-    </MotionTag>
+        }}
+      >
+        {children}
+      </MotionTag>
+    </LazyMotion>
   );
 }
 
@@ -89,8 +91,10 @@ export function StaggerItem({ children, className, as = 'div', preset = 'fadeUp'
   const MotionTag = itemMap[as];
 
   return (
-    <MotionTag className={cn(className)} variants={revealVariants[preset]} transition={revealTransitions[preset]}>
-      {children}
-    </MotionTag>
+    <LazyMotion features={domAnimation}>
+      <MotionTag className={cn(className)} variants={revealVariants[preset]} transition={revealTransitions[preset]}>
+        {children}
+      </MotionTag>
+    </LazyMotion>
   );
 }
