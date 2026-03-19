@@ -16,6 +16,7 @@ import {
   updateDefaultCategorySetting
 } from './collectionShared';
 import { defaultContent } from './defaultContent';
+import { mapBlogPostCategorySlugs, syncBlogPostCategoryLinks } from './dbTaxonomy';
 import { normalizeSettings } from './storeShared';
 import type { BlogPost, Category, MediaAsset } from './types';
 
@@ -49,13 +50,14 @@ function rowToMediaAsset(row: typeof mediaAssetsTable.$inferSelect): MediaAsset 
 
 async function readAllPosts(): Promise<BlogPost[]> {
   const rows = await getDb().select().from(blogPostsTable);
+  const tagMap = await mapBlogPostCategorySlugs(rows.map((row) => row.id));
   return rows.map((row) => ({
     id: row.id,
     title: row.title,
     excerpt: row.excerpt,
     content: row.content,
     author: row.author,
-    tags: row.tags,
+    tags: tagMap.get(row.id) ?? row.tags,
     coverImage: row.coverImage,
     status: row.status,
     publishedAt: row.publishedAt,
@@ -86,6 +88,8 @@ async function writePosts(posts: BlogPost[]) {
       })
       .where(eq(blogPostsTable.id, post.id));
   }
+
+  await syncBlogPostCategoryLinks(posts);
 }
 
 async function syncDbCategories() {
@@ -229,4 +233,3 @@ export async function deleteMediaAsset(id: string): Promise<boolean> {
   await getDb().delete(mediaAssetsTable).where(eq(mediaAssetsTable.id, id));
   return true;
 }
-

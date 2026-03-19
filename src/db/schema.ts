@@ -109,7 +109,41 @@ export const postCategoriesTable = pgTable('post_categories', {
   postId: text('post_id').notNull(),
   categoryId: text('category_id').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
-});
+},
+  (table) => ({
+    postIdIdx: index('post_categories_post_id_idx').on(table.postId),
+    categoryIdIdx: index('post_categories_category_id_idx').on(table.categoryId),
+    postCategoryUnique: uniqueIndex('post_categories_post_category_unique').on(table.postId, table.categoryId)
+  })
+);
+
+export const portfolioTagsTable = pgTable(
+  'portfolio_tags',
+  {
+    id: text('id').primaryKey(),
+    name: text('name').notNull(),
+    slug: text('slug').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    slugUnique: uniqueIndex('portfolio_tags_slug_unique').on(table.slug)
+  })
+);
+
+export const portfolioProjectTagsTable = pgTable(
+  'portfolio_project_tags',
+  {
+    projectId: text('project_id').notNull(),
+    tagId: text('tag_id').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    projectIdIdx: index('portfolio_project_tags_project_id_idx').on(table.projectId),
+    tagIdIdx: index('portfolio_project_tags_tag_id_idx').on(table.tagId),
+    projectTagUnique: uniqueIndex('portfolio_project_tags_project_tag_unique').on(table.projectId, table.tagId)
+  })
+);
 
 export const mediaAssetsTable = pgTable('media_assets', {
   id: text('id').primaryKey(),

@@ -34,10 +34,10 @@ const fontAccent = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: resolveMetadataBase(),
   title: {
-    default: 'vanaila.',
+    default: siteProfile.brand.wordmark,
     template: '%s'
   },
-  description: 'Engineering-led marketing CMS with dynamic landing blocks and editorial workflow.'
+  description: 'High-performance CMS starter with editable pages, blog, portfolio, and admin workflows.'
 };
 
 export default async function RootLayout({
@@ -60,7 +60,6 @@ export default async function RootLayout({
   const navItems = siteProfile.navigation.primaryPageOrder
     .map((id) => pageNavMap.get(id))
     .filter((item): item is { href: string; label: string } => Boolean(item));
-  navItems.splice(3, 0, { href: '/blog', label: 'Insights' });
 
   const orgSchema = {
     '@context': 'https://schema.org',
@@ -75,11 +74,15 @@ export default async function RootLayout({
     '@type': 'WebSite',
     name: settings.siteName,
     url: settings.baseUrl,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${settings.baseUrl}/blog?query={search_term_string}`,
-      'query-input': 'required name=search_term_string'
-    }
+    ...(settings.sitemap.includePosts
+      ? {
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${settings.baseUrl}/blog?query={search_term_string}`,
+            'query-input': 'required name=search_term_string'
+          }
+        }
+      : {})
   };
 
   return (

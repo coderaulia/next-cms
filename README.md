@@ -74,9 +74,76 @@ Behavior:
 - `npm run db:migrate` - apply migrations
 - `npm run db:push` - push schema directly to database
 - `npm run db:studio` - open Drizzle Studio
-- `npm run db:seed:file` - import local `data/content.json` if present, otherwise seed sanitized defaults
+- `npm run db:seed:file` - import local `data/content.json` if present, otherwise seed sanitized defaults or a fixture via `--fixture <name>`
+- `npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio"` - generate a new client starter from this repo
 - `npm run media:migrate:supabase:dry` - preview which `/media/...` and `/portfolio/...` assets will be uploaded and rewritten
 - `npm run media:migrate:supabase` - upload local assets to Supabase Storage and rewrite stored CMS URLs
+
+## Bootstrap a New Client Starter
+
+Use the generator when you want a fresh client project based on this repo without manually editing seed files.
+
+Example:
+
+```bash
+npm run bootstrap:client -- \
+  --output ../acme-cms \
+  --site-name "Acme Studio" \
+  --variant portfolio-case-studies \
+  --fixture portfolio-case-studies \
+  --color-dark "#17304a" \
+  --color-primary "#0f79ff" \
+  --color-secondary "#7c3aed" \
+  --color-accent "#14b8a6" \
+  --color-text "#0f172a"
+```
+
+What the generator customizes in the output project:
+- package name
+- tracked `data/content.json` starter content
+- `src/config/site-profile.ts`
+- `.env.example`
+- `tailwind.config.mjs` brand tokens
+- `src/app/globals.css` core CSS palette tokens
+
+Supported modules:
+- `services`
+- `blog`
+- `portfolio`
+- `partnership`
+
+Supported variants:
+- `brochure`
+- `blog-seo`
+- `portfolio-case-studies`
+- `lead-gen`
+
+Supported fixture presets:
+- `full-service`
+- `brochure`
+- `blog-seo`
+- `portfolio-case-studies`
+- `lead-gen`
+
+Supported seeded top-level pages:
+- `about`
+- `service`
+- `partnership`
+- `contact`
+
+`home` is always included. If you enable `services`, the service overview page and all service detail pages are seeded automatically.
+
+You can also provide a JSON config file:
+
+```bash
+npm run bootstrap:client -- --config ./docs/client-bootstrap.example.json
+```
+
+Seed the database with one of the same deterministic fixtures when you want regression coverage across multiple client shapes:
+
+```bash
+npm run db:seed:file -- --fixture brochure
+```
 
 ## Content Model
 
@@ -105,6 +172,12 @@ Behavior:
 - `status`: `draft` or `published`
 - `publishedAt`, `updatedAt`
 - `seo`: `metaTitle`, `metaDescription`, `slug`, `canonical`, `socialImage`, `noIndex`
+
+Database note:
+- flexible content stays in JSONB (`seo`, `sections`, `homeBlocks`, gallery data)
+- query/filter facets are normalized when using Postgres:
+  - blog categories via `categories` + `post_categories`
+  - portfolio tags via `portfolio_tags` + `portfolio_project_tags`
 
 ### Site settings
 

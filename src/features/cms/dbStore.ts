@@ -6,11 +6,22 @@ import {
   categoriesTable,
   mediaAssetsTable,
   pagesTable,
+  portfolioProjectTagsTable,
   portfolioProjectsTable,
+  portfolioTagsTable,
+  postCategoriesTable,
   siteSettingsTable
 } from '@/db/schema';
 
 import { defaultContent } from './defaultContent';
+import {
+  deleteBlogPostCategoryLinks,
+  deletePortfolioProjectTagLinks,
+  mapBlogPostCategorySlugs,
+  mapPortfolioProjectTags,
+  syncBlogPostCategoryLinks,
+  syncPortfolioProjectTagLinks
+} from './dbTaxonomy';
 import type {
   BlogPost,
   CmsContent,
@@ -111,14 +122,14 @@ function postToRow(post: BlogPost) {
   };
 }
 
-function rowToPost(row: typeof blogPostsTable.$inferSelect): BlogPost {
+function rowToPost(row: typeof blogPostsTable.$inferSelect, tags = row.tags): BlogPost {
   return {
     id: row.id,
     title: row.title,
     excerpt: row.excerpt,
     content: row.content,
     author: row.author,
-    tags: row.tags,
+    tags,
     coverImage: row.coverImage,
     status: row.status,
     publishedAt: row.publishedAt,
@@ -155,7 +166,10 @@ function portfolioToRow(project: PortfolioProject) {
   };
 }
 
-function rowToPortfolio(row: typeof portfolioProjectsTable.$inferSelect): PortfolioProject {
+function rowToPortfolio(
+  row: typeof portfolioProjectsTable.$inferSelect,
+  tags = row.tags
+): PortfolioProject {
   return {
     id: row.id,
     title: row.title,
@@ -169,7 +183,7 @@ function rowToPortfolio(row: typeof portfolioProjectsTable.$inferSelect): Portfo
     projectUrl: row.projectUrl,
     coverImage: row.coverImage,
     gallery: row.gallery,
-    tags: row.tags,
+    tags,
     featured: row.featured,
     status: row.status,
     sortOrder: row.sortOrder,
@@ -235,6 +249,14 @@ async function ensureDbBootstrap() {
     if (existingMedia.length === 0) {
       await db.insert(mediaAssetsTable).values(defaultContent.mediaAssets).onConflictDoNothing();
     }
+
+    const seededPosts = await db.select().from(blogPostsTable);
+    await syncBlogPostCategoryLinks(seededPosts.map((row) => rowToPost(row)));
+
+    await withPortfolioTableFallback(async () => {
+      const seededPortfolio = await db.select().from(portfolioProjectsTable);
+      await syncPortfolioProjectTagLinks(seededPortfolio.map((row) => rowToPortfolio(row)));
+    }, undefined);
   })();
 
   try {
@@ -253,14 +275,16 @@ async function loadAllPages() {
 async function loadAllPosts() {
   await ensureDbBootstrap();
   const rows = await getDb().select().from(blogPostsTable);
-  return rows.map(rowToPost);
+  const tagMap = await mapBlogPostCategorySlugs(rows.map((row) => row.id));
+  return rows.map((row) => rowToPost(row, tagMap.get(row.id) ?? row.tags));
 }
 
 async function loadAllPortfolioProjects() {
   return withPortfolioTableFallback(async () => {
     await ensureDbBootstrap();
     const rows = await getDb().select().from(portfolioProjectsTable);
-    return rows.map(rowToPortfolio);
+    const tagMap = await mapPortfolioProjectTags(rows.map((row) => row.id));
+    return rows.map((row) => rowToPortfolio(row, tagMap.get(row.id) ?? row.tags));
   }, []);
 }
 
@@ -268,6 +292,11 @@ export async function replaceAllCmsContent(content: CmsContent) {
   const db = getDb();
   const normalized = mergeWithDefaults(content);
 
+  await db.delete(postCategoriesTable);
+  await withPortfolioTableFallback(async () => {
+    await db.delete(portfolioProjectTagsTable);
+    await db.delete(portfolioTagsTable);
+  }, undefined);
   await db.delete(blogPostsTable);
   await withPortfolioTableFallback(async () => {
     await db.delete(portfolioProjectsTable);
@@ -284,11 +313,13 @@ export async function replaceAllCmsContent(content: CmsContent) {
   });
 
   await db.insert(pagesTable).values(Object.values(normalized.pages).map(pageToRow));
+  await db.insert(categoriesTable).values(normalized.categories);
   await db.insert(blogPostsTable).values(normalized.blogPosts.map(postToRow));
+  await syncBlogPostCategoryLinks(normalized.blogPosts);
   await withPortfolioTableFallback(async () => {
     await db.insert(portfolioProjectsTable).values(normalized.portfolioProjects.map(portfolioToRow));
+    await syncPortfolioProjectTagLinks(normalized.portfolioProjects);
   }, undefined);
-  await db.insert(categoriesTable).values(normalized.categories);
   await db.insert(mediaAssetsTable).values(normalized.mediaAssets);
 }
 
@@ -416,7 +447,9 @@ export async function queryBlogPosts(input: BlogQueryInput) {
 export async function getBlogPostById(id: string): Promise<BlogPost | null> {
   await ensureDbBootstrap();
   const row = await getDb().select().from(blogPostsTable).where(eq(blogPostsTable.id, id)).limit(1);
-  return row[0] ? rowToPost(row[0]) : null;
+  if (!row[0]) return null;
+  const tagMap = await mapBlogPostCategorySlugs([id]);
+  return rowToPost(row[0], tagMap.get(id) ?? row[0].tags);
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -425,7 +458,8 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   const row = await getDb().select().from(blogPostsTable).where(eq(blogPostsTable.slug, normalized)).limit(1);
   if (!row[0]) return null;
   if (row[0].status !== 'published') return null;
-  return rowToPost(row[0]);
+  const tagMap = await mapBlogPostCategorySlugs([row[0].id]);
+  return rowToPost(row[0], tagMap.get(row[0].id) ?? row[0].tags);
 }
 
 export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogPost> {
@@ -464,6 +498,7 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
   };
 
   await getDb().insert(blogPostsTable).values(postToRow(post));
+  await syncBlogPostCategoryLinks([post]);
   return post;
 }
 
@@ -488,12 +523,14 @@ export async function updateBlogPost(id: string, payload: BlogPost): Promise<Blo
   };
 
   await getDb().update(blogPostsTable).set(postToRow(next)).where(eq(blogPostsTable.id, id));
+  await syncBlogPostCategoryLinks([next]);
   return next;
 }
 
 export async function deleteBlogPost(id: string): Promise<boolean> {
   const existing = await getBlogPostById(id);
   if (!existing) return false;
+  await deleteBlogPostCategoryLinks([id]);
   await getDb().delete(blogPostsTable).where(eq(blogPostsTable.id, id));
   return true;
 }
@@ -601,7 +638,9 @@ export async function getPortfolioProjectById(id: string): Promise<PortfolioProj
       .from(portfolioProjectsTable)
       .where(eq(portfolioProjectsTable.id, id))
       .limit(1);
-    return row[0] ? rowToPortfolio(row[0]) : null;
+    if (!row[0]) return null;
+    const tagMap = await mapPortfolioProjectTags([id]);
+    return rowToPortfolio(row[0], tagMap.get(id) ?? row[0].tags);
   }, null);
 }
 
@@ -616,7 +655,8 @@ export async function getPortfolioProjectBySlug(slug: string): Promise<Portfolio
       .limit(1);
     if (!row[0]) return null;
     if (row[0].status !== 'published') return null;
-    return rowToPortfolio(row[0]);
+    const tagMap = await mapPortfolioProjectTags([row[0].id]);
+    return rowToPortfolio(row[0], tagMap.get(row[0].id) ?? row[0].tags);
   }, null);
 }
 
@@ -662,6 +702,9 @@ export async function createPortfolioProject(
   };
 
   await getDb().insert(portfolioProjectsTable).values(portfolioToRow(project));
+  await withPortfolioTableFallback(async () => {
+    await syncPortfolioProjectTagLinks([project]);
+  }, undefined);
   return project;
 }
 
@@ -693,6 +736,9 @@ export async function updatePortfolioProject(
     .update(portfolioProjectsTable)
     .set(portfolioToRow(next))
     .where(eq(portfolioProjectsTable.id, id));
+  await withPortfolioTableFallback(async () => {
+    await syncPortfolioProjectTagLinks([next]);
+  }, undefined);
 
   return next;
 }
@@ -701,6 +747,9 @@ export async function deletePortfolioProject(id: string): Promise<boolean> {
   const existing = await getPortfolioProjectById(id);
   if (!existing) return false;
 
+  await withPortfolioTableFallback(async () => {
+    await deletePortfolioProjectTagLinks([id]);
+  }, undefined);
   await getDb().delete(portfolioProjectsTable).where(eq(portfolioProjectsTable.id, id));
   return true;
 }
@@ -726,10 +775,3 @@ export async function setPortfolioProjectStatus(
 
   return next;
 }
-
-
-
-
-
-
-

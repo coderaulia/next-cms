@@ -1,0 +1,20 @@
+{
+  "outputDir": "../acme-cms",
+  "siteName": "Acme Studio",
+  "siteUrl": "https://acme.example.com",
+  "adminEmail": "admin@acme.example.com",
+  "adminName": "Acme Studio Admin",
+  "brandMark": "A",
+  "brandWordmark": "Acme Studio.",
+  "variant": "portfolio-case-studies",
+  "fixture": "portfolio-case-studies",
+  "modules": ["services", "portfolio"],
+  "pages": ["about", "contact"],
+  "colors": {
+    "dark": "#17304a",
+    "primary": "#0f79ff",
+    "secondary": "#7c3aed",
+    "accent": "#14b8a6",
+    "text": "#0f172a"
+  }
+}

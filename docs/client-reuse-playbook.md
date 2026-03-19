@@ -4,8 +4,12 @@ This guide explains how to reuse this CMS for a new client, new industry, and ne
 
 ## 1) Start a New Client Implementation
 
-1. Create a new branch for the client project.
-2. Install and run:
+Preferred path:
+1. Generate a new starter from this repo:
+```bash
+npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio" --variant brochure
+```
+2. Move into the generated project and install dependencies:
 ```bash
 npm install
 npm run dev
@@ -19,6 +23,10 @@ npm run dev
   - `CMS_ORG_NAME`
   - `CMS_ORG_LOGO`
 
+Manual path:
+1. Create a new branch for the client project.
+2. Rework content/config by hand only if the generator is not a fit.
+
 ## 2) Choose Content Storage
 
 Current default is file storage (`data/content.json`, generated locally and gitignored).
@@ -27,7 +35,23 @@ Recommended for production clients:
 1. Move to Supabase PostgreSQL or another managed Postgres service.
 2. Keep the same CMS payload shapes (`settings`, `pages`, `blogPosts`) so UI/admin stays compatible.
 3. Use JSONB for flexible fields (`seo`, `sections`, `homeBlocks`).
-4. Use database-backed admin sessions instead of local token storage.
+4. Keep query-oriented facets relational:
+- blog categories via `categories` + `post_categories`
+- portfolio tags via `portfolio_tags` + `portfolio_project_tags`
+5. Use database-backed admin sessions instead of local token storage.
+
+Available starter variants:
+- `brochure` for brochure-site builds
+- `blog-seo` for editorial/SEO-heavy implementations
+- `portfolio-case-studies` for agencies and proof-led case study sites
+- `lead-gen` for service businesses that prioritize inquiry capture
+
+Available deterministic fixtures:
+- `full-service`
+- `brochure`
+- `blog-seo`
+- `portfolio-case-studies`
+- `lead-gen`
 
 ## 3) Define Client Content Model
 
@@ -145,4 +169,3 @@ npm run build
 5. Deploy to staging.
 6. Client UAT.
 7. Production release.
-

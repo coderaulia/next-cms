@@ -12,6 +12,8 @@ const TABLES = [
   'admin_users',
   'request_rate_limits',
   'post_categories',
+  'portfolio_project_tags',
+  'portfolio_tags',
   'blog_posts',
   'portfolio_projects',
   'categories',
@@ -76,4 +78,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-

@@ -22,6 +22,7 @@
     "db:reset": "tsx scripts/reset-supabase.ts",
     "db:seed:file": "tsx scripts/import-content.ts",
     "db:reseed": "npm run db:reset -- --force && npm run db:migrate && npm run db:seed:file",
+    "bootstrap:client": "tsx scripts/bootstrap-client.ts",
     "media:migrate:supabase": "tsx scripts/migrate-media-to-supabase.ts",
     "media:migrate:supabase:dry": "tsx scripts/migrate-media-to-supabase.ts --dry-run"
   },
