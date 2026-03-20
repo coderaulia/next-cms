@@ -48,6 +48,8 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
             <Link
               className="px-6 py-2.5 bg-vanailaNavy text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:shadow-lg hover:shadow-blue-900/20 hover:bg-deepSlate transition-all border border-slate-700 no-underline"
               href={settings.navigation.headerCtaHref || '/contact'}
+              data-analytics-event="cta_click"
+              data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
             >
               {settings.navigation.headerCtaLabel || 'Book Consultation'}
             </Link>
@@ -56,6 +58,8 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
           <Link
             href={settings.navigation.headerCtaHref || '/contact'}
             className="md:hidden px-4 py-2 bg-vanailaNavy text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
+            data-analytics-event="cta_click"
+            data-analytics-label={settings.navigation.headerCtaLabel || 'Mobile header CTA'}
           >
             {settings.navigation.headerCtaLabel || 'Contact'}
           </Link>

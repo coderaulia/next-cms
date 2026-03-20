@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import type { ChangeEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -15,6 +16,14 @@ type MediaResponse = {
 type DuplicateMediaResponse = {
   error?: string;
   duplicateOf?: MediaAsset;
+};
+
+type MediaUsageEntry = {
+  entityType: 'settings' | 'page' | 'blog_post' | 'portfolio_project';
+  entityId: string;
+  label: string;
+  field: string;
+  href: string;
 };
 
 const emptyMediaAsset: MediaAsset = {
@@ -95,6 +104,9 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
   const [replacing, setReplacing] = useState(false);
   const [replaceError, setReplaceError] = useState('');
   const [replaceNotice, setReplaceNotice] = useState('');
+  const [usage, setUsage] = useState<MediaUsageEntry[]>([]);
+  const [usageLoading, setUsageLoading] = useState(false);
+  const [usageError, setUsageError] = useState('');
   const replaceInputRef = useRef<HTMLInputElement>(null);
   const canEditMedia = user.permissions.includes('media:edit');
 
@@ -135,14 +147,6 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
   const replaceRequiresAlt = Boolean(replaceFile && isImageMimeType(replaceFile.type || form.mimeType || 'image/png'));
   const canReplaceSelected = Boolean(form.id) && isManagedAsset(form);
 
-  if (!canEditMedia) {
-    return (
-      <section className="admin-card">
-        <p className="admin-subtle">Your role can review reporting data but cannot manage media assets.</p>
-      </section>
-    );
-  }
-
   const resetForm = () => {
     setForm(emptyMediaAsset);
     setNotice('');
@@ -151,6 +155,8 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
     setReplaceAltText('');
     setReplaceError('');
     setReplaceNotice('');
+    setUsage([]);
+    setUsageError('');
     if (replaceInputRef.current) {
       replaceInputRef.current.value = '';
     }
@@ -164,10 +170,56 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
     setReplaceAltText(asset.altText);
     setReplaceError('');
     setReplaceNotice('');
+    setUsageError('');
     if (replaceInputRef.current) {
       replaceInputRef.current.value = '';
     }
   };
+
+  useEffect(() => {
+    if (!form.id) {
+      setUsage([]);
+      setUsageError('');
+      setUsageLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadUsage() {
+      setUsageLoading(true);
+      setUsageError('');
+      const response = await csrfFetch(`/api/admin/media/${form.id}/usage`);
+      if (!response.ok) {
+        if (!cancelled) {
+          setUsage([]);
+          setUsageLoading(false);
+          setUsageError('Failed to load usage references.');
+        }
+        return;
+      }
+
+      const payload = (await response.json()) as { usage?: MediaUsageEntry[] };
+      if (!cancelled) {
+        setUsage(Array.isArray(payload.usage) ? payload.usage : []);
+        setUsageLoading(false);
+      }
+    }
+
+    void loadUsage();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [form.id]);
+
+  if (!canEditMedia) {
+    return (
+      <section className="admin-card">
+        <p className="admin-subtle">Your role can review reporting data but cannot manage media assets.</p>
+      </section>
+    );
+  }
 
   const onSelectUploadFile = (event: ChangeEvent<HTMLInputElement>) => {
     const next = event.target.files?.[0] ?? null;
@@ -342,6 +394,17 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
       method: 'DELETE'
     });
 
+    if (response.status === 409) {
+      const body = (await response.json().catch(() => null)) as { error?: string; usage?: MediaUsageEntry[] } | null;
+      setError(body?.error || 'This media asset is still used in content.');
+      setUsage(Array.isArray(body?.usage) ? body.usage : []);
+      const current = mediaAssets.find((asset) => asset.id === id);
+      if (current) {
+        selectAsset(current);
+      }
+      return;
+    }
+
     if (!response.ok) {
       const body = (await response.json().catch(() => null)) as { error?: string } | null;
       setError(body?.error || 'Failed to delete media asset.');
@@ -495,6 +558,28 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
             <span>{isManagedAsset(form) ? 'Managed asset with stable replace support.' : 'Manual/external asset.'}</span>
             <span>Aspect ratio: {formatAspectRatio(form.width, form.height)}</span>
             <span>File size: {formatBytes(form.sizeBytes)}</span>
+          </div>
+        ) : null}
+        {form.id ? (
+          <div className="admin-card" style={{ marginTop: 16 }}>
+            <div className="admin-inline-header">
+              <h3>Where this asset is used</h3>
+              <span className="admin-subtle">{usageLoading ? 'Checking...' : `${usage.length} references`}</span>
+            </div>
+            {usageError ? <p className="error">{usageError}</p> : null}
+            {usage.length > 0 ? (
+              <ul className="admin-plain-list">
+                {usage.map((item, index) => (
+                  <li key={`${item.entityType}-${item.entityId}-${item.field}-${index}`}>
+                    <strong>{item.label}</strong>
+                    <span>{item.field}</span>
+                    <Link href={item.href}>Open item</Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="admin-subtle">This asset is not currently referenced by pages, posts, portfolio, or settings.</p>
+            )}
           </div>
         ) : null}
         {form.url ? (

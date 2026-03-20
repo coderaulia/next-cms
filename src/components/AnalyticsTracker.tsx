@@ -1,48 +1,23 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
-const VISITOR_ID_KEY = 'cms.analytics.visitorId';
-const SESSION_ID_KEY = 'cms.analytics.sessionId';
-const TRACKED_PATH_PREFIX = 'cms.analytics.tracked.';
-
-function readOrCreateStorageValue(key: string) {
-  const existing = window.localStorage.getItem(key) || window.sessionStorage.getItem(key);
-  if (existing) return existing;
-  const next = crypto.randomUUID();
-  if (key === VISITOR_ID_KEY) {
-    window.localStorage.setItem(key, next);
-  } else {
-    window.sessionStorage.setItem(key, next);
-  }
-  return next;
-}
+import { buildAnalyticsPayload, getTrackedPathKey, trackClientAnalyticsEvent } from '@/lib/analyticsClient';
 
 export function AnalyticsTracker() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     const path = pathname || '/';
-    const trackedKey = `${TRACKED_PATH_PREFIX}${path}`;
+    const trackedKey = getTrackedPathKey(path);
     if (window.sessionStorage.getItem(trackedKey)) {
       return;
     }
 
-    const visitorId = readOrCreateStorageValue(VISITOR_ID_KEY);
-    const sessionId = readOrCreateStorageValue(SESSION_ID_KEY);
-    const payload = JSON.stringify({
-      path,
-      referrer: document.referrer || '',
-      utmSource: searchParams.get('utm_source') || '',
-      utmMedium: searchParams.get('utm_medium') || '',
-      utmCampaign: searchParams.get('utm_campaign') || '',
-      visitorId,
-      sessionId
-    });
-
+    const payload = JSON.stringify(buildAnalyticsPayload(path));
     window.sessionStorage.setItem(trackedKey, '1');
+
     if (navigator.sendBeacon) {
       navigator.sendBeacon('/api/analytics/page-view', new Blob([payload], { type: 'application/json' }));
       return;
@@ -54,7 +29,26 @@ export function AnalyticsTracker() {
       body: payload,
       keepalive: true
     });
-  }, [pathname, searchParams]);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onDocumentClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const trigger = target.closest<HTMLElement>('[data-analytics-event]');
+      if (!trigger) return;
+
+      const eventType = trigger.dataset.analyticsEvent;
+      const label = trigger.dataset.analyticsLabel || trigger.textContent?.trim() || 'Unknown CTA';
+      if (eventType !== 'cta_click') return;
+
+      void trackClientAnalyticsEvent('cta_click', label, window.location.pathname || '/');
+    };
+
+    document.addEventListener('click', onDocumentClick);
+    return () => document.removeEventListener('click', onDocumentClick);
+  }, []);
 
   return null;
 }

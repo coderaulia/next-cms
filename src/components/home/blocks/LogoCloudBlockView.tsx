@@ -40,12 +40,16 @@ export function LogoCloudBlockView({ block }: LogoCloudBlockViewProps) {
         <Reveal className="flex flex-col sm:flex-row justify-center items-center gap-6" preset="fadeUp" delay={0.1}>
           <Link
             href={block.primaryCtaHref || '/blog'}
+            data-analytics-event="cta_click"
+            data-analytics-label={block.primaryCtaLabel || 'Logo cloud primary CTA'}
             className="px-10 py-5 bg-white border-2 border-slate-100 text-deepSlate font-bold text-xs uppercase tracking-[0.2em] hover:border-electricBlue hover:text-electricBlue transition-all rounded-full shadow-sm"
           >
             {block.primaryCtaLabel}
           </Link>
           <Link
             href={block.secondaryCtaHref || '/contact'}
+            data-analytics-event="cta_click"
+            data-analytics-label={block.secondaryCtaLabel || 'Logo cloud secondary CTA'}
             className="px-10 py-5 bg-vanailaNavy text-white font-bold text-xs uppercase tracking-[0.2em] rounded-full shadow-lg hover:shadow-2xl hover:shadow-blue-900/20 hover:-translate-y-1 transition-all"
           >
             {block.secondaryCtaLabel}

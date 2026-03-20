@@ -12,8 +12,11 @@ type AnalyticsSummary = {
     uniqueVisitors30d: number;
     pageViews7d: number;
     uniqueVisitors7d: number;
+    ctaClicks30d: number;
+    contactLeads30d: number;
   };
   topPaths: Array<{ path: string; entityType: string; entityId: string | null; views: number; visitors: number }>;
+  topConversions: Array<{ eventType: string; label: string; path: string; count: number }>;
   referrers: Array<{ referrer: string; views: number }>;
   campaigns: Array<{ label: string; views: number }>;
   daily: Array<{ date: string; views: number; visitors: number }>;
@@ -82,6 +85,14 @@ function AnalyticsPagePanel({ user }: AnalyticsPagePanelProps) {
           <p className="admin-kpi-label">Unique visitors (7d)</p>
           <p className="admin-kpi-value">{data.totals.uniqueVisitors7d}</p>
         </article>
+        <article className="admin-card">
+          <p className="admin-kpi-label">CTA clicks (30d)</p>
+          <p className="admin-kpi-value">{data.totals.ctaClicks30d}</p>
+        </article>
+        <article className="admin-card">
+          <p className="admin-kpi-label">Contact leads (30d)</p>
+          <p className="admin-kpi-value">{data.totals.contactLeads30d}</p>
+        </article>
       </section>
 
       <section className="admin-card">
@@ -118,6 +129,21 @@ function AnalyticsPagePanel({ user }: AnalyticsPagePanelProps) {
       </section>
 
       <section className="admin-grid-2">
+        <article className="admin-card">
+          <h2>Top conversions</h2>
+          <ul className="admin-plain-list">
+            {data.topConversions.map((item) => (
+              <li key={`${item.eventType}-${item.label}-${item.path}`}>
+                <strong>{item.label}</strong>
+                <span>
+                  {item.eventType} on {item.path}
+                </span>
+                <span>{item.count} conversions</span>
+              </li>
+            ))}
+            {data.topConversions.length === 0 ? <li className="admin-subtle">No conversion events yet.</li> : null}
+          </ul>
+        </article>
         <article className="admin-card">
           <h2>Referrers</h2>
           <ul className="admin-plain-list">

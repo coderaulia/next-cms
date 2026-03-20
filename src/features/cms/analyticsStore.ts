@@ -21,6 +21,19 @@ export type AnalyticsPageViewInput = {
   userAgent?: string | null;
 };
 
+export type AnalyticsEventInput = {
+  path: string;
+  eventType: 'cta_click' | 'contact_submit';
+  label?: string | null;
+  referrer?: string | null;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  visitorId: string;
+  sessionId: string;
+  userAgent?: string | null;
+};
+
 export type AnalyticsSummary = {
   available: boolean;
   totals: {
@@ -28,8 +41,11 @@ export type AnalyticsSummary = {
     uniqueVisitors30d: number;
     pageViews7d: number;
     uniqueVisitors7d: number;
+    ctaClicks30d: number;
+    contactLeads30d: number;
   };
   topPaths: Array<{ path: string; entityType: string; entityId: string | null; views: number; visitors: number }>;
+  topConversions: Array<{ eventType: string; label: string; path: string; count: number }>;
   referrers: Array<{ referrer: string; views: number }>;
   campaigns: Array<{ label: string; views: number }>;
   daily: Array<{ date: string; views: number; visitors: number }>;
@@ -42,9 +58,12 @@ function emptySummary(): AnalyticsSummary {
       pageViews30d: 0,
       uniqueVisitors30d: 0,
       pageViews7d: 0,
-      uniqueVisitors7d: 0
+      uniqueVisitors7d: 0,
+      ctaClicks30d: 0,
+      contactLeads30d: 0
     },
     topPaths: [],
+    topConversions: [],
     referrers: [],
     campaigns: [],
     daily: []
@@ -74,25 +93,72 @@ function asDateKey(value: string) {
   return value.slice(0, 10);
 }
 
+function isConversionEventType(value: string) {
+  return value === 'cta_click' || value === 'contact_submit';
+}
+
+async function insertAnalyticsRow(input: {
+  path: string;
+  entityType: string;
+  entityId?: string | null;
+  referrer?: string | null;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  visitorId: string;
+  sessionId: string;
+  userAgent?: string | null;
+}) {
+  await getDb().insert(analyticsEventsTable).values({
+    id: randomUUID(),
+    path: normalizeUrlPath(input.path),
+    entityType: input.entityType || 'page',
+    entityId: input.entityId?.trim() || null,
+    referrer: (input.referrer ?? '').trim(),
+    utmSource: input.utmSource?.trim() || null,
+    utmMedium: input.utmMedium?.trim() || null,
+    utmCampaign: input.utmCampaign?.trim() || null,
+    visitorId: input.visitorId.trim(),
+    sessionId: input.sessionId.trim(),
+    userAgent: input.userAgent?.trim() || 'unknown',
+    createdAt: nowIso()
+  });
+}
+
 export async function trackAnalyticsPageView(input: AnalyticsPageViewInput) {
   if (!env.databaseUrl) {
     return false;
   }
 
   try {
-    await getDb().insert(analyticsEventsTable).values({
-      id: randomUUID(),
-      path: normalizeUrlPath(input.path),
-      entityType: input.entityType || 'page',
-      entityId: input.entityId ?? null,
-      referrer: (input.referrer ?? '').trim(),
-      utmSource: input.utmSource?.trim() || null,
-      utmMedium: input.utmMedium?.trim() || null,
-      utmCampaign: input.utmCampaign?.trim() || null,
-      visitorId: input.visitorId.trim(),
-      sessionId: input.sessionId.trim(),
-      userAgent: input.userAgent?.trim() || 'unknown',
-      createdAt: nowIso()
+    await insertAnalyticsRow(input);
+  } catch (error) {
+    if (isMissingAnalyticsSchemaError(error)) {
+      return false;
+    }
+    throw error;
+  }
+
+  return true;
+}
+
+export async function trackAnalyticsEvent(input: AnalyticsEventInput) {
+  if (!env.databaseUrl) {
+    return false;
+  }
+
+  try {
+    await insertAnalyticsRow({
+      path: input.path,
+      entityType: input.eventType,
+      entityId: input.label?.slice(0, 120) || null,
+      referrer: input.referrer ?? '',
+      utmSource: input.utmSource ?? '',
+      utmMedium: input.utmMedium ?? '',
+      utmCampaign: input.utmCampaign ?? '',
+      visitorId: input.visitorId,
+      sessionId: input.sessionId,
+      userAgent: input.userAgent ?? 'unknown'
     });
   } catch (error) {
     if (isMissingAnalyticsSchemaError(error)) {
@@ -128,13 +194,19 @@ export async function getAnalyticsSummary(days = 30): Promise<AnalyticsSummary> 
   }
 
   const rows7 = rows.filter((row) => row.createdAt >= cutoff7);
+  const pageViewRows = rows.filter((row) => !isConversionEventType(row.entityType));
+  const pageViewRows7 = rows7.filter((row) => !isConversionEventType(row.entityType));
+  const conversionRows = rows.filter((row) => isConversionEventType(row.entityType));
+  const ctaRows = conversionRows.filter((row) => row.entityType === 'cta_click');
+  const contactRows = conversionRows.filter((row) => row.entityType === 'contact_submit');
 
   const pathMap = new Map<string, { path: string; entityType: string; entityId: string | null; views: number; visitors: Set<string> }>();
+  const conversionMap = new Map<string, { eventType: string; label: string; path: string; count: number }>();
   const referrerMap = new Map<string, number>();
   const campaignMap = new Map<string, number>();
   const dailyMap = new Map<string, { date: string; views: number; visitors: Set<string> }>();
 
-  for (const row of rows) {
+  for (const row of pageViewRows) {
     const pathKey = `${row.entityType}:${row.entityId ?? ''}:${row.path}`;
     const currentPath = pathMap.get(pathKey) ?? {
       path: row.path,
@@ -160,13 +232,28 @@ export async function getAnalyticsSummary(days = 30): Promise<AnalyticsSummary> 
     dailyMap.set(date, currentDay);
   }
 
+  for (const row of conversionRows) {
+    const label = row.entityId?.trim() || 'Unlabeled';
+    const conversionKey = `${row.entityType}:${label}:${row.path}`;
+    const currentConversion = conversionMap.get(conversionKey) ?? {
+      eventType: row.entityType,
+      label,
+      path: row.path,
+      count: 0
+    };
+    currentConversion.count += 1;
+    conversionMap.set(conversionKey, currentConversion);
+  }
+
   return {
     available: true,
     totals: {
-      pageViews30d: rows.length,
-      uniqueVisitors30d: new Set(rows.map((row) => row.visitorId)).size,
-      pageViews7d: rows7.length,
-      uniqueVisitors7d: new Set(rows7.map((row) => row.visitorId)).size
+      pageViews30d: pageViewRows.length,
+      uniqueVisitors30d: new Set(pageViewRows.map((row) => row.visitorId)).size,
+      pageViews7d: pageViewRows7.length,
+      uniqueVisitors7d: new Set(pageViewRows7.map((row) => row.visitorId)).size,
+      ctaClicks30d: ctaRows.length,
+      contactLeads30d: contactRows.length
     },
     topPaths: Array.from(pathMap.values())
       .map((entry) => ({
@@ -178,6 +265,7 @@ export async function getAnalyticsSummary(days = 30): Promise<AnalyticsSummary> 
       }))
       .sort((a, b) => b.views - a.views)
       .slice(0, 10),
+    topConversions: Array.from(conversionMap.values()).sort((a, b) => b.count - a.count).slice(0, 10),
     referrers: Array.from(referrerMap.entries())
       .map(([referrer, views]) => ({ referrer, views }))
       .sort((a, b) => b.views - a.views)

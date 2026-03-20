@@ -109,7 +109,7 @@ function hashSessionToken(token: string) {
   return hashValue(token);
 }
 
-async function createPasswordHash(password: string) {
+export async function hashAdminPassword(password: string) {
   const salt = randomBytes(16).toString('hex');
   const derived = (await scrypt(password, salt, 64)) as Buffer;
   return `${salt}:${derived.toString('hex')}`;
@@ -182,7 +182,7 @@ async function ensureAdminBootstrap() {
     id: randomUUID(),
     email: normalize(env.adminEmail || DEFAULT_ADMIN_EMAIL).toLowerCase(),
     displayName: normalize(env.adminName || DEFAULT_ADMIN_NAME),
-    passwordHash: await createPasswordHash(password),
+    passwordHash: await hashAdminPassword(password),
     role: 'super_admin',
     createdAt: now,
     updatedAt: now,

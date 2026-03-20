@@ -73,7 +73,13 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
             </p>
             <div className="flex space-x-6">
               {socialLinks.map((item) => (
-                <Link key={`${item.icon}-${item.href}`} className={item.className} href={item.href}>
+                <Link
+                  key={`${item.icon}-${item.href}`}
+                  className={item.className}
+                  href={item.href}
+                  data-analytics-event="cta_click"
+                  data-analytics-label={`Footer ${item.icon}`}
+                >
                   <SymbolIcon className="text-3xl" name={item.icon} />
                 </Link>
               ))}

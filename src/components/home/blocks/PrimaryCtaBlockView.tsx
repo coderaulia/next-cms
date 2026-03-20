@@ -26,6 +26,8 @@ export function PrimaryCtaBlockView({ block }: PrimaryCtaBlockViewProps) {
             <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">{block.description}</p>
             <Link
               href={block.ctaHref || '/contact'}
+              data-analytics-event="cta_click"
+              data-analytics-label={block.ctaLabel || 'Primary CTA block'}
               className="group relative px-12 py-6 bg-vanailaNavy text-white font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full overflow-hidden hover:shadow-2xl hover:shadow-blue-900/30 transition-all duration-300 inline-block"
             >
               <span className="relative z-10 group-hover:text-white transition-colors">{block.ctaLabel}</span>
@@ -37,5 +39,4 @@ export function PrimaryCtaBlockView({ block }: PrimaryCtaBlockViewProps) {
     </section>
   );
 }
-
 

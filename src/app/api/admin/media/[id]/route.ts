@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { deleteMediaAsset, getMediaAssetById, updateMediaAsset } from '@/features/cms/contentStore';
+import { getMediaUsage } from '@/features/cms/mediaUsage';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia } from '@/services/mediaStorage';
 import { validateMediaAsset } from '@/features/cms/validators';
@@ -83,6 +84,17 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   const mediaAsset = await getMediaAssetById(id);
   if (!mediaAsset) {
     return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
+  }
+
+  const usage = await getMediaUsage(mediaAsset);
+  if (usage.length > 0) {
+    return NextResponse.json(
+      {
+        error: 'This media asset is still used in published or draft content.',
+        usage
+      },
+      { status: 409 }
+    );
   }
 
   const removed = await deleteMediaAsset(id);

@@ -96,10 +96,16 @@ function Hero({
 
         <div className="hero-actions flex flex-col sm:flex-row gap-5 justify-center items-center">
           <Button asChild variant="ghost" size="lg" className={renderPrimaryButtonClass}>
-            <Link href={primaryCtaHref}>{primaryCtaLabel}</Link>
+            <Link href={primaryCtaHref} data-analytics-event="cta_click" data-analytics-label={primaryCtaLabel || 'Hero primary CTA'}>
+              {primaryCtaLabel}
+            </Link>
           </Button>
           <Button asChild variant="ghost" size="lg" className={renderSecondaryButtonClass}>
-            <Link href={secondaryCtaHref}>
+            <Link
+              href={secondaryCtaHref}
+              data-analytics-event="cta_click"
+              data-analytics-label={secondaryCtaLabel || 'Hero secondary CTA'}
+            >
               {secondaryCtaLabel}
               <MoveRight className="h-4 w-4" />
             </Link>

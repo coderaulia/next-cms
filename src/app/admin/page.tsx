@@ -24,6 +24,7 @@ const quickActions = [
   { href: '/admin/categories', label: 'Manage categories', permission: 'taxonomy:edit' },
   { href: '/admin/contact-submissions', label: 'Review leads' },
   { href: '/admin/media', label: 'Media library', permission: 'media:edit' },
+  { href: '/admin/team', label: 'Manage team', permission: 'team:manage' },
   { href: '/admin/analytics', label: 'Analytics', permission: 'analytics:view' },
   { href: '/admin/audit', label: 'Audit log', permission: 'audit:view' },
   { href: '/admin/settings', label: 'Site settings', permission: 'settings:edit' }

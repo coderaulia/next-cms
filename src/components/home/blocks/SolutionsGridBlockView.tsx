@@ -72,6 +72,8 @@ export function SolutionsGridBlockView({ block }: SolutionsGridBlockViewProps) {
               <StaggerItem className={`relative group ${wrapper}`.trim()} key={item.id}>
                 <Link
                   href={item.ctaHref || '/service'}
+                  data-analytics-event="cta_click"
+                  data-analytics-label={item.ctaLabel || item.title || 'Solutions grid CTA'}
                   className={`glass-card ${shape} p-10 relative z-10 hover:-translate-y-2 transition-transform duration-500 ${style.hoverBorder} bg-white h-full flex flex-col block`}
                 >
                   <div className="flex justify-between items-start mb-8">
@@ -95,7 +97,7 @@ export function SolutionsGridBlockView({ block }: SolutionsGridBlockViewProps) {
         </StaggerGroup>
 
         <Reveal className="mt-24 text-center" preset="fadeIn" delay={0.1}>
-          <Link className="inline-flex flex-col items-center gap-4 group" href="/service">
+          <Link className="inline-flex flex-col items-center gap-4 group" href="/service" data-analytics-event="cta_click" data-analytics-label="Explore all solutions">
             <span className="w-16 h-16 rounded-full border border-slate-300 bg-white/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-electricBlue group-hover:text-white group-hover:border-electricBlue transition-all duration-300 shadow-sm">
               <SymbolIcon className="text-2xl" name="expand_more" />
             </span>

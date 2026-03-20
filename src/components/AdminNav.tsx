@@ -14,6 +14,7 @@ const siteManagementLinks: Array<{ href: string; label: string; permission?: Adm
   { href: '/admin/contact-submissions', label: 'Contact Leads' },
   { href: '/admin/categories', label: 'Categories', permission: 'taxonomy:edit' },
   { href: '/admin/media', label: 'Media Library', permission: 'media:edit' },
+  { href: '/admin/team', label: 'Team', permission: 'team:manage' },
   { href: '/admin/analytics', label: 'Analytics', permission: 'analytics:view' },
   { href: '/admin/audit', label: 'Audit Log', permission: 'audit:view' },
   { href: '/admin/settings?tab=discussion', label: 'Comments', permission: 'settings:edit' }

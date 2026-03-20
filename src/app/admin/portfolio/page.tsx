@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
 import type { PortfolioProject } from '@/features/cms/types';
+import { csrfFetch } from '@/lib/clientCsrf';
 
 type PortfolioListPayload = {
   projects: PortfolioProject[];
@@ -44,6 +45,9 @@ function PortfolioList({ user }: PortfolioListProps) {
   const [data, setData] = useState<PortfolioListPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [bulkPending, setBulkPending] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -58,42 +62,118 @@ function PortfolioList({ user }: PortfolioListProps) {
     router.replace(next ? `${pathname}?${next}` : pathname, { scroll: false });
   }, [q, status, tag, featured, dateSort, page, pageSize, pathname, router]);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true);
-        const params = new URLSearchParams({
-          includeDrafts: '1',
-          q,
-          status,
-          tag,
-          featured,
-          dateSort,
-          page: String(page),
-          pageSize: String(pageSize)
-        });
-        const response = await fetch(`/api/admin/portfolio?${params.toString()}`);
-        if (!response.ok) {
-          setError('Failed to load portfolio projects.');
-          return;
-        }
-        const payload = (await response.json()) as PortfolioListPayload;
-        setData(payload);
-        setError('');
-      } finally {
-        setLoading(false);
+  const loadProjects = useCallback(async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams({
+        includeDrafts: '1',
+        q,
+        status,
+        tag,
+        featured,
+        dateSort,
+        page: String(page),
+        pageSize: String(pageSize)
+      });
+      const response = await fetch(`/api/admin/portfolio?${params.toString()}`);
+      if (!response.ok) {
+        setError('Failed to load portfolio projects.');
+        return;
       }
+      const payload = (await response.json()) as PortfolioListPayload;
+      setData(payload);
+      setError('');
+    } finally {
+      setLoading(false);
     }
-    load();
-  }, [q, status, tag, featured, dateSort, page, pageSize]);
+  }, [dateSort, featured, page, pageSize, q, status, tag]);
+
+  useEffect(() => {
+    void loadProjects();
+  }, [loadProjects]);
 
   const totalPages = useMemo(() => {
     if (!data) return 1;
     return Math.max(1, Math.ceil(data.meta.total / data.meta.pageSize));
   }, [data]);
 
+  useEffect(() => {
+    if (!data) return;
+    const visible = new Set(data.projects.map((project) => project.id));
+    setSelectedIds((current) => current.filter((id) => visible.has(id)));
+  }, [data]);
+
+  const canEdit = user.permissions.includes('content:edit');
+  const canPublish = user.permissions.includes('content:publish');
+
+  const applyBulkStatus = async (target: 'published' | 'draft') => {
+    if (!data || selectedIds.length === 0 || !canPublish) return;
+
+    setBulkPending(true);
+    setNotice('');
+    setError('');
+
+    const suffix = target === 'published' ? 'publish' : 'unpublish';
+    const responses = await Promise.all(
+      selectedIds.map((id) =>
+        csrfFetch(`/api/admin/portfolio/${id}/${suffix}`, {
+          method: 'POST'
+        })
+      )
+    );
+
+    const failed = responses.filter((response) => !response.ok).length;
+    if (failed > 0) {
+      setError(`Updated ${selectedIds.length - failed}/${selectedIds.length} projects. ${failed} failed.`);
+    } else {
+      setNotice(`Updated ${selectedIds.length} project(s) to ${target}.`);
+    }
+
+    setSelectedIds([]);
+    setBulkPending(false);
+    await loadProjects();
+  };
+
+  const applyBulkFeatured = async (target: boolean) => {
+    if (!data || selectedIds.length === 0 || !canEdit) return;
+
+    setBulkPending(true);
+    setNotice('');
+    setError('');
+
+    const projectMap = new Map(data.projects.map((project) => [project.id, project]));
+    const responses = await Promise.all(
+      selectedIds.map((id) => {
+        const project = projectMap.get(id);
+        if (!project) return Promise.resolve(null);
+        return csrfFetch(`/api/admin/portfolio/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-cms-save-mode': 'manual'
+          },
+          body: JSON.stringify({
+            ...project,
+            featured: target
+          })
+        });
+      })
+    );
+
+    const failed = responses.filter((response) => response && !response.ok).length;
+    if (failed > 0) {
+      setError(`Updated ${selectedIds.length - failed}/${selectedIds.length} projects. ${failed} failed.`);
+    } else {
+      setNotice(`${target ? 'Marked' : 'Unmarked'} ${selectedIds.length} project(s) as featured.`);
+    }
+
+    setSelectedIds([]);
+    setBulkPending(false);
+    await loadProjects();
+  };
+
   if (loading) return <p>Loading projects...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (error && !data) return <p className="error">{error}</p>;
   if (!data) return null;
 
   return (
@@ -199,10 +279,44 @@ function PortfolioList({ user }: PortfolioListProps) {
       </section>
 
       <section className="admin-card">
+        <div className="admin-inline-header">
+          <p className="admin-subtle">{selectedIds.length} selected</p>
+          <div className="admin-actions">
+            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('published')}>
+              Publish selected
+            </button>
+            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('draft')}>
+              Move selected to draft
+            </button>
+            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canEdit} onClick={() => void applyBulkFeatured(true)}>
+              Feature selected
+            </button>
+            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canEdit} onClick={() => void applyBulkFeatured(false)}>
+              Unfeature selected
+            </button>
+            <button type="button" disabled={selectedIds.length === 0 || bulkPending} onClick={() => setSelectedIds([])}>
+              Clear selection
+            </button>
+          </div>
+        </div>
+        {!canPublish ? <p className="admin-subtle">Your role can review projects but cannot change publish status.</p> : null}
+        {notice ? <p className="admin-subtle">{notice}</p> : null}
+        {error ? <p className="error">{error}</p> : null}
+      </section>
+
+      <section className="admin-card">
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>
               <tr>
+                <th className="admin-selection-cell">
+                  <input
+                    type="checkbox"
+                    aria-label="Select all projects"
+                    checked={data.projects.length > 0 && selectedIds.length === data.projects.length}
+                    onChange={(event) => setSelectedIds(event.target.checked ? data.projects.map((project) => project.id) : [])}
+                  />
+                </th>
                 <th>Project</th>
                 <th>Client</th>
                 <th>Service</th>
@@ -225,6 +339,20 @@ function PortfolioList({ user }: PortfolioListProps) {
 
                   return (
                     <tr key={project.id}>
+                      <td className="admin-selection-cell">
+                        <input
+                          type="checkbox"
+                          aria-label={`Select ${project.title}`}
+                          checked={selectedIds.includes(project.id)}
+                          onChange={(event) =>
+                            setSelectedIds((current) =>
+                              event.target.checked
+                                ? (current.includes(project.id) ? current : [...current, project.id])
+                                : current.filter((id) => id !== project.id)
+                            )
+                          }
+                        />
+                      </td>
                       <td>
                         <strong>{project.title}</strong>
                         <span className="admin-subtle">/portfolio/{project.seo.slug}</span>
@@ -248,7 +376,7 @@ function PortfolioList({ user }: PortfolioListProps) {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="admin-subtle">
+                  <td colSpan={8} className="admin-subtle">
                     No portfolio projects match the current filters. Clear filters or create a new case study.
                   </td>
                 </tr>

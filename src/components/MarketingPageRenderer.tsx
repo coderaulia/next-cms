@@ -26,7 +26,13 @@ export function MarketingPageRenderer({ page }: MarketingPageRendererProps) {
                 <h1 className="section-title">{section.heading}</h1>
                 <p className="section-body">{section.body}</p>
                 {section.ctaHref ? (
-                  <Link href={section.ctaHref} className="cta-link" style={buttonStyle}>
+                  <Link
+                    href={section.ctaHref}
+                    className="cta-link"
+                    style={buttonStyle}
+                    data-analytics-event="cta_click"
+                    data-analytics-label={section.ctaLabel || section.heading || 'Marketing section CTA'}
+                  >
                     {section.ctaLabel || 'Learn more'}
                   </Link>
                 ) : null}

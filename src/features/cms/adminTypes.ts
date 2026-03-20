@@ -8,6 +8,12 @@ export type AdminSessionUser = {
   permissions: AdminPermission[];
 };
 
+export type AdminTeamMember = AdminSessionUser & {
+  createdAt: string;
+  updatedAt: string;
+  lastLoginAt: string | null;
+};
+
 export type AdminAuthResponse = {
   ok: true;
   user: AdminSessionUser;

@@ -3,6 +3,7 @@
 import { type FormEvent, useState } from 'react';
 
 import { SymbolIcon } from '@/components/ui/symbol-icon';
+import { trackClientAnalyticsEvent } from '@/lib/analyticsClient';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 type ContactBriefFormProps = {
@@ -62,6 +63,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
 
     setStatus('success');
     setMessage('Project brief submitted. We will respond within 24 business hours.');
+    void trackClientAnalyticsEvent('contact_submit', form.serviceCategory || 'Contact brief');
     setForm(initialForm);
   };
 
