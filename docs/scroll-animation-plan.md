@@ -1,5 +1,10 @@
 # Scroll Animation Rollout Plan (Front Pages)
 
+Historical note:
+- This rollout plan has already been implemented.
+- The repo currently uses shared animation primitives and bundle-conscious `framer-motion` usage.
+- Keep this file as implementation history, not as an open task list.
+
 ## Selected Library
 - **Library**: `framer-motion` (already installed in this repository)
 - **Why**:

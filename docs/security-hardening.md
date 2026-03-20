@@ -4,45 +4,35 @@
 
 - Cookie-based admin sessions with `httpOnly`, `sameSite=lax`, and `secure` in production
 - Legacy `x-admin-token` fallback disabled in production
-- Same-origin enforcement for all state-changing cookie-authenticated admin requests
+- Same-origin enforcement for state-changing admin requests
+- CSRF token validation for cookie-authenticated admin mutations
 - Same-origin enforcement for public contact submissions
-- In-process rate limiting for:
-  - admin login
-  - contact form submissions
-- Site-wide security headers via `middleware.ts`:
-  - Content-Security-Policy
-  - Strict-Transport-Security (production)
-  - X-Frame-Options
-  - X-Content-Type-Options
-  - Referrer-Policy
-  - Permissions-Policy
-  - Cross-Origin-Opener-Policy
-  - Cross-Origin-Resource-Policy
-- `no-store` cache policy on admin pages and admin/contact API responses
+- Database-backed rate limiting when `DATABASE_URL` is available, with in-memory fallback if the database is unavailable
+- Admin login lockout protection
+- Server-side audit logging for admin mutations
+- Role-based permissions for `super_admin`, `admin`, `editor`, and `analyst`
+- Site-wide security headers via `middleware.ts`
+- `no-store` cache policy on sensitive admin/contact responses
 - JSON-LD serialization hardened to escape script-breaking characters
-- CMS URL validation strips unsafe `javascript:`-style URLs from:
-  - CTA links
-  - media/image URLs
-  - canonical URLs
-  - social image URLs
-  - base URLs
+- CMS URL validation strips unsafe `javascript:`-style URLs from CTA, canonical, image, and base URLs
+- Media deletion protection when an asset is still referenced in content
 
-## Current baseline result
+## Current Baseline Result
 
-- No direct `dangerouslySetInnerHTML` usage remains except JSON-LD, which is now escaped safely
-- No raw SQL string concatenation found in app code; DB access is via Drizzle
-- No browser storage-based admin session handling in production path
+- No raw SQL string concatenation in app code; DB access goes through Drizzle
+- No browser-storage admin sessions in the production path
 - Admin shell remains isolated from the public shell
+- Audit trails exist for content, settings, media, auth, and team mutations
 
-## Still recommended before public launch
+## Still Recommended Before Public Launch
 
-- Add upstream rate limiting/WAF/CDN at the hosting or DNS layer for real DDoS mitigation
+- Add upstream WAF/CDN/rate limiting at the hosting or DNS layer
 - Rotate bootstrap admin credentials after first production login
-- Restrict Supabase database user permissions to app-only needs
-- Add server-side audit logging for admin mutations if you need forensic history
-- Add malware/spam validation if you later enable file uploads or public comments
-- Review all production env vars to ensure no test credentials remain
+- Restrict database and storage credentials to least privilege
+- Add monitoring and alerting for production failures
+- Add backup/export procedures for CMS content and media references
+- Review production env vars for placeholder values and test credentials
 
-## Operational note
+## Operational Note
 
-Application-level rate limiting helps with abuse and brute force. It is not full DDoS protection.
+Application-level protections reduce abuse and brute-force risk. They are not a substitute for upstream network-layer protection.

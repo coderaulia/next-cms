@@ -1,4 +1,6 @@
-# Phase 4 Testing Checklist
+# Current Admin Regression Checklist
+
+This file replaces the older phase-only checklist and reflects the current admin surface.
 
 ## Automated Validation
 
@@ -13,61 +15,132 @@ Expected:
 - ESLint passes
 - TypeScript passes
 - Vitest passes
-- Production build succeeds
+- production build succeeds
 
-## Manual Validation: Admin Flows
+## Manual Validation: Core Admin
 
 1. Login at `/admin/login` with `CMS_ADMIN_EMAIL` and `CMS_ADMIN_PASSWORD`.
-2. Verify admin sidebar fills full viewport height and anchors footer actions at bottom.
-3. Verify sidebar modules:
-- Dashboard, Posts, Pages, Settings
-- Site modules: Categories, Media Library, Comments, Permalinks, Meta Tags, Sitemaps
-4. Edit each landing page:
-- change section heading/body
-- for homepage, add/reorder/toggle typed blocks and update payload fields
-- for non-home pages, switch layout (`stacked`/`split`) and adjust content
-- save and confirm public page updates
-5. Create a new blog draft:
-- add title/excerpt/content/SEO fields
-- save and publish
-6. Validate posts table filters:
-- search by title/author
-- status filter
-- category filter
-- date sort + pagination with URL query sync
-7. Validate Website Settings save flow across tabs:
-- General/Writing/Reading/Discussion/Media/Permalinks/Meta Tags/Sitemaps
-- reload page and confirm persisted values
-8. Confirm published post appears on `/blog`.
-9. Unpublish post and confirm it disappears from public blog list/detail.
-10. Logout, then confirm protected admin routes redirect back to `/admin/login`.
+2. Verify sidebar modules:
+   - Dashboard
+   - Posts
+   - Pages
+   - Portfolio
+   - Settings
+   - Contact Leads
+   - Categories
+   - Media Library
+   - Team
+   - Analytics
+   - Audit Log
+3. Confirm Dashboard shows:
+   - first-run checklist
+   - scheduled content
+   - analytics snapshot
+   - content health
+   - recent audit activity
 
-## Manual Validation: SEO
+## Manual Validation: Content Editors
+
+1. Edit one page:
+   - change copy
+   - use preview mode
+   - save
+   - confirm revision entry exists
+2. Edit one post:
+   - change content and SEO
+   - test category selection
+   - schedule publish or unpublish
+   - confirm revision entry exists
+3. Edit one portfolio project:
+   - update cover image and gallery
+   - test preview mode
+   - test schedule fields
+   - confirm revision entry exists
+4. Test restore from revision history for at least one content type.
+
+## Manual Validation: Media
+
+1. Upload an image directly from a page/post/portfolio form field.
+2. Confirm the uploaded asset auto-selects back into the field.
+3. Open `/admin/media` and verify:
+   - alt text requirement
+   - duplicate detection
+   - replace-in-place
+   - usage references
+4. Attempt to delete an asset that is still in use and confirm delete is blocked.
+
+## Manual Validation: Lists and Bulk Actions
+
+1. Posts table:
+   - search
+   - status filter
+   - category filter
+   - bulk publish / move-to-draft
+2. Portfolio table:
+   - search
+   - status filter
+   - tag filter
+   - featured filter
+   - bulk publish / move-to-draft
+   - bulk feature / unfeature
+
+## Manual Validation: Settings
+
+1. Save one value in each tab:
+   - General
+   - Writing
+   - Reading
+   - Discussion
+   - Media
+   - Permalinks
+   - Meta Tags
+   - Sitemaps
+2. Reload and confirm values persist.
+3. Confirm settings revisions can be restored.
+
+## Manual Validation: Roles and Team
+
+1. Open `/admin/team`.
+2. Create a non-super-admin user.
+3. Edit display name, role, and password.
+4. Confirm self-delete is blocked.
+5. Confirm removing the last `super_admin` is blocked.
+
+## Manual Validation: Analytics and Audit
+
+1. Visit public pages and click tracked CTAs.
+2. Submit the contact form.
+3. Open `/admin/analytics` and confirm:
+   - page views
+   - CTA clicks
+   - contact leads
+   - top conversions
+   - referrers
+   - campaign fields from UTM traffic if used
+4. Open `/admin/audit` and confirm recent actions are recorded.
+
+## SEO and Runtime Checks
 
 1. Verify page source for:
-- title/meta description
-- canonical
-- Open Graph and Twitter tags
-2. Verify `/sitemap.xml` behavior:
-- reflects sitemap enabled/disabled
-- reflects include pages/posts toggles
-3. Verify `/robots.txt` behavior:
-- references sitemap when enabled
-- returns blocking rule when indexing is discouraged
-4. Verify JSON-LD:
-- Organization + WebSite on public pages
-- BlogPosting on blog detail pages
+   - title and description
+   - canonical
+   - Open Graph and Twitter tags
+2. Verify:
+   - `/sitemap.xml`
+   - `/robots.txt`
+   - JSON-LD output
+3. If using draft preview, verify preview banner appears and can be exited.
 
 ## Responsive Checks
 
-Validate layout on:
-- Mobile width (375px)
-- Tablet width (768px)
-- Desktop width (1440px)
+Validate:
+- mobile `375px`
+- tablet `768px`
+- desktop `1440px`
 
 Focus on:
-- navigation wrapping behavior
-- homepage block layout stacking on mobile
-- admin sidebar height and footer placement
-- form usability in admin pages
-
+- admin table overflow
+- editor action toolbar
+- media browser
+- settings tabs
+- team management table

@@ -1,5 +1,10 @@
 # Scope of Work: Marketing CMS (React/Next.js)
 
+Historical note:
+- This is the original scoping document from the early build.
+- The current repository now exceeds this baseline with portfolio management, media workflows, analytics, audit logging, revisions, team management, and Supabase-backed media support.
+- Use `docs/admin-usage.md`, `docs/deployment-handoff.md`, and `docs/client-reuse-playbook.md` as the current operating docs.
+
 ## 1. Project Overview
 
 Build a ready-to-use CMS focused on marketing websites, with editable landing pages (Home, About, Service, Contact) and a manageable blog, controlled from an admin panel and optimized for SEO using free/open-source libraries.

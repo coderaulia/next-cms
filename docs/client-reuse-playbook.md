@@ -1,50 +1,28 @@
 # Client Reuse Playbook
 
-This guide explains how to reuse this CMS for a new client, new industry, and new design direction while keeping the same dynamic admin workflow.
+This guide explains how to turn the current repo into a new client project without losing the existing admin workflows.
 
 ## 1) Start a New Client Implementation
 
 Preferred path:
-1. Generate a new starter from this repo:
+
 ```bash
 npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio" --variant brochure
 ```
-2. Move into the generated project and install dependencies:
+
+Then:
+
 ```bash
+cd ../acme-cms
 npm install
 npm run dev
 ```
-3. Set environment values in `.env.local`:
-- `NEXT_PUBLIC_SITE_URL`
-- `CMS_ADMIN_EMAIL`
-- `CMS_ADMIN_PASSWORD`
-- `CMS_ADMIN_NAME`
-- Optional organization values:
-  - `CMS_ORG_NAME`
-  - `CMS_ORG_LOGO`
 
-Manual path:
-1. Create a new branch for the client project.
-2. Rework content/config by hand only if the generator is not a fit.
-
-## 2) Choose Content Storage
-
-Current default is file storage (`data/content.json`, generated locally and gitignored).
-
-Recommended for production clients:
-1. Move to Supabase PostgreSQL or another managed Postgres service.
-2. Keep the same CMS payload shapes (`settings`, `pages`, `blogPosts`) so UI/admin stays compatible.
-3. Use JSONB for flexible fields (`seo`, `sections`, `homeBlocks`).
-4. Keep query-oriented facets relational:
-- blog categories via `categories` + `post_categories`
-- portfolio tags via `portfolio_tags` + `portfolio_project_tags`
-5. Use database-backed admin sessions instead of local token storage.
-
-Available starter variants:
-- `brochure` for brochure-site builds
-- `blog-seo` for editorial/SEO-heavy implementations
-- `portfolio-case-studies` for agencies and proof-led case study sites
-- `lead-gen` for service businesses that prioritize inquiry capture
+The bootstrap generator currently supports:
+- `brochure`
+- `blog-seo`
+- `portfolio-case-studies`
+- `lead-gen`
 
 Available deterministic fixtures:
 - `full-service`
@@ -53,119 +31,137 @@ Available deterministic fixtures:
 - `portfolio-case-studies`
 - `lead-gen`
 
-## 3) Define Client Content Model
+## 2) Set Environment Values
 
-For each new client:
-1. List required public pages (example: `home`, `about`, `service`, `contact`, `partnership`, service detail pages).
-2. Add new page IDs in:
-- `src/features/cms/types.ts` (`PageId`)
-- `src/features/cms/validators.ts` (`PAGE_IDS`)
-3. Add page seeds in:
-- `src/features/cms/defaultContent.ts`
-4. Ensure initial runtime content includes those pages:
-- local `data/content.json` or `data/content.local.json` (gitignored), or a database seed script if DB-backed
+Baseline local env:
+- `NEXT_PUBLIC_SITE_URL`
+- `CMS_ADMIN_EMAIL`
+- `CMS_ADMIN_PASSWORD`
+- `CMS_ADMIN_NAME`
+- `CMS_ORG_NAME`
+- `CMS_ORG_LOGO`
 
-Rule: every public page must be represented in CMS and editable in Admin.
+When using database mode:
+- `DATABASE_URL`
+- `DATABASE_URL_MIGRATION`
+- `CMS_DB_POOL_MAX`
 
-## 4) Wire Dynamic Rendering
+When using Supabase-backed media:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_STORAGE_BUCKET`
+- `MEDIA_PUBLIC_BASE_URL`
 
-1. Add/adjust page view components in `src/components/pages/*`.
-2. Map page IDs to renderers in:
+## 3) Choose Content Storage
+
+Current repo behavior:
+- file mode works when `DATABASE_URL` is not set
+- database mode activates automatically when `DATABASE_URL` is present
+
+Recommended for production client work:
+1. Use managed Postgres for content, sessions, analytics, audit logs, and rate limits.
+2. Use Supabase Storage for uploaded media.
+3. Keep flexible content in JSONB:
+   - `seo`
+   - `sections`
+   - `homeBlocks`
+4. Keep searchable/query-oriented facets relational:
+   - blog categories via `categories` + `post_categories`
+   - portfolio tags via `portfolio_tags` + `portfolio_project_tags`
+
+## 4) Reuse What Already Exists
+
+The starter already includes:
+- landing pages
+- blog
+- portfolio / case studies
+- contact leads
+- media library with direct form uploads
+- revision history and restore
+- analytics + conversion tracking
+- audit log
+- role-based admin team management
+
+For a new client, remove or ignore modules only when the client genuinely does not need them.
+
+## 5) Define Client Content Model
+
+When page requirements change:
+1. Update `PageId` in `src/features/cms/types.ts`
+2. Update the page validator in `src/features/cms/validators.ts`
+3. Update seeded content in `src/features/cms/defaultContent.ts`
+4. Verify the page appears in:
+   - admin pages list
+   - route rendering
+   - sitemap / metadata behavior
+
+Rule:
+- every public page you plan to ship should exist in CMS and be editable in admin
+
+## 6) Wire Dynamic Rendering
+
+Adjust the public rendering layer in:
 - `src/app/[slug]/page.tsx`
-3. Ensure `seo.slug` is unique and routable.
-4. Update admin pages ordering in:
-- `src/app/api/admin/pages/route.ts`
+- `src/components/pages/*`
+- `src/components/home/blocks/*`
 
-## 5) Redesign UI (Without Breaking CMS)
+Keep CMS contracts stable when redesigning:
+- do not remove fields unless the admin forms, validators, storage, and public renderers are all updated together
 
-Use this approach when adapting to a new Figma/screenshot style:
+## 7) Reuse the Current Admin Surface
 
-1. Keep data contracts stable.
-- Do not remove CMS fields unless all consumers are updated.
+Current reusable admin capabilities:
+- preview mode
+- scheduled publish / unpublish
+- revisions
+- media upload / duplicate detection / replace-in-place / usage checks
+- analytics summary and conversion reporting
+- audit log
+- team management with `super_admin`, `admin`, `editor`, and `analyst`
 
-2. Replace structure/classes inside view components only.
-- Home typed blocks:
-  - `src/components/home/blocks/*`
-- Non-home page views:
-  - `src/components/pages/*`
+For client projects with only one operator:
+- keep one `super_admin`
+- you can ignore the Team screen operationally
 
-3. Centralize visual system:
-- `src/app/globals.css` (tokens, shared utility classes)
-- `tailwind.config.mjs` (theme colors, fonts, shadows)
+For client projects with multiple editors:
+- keep team management enabled
+- validate permissions before handoff
 
-4. Keep components dynamic.
-- Text, links, badges, lists, and CTA labels should come from CMS fields.
-- Hardcoded fallback values are allowed only as safety defaults.
+## 8) Media Strategy
 
-## 6) Header/Footer and Admin Separation
+For production client sites:
+1. Prefer managed media storage over local disk.
+2. Migrate old `/media/...` and `/portfolio/...` URLs before launch.
+3. Keep alt text requirements enabled in editorial workflow.
+4. Use replace-in-place when updating client assets so URLs do not break.
 
-Public shell and admin shell must stay separate:
-
-1. Public pages:
-- `SiteHeader` + `SiteFooter`
-
-2. Admin pages:
-- No public navbar/footer
-- Dedicated admin UI only
-- Admin login page: `/admin/login`
-- Admin auth: email/password + cookie sessions
-
-## 7) Admin Adaptation for New Client
-
-When page types change:
-
-1. Make sure page entries appear in Admin Pages list.
-2. Verify `PageEditorForm` can edit all required section fields.
-3. If new structured block types are needed, extend:
-- `HomeBlockType` and block interfaces
-- Validation (`validators.ts`)
-- Home block renderer + admin editor controls
-
-Also keep Website Settings aligned with client needs:
-- General, Writing, Reading, Discussion, Media, Permalinks, Meta Tags, Sitemaps
-- Ensure runtime behavior respects settings in:
-  - `src/features/cms/seo.ts`
-  - `src/app/robots.ts`
-  - `src/app/sitemap.ts`
-
-## 8) SEO and Launch Requirements
+## 9) SEO + Launch Requirements
 
 Before launch:
-
-1. Validate each page/post has:
-- `metaTitle`
-- `metaDescription`
-- slug
-- canonical (if needed)
-- social image
-
+1. Verify each page/post/project has:
+   - title
+   - description
+   - slug
+   - canonical strategy if needed
+   - social image
 2. Verify:
-- `/sitemap.xml`
-- `/robots.txt`
-- JSON-LD output
+   - `/sitemap.xml`
+   - `/robots.txt`
+   - JSON-LD output
+3. Run:
 
-3. Run quality gates:
 ```bash
 npm run check
 npm run build
 ```
 
-## 9) New Client Delivery Checklist
+## 10) Delivery Checklist
 
-1. Branding applied (logo, fonts, colors).
-2. All required pages editable in admin.
-3. Blog workflow tested (draft/publish/unpublish).
-4. Website Settings configured for target domain/timezone/indexing behavior.
-5. Public responsive checks (mobile/tablet/desktop).
-6. SEO sanity checks complete.
-7. Admin credentials rotated and documented for client.
-
-## 10) Recommended Workflow Per Client
-
-1. Implement schema/pages first.
-2. Connect admin editability.
-3. Implement design fidelity pass.
-4. Run QA and SEO checks.
-5. Deploy to staging.
-6. Client UAT.
-7. Production release.
+1. Branding applied.
+2. Required pages editable in admin.
+3. Blog and portfolio workflows tested.
+4. Settings configured for domain, timezone, and indexing behavior.
+5. Media storage configured.
+6. Team roles configured if the client has multiple operators.
+7. Analytics and audit access confirmed for the handoff team.
+8. Revision restore tested at least once before handoff.
