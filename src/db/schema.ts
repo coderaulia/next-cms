@@ -3,6 +3,7 @@ import { pgTable, text, boolean, jsonb, timestamp, integer, uniqueIndex, index }
 import type {
   BlogPost,
   BlogStatus,
+  CmsRevisionPayload,
   HomeBlock,
   PageId,
   PageSection,
@@ -250,6 +251,25 @@ export const adminAuditLogsTable = pgTable(
   (table) => ({
     actionIdx: index('admin_audit_logs_action_idx').on(table.action),
     createdAtIdx: index('admin_audit_logs_created_at_idx').on(table.createdAt)
+  })
+);
+
+export const cmsContentRevisionsTable = pgTable(
+  'cms_content_revisions',
+  {
+    id: text('id').primaryKey(),
+    entityType: text('entity_type').notNull(),
+    entityId: text('entity_id').notNull(),
+    label: text('label').notNull(),
+    summary: text('summary').notNull(),
+    userId: text('user_id'),
+    userDisplayName: text('user_display_name'),
+    payload: jsonb('payload').$type<CmsRevisionPayload>().notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    entityIdx: index('cms_content_revisions_entity_idx').on(table.entityType, table.entityId),
+    createdAtIdx: index('cms_content_revisions_created_at_idx').on(table.createdAt)
   })
 );
 

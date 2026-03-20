@@ -9,6 +9,7 @@ import { formatSavedAtLabel, toFieldErrorMap, validateBlogEditor } from '@/featu
 import { getBlogPostPublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
+import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type BlogEditorFormProps = {
@@ -71,6 +72,7 @@ export function BlogEditorForm({
   const [autoSaveState, setAutoSaveState] = useState<AutoSaveState>('idle');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [revisionReloadKey, setRevisionReloadKey] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -136,7 +138,8 @@ export function BlogEditorForm({
       const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-cms-save-mode': mode
         },
         body: JSON.stringify(post)
       });
@@ -158,6 +161,7 @@ export function BlogEditorForm({
 
       if (mode === 'manual') {
         setNotice('Post saved');
+        setRevisionReloadKey((current) => current + 1);
       }
 
       if (isNew) {
@@ -187,6 +191,7 @@ export function BlogEditorForm({
     setBaseline(payload.post);
     setLastSavedAt(payload.post.updatedAt);
     setNotice('Post published');
+    setRevisionReloadKey((current) => current + 1);
   };
 
   const unpublish = async () => {
@@ -202,6 +207,7 @@ export function BlogEditorForm({
     setBaseline(payload.post);
     setLastSavedAt(payload.post.updatedAt);
     setNotice('Post moved to draft');
+    setRevisionReloadKey((current) => current + 1);
   };
 
   const deletePost = async () => {
@@ -327,6 +333,20 @@ export function BlogEditorForm({
         ) : null}
         <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or content.</p>
       </section>
+
+      <ContentRevisionPanel<BlogPost>
+        entityType="blog_post"
+        entityId={post.id}
+        reloadKey={revisionReloadKey}
+        emptyMessage="Manual saves and publishing changes for this post will appear here."
+        onRestore={(restoredPost) => {
+          setPost(restoredPost);
+          setBaseline(restoredPost);
+          setLastSavedAt(restoredPost.updatedAt ?? null);
+          setNotice('Post restored from revision history.');
+          setAutoSaveState('idle');
+        }}
+      />
 
       {showDeleteConfirm ? (
         <section className="admin-card admin-danger-card">

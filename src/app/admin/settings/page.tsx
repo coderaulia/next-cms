@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
+import { AdminActionButton } from '@/components/admin/AdminActionButton';
+import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
 import { NavigationLinksEditor } from '@/components/admin/NavigationLinksEditor';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
 
@@ -58,42 +60,90 @@ function SettingsEditor() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [pagesLoading, setPagesLoading] = useState(false);
+  const [pagesError, setPagesError] = useState('');
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [categoriesError, setCategoriesError] = useState('');
+  const [revisionReloadKey, setRevisionReloadKey] = useState(0);
 
   useEffect(() => {
-    async function load() {
+    async function loadSettings() {
       setLoading(true);
       setError('');
-      const [settingsRes, pagesRes, categoriesRes] = await Promise.all([
-        csrfFetch('/api/admin/settings'),
-        csrfFetch('/api/admin/pages'),
-        csrfFetch('/api/admin/categories')
-      ]);
-
-      if (!settingsRes.ok || !pagesRes.ok || !categoriesRes.ok) {
+      const settingsRes = await csrfFetch('/api/admin/settings');
+      if (!settingsRes.ok) {
         setLoading(false);
         setError('Failed to load settings.');
         return;
       }
 
       const settingsPayload = (await settingsRes.json()) as SettingsResponse;
-      const pagesPayload = (await pagesRes.json()) as PageResponse;
-      const categoriesPayload = (await categoriesRes.json()) as CategoriesResponse;
-
       setSettings(settingsPayload.settings);
-      setPages(pagesPayload.pages);
-      setCategories(categoriesPayload.categories);
       setLoading(false);
     }
-    load();
+
+    void loadSettings();
   }, []);
+
+  useEffect(() => {
+    if (activeTab !== 'reading' || pages.length > 0 || pagesLoading || pagesError) return;
+
+    async function loadPages() {
+      setPagesLoading(true);
+      setPagesError('');
+      const response = await csrfFetch('/api/admin/pages');
+      if (!response.ok) {
+        setPagesLoading(false);
+        setPagesError('Page options failed to load. You can still save other reading settings.');
+        return;
+      }
+
+      const payload = (await response.json()) as PageResponse;
+      setPages(payload.pages);
+      setPagesLoading(false);
+    }
+
+    void loadPages();
+  }, [activeTab, pages.length, pagesLoading, pagesError]);
+
+  useEffect(() => {
+    if (activeTab !== 'writing' || categories.length > 0 || categoriesLoading || categoriesError) return;
+
+    async function loadCategories() {
+      setCategoriesLoading(true);
+      setCategoriesError('');
+      const response = await csrfFetch('/api/admin/categories');
+      if (!response.ok) {
+        setCategoriesLoading(false);
+        setCategoriesError('Category options failed to load. You can still save other writing settings.');
+        return;
+      }
+
+      const payload = (await response.json()) as CategoriesResponse;
+      setCategories(payload.categories);
+      setCategoriesLoading(false);
+    }
+
+    void loadCategories();
+  }, [activeTab, categories.length, categoriesLoading, categoriesError]);
 
   const pageOptions = useMemo(
     () =>
-      pages.map((page) => ({
-        id: page.id,
-        label: `${page.navLabel} (${page.id})`
-      })),
-    [pages]
+      [
+        ...pages.map((page) => ({
+          id: page.id,
+          label: `${page.navLabel} (${page.id})`
+        })),
+        ...[settings?.reading.homepagePageId, settings?.reading.postsPageId]
+          .filter((value): value is LandingPage['id'] => Boolean(value))
+          .filter((value, index, items) => items.indexOf(value) === index)
+          .filter((value) => !pages.some((page) => page.id === value))
+          .map((id) => ({
+            id,
+            label: `${id} (${id})`
+          }))
+      ],
+    [pages, settings?.reading.homepagePageId, settings?.reading.postsPageId]
   );
 
   const categoryOptions = useMemo(() => {
@@ -131,6 +181,7 @@ function SettingsEditor() {
     const payload = (await response.json()) as SettingsResponse;
     setSettings(payload.settings);
     setNotice('Settings saved.');
+    setRevisionReloadKey((current) => current + 1);
   };
 
   if (loading) return <p>Loading settings...</p>;
@@ -142,9 +193,9 @@ function SettingsEditor() {
       <section className="admin-card">
         <div className="admin-inline-header">
           <h2>Website Settings</h2>
-          <button type="button" onClick={save} disabled={saving}>
+          <AdminActionButton icon="save" variant="primary" onClick={save} disabled={saving}>
             {saving ? 'Saving...' : 'Save settings'}
-          </button>
+          </AdminActionButton>
         </div>
 
         <div className="admin-actions" style={{ marginBottom: 16 }}>
@@ -630,6 +681,15 @@ function SettingsEditor() {
 
         {activeTab === 'writing' ? (
           <div className="admin-grid-2">
+            {categoriesLoading ? <p className="admin-subtle" style={{ gridColumn: '1 / -1' }}>Loading category options...</p> : null}
+            {categoriesError ? (
+              <div className="admin-inline-header" style={{ gridColumn: '1 / -1' }}>
+                <p className="admin-error-text">{categoriesError}</p>
+                <AdminActionButton icon="sync_alt" size="sm" variant="secondary" onClick={() => setCategoriesError('')}>
+                  Retry
+                </AdminActionButton>
+              </div>
+            ) : null}
             <label>
               Default post category
               <select
@@ -752,6 +812,15 @@ function SettingsEditor() {
 
         {activeTab === 'reading' ? (
           <div className="admin-grid-2">
+            {pagesLoading ? <p className="admin-subtle" style={{ gridColumn: '1 / -1' }}>Loading page options...</p> : null}
+            {pagesError ? (
+              <div className="admin-inline-header" style={{ gridColumn: '1 / -1' }}>
+                <p className="admin-error-text">{pagesError}</p>
+                <AdminActionButton icon="sync_alt" size="sm" variant="secondary" onClick={() => setPagesError('')}>
+                  Retry
+                </AdminActionButton>
+              </div>
+            ) : null}
             <label>
               Homepage displays
               <select
@@ -1267,6 +1336,17 @@ function SettingsEditor() {
 
         {notice ? <p className="mt-3">{notice}</p> : null}
       </section>
+
+      <ContentRevisionPanel<SiteSettings>
+        entityType="site_settings"
+        entityId="default"
+        reloadKey={revisionReloadKey}
+        emptyMessage="Saved settings revisions will appear here."
+        onRestore={(restoredSettings) => {
+          setSettings(restoredSettings);
+          setNotice('Settings restored from revision history.');
+        }}
+      />
     </div>
   );
 }
@@ -1281,8 +1361,6 @@ export default function AdminSettingsPage() {
     </AdminShell>
   );
 }
-
-
 
 
 

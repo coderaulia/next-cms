@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { deleteBlogPost, getBlogPostById, updateBlogPost } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { validateBlogPost } from '@/features/cms/validators';
@@ -36,7 +37,19 @@ export async function PUT(request: Request, { params }: RouteContext) {
   }
 
   const session = await getAdminSession(request);
+  const saveMode = (request.headers.get('x-cms-save-mode') ?? 'manual').trim().toLowerCase();
   try {
+    if (saveMode !== 'autosave') {
+      await captureContentRevision({
+        entityType: 'blog_post',
+        entityId: post.id,
+        label: post.status === 'published' ? 'Saved published post' : 'Saved draft post',
+        payload: post,
+        userId: session?.user.id ?? null,
+        userDisplayName: session?.user.displayName ?? null
+      });
+    }
+
     await logAdminAuditEvent(request, {
       action: 'blog.update',
       entityType: 'blog_post',

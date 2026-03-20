@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { setPostStatus } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 
@@ -20,6 +21,15 @@ export async function POST(request: Request, { params }: RouteContext) {
 
   const session = await getAdminSession(request);
   try {
+    await captureContentRevision({
+      entityType: 'blog_post',
+      entityId: post.id,
+      label: 'Published post',
+      payload: post,
+      userId: session?.user.id ?? null,
+      userDisplayName: session?.user.displayName ?? null
+    });
+
     await logAdminAuditEvent(request, {
       action: 'blog.publish',
       entityType: 'blog_post',

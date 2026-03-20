@@ -9,6 +9,7 @@ import { toFieldErrorMap, validatePortfolioEditor } from '@/features/cms/editorV
 import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
+import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
 import { MediaGalleryField, MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PortfolioEditorFormProps = {
@@ -50,11 +51,14 @@ export function PortfolioEditorForm({
   const [baseline, setBaseline] = useState(initialProject);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialProject.updatedAt ?? null);
+  const [revisionReloadKey, setRevisionReloadKey] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
     setProject(initialProject);
     setBaseline(initialProject);
+    setLastSavedAt(initialProject.updatedAt ?? null);
   }, [initialProject]);
 
   const isDirty = useMemo(
@@ -80,7 +84,8 @@ export function PortfolioEditorForm({
     const response = await csrfFetch(`/api/admin/portfolio/${project.id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-cms-save-mode': 'manual'
       },
       body: JSON.stringify(project)
     });
@@ -95,7 +100,9 @@ export function PortfolioEditorForm({
     const payload = (await response.json()) as { project: PortfolioProject };
     setProject(payload.project);
     setBaseline(payload.project);
+    setLastSavedAt(payload.project.updatedAt ?? null);
     setNotice('Project saved');
+    setRevisionReloadKey((current) => current + 1);
 
     if (isNew) {
       router.replace(`/admin/portfolio/${payload.project.id}`);
@@ -120,7 +127,9 @@ export function PortfolioEditorForm({
     const payload = (await response.json()) as { project: PortfolioProject };
     setProject(payload.project);
     setBaseline(payload.project);
+    setLastSavedAt(payload.project.updatedAt ?? null);
     setNotice('Project published');
+    setRevisionReloadKey((current) => current + 1);
   };
 
   const unpublish = async () => {
@@ -136,7 +145,9 @@ export function PortfolioEditorForm({
     const payload = (await response.json()) as { project: PortfolioProject };
     setProject(payload.project);
     setBaseline(payload.project);
+    setLastSavedAt(payload.project.updatedAt ?? null);
     setNotice('Project moved to draft');
+    setRevisionReloadKey((current) => current + 1);
   };
 
   const deleteProject = async () => {
@@ -186,7 +197,7 @@ export function PortfolioEditorForm({
         <div className="admin-inline-header">
           <div>
             <h2>{project.title || 'Untitled project'}</h2>
-            <p className="admin-subtle">Ctrl/Cmd + S to save. Status: {publicationLabel}.</p>
+            <p className="admin-subtle">Ctrl/Cmd + S to save. Status: {publicationLabel}. Last saved {lastSavedAt ? new Date(lastSavedAt).toLocaleString() : 'not yet'}.</p>
           </div>
           <div className="admin-actions">
             <span className={`admin-chip ${isDirty ? 'admin-chip-warning' : 'admin-chip-success'}`}>
@@ -226,6 +237,19 @@ export function PortfolioEditorForm({
         {validationIssues.length > 0 ? <p className="admin-error-text">{validationIssues[0].message}</p> : null}
         <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or content.</p>
       </section>
+
+      <ContentRevisionPanel<PortfolioProject>
+        entityType="portfolio_project"
+        entityId={project.id}
+        reloadKey={revisionReloadKey}
+        emptyMessage="Manual saves and publishing changes for this project will appear here."
+        onRestore={(restoredProject) => {
+          setProject(restoredProject);
+          setBaseline(restoredProject);
+          setLastSavedAt(restoredProject.updatedAt ?? null);
+          setNotice('Project restored from revision history.');
+        }}
+      />
 
       <section className="admin-card">
         <h2>Content</h2>

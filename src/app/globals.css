@@ -1363,6 +1363,11 @@ button:disabled {
   color: var(--warning);
 }
 
+.admin-chip-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .admin-chip-muted {
   background: #edf2f9;
   color: #5c6f8f;
@@ -1994,4 +1999,22 @@ button:disabled {
 
 .admin-media-replace-card {
   background: #f8fbff;
+}
+
+.admin-revision-list {
+  gap: 12px;
+}
+
+.admin-revision-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-revision-row span {
+  display: block;
+  color: #64748b;
+  font-size: 0.82rem;
+  line-height: 1.45;
 }

@@ -181,6 +181,33 @@ function DashboardPanel({ user }: DashboardPanelProps) {
 
       <section className="admin-card">
         <div className="admin-inline-header">
+          <h2>Content health</h2>
+          <span className="admin-subtle">
+            {data.health.errors} errors / {data.health.warnings} warnings
+          </span>
+        </div>
+        {data.health.items.length > 0 ? (
+          <ul className="admin-plain-list">
+            {data.health.items.slice(0, 8).map((item) => (
+              <li key={item.id}>
+                <strong>
+                  <span className={`admin-chip ${item.severity === 'error' ? 'admin-chip-danger' : 'admin-chip-warning'}`}>
+                    {item.severity}
+                  </span>{' '}
+                  {item.label}
+                </strong>
+                <span>{item.detail}</span>
+                <Link href={item.href}>Open fix</Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="admin-subtle">No content health issues detected in the current CMS data.</p>
+        )}
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-inline-header">
           <h2>Recent audit activity</h2>
           <Link href="/admin/audit">View all</Link>
         </div>

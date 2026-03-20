@@ -8,6 +8,7 @@ import { formatSavedAtLabel, toFieldErrorMap, validatePageEditor } from '@/featu
 import { getLandingPagePublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
+import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PageEditorFormProps = {
@@ -155,6 +156,7 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
   const [nextType, setNextType] = useState<HomeBlockType>('hero');
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialPage.updatedAt ?? null);
   const [autoSaveState, setAutoSaveState] = useState<AutoSaveState>('idle');
+  const [revisionReloadKey, setRevisionReloadKey] = useState(0);
 
   useEffect(() => {
     setPage(initialPage);
@@ -196,7 +198,10 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
 
       const response = await csrfFetch(`/api/admin/pages/${page.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-cms-save-mode': mode
+        },
         body: JSON.stringify(page)
       });
       setSaving(false);
@@ -217,6 +222,7 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
 
       if (mode === 'manual') {
         setNotice('Page saved');
+        setRevisionReloadKey((current) => current + 1);
       }
 
       return true;
@@ -465,6 +471,20 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
         ) : null}
         <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or sections.</p>
       </section>
+
+      <ContentRevisionPanel<LandingPage>
+        entityType="page"
+        entityId={page.id}
+        reloadKey={revisionReloadKey}
+        emptyMessage="Manual saves and restore points for this page will appear here."
+        onRestore={(restoredPage) => {
+          setPage(restoredPage);
+          setBaseline(restoredPage);
+          setLastSavedAt(restoredPage.updatedAt ?? null);
+          setNotice('Page restored from revision history.');
+          setAutoSaveState('idle');
+        }}
+      />
 
       <section className="admin-card">
         <h2>Page settings</h2>

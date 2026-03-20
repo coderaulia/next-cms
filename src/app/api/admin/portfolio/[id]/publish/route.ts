@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { getPortfolioProjectById, setPortfolioProjectStatus } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 
@@ -25,6 +26,15 @@ export async function POST(request: Request, { params }: RouteContext) {
 
   const session = await getAdminSession(request);
   try {
+    await captureContentRevision({
+      entityType: 'portfolio_project',
+      entityId: project.id,
+      label: 'Published project',
+      payload: project,
+      userId: session?.user.id ?? null,
+      userDisplayName: session?.user.displayName ?? null
+    });
+
     await logAdminAuditEvent(request, {
       action: 'portfolio.publish',
       entityType: 'portfolio_project',

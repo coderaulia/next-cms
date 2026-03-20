@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { getSettings, updateSettings } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { validateSiteSettings } from '@/features/cms/validators';
@@ -26,6 +27,15 @@ export async function PUT(request: Request) {
   const session = await getAdminSession(request);
 
   try {
+    await captureContentRevision({
+      entityType: 'site_settings',
+      entityId: 'default',
+      label: 'Settings saved',
+      payload: settings,
+      userId: session?.user.id ?? null,
+      userDisplayName: session?.user.displayName ?? null
+    });
+
     await logAdminAuditEvent(request, {
       action: 'settings.update',
       entityType: 'site_settings',

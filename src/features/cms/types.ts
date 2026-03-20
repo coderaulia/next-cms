@@ -397,3 +397,39 @@ export type CmsContent = {
   categories: Category[];
   mediaAssets: MediaAsset[];
 };
+
+export type CmsRevisionEntityType = 'page' | 'blog_post' | 'portfolio_project' | 'site_settings';
+
+export type CmsRevisionPayload = LandingPage | BlogPost | PortfolioProject | SiteSettings;
+
+export type CmsContentRevision = {
+  id: string;
+  entityType: CmsRevisionEntityType;
+  entityId: string;
+  label: string;
+  summary: string;
+  createdAt: string;
+  userId: string | null;
+  userDisplayName: string | null;
+  payload: CmsRevisionPayload;
+};
+
+export type CmsContentRevisionSummary = Omit<CmsContentRevision, 'payload'>;
+
+export type ContentHealthSeverity = 'error' | 'warning';
+
+export type ContentHealthItem = {
+  id: string;
+  severity: ContentHealthSeverity;
+  category: 'media' | 'links' | 'seo' | 'slugs';
+  label: string;
+  detail: string;
+  href: string;
+};
+
+export type ContentHealthReport = {
+  checkedAt: string;
+  errors: number;
+  warnings: number;
+  items: ContentHealthItem[];
+};

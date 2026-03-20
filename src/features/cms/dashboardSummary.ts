@@ -1,12 +1,13 @@
 import { getAdminAuditLogs, type AdminAuditLogEntry } from './adminAuth';
 import { getAnalyticsSummary, type AnalyticsSummary } from './analyticsStore';
+import { getContentHealthReport } from './contentHealth';
 import * as contentStore from './contentStore';
 import {
   getBlogPostPublicationLabel,
   getLandingPagePublicationLabel,
   getPortfolioProjectPublicationLabel
 } from './publicationState';
-import type { BlogPost, LandingPage, PortfolioProject, SiteSettings } from './types';
+import type { BlogPost, ContentHealthReport, LandingPage, PortfolioProject, SiteSettings } from './types';
 
 export type ChecklistItem = {
   id: string;
@@ -33,6 +34,7 @@ export type DashboardSummary = {
   scheduled: ScheduledContentItem[];
   auditLogs: AdminAuditLogEntry[];
   analytics: AnalyticsSummary;
+  health: ContentHealthReport;
 };
 
 function placeholderAsset(value: string) {
@@ -126,13 +128,14 @@ function buildScheduledItems(pages: LandingPage[], posts: BlogPost[], projects: 
 }
 
 export async function getDashboardSummary(): Promise<DashboardSummary> {
-  const [pagesMap, blogPosts, portfolioProjects, settings, auditLogs, analytics] = await Promise.all([
+  const [pagesMap, blogPosts, portfolioProjects, settings, auditLogs, analytics, health] = await Promise.all([
     contentStore.getPages(),
     contentStore.getBlogPosts(true),
     contentStore.getPortfolioProjects(true),
     contentStore.getSettings(),
     getAdminAuditLogs(8),
-    getAnalyticsSummary(30)
+    getAnalyticsSummary(30),
+    getContentHealthReport()
   ]);
 
   const pages = Object.values(pagesMap);
@@ -143,6 +146,7 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
     checklist: buildChecklist(settings, pages, blogPosts, portfolioProjects),
     scheduled: buildScheduledItems(pages, blogPosts, portfolioProjects),
     auditLogs,
-    analytics
+    analytics,
+    health
   };
 }

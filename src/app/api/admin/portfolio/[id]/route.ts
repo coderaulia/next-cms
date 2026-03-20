@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { captureContentRevision } from '@/features/cms/contentRevisions';
 import {
   deletePortfolioProject,
   getPortfolioProjectById,
@@ -41,7 +42,19 @@ export async function PUT(request: Request, { params }: RouteContext) {
   }
 
   const session = await getAdminSession(request);
+  const saveMode = (request.headers.get('x-cms-save-mode') ?? 'manual').trim().toLowerCase();
   try {
+    if (saveMode !== 'autosave') {
+      await captureContentRevision({
+        entityType: 'portfolio_project',
+        entityId: project.id,
+        label: project.status === 'published' ? 'Saved published project' : 'Saved draft project',
+        payload: project,
+        userId: session?.user.id ?? null,
+        userDisplayName: session?.user.displayName ?? null
+      });
+    }
+
     await logAdminAuditEvent(request, {
       action: 'portfolio.update',
       entityType: 'portfolio_project',
