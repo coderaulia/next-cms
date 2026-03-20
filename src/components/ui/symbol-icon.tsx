@@ -33,6 +33,7 @@ import {
   Headset,
   Heart,
   Inbox,
+  Images,
   KeyRound,
   LayoutTemplate,
   Lightbulb,
@@ -59,13 +60,17 @@ import {
   Swords,
   TimerReset,
   Touchpad,
+  Trash2,
   TrendingUp,
   Truck,
   Trophy,
+  Upload,
   Vibrate,
   Video,
   View,
-  Wallet
+  Wallet,
+  Save,
+  X
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -104,6 +109,7 @@ const iconMap = {
   handshake: BriefcaseBusiness,
   history_edu: TimerReset,
   hub: Blend,
+  images: Images,
   integration_instructions: Network,
   key: KeyRound,
   language: Globe,
@@ -126,6 +132,7 @@ const iconMap = {
   schema: Network,
   search: Search,
   security: Shield,
+  save: Save,
   settings_suggest: Settings2,
   shopping_cart: ShoppingCart,
   smartphone: Smartphone,
@@ -139,14 +146,17 @@ const iconMap = {
   sync_alt: RefreshCcw,
   terminal: Code2,
   touch_app: Touchpad,
+  delete: Trash2,
   trending_up: TrendingUp,
   troubleshoot: Trophy,
+  upload: Upload,
   verified: BadgeCheck,
   verified_user: ShieldCheck,
   vibration: Vibrate,
   videocam: Video,
   visibility: View,
-  waves: Blend
+  waves: Blend,
+  close: X
 } as const;
 
 type IconName = keyof typeof iconMap;
@@ -159,5 +169,5 @@ type SymbolIconProps = LucideProps & {
 export function SymbolIcon({ name, className, ...props }: SymbolIconProps) {
   const Icon = iconMap[name as IconName] ?? CircleDashed;
 
-  return <Icon aria-hidden="true" absoluteStrokeWidth className={cn('shrink-0', className)} size="1em" {...props} />;
+  return <Icon aria-hidden="true" className={cn('shrink-0', className)} size="1em" strokeWidth={1.9} {...props} />;
 }

@@ -7,6 +7,7 @@ import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/edi
 import { formatSavedAtLabel, toFieldErrorMap, validatePageEditor } from '@/features/cms/editorValidation';
 import { getLandingPagePublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type PageEditorFormProps = {
@@ -447,15 +448,15 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
             {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
-            <a className="v2-btn v2-btn-secondary" href={previewModePath} target="_blank" rel="noreferrer">
-              Preview draft
-            </a>
-            <button type="button" disabled={!isDirty || saving} onClick={() => setPage(baseline)}>
-              Discard
-            </button>
-            <button type="button" disabled={saving || !canSave} onClick={() => void savePage('manual')}>
+            <AdminActionButton href={previewModePath} icon="visibility" rel="noreferrer" target="_blank" variant="secondary">
+              Open preview
+            </AdminActionButton>
+            <AdminActionButton icon="sync_alt" variant="ghost" disabled={!isDirty || saving} onClick={() => setPage(baseline)}>
+              Reset edits
+            </AdminActionButton>
+            <AdminActionButton icon="save" variant="primary" disabled={saving || !canSave} onClick={() => void savePage('manual')}>
               {saving ? 'Saving...' : 'Save page'}
-            </button>
+            </AdminActionButton>
           </div>
         </div>
         {notice ? <p className="admin-subtle">{notice}</p> : null}

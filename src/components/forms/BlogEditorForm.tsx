@@ -8,6 +8,7 @@ import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/edi
 import { formatSavedAtLabel, toFieldErrorMap, validateBlogEditor } from '@/features/cms/editorValidation';
 import { getBlogPostPublicationLabel } from '@/features/cms/publicationState';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
 type BlogEditorFormProps = {
@@ -284,39 +285,39 @@ export function BlogEditorForm({
               {isDirty ? 'Unsaved changes' : 'Saved'}
             </span>
             {!canSave ? <span className="admin-chip admin-chip-warning">Validation required</span> : null}
-            <a className="v2-btn v2-btn-secondary" href={previewModePath} target="_blank" rel="noreferrer">
-              Preview draft
-            </a>
-            <button type="button" disabled={!isDirty || saving} onClick={() => setPost(baseline)}>
-              Discard
-            </button>
-            <button type="button" onClick={() => void savePost('manual')} disabled={saving || !canSave}>
+            <AdminActionButton href={previewModePath} icon="visibility" rel="noreferrer" target="_blank" variant="secondary">
+              Open preview
+            </AdminActionButton>
+            <AdminActionButton icon="sync_alt" variant="ghost" disabled={!isDirty || saving} onClick={() => setPost(baseline)}>
+              Reset edits
+            </AdminActionButton>
+            <AdminActionButton icon="save" variant="primary" onClick={() => void savePost('manual')} disabled={saving || !canSave}>
               {saving ? 'Saving...' : 'Save post'}
-            </button>
+            </AdminActionButton>
             {canPublish ? (
               post.status === 'draft' ? (
-                <button type="button" onClick={publish} disabled={!canSave}>
-                  Publish
-                </button>
+                <AdminActionButton icon="publish" variant="primary" onClick={publish} disabled={!canSave}>
+                  Publish now
+                </AdminActionButton>
               ) : (
-                <button type="button" onClick={unpublish}>
-                  Unpublish
-                </button>
+                <AdminActionButton icon="schedule" variant="secondary" onClick={unpublish}>
+                  Move to draft
+                </AdminActionButton>
               )
             ) : (
               <span className="admin-chip admin-chip-muted">No publish access</span>
             )}
             {canDelete ? (
-              <button
-                type="button"
-                className="admin-danger-btn"
+              <AdminActionButton
+                icon={showDeleteConfirm ? 'close' : 'delete'}
+                variant="danger"
                 onClick={() => {
                   setShowDeleteConfirm((current) => !current);
                   setDeleteConfirmText('');
                 }}
               >
-                {showDeleteConfirm ? 'Cancel delete' : 'Delete'}
-              </button>
+                {showDeleteConfirm ? 'Cancel delete' : 'Delete post'}
+              </AdminActionButton>
             ) : null}
           </div>
         </div>
@@ -337,9 +338,9 @@ export function BlogEditorForm({
               onChange={(event) => setDeleteConfirmText(event.target.value)}
               placeholder="Type DELETE"
             />
-            <button type="button" className="admin-danger-btn" disabled={!canDeleteConfirm} onClick={deletePost}>
+            <AdminActionButton icon="delete" variant="danger" disabled={!canDeleteConfirm} onClick={deletePost}>
               Permanently delete post
-            </button>
+            </AdminActionButton>
           </div>
         </section>
       ) : null}
