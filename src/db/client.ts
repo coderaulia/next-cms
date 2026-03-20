@@ -13,6 +13,29 @@ declare global {
   var __cmsDb: DbClient | undefined;
 }
 
+function isNextProductionBuild() {
+  return (
+    process.env.NEXT_PHASE === 'phase-production-build' ||
+    process.env.npm_lifecycle_event === 'build'
+  );
+}
+
+function resolvePoolMax() {
+  if (env.databasePoolMax) {
+    return env.databasePoolMax;
+  }
+
+  if (isNextProductionBuild()) {
+    return 2;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    return 5;
+  }
+
+  return 4;
+}
+
 function getPool() {
   if (!env.databaseUrl) {
     throw new Error('DATABASE_URL is not configured.');
@@ -21,7 +44,10 @@ function getPool() {
   if (!globalThis.__cmsPgPool) {
     globalThis.__cmsPgPool = new Pool({
       connectionString: env.databaseUrl,
-      max: process.env.NODE_ENV === 'production' ? 10 : 4
+      max: resolvePoolMax(),
+      idleTimeoutMillis: 10_000,
+      connectionTimeoutMillis: 10_000,
+      allowExitOnIdle: true
     });
   }
 

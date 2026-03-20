@@ -1,6 +1,13 @@
 const fallbackBaseUrl = 'http://localhost:3000';
 
 const clean = (value: string | undefined) => value?.trim().replace(/^['"]|['"]$/g, '') || '';
+const parsePositiveInt = (value: string | undefined) => {
+  const normalized = clean(value);
+  if (!normalized) return null;
+  const parsed = Number.parseInt(normalized, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return null;
+  return parsed;
+};
 
 export const env = {
   get siteUrl() {
@@ -26,6 +33,9 @@ export const env = {
   },
   get databaseUrl() {
     return clean(process.env.DATABASE_URL);
+  },
+  get databasePoolMax() {
+    return parsePositiveInt(process.env.CMS_DB_POOL_MAX);
   },
   get supabaseUrl() {
     return clean(process.env.SUPABASE_URL);
