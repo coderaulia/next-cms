@@ -6,6 +6,7 @@ import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
 import { AdminAuthGate } from './AdminAuthGate';
 import { AdminNav } from './AdminNav';
+import { NotificationBell } from './admin/NotificationBell';
 
 type AdminShellProps = {
   title: string;
@@ -27,7 +28,10 @@ export function AdminShell({ title, description, actions, children }: AdminShell
                   <h1>{title}</h1>
                   {description ? <p>{description}</p> : null}
                 </div>
-                {actions ? <div>{typeof actions === 'function' ? actions(user) : actions}</div> : null}
+                <div className="admin-main-header-actions">
+                  <NotificationBell />
+                  {actions ? <div>{typeof actions === 'function' ? actions(user) : actions}</div> : null}
+                </div>
               </header>
               {children(user)}
             </section>

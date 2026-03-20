@@ -15,6 +15,7 @@ const siteManagementLinks: Array<{ href: string; label: string; permission?: Adm
   { href: '/admin/categories', label: 'Categories', permission: 'taxonomy:edit' },
   { href: '/admin/media', label: 'Media Library', permission: 'media:edit' },
   { href: '/admin/team', label: 'Team', permission: 'team:manage' },
+  { href: '/admin/sessions', label: 'Sessions', permission: 'team:manage' },
   { href: '/admin/analytics', label: 'Analytics', permission: 'analytics:view' },
   { href: '/admin/audit', label: 'Audit Log', permission: 'audit:view' },
   { href: '/admin/manual', label: 'Manual' },
@@ -24,7 +25,9 @@ const siteManagementLinks: Array<{ href: string; label: string; permission?: Adm
 const seoLinks: Array<{ href: string; label: string; permission?: AdminPermission }> = [
   { href: '/admin/settings?tab=permalinks', label: 'Permalinks', permission: 'settings:edit' },
   { href: '/admin/settings?tab=seo', label: 'Meta Tags', permission: 'settings:edit' },
-  { href: '/admin/settings?tab=sitemap', label: 'Sitemaps', permission: 'settings:edit' }
+  { href: '/admin/settings?tab=sitemap', label: 'Sitemaps', permission: 'settings:edit' },
+  { href: '/admin/link-checker', label: 'Link Checker', permission: 'analytics:view' },
+  { href: '/admin/redirects', label: 'Redirects', permission: 'settings:edit' }
 ];
 
 function initialsForUser(user: AdminSessionUser) {

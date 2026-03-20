@@ -296,3 +296,67 @@ export const analyticsEventsTable = pgTable(
     createdAtIdx: index('analytics_events_created_at_idx').on(table.createdAt)
   })
 );
+
+export const notificationsTable = pgTable(
+  'notifications',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id').notNull(),
+    type: text('type').notNull(),
+    title: text('title').notNull(),
+    message: text('message').notNull(),
+    entityType: text('entity_type'),
+    entityId: text('entity_id'),
+    read: boolean('read').notNull().default(false),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    userIdIdx: index('notifications_user_id_idx').on(table.userId),
+    readIdx: index('notifications_read_idx').on(table.read),
+    createdAtIdx: index('notifications_created_at_idx').on(table.createdAt)
+  })
+);
+
+export const userDashboardPreferencesTable = pgTable(
+  'user_dashboard_preferences',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id').notNull().unique(),
+    widgetOrder: jsonb('widget_order').$type<string[]>().notNull().default([]),
+    hiddenWidgets: jsonb('hidden_widgets').$type<string[]>().notNull().default([]),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    userIdUnique: uniqueIndex('user_dashboard_preferences_user_id_unique').on(table.userId)
+  })
+);
+
+export const redirectsTable = pgTable(
+  'redirects',
+  {
+    id: text('id').primaryKey(),
+    fromPath: text('from_path').notNull(),
+    toPath: text('to_path').notNull(),
+    type: text('type').notNull().default('302'),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    fromPathUnique: uniqueIndex('redirects_from_path_unique').on(table.fromPath)
+  })
+);
+
+export const page404LogTable = pgTable(
+  'page_404_log',
+  {
+    id: text('id').primaryKey(),
+    path: text('path').notNull(),
+    referrer: text('referrer').notNull(),
+    userAgent: text('user_agent').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
+  },
+  (table) => ({
+    pathIdx: index('page_404_log_path_idx').on(table.path),
+    createdAtIdx: index('page_404_log_created_at_idx').on(table.createdAt)
+  })
+);
