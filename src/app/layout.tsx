@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { AppShell } from '@/components/AppShell';
+import { ChunkRecoveryScript } from '@/components/ChunkRecoveryScript';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { siteProfile } from '@/config/site-profile';
 import { getPublishedPages, getSiteSettings } from '@/features/cms/publicApi';
@@ -90,6 +91,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${fontBody.variable} ${fontAccent.variable}`}>
       <body className="v2-site">
+        <ChunkRecoveryScript />
         <Suspense fallback={null}>
           <AnalyticsTracker />
         </Suspense>
