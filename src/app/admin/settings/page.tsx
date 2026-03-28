@@ -336,13 +336,53 @@ function SettingsEditor() {
                 onChange={(event) => setSettings({ ...settings, organizationName: event.target.value })}
               />
             </label>
-            <label>
-              Organization logo URL
-              <input
+            <div style={{ gridColumn: '1 / -1' }}>
+              <MediaPickerField
+                label="Organization logo"
                 value={settings.organizationLogo}
-                onChange={(event) => setSettings({ ...settings, organizationLogo: event.target.value })}
+                onChange={(value) => setSettings({ ...settings, organizationLogo: value })}
+                helperText="Used for structured data and as a fallback brand mark if header/footer logos are not set."
               />
-            </label>
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <MediaPickerField
+                label="Header logo"
+                value={settings.branding.headerLogo}
+                onChange={(value) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, headerLogo: value }
+                  })
+                }
+                helperText="Optional visual logo shown in the public header."
+              />
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <MediaPickerField
+                label="Footer logo"
+                value={settings.branding.footerLogo}
+                onChange={(value) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, footerLogo: value }
+                  })
+                }
+                helperText="Optional visual logo shown in the public footer."
+              />
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <MediaPickerField
+                label="Site icon / favicon"
+                value={settings.branding.siteIcon}
+                onChange={(value) =>
+                  setSettings({
+                    ...settings,
+                    branding: { ...settings.branding, siteIcon: value }
+                  })
+                }
+                helperText="Used for browser tab icons and mobile app icons when available."
+              />
+            </div>
             <div style={{ gridColumn: '1 / -1' }}>
               <NavigationLinksEditor
                 label="Header menu links"
@@ -1223,19 +1263,20 @@ function SettingsEditor() {
                 }
               />
             </label>
-            <label>
-              Default OG image
-              <input
+            <div style={{ gridColumn: '1 / -1' }}>
+              <MediaPickerField
+                label="Default OG image"
                 value={settings.seo.defaultOgImage}
-                onChange={(event) =>
+                onChange={(value) =>
                   setSettings({
                     ...settings,
-                    seo: { ...settings.seo, defaultOgImage: event.target.value },
-                    defaultOgImage: event.target.value
+                    seo: { ...settings.seo, defaultOgImage: value },
+                    defaultOgImage: value
                   })
                 }
+                helperText="Fallback social sharing image used when a page, post, or project does not define its own social image."
               />
-            </label>
+            </div>
             <label style={{ gridColumn: '1 / -1' }}>
               Default meta description
               <textarea
@@ -1362,6 +1403,7 @@ export default function AdminSettingsPage() {
     </AdminShell>
   );
 }
+
 
 
 
