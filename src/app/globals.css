@@ -1798,6 +1798,39 @@ button:disabled {
 
 
 
+.admin-json-transfer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.admin-json-transfer-card {
+  align-content: start;
+}
+
+.admin-json-transfer-controls {
+  margin: 14px 0;
+}
+
+.admin-json-transfer-controls label {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-json-transfer-textarea {
+  min-height: 240px;
+  font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+@media (max-width: 1080px) {
+  .admin-json-transfer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-auth-loading {
   min-height: 40vh;
   display: grid;

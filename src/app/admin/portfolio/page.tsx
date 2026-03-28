@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
+import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
 import type { PortfolioProject } from '@/features/cms/types';
@@ -189,6 +190,16 @@ function PortfolioList({ user }: PortfolioListProps) {
           ) : null}
         </section>
       ) : null}
+
+      <JsonImportExportCard
+        collection="portfolioProjects"
+        title="Bulk import / export"
+        description="Download current portfolio JSON or import multiple case studies at once using the portfolio schema."
+        onImported={async () => {
+          setSelectedIds([]);
+          await loadProjects();
+        }}
+      />
 
       <section className="admin-card">
         <div className="admin-filter-bar">

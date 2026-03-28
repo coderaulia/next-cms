@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
+import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { filterAndSortPages, type PagesSortBy, type PagesStatusFilter } from '@/features/cms/adminPagesList';
 import { getLandingPagePublicationLabel } from '@/features/cms/publicationState';
@@ -124,6 +125,16 @@ function PagesList({ user }: PagesListProps) {
           <p className="admin-subtle">Seed or import the default landing pages before handing the CMS to content editors.</p>
         </section>
       ) : null}
+
+      <JsonImportExportCard
+        collection="pages"
+        title="Bulk import / export"
+        description="Download current landing-page JSON or import a batch update that matches the page schema used by this CMS."
+        onImported={async () => {
+          setSelectedIds([]);
+          await loadPages();
+        }}
+      />
 
       <section className="admin-card">
         <div className="admin-filter-bar">

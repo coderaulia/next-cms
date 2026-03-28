@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
+import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 import { NavigationLinksEditor } from '@/components/admin/NavigationLinksEditor';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
@@ -67,24 +68,24 @@ function SettingsEditor() {
   const [categoriesError, setCategoriesError] = useState('');
   const [revisionReloadKey, setRevisionReloadKey] = useState(0);
 
-  useEffect(() => {
-    async function loadSettings() {
-      setLoading(true);
-      setError('');
-      const settingsRes = await csrfFetch('/api/admin/settings');
-      if (!settingsRes.ok) {
-        setLoading(false);
-        setError('Failed to load settings.');
-        return;
-      }
-
-      const settingsPayload = (await settingsRes.json()) as SettingsResponse;
-      setSettings(settingsPayload.settings);
+  const loadSettings = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    const settingsRes = await csrfFetch('/api/admin/settings');
+    if (!settingsRes.ok) {
       setLoading(false);
+      setError('Failed to load settings.');
+      return;
     }
 
-    void loadSettings();
+    const settingsPayload = (await settingsRes.json()) as SettingsResponse;
+    setSettings(settingsPayload.settings);
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    void loadSettings();
+  }, [loadSettings]);
 
   useEffect(() => {
     if (activeTab !== 'reading' || pages.length > 0 || pagesLoading || pagesError) return;
@@ -1378,6 +1379,41 @@ function SettingsEditor() {
 
         {notice ? <p className="mt-3">{notice}</p> : null}
       </section>
+
+      <div className="admin-json-transfer-grid">
+        <JsonImportExportCard
+          collection="settings"
+          title="Settings import / export"
+          description="Download the current site settings JSON or restore a full settings object without editing each field manually."
+          fixedMode="replace"
+          importHint="Settings imports replace the current settings object, so use an exported file from this site or another site using the same CMS schema."
+          onImported={async () => {
+            setNotice('Settings imported.');
+            setPages([]);
+            setCategories([]);
+            setPagesError('');
+            setCategoriesError('');
+            await loadSettings();
+            setRevisionReloadKey((current) => current + 1);
+          }}
+        />
+        <JsonImportExportCard
+          collection="fullSite"
+          title="Full-site backup / restore"
+          description="Export a full CMS backup including settings, pages, posts, portfolio, categories, and media metadata."
+          defaultMode="replace"
+          importHint="Use replace to restore a complete backup. Merge is available for advanced partial migrations between CMS instances."
+          onImported={async () => {
+            setNotice('CMS backup imported.');
+            setPages([]);
+            setCategories([]);
+            setPagesError('');
+            setCategoriesError('');
+            await loadSettings();
+            setRevisionReloadKey((current) => current + 1);
+          }}
+        />
+      </div>
 
       <ContentRevisionPanel<SiteSettings>
         entityType="site_settings"
