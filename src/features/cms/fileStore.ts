@@ -394,6 +394,7 @@ export async function createPortfolioProject(
     serviceType: payload?.serviceType?.trim() || '',
     industry: payload?.industry?.trim() || '',
     projectUrl: payload?.projectUrl || '',
+    relatedServicePageIds: payload?.relatedServicePageIds ?? [],
     coverImage: payload?.coverImage || '',
     gallery: payload?.gallery ?? [],
     tags: payload?.tags ?? [],

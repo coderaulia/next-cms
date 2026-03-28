@@ -99,6 +99,13 @@ export function normalizeSettings(input: unknown): SiteSettings {
     next.seo.defaultOgImage = source.defaultOgImage.trim();
   }
 
+  if (typeof source.organizationLogo === 'string' && source.organizationLogo.trim().length > 0) {
+    next.organizationLogo = source.organizationLogo.trim();
+  }
+  if (!next.organizationLogo && next.branding.headerLogo) {
+    next.organizationLogo = next.branding.headerLogo;
+  }
+
   next.siteName = next.general.siteName;
   next.baseUrl = next.general.baseUrl;
   next.defaultOgImage = next.seo.defaultOgImage;

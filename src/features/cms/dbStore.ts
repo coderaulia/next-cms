@@ -48,6 +48,7 @@ import {
 let bootstrapPromise: Promise<void> | null = null;
 let warnedMissingPortfolioTable = false;
 let warnedMissingScheduleColumns = false;
+let portfolioRelationsColumnPromise: Promise<boolean> | null = null;
 
 function extractErrorCode(error: unknown): string | undefined {
   if (!error || typeof error !== 'object') return undefined;
@@ -141,6 +142,7 @@ type LegacyPortfolioRow = {
   serviceType: string;
   industry: string;
   projectUrl: string;
+  relatedServicePageIds?: PortfolioProject['relatedServicePageIds'];
   coverImage: string;
   gallery: string[];
   tags: string[];
@@ -259,6 +261,7 @@ function rowToLegacyPortfolio(row: LegacyPortfolioRow, tags = row.tags): Portfol
     serviceType: row.serviceType,
     industry: row.industry,
     projectUrl: row.projectUrl,
+    relatedServicePageIds: Array.isArray(row.relatedServicePageIds) ? row.relatedServicePageIds : [],
     coverImage: row.coverImage,
     gallery: row.gallery,
     tags,
@@ -407,8 +410,47 @@ function portfolioToRow(project: PortfolioProject) {
   };
 }
 
+type PortfolioInsertRow = typeof portfolioProjectsTable.$inferInsert;
+type PortfolioRowShape = ReturnType<typeof portfolioToLegacyRow> & {
+  relatedServicePageIds?: PortfolioProject['relatedServicePageIds'];
+  scheduledPublishAt?: string | null;
+  scheduledUnpublishAt?: string | null;
+};
+
+function portfolioWriteRow(project: PortfolioProject, includeRelations: boolean): PortfolioInsertRow {
+  return (includeRelations ? portfolioToRow(project) : portfolioToLegacyRow(project)) as PortfolioInsertRow;
+}
+
+function portfolioSelectShape(includeRelations: boolean) {
+  return {
+    id: portfolioProjectsTable.id,
+    title: portfolioProjectsTable.title,
+    slug: portfolioProjectsTable.slug,
+    summary: portfolioProjectsTable.summary,
+    challenge: portfolioProjectsTable.challenge,
+    solution: portfolioProjectsTable.solution,
+    outcome: portfolioProjectsTable.outcome,
+    clientName: portfolioProjectsTable.clientName,
+    serviceType: portfolioProjectsTable.serviceType,
+    industry: portfolioProjectsTable.industry,
+    projectUrl: portfolioProjectsTable.projectUrl,
+    ...(includeRelations ? { relatedServicePageIds: portfolioProjectsTable.relatedServicePageIds } : {}),
+    coverImage: portfolioProjectsTable.coverImage,
+    gallery: portfolioProjectsTable.gallery,
+    tags: portfolioProjectsTable.tags,
+    featured: portfolioProjectsTable.featured,
+    status: portfolioProjectsTable.status,
+    sortOrder: portfolioProjectsTable.sortOrder,
+    publishedAt: portfolioProjectsTable.publishedAt,
+    scheduledPublishAt: portfolioProjectsTable.scheduledPublishAt,
+    scheduledUnpublishAt: portfolioProjectsTable.scheduledUnpublishAt,
+    updatedAt: portfolioProjectsTable.updatedAt,
+    seo: portfolioProjectsTable.seo
+  };
+}
+
 function rowToPortfolio(
-  row: typeof portfolioProjectsTable.$inferSelect,
+  row: PortfolioRowShape,
   tags = row.tags
 ): PortfolioProject {
   return {
@@ -422,6 +464,7 @@ function rowToPortfolio(
     serviceType: row.serviceType,
     industry: row.industry,
     projectUrl: row.projectUrl,
+    relatedServicePageIds: Array.isArray(row.relatedServicePageIds) ? row.relatedServicePageIds : [],
     coverImage: row.coverImage,
     gallery: row.gallery,
     tags,
@@ -437,6 +480,26 @@ function rowToPortfolio(
       slug: row.slug
     }
   };
+}
+
+async function supportsPortfolioRelationsColumn() {
+  if (portfolioRelationsColumnPromise) {
+    return portfolioRelationsColumnPromise;
+  }
+
+  portfolioRelationsColumnPromise = (async () => {
+    const result = await getDb().execute(sql`
+      select 1
+      from information_schema.columns
+      where table_name = 'portfolio_projects'
+        and column_name = 'related_service_page_ids'
+      limit 1
+    `);
+
+    return result.rows.length > 0;
+  })();
+
+  return portfolioRelationsColumnPromise;
 }
 
 async function ensureDbBootstrap() {
@@ -483,16 +546,19 @@ async function ensureDbBootstrap() {
         .limit(1);
       if (existingPortfolio.length === 0) {
         await withLegacyScheduleFallback(
-          () =>
-            db
+          async () => {
+            const includeRelations = await supportsPortfolioRelationsColumn();
+            await db
               .insert(portfolioProjectsTable)
-              .values(defaultContent.portfolioProjects.map(portfolioToRow))
-              .onConflictDoNothing(),
-          () =>
-            db
+              .values(defaultContent.portfolioProjects.map((project) => portfolioWriteRow(project, includeRelations)))
+              .onConflictDoNothing();
+          },
+          async () => {
+            await db
               .insert(portfolioProjectsTable)
-              .values(defaultContent.portfolioProjects.map(portfolioToLegacyRow))
-              .onConflictDoNothing()
+              .values(defaultContent.portfolioProjects.map((project) => portfolioWriteRow(project, false)))
+              .onConflictDoNothing();
+          }
         );
       }
     }, undefined);
@@ -515,7 +581,11 @@ async function ensureDbBootstrap() {
 
     await withPortfolioTableFallback(async () => {
       const seededPortfolio = await withLegacyScheduleFallback(
-        () => db.select().from(portfolioProjectsTable).then((rows) => rows.map((row) => rowToPortfolio(row))),
+        async () => {
+          const includeRelations = await supportsPortfolioRelationsColumn();
+          const rows = await db.select(portfolioSelectShape(includeRelations)).from(portfolioProjectsTable);
+          return rows.map((row) => rowToPortfolio(row as PortfolioRowShape));
+        },
         () => readLegacyPortfolioProjects()
       );
       await syncPortfolioProjectTagLinks(seededPortfolio);
@@ -556,9 +626,10 @@ async function loadAllPortfolioProjects() {
   return withPortfolioTableFallback(async () => {
     return withLegacyScheduleFallback(async () => {
       await ensureDbBootstrap();
-      const rows = await getDb().select().from(portfolioProjectsTable);
+      const includeRelations = await supportsPortfolioRelationsColumn();
+      const rows = await getDb().select(portfolioSelectShape(includeRelations)).from(portfolioProjectsTable);
       const tagMap = await mapPortfolioProjectTags(rows.map((row) => row.id));
-      return rows.map((row) => rowToPortfolio(row, tagMap.get(row.id) ?? row.tags));
+      return rows.map((row) => rowToPortfolio(row as PortfolioRowShape, tagMap.get(row.id) ?? row.tags));
     }, async () => {
       await ensureDbBootstrap();
       return readLegacyPortfolioProjects();
@@ -595,7 +666,10 @@ export async function replaceAllCmsContent(content: CmsContent) {
   await db.insert(blogPostsTable).values(normalized.blogPosts.map(postToRow));
   await syncBlogPostCategoryLinks(normalized.blogPosts);
   await withPortfolioTableFallback(async () => {
-    await db.insert(portfolioProjectsTable).values(normalized.portfolioProjects.map(portfolioToRow));
+    const includeRelations = await supportsPortfolioRelationsColumn();
+    await db
+      .insert(portfolioProjectsTable)
+      .values(normalized.portfolioProjects.map((project) => portfolioWriteRow(project, includeRelations)));
     await syncPortfolioProjectTagLinks(normalized.portfolioProjects);
   }, undefined);
   await db.insert(mediaAssetsTable).values(normalized.mediaAssets);
@@ -953,14 +1027,15 @@ export async function getPortfolioProjectById(id: string): Promise<PortfolioProj
   return withPortfolioTableFallback(async () => {
     return withLegacyScheduleFallback(async () => {
       await ensureDbBootstrap();
+      const includeRelations = await supportsPortfolioRelationsColumn();
       const row = await getDb()
-        .select()
+        .select(portfolioSelectShape(includeRelations))
         .from(portfolioProjectsTable)
         .where(eq(portfolioProjectsTable.id, id))
         .limit(1);
       if (!row[0]) return null;
       const tagMap = await mapPortfolioProjectTags([id]);
-      return rowToPortfolio(row[0], tagMap.get(id) ?? row[0].tags);
+      return rowToPortfolio(row[0] as PortfolioRowShape, tagMap.get(id) ?? row[0].tags);
     }, async () => {
       await ensureDbBootstrap();
       const result = await getDb().execute<LegacyPortfolioRow>(sql`
@@ -983,15 +1058,16 @@ export async function getPortfolioProjectBySlug(slug: string): Promise<Portfolio
     const normalized = normalizeSlug(slug);
     return withLegacyScheduleFallback(async () => {
       await ensureDbBootstrap();
+      const includeRelations = await supportsPortfolioRelationsColumn();
       const row = await getDb()
-        .select()
+        .select(portfolioSelectShape(includeRelations))
         .from(portfolioProjectsTable)
         .where(eq(portfolioProjectsTable.slug, normalized))
         .limit(1);
       if (!row[0]) return null;
-      if (!isPortfolioProjectLive(rowToPortfolio(row[0]))) return null;
+      if (!isPortfolioProjectLive(rowToPortfolio(row[0] as PortfolioRowShape))) return null;
       const tagMap = await mapPortfolioProjectTags([row[0].id]);
-      return rowToPortfolio(row[0], tagMap.get(row[0].id) ?? row[0].tags);
+      return rowToPortfolio(row[0] as PortfolioRowShape, tagMap.get(row[0].id) ?? row[0].tags);
     }, async () => {
       await ensureDbBootstrap();
       const result = await getDb().execute<LegacyPortfolioRow>(sql`
@@ -1031,6 +1107,7 @@ export async function createPortfolioProject(
     serviceType: payload?.serviceType?.trim() || '',
     industry: payload?.industry?.trim() || '',
     projectUrl: payload?.projectUrl || '',
+    relatedServicePageIds: payload?.relatedServicePageIds ?? [],
     coverImage: payload?.coverImage || '',
     gallery: payload?.gallery ?? [],
     tags: payload?.tags ?? [],
@@ -1052,7 +1129,8 @@ export async function createPortfolioProject(
     }
   };
 
-  await getDb().insert(portfolioProjectsTable).values(portfolioToRow(project));
+  const includeRelations = await supportsPortfolioRelationsColumn();
+  await getDb().insert(portfolioProjectsTable).values(portfolioWriteRow(project, includeRelations));
   await withPortfolioTableFallback(async () => {
     await syncPortfolioProjectTagLinks([project]);
   }, undefined);
@@ -1083,9 +1161,10 @@ export async function updatePortfolioProject(
     updatedAt: nowIso()
   };
 
+  const includeRelations = await supportsPortfolioRelationsColumn();
   await getDb()
     .update(portfolioProjectsTable)
-    .set(portfolioToRow(next))
+    .set(portfolioWriteRow(next, includeRelations))
     .where(eq(portfolioProjectsTable.id, id));
   await withPortfolioTableFallback(async () => {
     await syncPortfolioProjectTagLinks([next]);
@@ -1121,10 +1200,12 @@ export async function setPortfolioProjectStatus(
     updatedAt: nowIso()
   };
 
+  const includeRelations = await supportsPortfolioRelationsColumn();
   await getDb()
     .update(portfolioProjectsTable)
-    .set(portfolioToRow(next))
+    .set(portfolioWriteRow(next, includeRelations))
     .where(eq(portfolioProjectsTable.id, id));
 
   return next;
 }
+

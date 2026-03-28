@@ -8,6 +8,7 @@ import { csrfFetch } from '@/lib/clientCsrf';
 import { AdminShell } from '@/components/AdminShell';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
+import { MediaPickerField } from '@/components/admin/MediaPickerField';
 import { NavigationLinksEditor } from '@/components/admin/NavigationLinksEditor';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
 
@@ -1361,6 +1362,7 @@ export default function AdminSettingsPage() {
     </AdminShell>
   );
 }
+
 
 
 

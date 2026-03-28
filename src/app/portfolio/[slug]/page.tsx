@@ -6,12 +6,16 @@ import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
 import { buildCanonical, buildMetadata } from '@/features/cms/seo';
 import {
+  getPreviewPages,
   getPreviewPortfolioProjectBySlug,
   getPreviewPortfolioProjects,
+  getPublishedPages,
   getPublishedPortfolioProjectBySlug,
   getPublishedPortfolioProjects,
   getSiteSettings
 } from '@/features/cms/publicApi';
+import { getFallbackServiceHref, getServiceLabel, isServiceDetailPageId } from '@/features/cms/servicePages';
+import type { ServiceDetailPageId } from '@/features/cms/types';
 
 type PortfolioDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -47,10 +51,11 @@ export async function generateMetadata({ params }: PortfolioDetailPageProps) {
 export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
   const { slug } = await params;
   const isPreview = (await draftMode()).isEnabled;
-  const [settings, project, allProjects] = await Promise.all([
+  const [settings, project, allProjects, pages] = await Promise.all([
     getSiteSettings(),
     isPreview ? getPreviewPortfolioProjectBySlug(slug) : getPublishedPortfolioProjectBySlug(slug),
-    isPreview ? getPreviewPortfolioProjects() : getPublishedPortfolioProjects()
+    isPreview ? getPreviewPortfolioProjects() : getPublishedPortfolioProjects(),
+    isPreview ? getPreviewPages() : getPublishedPages()
   ]);
   if (!project) notFound();
 
@@ -81,11 +86,28 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
     })
     .slice(0, 3);
 
+  const servicePages = pages.filter(
+    (page): page is (typeof pages)[number] & { id: ServiceDetailPageId } => isServiceDetailPageId(page.id)
+  );
+
+  const pageMap = new Map(
+    servicePages.map((page) => [
+      page.id,
+      {
+        href: page.seo.slug ? `/${page.seo.slug}` : getFallbackServiceHref(page.id),
+        label: page.title || page.navLabel || getServiceLabel(page.id)
+      }
+    ])
+  );
+
+  const relatedServiceId = (project.relatedServicePageIds ?? []).find((id) => pageMap.has(id));
+  const relatedServiceLink = relatedServiceId ? pageMap.get(relatedServiceId) ?? null : null;
+
   return (
     <>
       {isPreview ? <PreviewModeBanner path={`/portfolio/${slug}`} /> : null}
       <SeoJsonLd data={jsonLd} />
-      <PortfolioProjectView project={project} related={related} />
+      <PortfolioProjectView project={project} related={related} relatedServiceLink={relatedServiceLink} />
     </>
   );
 }

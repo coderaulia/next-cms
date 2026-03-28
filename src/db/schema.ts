@@ -77,6 +77,7 @@ export const portfolioProjectsTable = pgTable(
     serviceType: text('service_type').notNull(),
     industry: text('industry').notNull(),
     projectUrl: text('project_url').notNull(),
+    relatedServicePageIds: jsonb('related_service_page_ids').$type<PortfolioProject['relatedServicePageIds']>().notNull(),
     coverImage: text('cover_image').notNull(),
     gallery: jsonb('gallery').$type<string[]>().notNull(),
     tags: jsonb('tags').$type<string[]>().notNull(),

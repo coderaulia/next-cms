@@ -34,14 +34,28 @@ const fontAccent = Playfair_Display({
   display: 'swap'
 });
 
-export const metadata: Metadata = {
-  metadataBase: resolveMetadataBase(),
-  title: {
-    default: siteProfile.brand.wordmark,
-    template: '%s'
-  },
-  description: 'High-performance CMS starter with editable pages, blog, portfolio, and admin workflows.'
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const icon = settings.branding.siteIcon || settings.branding.headerLogo || settings.organizationLogo || undefined;
+
+  return {
+    metadataBase: resolveMetadataBase(),
+    title: {
+      default: settings.siteName || siteProfile.brand.wordmark,
+      template: '%s'
+    },
+    description:
+      settings.seo.defaultMetaDescription ||
+      'High-performance CMS starter with editable pages, blog, portfolio, and admin workflows.',
+    icons: icon
+      ? {
+          icon,
+          shortcut: icon,
+          apple: icon
+        }
+      : undefined
+  };
+}
 
 export default async function RootLayout({
   children
@@ -89,7 +103,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${fontBody.variable} ${fontAccent.variable}`}>
+    <html lang={settings.general.language || 'en'} className={`${fontBody.variable} ${fontAccent.variable}`}>
       <body className="v2-site">
         <ChunkRecoveryScript />
         <Suspense fallback={null}>

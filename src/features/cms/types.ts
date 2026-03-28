@@ -10,6 +10,13 @@ export type PageId =
   | 'service-mobile-business-app'
   | 'service-official-business-email';
 
+export type ServiceDetailPageId =
+  | 'service-website-development'
+  | 'service-custom-business-tools'
+  | 'service-secure-online-shops'
+  | 'service-mobile-business-app'
+  | 'service-official-business-email';
+
 export type SectionLayout = 'stacked' | 'split';
 
 export type BlogStatus = 'draft' | 'published';
@@ -197,6 +204,7 @@ export type PortfolioProject = {
   serviceType: string;
   industry: string;
   projectUrl: string;
+  relatedServicePageIds: ServiceDetailPageId[];
   coverImage: string;
   gallery: string[];
   tags: string[];
@@ -300,6 +308,9 @@ export type SocialSettings = {
 };
 
 export type BrandingSettings = {
+  headerLogo: string;
+  footerLogo: string;
+  siteIcon: string;
   footerTagline: string;
   footerBadgePrimary: string;
   footerBadgeSecondary: string;

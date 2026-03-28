@@ -11,6 +11,7 @@ type SiteFooterProps = {
 
 export function SiteFooter({ siteName, settings }: SiteFooterProps) {
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
+  const footerLogo = settings.branding.footerLogo || settings.branding.headerLogo || settings.organizationLogo;
 
   const navigatorLinks = settings.navigation.footerNavigatorLinks.filter((link) => link.enabled);
   const serviceLinks = settings.navigation.footerServiceLinks.filter((link) => link.enabled);
@@ -60,13 +61,19 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
         <div className="grid md:grid-cols-4 gap-12 md:gap-24 mb-24">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 bg-gradient-to-br from-vanailaNavy to-deepSlate rounded-xl flex items-center justify-center text-white font-display font-black text-2xl rotate-3 shadow-lg">
-                {siteProfile.brand.mark}
-              </div>
-              <span className="font-display text-3xl font-black tracking-tighter text-deepSlate">
-                {brandName}
-                <span className="text-electricBlue">.</span>
-              </span>
+              {footerLogo ? (
+                <img src={footerLogo} alt={brandName} className="h-12 w-auto max-w-[220px] object-contain" />
+              ) : (
+                <>
+                  <div className="w-12 h-12 bg-gradient-to-br from-vanailaNavy to-deepSlate rounded-xl flex items-center justify-center text-white font-display font-black text-2xl rotate-3 shadow-lg">
+                    {siteProfile.brand.mark}
+                  </div>
+                  <span className="font-display text-3xl font-black tracking-tighter text-deepSlate">
+                    {brandName}
+                    <span className="text-electricBlue">.</span>
+                  </span>
+                </>
+              )}
             </div>
             <p className="text-slate-500 font-light text-lg max-w-md mb-8 leading-relaxed">
               {settings.branding.footerTagline}

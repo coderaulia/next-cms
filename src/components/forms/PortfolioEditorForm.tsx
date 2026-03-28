@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import type { PortfolioProject } from '@/features/cms/types';
+import type { LandingPage, PortfolioProject, ServiceDetailPageId } from '@/features/cms/types';
 import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/editorSchedule';
 import { toFieldErrorMap, validatePortfolioEditor } from '@/features/cms/editorValidation';
 import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
+import { getFallbackServiceHref, getServiceLabel, isServiceDetailPageId, serviceDetailPageIds } from '@/features/cms/servicePages';
 import { csrfFetch } from '@/lib/clientCsrf';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
@@ -18,6 +19,18 @@ type PortfolioEditorFormProps = {
   canPublish?: boolean;
   canDelete?: boolean;
 };
+
+type ServiceOption = {
+  id: ServiceDetailPageId;
+  label: string;
+  href: string;
+};
+
+const fallbackServiceOptions: ServiceOption[] = serviceDetailPageIds.map((id) => ({
+  id,
+  label: getServiceLabel(id),
+  href: getFallbackServiceHref(id)
+}));
 
 function normalizePreviewHref(project: PortfolioProject) {
   const slug = project.seo.slug.trim();
@@ -40,6 +53,12 @@ function fromKeywordInput(value: string) {
     .filter(Boolean);
 }
 
+function normalizeProjectShape(project: PortfolioProject): PortfolioProject {
+  return {
+    ...project,
+    relatedServicePageIds: Array.isArray(project.relatedServicePageIds) ? project.relatedServicePageIds : []
+  };
+}
 
 export function PortfolioEditorForm({
   initialProject,
@@ -47,24 +66,50 @@ export function PortfolioEditorForm({
   canPublish = true,
   canDelete = true
 }: PortfolioEditorFormProps) {
-  const [project, setProject] = useState(initialProject);
-  const [baseline, setBaseline] = useState(initialProject);
+  const [project, setProject] = useState(normalizeProjectShape(initialProject));
+  const [baseline, setBaseline] = useState(normalizeProjectShape(initialProject));
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialProject.updatedAt ?? null);
   const [revisionReloadKey, setRevisionReloadKey] = useState(0);
+  const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>(fallbackServiceOptions);
   const router = useRouter();
 
   useEffect(() => {
-    setProject(initialProject);
-    setBaseline(initialProject);
+    const normalized = normalizeProjectShape(initialProject);
+    setProject(normalized);
+    setBaseline(normalized);
     setLastSavedAt(initialProject.updatedAt ?? null);
   }, [initialProject]);
 
-  const isDirty = useMemo(
-    () => JSON.stringify(project) !== JSON.stringify(baseline),
-    [project, baseline]
-  );
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadServiceOptions() {
+      const response = await csrfFetch('/api/admin/pages');
+      if (!response.ok) return;
+      const payload = (await response.json()) as { pages: LandingPage[] };
+      const servicePages = payload.pages.filter(
+        (page): page is LandingPage & { id: ServiceDetailPageId } => isServiceDetailPageId(page.id)
+      );
+      const nextOptions = servicePages.map((page) => ({
+        id: page.id,
+        label: page.title || page.navLabel || getServiceLabel(page.id),
+        href: page.seo.slug ? `/${page.seo.slug}` : getFallbackServiceHref(page.id)
+      }));
+
+      if (!cancelled && nextOptions.length > 0) {
+        setServiceOptions(nextOptions);
+      }
+    }
+
+    void loadServiceOptions();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const isDirty = useMemo(() => JSON.stringify(project) !== JSON.stringify(baseline), [project, baseline]);
   const previewHref = normalizePreviewHref(project);
   const previewModePath = previewModeHref(previewHref);
   const publicationLabel = getPortfolioProjectPublicationLabel(project);
@@ -98,14 +143,15 @@ export function PortfolioEditorForm({
     }
 
     const payload = (await response.json()) as { project: PortfolioProject };
-    setProject(payload.project);
-    setBaseline(payload.project);
+    const normalized = normalizeProjectShape(payload.project);
+    setProject(normalized);
+    setBaseline(normalized);
     setLastSavedAt(payload.project.updatedAt ?? null);
     setNotice('Project saved');
     setRevisionReloadKey((current) => current + 1);
 
     if (isNew) {
-      router.replace(`/admin/portfolio/${payload.project.id}`);
+      router.replace(`/admin/portfolio/${normalized.id}`);
     }
   }, [canSave, isNew, project, router, validationIssues.length]);
 
@@ -125,8 +171,9 @@ export function PortfolioEditorForm({
     }
 
     const payload = (await response.json()) as { project: PortfolioProject };
-    setProject(payload.project);
-    setBaseline(payload.project);
+    const normalized = normalizeProjectShape(payload.project);
+    setProject(normalized);
+    setBaseline(normalized);
     setLastSavedAt(payload.project.updatedAt ?? null);
     setNotice('Project published');
     setRevisionReloadKey((current) => current + 1);
@@ -143,8 +190,9 @@ export function PortfolioEditorForm({
     }
 
     const payload = (await response.json()) as { project: PortfolioProject };
-    setProject(payload.project);
-    setBaseline(payload.project);
+    const normalized = normalizeProjectShape(payload.project);
+    setProject(normalized);
+    setBaseline(normalized);
     setLastSavedAt(payload.project.updatedAt ?? null);
     setNotice('Project moved to draft');
     setRevisionReloadKey((current) => current + 1);
@@ -197,7 +245,10 @@ export function PortfolioEditorForm({
         <div className="admin-inline-header">
           <div>
             <h2>{project.title || 'Untitled project'}</h2>
-            <p className="admin-subtle">Ctrl/Cmd + S to save. Status: {publicationLabel}. Last saved {lastSavedAt ? new Date(lastSavedAt).toLocaleString() : 'not yet'}.</p>
+            <p className="admin-subtle">
+              Ctrl/Cmd + S to save. Status: {publicationLabel}. Last saved{' '}
+              {lastSavedAt ? new Date(lastSavedAt).toLocaleString() : 'not yet'}.
+            </p>
           </div>
           <div className="admin-actions">
             <span className={`admin-chip ${isDirty ? 'admin-chip-warning' : 'admin-chip-success'}`}>
@@ -244,8 +295,9 @@ export function PortfolioEditorForm({
         reloadKey={revisionReloadKey}
         emptyMessage="Manual saves and publishing changes for this project will appear here."
         onRestore={(restoredProject) => {
-          setProject(restoredProject);
-          setBaseline(restoredProject);
+          const normalized = normalizeProjectShape(restoredProject);
+          setProject(normalized);
+          setBaseline(normalized);
           setLastSavedAt(restoredProject.updatedAt ?? null);
           setNotice('Project restored from revision history.');
         }}
@@ -334,7 +386,39 @@ export function PortfolioEditorForm({
               value={project.projectUrl}
               onChange={(event) => setProject({ ...project, projectUrl: event.target.value })}
             />
+            <span className="admin-subtle">Use this for an external live project URL or a manual destination. Internal service linking is managed below.</span>
           </label>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <fieldset className="admin-card" style={{ padding: 16 }}>
+              <legend className="admin-subtle" style={{ padding: '0 6px' }}>Related services</legend>
+              <p className="admin-subtle">These service pages will automatically show this project in their related work section.</p>
+              <div className="admin-grid-2" style={{ marginTop: 12 }}>
+                {serviceOptions.map((option) => {
+                  const checked = (project.relatedServicePageIds ?? []).includes(option.id);
+                  return (
+                    <label key={option.id} className="admin-checkbox-row">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(event) =>
+                          setProject({
+                            ...project,
+                            relatedServicePageIds: event.target.checked
+                              ? [...(project.relatedServicePageIds ?? []), option.id]
+                              : (project.relatedServicePageIds ?? []).filter((value) => value !== option.id)
+                          })
+                        }
+                      />
+                      <span>
+                        <strong>{option.label}</strong>
+                        <span className="admin-subtle" style={{ display: 'block' }}>{option.href}</span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          </div>
           <div style={{ gridColumn: '1 / -1' }}>
             <MediaPickerField
               label="Cover image"

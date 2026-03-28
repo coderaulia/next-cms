@@ -26,7 +26,7 @@ type DynamicPageProps = {
 export async function generateStaticParams() {
   const pages = await getPublishedPages();
   return pages
-    .filter((page) => page.seo.slug.trim().length > 0)
+    .filter((page) => page.seo.slug.trim().length > 0 && !isReservedPublicSlug(page.seo.slug))
     .map((page) => ({
       slug: page.seo.slug
     }));
@@ -81,9 +81,7 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
     );
   }
   if (isServiceDetailPageId(page.id)) {
-    const portfolioProjects = await (isPreview
-      ? getPreviewPortfolioProjects()
-      : getPublishedPortfolioProjects());
+    const portfolioProjects = await (isPreview ? getPreviewPortfolioProjects() : getPublishedPortfolioProjects());
     return (
       <>
         {previewBanner}

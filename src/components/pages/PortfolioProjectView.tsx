@@ -8,9 +8,13 @@ import { Reveal } from '@/components/animations/Reveal';
 type PortfolioProjectViewProps = {
   project: PortfolioProject;
   related: PortfolioProject[];
+  relatedServiceLink?: {
+    href: string;
+    label: string;
+  } | null;
 };
 
-export function PortfolioProjectView({ project, related }: PortfolioProjectViewProps) {
+export function PortfolioProjectView({ project, related, relatedServiceLink = null }: PortfolioProjectViewProps) {
   const gallery = project.gallery.length > 0 ? project.gallery : [project.coverImage].filter(Boolean);
 
   return (
@@ -57,13 +61,18 @@ export function PortfolioProjectView({ project, related }: PortfolioProjectViewP
             <p>{project.clientName || 'Confidential client'}</p>
             <p className="admin-subtle">{project.serviceType || 'Implementation'}</p>
             <p className="admin-subtle">{project.industry || 'Industry not specified'}</p>
-            {project.projectUrl ? (
+            {relatedServiceLink ? (
+              <Link href={relatedServiceLink.href} className="v2-btn v2-btn-secondary">
+                View {relatedServiceLink.label}
+              </Link>
+            ) : null}
+            {project.projectUrl && (!relatedServiceLink || !project.projectUrl.startsWith('/')) ? (
               <Link
                 href={project.projectUrl}
                 className="v2-btn v2-btn-secondary"
                 {...(project.projectUrl.startsWith('/') ? {} : { target: '_blank', rel: 'noreferrer' })}
               >
-                {project.projectUrl.startsWith('/') ? 'View Related Service' : 'Visit Project'}
+                {project.projectUrl.startsWith('/') ? 'Open Project Link' : 'Visit Project'}
               </Link>
             ) : null}
           </article>

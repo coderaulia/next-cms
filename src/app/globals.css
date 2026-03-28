@@ -2789,3 +2789,18 @@ button:disabled {
   background: #fef2f2;
   border-color: #dc2626;
 }
+
+.admin-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.admin-checkbox-row input {
+  margin-top: 4px;
+}
+

@@ -14,6 +14,7 @@ import type {
   PortfolioStatus,
   SiteSettings
 } from './types';
+import { isServiceDetailPageId } from './servicePages';
 
 const PAGE_IDS: PageId[] = [
   'home',
@@ -414,6 +415,10 @@ export function validatePortfolioProject(payload: unknown): PortfolioProject | n
     .filter((tag) => tag.length > 0)
     .filter((tag, index, list) => list.indexOf(tag) === index);
 
+  const relatedServicePageIds = asStringArray(payload.relatedServicePageIds)
+    .filter((id): id is PortfolioProject['relatedServicePageIds'][number] => isServiceDetailPageId(id))
+    .filter((id, index, list) => list.indexOf(id) === index);
+
   return {
     id: asString(payload.id) || crypto.randomUUID(),
     title,
@@ -425,6 +430,7 @@ export function validatePortfolioProject(payload: unknown): PortfolioProject | n
     serviceType: asString(payload.serviceType),
     industry: asString(payload.industry),
     projectUrl: asSafeHref(payload.projectUrl),
+    relatedServicePageIds,
     coverImage: asSafeAssetUrl(payload.coverImage),
     gallery,
     tags,
@@ -638,6 +644,9 @@ export function validateSiteSettings(payload: unknown): SiteSettings | null {
       emailHref: asSafeHref(social.emailHref)
     },
     branding: {
+      headerLogo: asSafeAssetUrl(branding.headerLogo),
+      footerLogo: asSafeAssetUrl(branding.footerLogo),
+      siteIcon: asSafeAssetUrl(branding.siteIcon),
       footerTagline: asString(branding.footerTagline),
       footerBadgePrimary: asString(branding.footerBadgePrimary),
       footerBadgeSecondary: asString(branding.footerBadgeSecondary),
