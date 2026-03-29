@@ -13,6 +13,23 @@ export const nowIso = () => new Date().toISOString();
 export const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
+function isPlaceholderAssetUrl(value: string) {
+  try {
+    const parsed = new URL(value);
+    return /(^|\.)placehold\.co$/i.test(parsed.hostname) || /(^|\.)via\.placeholder\.com$/i.test(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function normalizeBrandAssetValue(value: unknown) {
+  const candidate = String(value ?? '').trim();
+  if (!candidate || isPlaceholderAssetUrl(candidate)) {
+    return '';
+  }
+  return candidate;
+}
+
 function normalizeLinks(
   input: unknown,
   fallback: SiteSettings['navigation']['headerLinks']
@@ -99,9 +116,10 @@ export function normalizeSettings(input: unknown): SiteSettings {
     next.seo.defaultOgImage = source.defaultOgImage.trim();
   }
 
-  if (typeof source.organizationLogo === 'string' && source.organizationLogo.trim().length > 0) {
-    next.organizationLogo = source.organizationLogo.trim();
-  }
+  next.branding.headerLogo = normalizeBrandAssetValue(next.branding.headerLogo);
+  next.branding.footerLogo = normalizeBrandAssetValue(next.branding.footerLogo);
+  next.branding.siteIcon = normalizeBrandAssetValue(next.branding.siteIcon);
+  next.organizationLogo = normalizeBrandAssetValue(source.organizationLogo ?? next.organizationLogo);
   if (!next.organizationLogo && next.branding.headerLogo) {
     next.organizationLogo = next.branding.headerLogo;
   }

@@ -941,7 +941,7 @@ export const defaultContent: CmsContent = {
     siteName: 'Example Studio.',
     baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
     organizationName: process.env.CMS_ORG_NAME ?? 'Example Studio',
-    organizationLogo: process.env.CMS_ORG_LOGO ?? 'https://placehold.co/120x120/png',
+    organizationLogo: process.env.CMS_ORG_LOGO ?? '',
     defaultOgImage: 'https://placehold.co/1200x630/png'
   },
   pages: {

@@ -159,6 +159,11 @@ function SettingsEditor() {
     return entries;
   }, [categories, settings?.writing.defaultPostCategory]);
 
+  const usesFallbackBrandMark =
+    !settings?.organizationLogo &&
+    !settings?.branding.headerLogo &&
+    !settings?.branding.footerLogo;
+
   const save = async () => {
     if (!settings) return;
     setSaving(true);
@@ -384,6 +389,11 @@ function SettingsEditor() {
                 helperText="Used for browser tab icons and mobile app icons when available."
               />
             </div>
+            {usesFallbackBrandMark ? (
+              <p className="admin-subtle" style={{ gridColumn: '1 / -1', marginTop: -4 }}>
+                No uploaded logo is set right now. The public site is using the built-in text logo fallback until you upload a real header or organization logo.
+              </p>
+            ) : null}
             <div style={{ gridColumn: '1 / -1' }}>
               <NavigationLinksEditor
                 label="Header menu links"
