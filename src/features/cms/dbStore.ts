@@ -50,6 +50,7 @@ let warnedMissingPortfolioTable = false;
 let warnedMissingScheduleColumns = false;
 let warnedMissingPortfolioRelationsColumn = false;
 let portfolioRelationsColumnPromise: Promise<boolean> | null = null;
+let warnedSkippedBuildBootstrap = false;
 
 function extractErrorCode(error: unknown): string | undefined {
   if (!error || typeof error !== 'object') return undefined;
@@ -84,6 +85,19 @@ function warnMissingPortfolioRelationsColumn() {
   if (warnedMissingPortfolioRelationsColumn) return;
   warnedMissingPortfolioRelationsColumn = true;
   console.warn('related_service_page_ids column is not available yet; falling back to legacy portfolio queries.');
+}
+
+function isBuildPhase() {
+  return (
+    process.env.NEXT_PHASE === 'phase-production-build' ||
+    process.env.npm_lifecycle_event === 'build'
+  );
+}
+
+function warnSkippedBuildBootstrap() {
+  if (warnedSkippedBuildBootstrap) return;
+  warnedSkippedBuildBootstrap = true;
+  console.warn('Skipping CMS database bootstrap during build; build should not mutate production content.');
 }
 
 async function withPortfolioTableFallback<T>(task: () => Promise<T>, fallback: T): Promise<T> {
@@ -523,6 +537,11 @@ async function supportsPortfolioRelationsColumn() {
 }
 
 async function ensureDbBootstrap() {
+  if (isBuildPhase()) {
+    warnSkippedBuildBootstrap();
+    return;
+  }
+
   if (bootstrapPromise) {
     await bootstrapPromise;
     return;
