@@ -6,6 +6,7 @@ import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { AboutPageView } from '@/components/pages/AboutPageView';
 import { ContactPageView } from '@/components/pages/ContactPageView';
 import { PartnershipPageView } from '@/components/pages/PartnershipPageView';
+import { ProductHrisPageView } from '@/components/pages/ProductHrisPageView';
 import { ServiceDetailPageView } from '@/components/pages/ServiceDetailPageView';
 import { ServicePageView } from '@/components/pages/ServicePageView';
 import { isReservedPublicSlug, isServiceDetailPageId } from '@/config/site-profile';
@@ -69,6 +70,14 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
       <>
         {previewBanner}
         <ServicePageView page={page} />
+      </>
+    );
+  }
+  if (page.id === 'product-hris') {
+    return (
+      <>
+        {previewBanner}
+        <ProductHrisPageView page={page} />
       </>
     );
   }

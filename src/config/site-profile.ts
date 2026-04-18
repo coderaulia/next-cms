@@ -6,16 +6,18 @@ export const siteProfile = {
     wordmark: 'vanaila.'
   },
   navigation: {
-    primaryPageOrder: ['home', 'about', 'service', 'partnership', 'contact'] as const satisfies readonly PageId[],
+    primaryPageOrder: ['home', 'about', 'service', 'product-hris', 'partnership', 'contact'] as const satisfies readonly PageId[],
     fallbackNavigator: [
       { href: '/', label: 'Home' },
       { href: '/about', label: 'About Us' },
       { href: '/service', label: 'Services' },
+      { href: '/hris', label: 'HRIS' },
       { href: '/blog', label: 'Insights' },
       { href: '/partnership', label: 'Partnership' },
       { href: '/contact', label: 'Contact' }
     ],
     fallbackServices: [
+      { href: '/hris', label: 'Vanaila HRIS' },
       { href: '/website-development', label: 'Website Development' },
       { href: '/secure-online-shops', label: 'Secure Online Shops' },
       { href: '/mobile-business-app', label: 'Mobile Business App' },

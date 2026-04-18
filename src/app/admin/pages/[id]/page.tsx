@@ -1,12 +1,19 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
-import { PageEditorForm } from '@/components/forms/PageEditorForm';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { LandingPage } from '@/features/cms/types';
+
+const PageEditorForm = dynamic(
+  () => import('@/components/forms/PageEditorForm').then((module) => module.PageEditorForm),
+  {
+    loading: () => <p>Loading page editor...</p>
+  }
+);
 
 type PageEditorScreenProps = {
   user: AdminSessionUser;

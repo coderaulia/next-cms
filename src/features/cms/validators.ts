@@ -20,6 +20,7 @@ const PAGE_IDS: PageId[] = [
   'home',
   'about',
   'service',
+  'product-hris',
   'contact',
   'partnership',
   'service-website-development',

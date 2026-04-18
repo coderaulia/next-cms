@@ -1,12 +1,19 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
-import { PortfolioEditorForm } from '@/components/forms/PortfolioEditorForm';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { PortfolioProject } from '@/features/cms/types';
+
+const PortfolioEditorForm = dynamic(
+  () => import('@/components/forms/PortfolioEditorForm').then((module) => module.PortfolioEditorForm),
+  {
+    loading: () => <p>Loading project editor...</p>
+  }
+);
 
 type PortfolioEditorProps = {
   user: AdminSessionUser;

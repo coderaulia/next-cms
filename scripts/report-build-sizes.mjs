@@ -1,4 +1,5 @@
-import { readdir, stat } from 'node:fs/promises';
+import { gzipSync } from 'node:zlib';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 
 async function walkFiles(directory) {
@@ -13,8 +14,8 @@ async function walkFiles(directory) {
     }
 
     if (entry.isFile()) {
-      const details = await stat(fullPath);
-      files.push({ path: fullPath, size: details.size });
+      const [details, content] = await Promise.all([stat(fullPath), readFile(fullPath)]);
+      files.push({ path: fullPath, size: details.size, gzipSize: gzipSync(content, { level: 9 }).length });
     }
   }
 
@@ -38,15 +39,17 @@ function formatBytes(bytes) {
 
 function summarizeFiles(root, files) {
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+  const totalGzipSize = files.reduce((sum, file) => sum + file.gzipSize, 0);
   const largest = [...files]
     .sort((left, right) => right.size - left.size)
     .slice(0, 10)
     .map((file) => ({
       path: relative(root, file.path).replace(/\\/g, '/'),
-      size: file.size
+      size: file.size,
+      gzipSize: file.gzipSize
     }));
 
-  return { totalSize, largest };
+  return { totalSize, totalGzipSize, largest };
 }
 
 async function reportDirectory(rootPath, label) {
@@ -54,9 +57,11 @@ async function reportDirectory(rootPath, label) {
   const files = await walkFiles(absolute);
   const summary = summarizeFiles(absolute, files);
 
-  console.log(`${label}: ${formatBytes(summary.totalSize)} across ${files.length} files`);
+  console.log(
+    `${label}: ${formatBytes(summary.totalSize)} raw, ${formatBytes(summary.totalGzipSize)} gzip across ${files.length} files`
+  );
   for (const file of summary.largest) {
-    console.log(`  ${formatBytes(file.size).padStart(8)}  ${file.path}`);
+    console.log(`  ${formatBytes(file.size).padStart(8)} raw  ${formatBytes(file.gzipSize).padStart(8)} gzip  ${file.path}`);
   }
   console.log('');
 }

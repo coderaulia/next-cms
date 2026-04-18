@@ -692,6 +692,180 @@ const serviceEmail = page(
   }
 );
 
+const productHris = page(
+  'product-hris',
+  'Vanaila HRIS',
+  'HRIS',
+  'Performance management software for Indonesian HR teams handling appraisals, KPIs, probation, and HR documentation in one browser-based platform.',
+  [
+    section(
+      'hero',
+      'Stop Managing Performance.|Start Developing People.',
+      'One platform to run your entire performance lifecycle, from probation to appraisals, KPIs to improvement plans, built for Indonesian organisations that are serious about growing their people.',
+      {
+        ctaLabel: 'Performance management, built in',
+        ctaHref: '/contact',
+        mediaImage: '/portfolio/hris/employees.jpeg',
+        mediaAlt: 'Vanaila HRIS employee and role management workspace',
+        layout: 'stacked'
+      }
+    ),
+    section('pain-intro', 'Sound familiar?', "There's a better way to run performance management, and it does not require a 6-month implementation.", {
+      ctaLabel: 'Operational friction',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('pain-1', 'HR still chases managers for appraisal forms via WhatsApp', 'Manual follow-ups delay reviews and make accountability impossible to track.', {
+      ctaLabel: 'chat',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('pain-2', 'KPI targets live in spreadsheets no one updates', 'Performance targets drift because the system of record is fragmented from the people expected to use it.', {
+      ctaLabel: 'schema',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('pain-3', 'Probation deadlines slip through the cracks', 'Teams discover critical milestones too late, after extension letters and review notes should already be ready.', {
+      ctaLabel: 'calendar_month',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('pain-4', 'Performance data is scattered and hard to report', 'Directors need clear signals, but HR spends review season stitching numbers together by hand.', {
+      ctaLabel: 'analytics',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('pain-5', "Nobody knows who's due for a review this month", 'The lack of visibility creates surprises, inconsistent follow-through, and unnecessary compliance risk.', {
+      ctaLabel: 'schedule',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('product-intro', 'Meet Vanaila HRIS,|performance built in, not bolted on', 'Vanaila is a browser-based HR suite designed for the full employee performance lifecycle. No desktop installs. No complex setup. Role-aware from day one, so managers see their teams, HR sees everything, and employees only see what is theirs.', {
+      ctaLabel: 'Browser-based HR suite',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/kpi-management.jpeg',
+      mediaAlt: 'Vanaila HRIS KPI management workspace',
+      layout: 'split'
+    }),
+    section('feature-intro', 'Everything your HR team needs to run a fair, consistent, and documented appraisal process', 'One system to define standards, run reviews, generate documents, and report with confidence.', {
+      ctaLabel: 'Core product modules',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('feature-1', 'Competency assessments', 'Define the competency frameworks that matter for your organisation. Score employees consistently against configurable criteria, not guesswork, not gut feeling. Every assessment is recorded, traceable, and reportable.', {
+      ctaLabel: 'fact_check',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/add-assessment.jpeg',
+      mediaAlt: 'Vanaila HRIS competency assessment input',
+      layout: 'stacked'
+    }),
+    section('feature-2', 'KPI governance', 'Set targets. Track progress. Run approvals. KPI definitions flow from HR down to managers and employees with a built-in workflow, so everyone knows what is expected and results are documented when review season arrives.', {
+      ctaLabel: 'trending_up',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/kpi-division.jpeg',
+      mediaAlt: 'Vanaila HRIS division KPI governance view',
+      layout: 'stacked'
+    }),
+    section('feature-3', 'Probation and PIP workflows', 'Never miss a probation deadline again. Vanaila tracks every new hire probation period, flags upcoming milestones, and keeps a full audit trail of performance improvement plans.', {
+      ctaLabel: 'calendar_month',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/probation-pip.jpeg',
+      mediaAlt: 'Vanaila HRIS probation and PIP workflow screen',
+      layout: 'stacked'
+    }),
+    section('feature-4', 'HR documents generated in seconds', 'From warning letters to employment contracts, generate legally formatted HR documents directly from the platform. Templates are editable, signer-ready, and export as clean A4 PDFs.', {
+      ctaLabel: 'description',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/hr-document.jpeg',
+      mediaAlt: 'Vanaila HRIS HR document generator',
+      layout: 'stacked'
+    }),
+    section('feature-5', 'Dashboard and reporting', 'Aggregated performance views for directors and HR leadership. Export KPI and probation reports without digging through spreadsheets. Real data, on demand.', {
+      ctaLabel: 'analytics',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/kpi-records.jpeg',
+      mediaAlt: 'Vanaila HRIS KPI records and reporting dashboard',
+      layout: 'stacked'
+    }),
+    section('feature-6', 'Role-aware access, always', 'Employees. Managers. HR. Directors. Every user sees exactly what they should, nothing more, nothing less. Built-in role separation means no accidental data exposure and no permission headaches.', {
+      ctaLabel: 'verified_user',
+      ctaHref: '',
+      mediaImage: '/portfolio/hris/employees.jpeg',
+      mediaAlt: 'Vanaila HRIS employee access and role separation view',
+      layout: 'stacked'
+    }),
+    section('trust', 'Built for how Indonesian HR teams actually work', "We did not build a generic HRIS and translate it. Vanaila was designed with Indonesian HR workflows in mind, including Bahasa Indonesia document templates, local probation and PIP practices, and the audit documentation your disnaker compliance process actually requires.", {
+      ctaLabel: 'Local-first workflows',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'split'
+    }),
+    section('how-intro', 'Up and running without an IT project', 'Launch in clear operational steps instead of a heavyweight implementation cycle.', {
+      ctaLabel: 'Fast rollout',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('how-1', 'Set up your organisation', 'Add employees, assign roles, and configure your competency and KPI frameworks so every review starts from the same baseline.', {
+      ctaLabel: 'settings_suggest',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('how-2', 'Run your cycles', 'Track probation, mid-year and annual appraisals, KPI reviews, and PIP monitoring in one role-aware workflow.', {
+      ctaLabel: 'sync_alt',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('how-3', 'Generate and export', 'Produce official HR documents, export reports, and keep a full history of every decision when leadership or compliance asks for it.', {
+      ctaLabel: 'description',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    section('pricing', "Performance management should not cost a fortune|to implement", 'Vanaila is priced for growing Indonesian companies, not enterprise multinationals. No per-module licensing. No surprise implementation fees.', {
+      ctaLabel: 'Lihat Paket Harga',
+      ctaHref: '/contact',
+      mediaImage: '/contact',
+      mediaAlt: 'Hubungi Kami untuk Demo',
+      layout: 'split'
+    }),
+    section('cta', 'Your next appraisal cycle|does not have to be a fire drill', 'Give your HR team the structure, the tools, and the records they need to run performance management with confidence.', {
+      ctaLabel: 'Mulai Sekarang - Gratis',
+      ctaHref: '/contact',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    })
+  ],
+  {
+    slug: 'hris',
+    metaTitle: 'Vanaila HRIS | Performance Management Software for Indonesian Teams',
+    metaDescription: 'Manage appraisals, KPI reviews, probation workflows, PIP tracking, and HR document generation in one role-aware HRIS platform.',
+    keywords: ['hris indonesia', 'performance management software', 'kpi management system', 'probation tracking software', 'hr appraisal system']
+  }
+);
+
 const partnership = page(
   'partnership',
   'Partnership Program',
@@ -830,6 +1004,7 @@ export const defaultContent: CmsContent = {
         { id: 'nav-home', label: 'Home', href: '/', enabled: true },
         { id: 'nav-about', label: 'About', href: '/about', enabled: true },
         { id: 'nav-services', label: 'Services', href: '/service', enabled: true },
+        { id: 'nav-hris', label: 'HRIS', href: '/hris', enabled: true },
         { id: 'nav-insights', label: 'Insights', href: '/blog', enabled: true },
         { id: 'nav-partnership', label: 'Partnership', href: '/partnership', enabled: true },
         { id: 'nav-portfolio', label: 'Portfolio', href: '/portfolio', enabled: true }
@@ -840,12 +1015,14 @@ export const defaultContent: CmsContent = {
         { id: 'footer-nav-home', label: 'Home', href: '/', enabled: true },
         { id: 'footer-nav-about', label: 'About Us', href: '/about', enabled: true },
         { id: 'footer-nav-services', label: 'Services', href: '/service', enabled: true },
+        { id: 'footer-nav-hris', label: 'Vanaila HRIS', href: '/hris', enabled: true },
         { id: 'footer-nav-insights', label: 'Insights', href: '/blog', enabled: true },
         { id: 'footer-nav-partnership', label: 'Partnership', href: '/partnership', enabled: true },
         { id: 'footer-nav-contact', label: 'Contact', href: '/contact', enabled: true },
         { id: 'footer-nav-portfolio', label: 'Portfolio', href: '/portfolio', enabled: true }
       ],
       footerServiceLinks: [
+        { id: 'footer-service-hris', label: 'Vanaila HRIS', href: '/hris', enabled: true },
         { id: 'footer-service-web', label: 'Website Development', href: '/website-development', enabled: true },
         { id: 'footer-service-shop', label: 'Secure Online Shops', href: '/secure-online-shops', enabled: true },
         { id: 'footer-service-mobile', label: 'Mobile Business App', href: '/mobile-business-app', enabled: true },
@@ -992,6 +1169,7 @@ export const defaultContent: CmsContent = {
         keywords: ['digital services', 'website development services', 'custom software services', 'ecommerce development', 'mobile app services']
       }
     ),
+    'product-hris': productHris,
     'service-website-development': serviceWebsite,
     'service-custom-business-tools': serviceTools,
     'service-secure-online-shops': serviceShop,
@@ -1101,8 +1279,8 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       industry: 'Psychology Research',
       projectUrl: '/custom-business-tools',
       relatedServicePageIds: ['service-custom-business-tools'],
-      coverImage: '/portfolio/assessment-app-cover.svg',
-      gallery: ['/portfolio/assessment-app-cover.svg'],
+      coverImage: '/portfolio/assessment-app.jpg',
+      gallery: ['/portfolio/assessment-app.jpg'],
       tags: ['Custom App', 'Research', 'Psychology'],
       featured: false,
       status: 'published',
@@ -1115,7 +1293,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
           'Case study of a custom assessment web app built to help psychologists collect structured research data more efficiently.',
         slug: 'assessment-app',
         canonical: '',
-        socialImage: '/portfolio/assessment-app-cover.svg',
+        socialImage: '/portfolio/assessment-app.jpg',
         noIndex: false,
         keywords: ['assessment web app', 'research data collection', 'psychology app', 'custom web app']
       }
@@ -1171,8 +1349,8 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       industry: 'Energy Export',
       projectUrl: '/secure-online-shops',
       relatedServicePageIds: ['service-secure-online-shops'],
-      coverImage: '/portfolio/greenretech-cover.svg',
-      gallery: ['/portfolio/greenretech-cover.svg'],
+      coverImage: '/portfolio/Greenretech.jpg',
+      gallery: ['/portfolio/Greenretech.jpg'],
       tags: ['WooCommerce', 'Ecommerce', 'Export'],
       featured: false,
       status: 'published',
@@ -1185,7 +1363,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
           'WooCommerce case study for Greenretech, built to sell wood pellet products for international customers with a professional ecommerce experience.',
         slug: 'greenretech',
         canonical: '',
-        socialImage: '/portfolio/greenretech-cover.svg',
+        socialImage: '/portfolio/Greenretech.jpg',
         noIndex: false,
         keywords: ['woocommerce website', 'export ecommerce', 'wood pellet website', 'online shop']
       }
@@ -1276,8 +1454,8 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       industry: 'Tourism & Events',
       projectUrl: '/website-development',
       relatedServicePageIds: ['service-website-development'],
-      coverImage: '/portfolio/maza-adventure-cover.svg',
-      gallery: ['/portfolio/maza-adventure-cover.svg'],
+      coverImage: '/portfolio/maza.jpg',
+      gallery: ['/portfolio/maza.jpg'],
       tags: ['Tourism', 'Events', 'Website'],
       featured: false,
       status: 'published',
@@ -1290,7 +1468,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
           'Website case study for Maza Adventure, built to present event and tour programs with clearer storytelling and conversion-focused structure.',
         slug: 'maza-adventure',
         canonical: '',
-        socialImage: '/portfolio/maza-adventure-cover.svg',
+        socialImage: '/portfolio/maza.jpg',
         noIndex: false,
         keywords: ['tour website', 'event organizer website', 'travel company profile', 'website development']
       }
@@ -1311,8 +1489,8 @@ Draft quickly, review carefully, then publish with SEO checks.`,
       industry: 'Psychology Practice',
       projectUrl: '/website-development',
       relatedServicePageIds: ['service-website-development'],
-      coverImage: '/portfolio/rumah-psikologi-cover.svg',
-      gallery: ['/portfolio/rumah-psikologi-cover.svg'],
+      coverImage: '/portfolio/rumah-psikologi.jpg',
+      gallery: ['/portfolio/rumah-psikologi.jpg'],
       tags: ['Psychology', 'Company Profile', 'Website'],
       featured: false,
       status: 'published',
@@ -1325,7 +1503,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
           'Psychology company profile website case study focused on service clarity, trust-building, and consultation readiness.',
         slug: 'rumah-psikologi',
         canonical: '',
-        socialImage: '/portfolio/rumah-psikologi-cover.svg',
+        socialImage: '/portfolio/rumah-psikologi.jpg',
         noIndex: false,
         keywords: ['psychology website', 'company profile website', 'consultation website', 'website development']
       }

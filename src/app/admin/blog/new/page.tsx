@@ -1,12 +1,19 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
-import { BlogEditorForm } from '@/components/forms/BlogEditorForm';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
+
+const BlogEditorForm = dynamic(
+  () => import('@/components/forms/BlogEditorForm').then((module) => module.BlogEditorForm),
+  {
+    loading: () => <p>Loading post editor...</p>
+  }
+);
 
 type CreateBlogPostProps = {
   user: AdminSessionUser;

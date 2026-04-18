@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "analyze": "node scripts/run-build-analyze.mjs",
+    "audit:src": "node scripts/report-src-sizes.mjs",
     "audit:size": "node scripts/report-build-sizes.mjs",
     "build:audit": "npm run build && npm run audit:size",
     "start": "next start",

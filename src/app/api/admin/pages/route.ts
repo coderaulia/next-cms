@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     'home',
     'about',
     'service',
+    'product-hris',
     'service-website-development',
     'service-custom-business-tools',
     'service-secure-online-shops',
