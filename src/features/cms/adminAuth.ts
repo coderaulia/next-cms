@@ -71,10 +71,24 @@ export type AdminAuditLogEntry = {
 
 declare global {
   var __cmsAdminLoginLockouts: Map<string, LoginLockEntry> | undefined;
+  var __cmsAdminFallbackSessions: Map<string, AdminSession> | undefined;
 }
 
 function normalize(value: string | null | undefined) {
   return (value ?? '').trim();
+}
+
+function extractErrorCode(error: unknown): string | undefined {
+  if (!error || typeof error !== 'object') return undefined;
+  const record = error as { code?: unknown; cause?: unknown };
+  if (typeof record.code === 'string') return record.code;
+  if (record.cause) return extractErrorCode(record.cause);
+  return undefined;
+}
+
+function isMissingAdminSchemaError(error: unknown) {
+  const code = extractErrorCode(error);
+  return code === '42P01' || code === '42703';
 }
 
 function getLoginLockStore() {
@@ -83,6 +97,14 @@ function getLoginLockStore() {
   }
 
   return globalThis.__cmsAdminLoginLockouts;
+}
+
+function getFallbackSessionStore() {
+  if (!globalThis.__cmsAdminFallbackSessions) {
+    globalThis.__cmsAdminFallbackSessions = new Map<string, AdminSession>();
+  }
+
+  return globalThis.__cmsAdminFallbackSessions;
 }
 
 function normalizeLoginIdentifier(email: string) {
@@ -99,6 +121,25 @@ function mapAdminUser(row: AdminUserRow): AdminSessionUser {
     role,
     permissions: permissionsForRole(role)
   };
+}
+
+function getFallbackAdminUser(): AdminSessionUser | null {
+  const password = normalize(env.adminPassword || env.adminToken);
+  if (!password) {
+    return null;
+  }
+
+  return {
+    id: 'env-admin-fallback',
+    email: normalize(env.adminEmail || DEFAULT_ADMIN_EMAIL).toLowerCase(),
+    displayName: normalize(env.adminName || DEFAULT_ADMIN_NAME),
+    role: 'super_admin',
+    permissions: permissionsForRole('super_admin')
+  };
+}
+
+function getFallbackAdminPassword() {
+  return normalize(env.adminPassword || env.adminToken);
 }
 
 function hashValue(value: string) {
@@ -208,12 +249,44 @@ async function createSession(userId: string) {
   return { rawToken, expiresAt };
 }
 
+function createFallbackSession(user: AdminSessionUser) {
+  const rawToken = randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
+  getFallbackSessionStore().set(rawToken, { user, expiresAt });
+  return { rawToken, expiresAt };
+}
+
+function getFallbackSession(rawToken: string): AdminSession | null {
+  const token = normalize(rawToken);
+  if (!token) return null;
+
+  const session = getFallbackSessionStore().get(token);
+  if (!session) return null;
+
+  if (new Date(session.expiresAt).getTime() <= Date.now()) {
+    getFallbackSessionStore().delete(token);
+    return null;
+  }
+
+  return session;
+}
+
 async function deleteSessionByRawToken(rawToken: string) {
   const token = normalize(rawToken);
-  if (!token || !env.databaseUrl) return;
-  await getDb()
-    .delete(adminSessionsTable)
-    .where(eq(adminSessionsTable.sessionToken, hashSessionToken(token)));
+  if (!token) return;
+
+  getFallbackSessionStore().delete(token);
+  if (!env.databaseUrl) return;
+
+  try {
+    await getDb()
+      .delete(adminSessionsTable)
+      .where(eq(adminSessionsTable.sessionToken, hashSessionToken(token)));
+  } catch (error) {
+    if (!isMissingAdminSchemaError(error)) {
+      throw error;
+    }
+  }
 }
 
 async function getLoginLockStateFromDb(identifier: string): Promise<LoginLockState> {
@@ -350,7 +423,13 @@ export async function getLoginLockoutState(email: string): Promise<LoginLockStat
   const identifier = normalizeLoginIdentifier(email);
 
   if (env.databaseUrl) {
-    return getLoginLockStateFromDb(identifier);
+    try {
+      return await getLoginLockStateFromDb(identifier);
+    } catch (error) {
+      if (!isMissingAdminSchemaError(error)) {
+        throw error;
+      }
+    }
   }
 
   return getLoginLockStateFromMemory(identifier);
@@ -360,7 +439,13 @@ export async function registerFailedLoginAttempt(email: string): Promise<LoginLo
   const identifier = normalizeLoginIdentifier(email);
 
   if (env.databaseUrl) {
-    return registerFailedLoginFromDb(identifier);
+    try {
+      return await registerFailedLoginFromDb(identifier);
+    } catch (error) {
+      if (!isMissingAdminSchemaError(error)) {
+        throw error;
+      }
+    }
   }
 
   return registerFailedLoginFromMemory(identifier);
@@ -370,8 +455,14 @@ export async function clearLoginLockout(email: string): Promise<void> {
   const identifier = normalizeLoginIdentifier(email);
 
   if (env.databaseUrl) {
-    await getDb().delete(adminLoginLockoutsTable).where(eq(adminLoginLockoutsTable.identifier, identifier));
-    return;
+    try {
+      await getDb().delete(adminLoginLockoutsTable).where(eq(adminLoginLockoutsTable.identifier, identifier));
+      return;
+    } catch (error) {
+      if (!isMissingAdminSchemaError(error)) {
+        throw error;
+      }
+    }
   }
 
   getLoginLockStore().delete(identifier);
@@ -384,23 +475,38 @@ export async function logAdminAuditEvent(request: Request, event: AdminAuditEven
 
   const metadata = event.metadata && typeof event.metadata === 'object' ? event.metadata : {};
 
-  await getDb().insert(adminAuditLogsTable).values({
-    id: randomUUID(),
-    userId: event.userId ?? null,
-    action: event.action,
-    entityType: event.entityType,
-    entityId: event.entityId ?? null,
-    metadata,
-    ip: getClientIdentifier(request),
-    userAgent: normalize(request.headers.get('user-agent')) || 'unknown',
-    createdAt: nowIso()
-  });
+  try {
+    await getDb().insert(adminAuditLogsTable).values({
+      id: randomUUID(),
+      userId: event.userId ?? null,
+      action: event.action,
+      entityType: event.entityType,
+      entityId: event.entityId ?? null,
+      metadata,
+      ip: getClientIdentifier(request),
+      userAgent: normalize(request.headers.get('user-agent')) || 'unknown',
+      createdAt: nowIso()
+    });
+  } catch (error) {
+    if (!isMissingAdminSchemaError(error)) {
+      throw error;
+    }
+  }
 }
 
 export async function getAdminSession(request: Request): Promise<AdminSession | null> {
   const headerToken = process.env.NODE_ENV !== 'production' ? request.headers.get('x-admin-token') : null;
   if (isValidAdminToken(headerToken)) {
-    const bootstrapped = env.databaseUrl ? await ensureAdminBootstrap() : null;
+    let bootstrapped: AdminUserRow | null = null;
+    if (env.databaseUrl) {
+      try {
+        bootstrapped = await ensureAdminBootstrap();
+      } catch (error) {
+        if (!isMissingAdminSchemaError(error)) {
+          throw error;
+        }
+      }
+    }
     if (bootstrapped) {
       return { user: mapAdminUser(bootstrapped), expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString() };
     }
@@ -421,39 +527,47 @@ export async function getAdminSession(request: Request): Promise<AdminSession | 
     return null;
   }
 
-  await ensureAdminBootstrap();
-
   const rawToken = readSessionTokenFromRequest(request);
   if (!rawToken) {
     return null;
   }
 
-  const rows = await getDb()
-    .select()
-    .from(adminSessionsTable)
-    .where(
-      and(
-        eq(adminSessionsTable.sessionToken, hashSessionToken(rawToken)),
-        gt(adminSessionsTable.expiresAt, nowIso())
+  try {
+    await ensureAdminBootstrap();
+
+    const rows = await getDb()
+      .select()
+      .from(adminSessionsTable)
+      .where(
+        and(
+          eq(adminSessionsTable.sessionToken, hashSessionToken(rawToken)),
+          gt(adminSessionsTable.expiresAt, nowIso())
+        )
       )
-    )
-    .limit(1);
+      .limit(1);
 
-  const session = rows[0];
-  if (!session) {
-    return null;
+    const session = rows[0];
+    if (!session) {
+      return null;
+    }
+
+    const user = await findAdminUserById(session.userId);
+    if (!user) {
+      await getDb().delete(adminSessionsTable).where(eq(adminSessionsTable.id, session.id));
+      return null;
+    }
+
+    return {
+      user: mapAdminUser(user),
+      expiresAt: session.expiresAt
+    };
+  } catch (error) {
+    if (!isMissingAdminSchemaError(error)) {
+      throw error;
+    }
+
+    return getFallbackSession(rawToken);
   }
-
-  const user = await findAdminUserById(session.userId);
-  if (!user) {
-    await getDb().delete(adminSessionsTable).where(eq(adminSessionsTable.id, session.id));
-    return null;
-  }
-
-  return {
-    user: mapAdminUser(user),
-    expiresAt: session.expiresAt
-  };
 }
 
 export async function assertAdminRequest(request: Request): Promise<NextResponse | null> {
@@ -498,36 +612,59 @@ export async function loginAdminUser(email: string, password: string): Promise<A
     return null;
   }
 
-  await ensureAdminBootstrap();
-
   const normalizedEmail = normalize(email).toLowerCase();
   const normalizedPassword = normalize(password);
   if (!normalizedEmail || !normalizedPassword) {
     return null;
   }
 
-  const user = await findAdminUserByEmail(normalizedEmail);
-  if (!user) {
-    return null;
+  try {
+    await ensureAdminBootstrap();
+
+    const user = await findAdminUserByEmail(normalizedEmail);
+    if (!user) {
+      return null;
+    }
+
+    const valid = await verifyPassword(normalizedPassword, user.passwordHash);
+    if (!valid) {
+      return null;
+    }
+
+    const session = await createSession(user.id);
+    const loginAt = nowIso();
+    await getDb()
+      .update(adminUsersTable)
+      .set({ lastLoginAt: loginAt, updatedAt: loginAt })
+      .where(eq(adminUsersTable.id, user.id));
+
+    return {
+      user: mapAdminUser({ ...user, lastLoginAt: loginAt, updatedAt: loginAt }),
+      sessionToken: session.rawToken,
+      expiresAt: session.expiresAt
+    };
+  } catch (error) {
+    if (!isMissingAdminSchemaError(error)) {
+      throw error;
+    }
+
+    const fallbackUser = getFallbackAdminUser();
+    const fallbackPassword = getFallbackAdminPassword();
+    if (!fallbackUser || !fallbackPassword) {
+      return null;
+    }
+
+    if (normalizedEmail !== fallbackUser.email || normalizedPassword !== fallbackPassword) {
+      return null;
+    }
+
+    const session = createFallbackSession(fallbackUser);
+    return {
+      user: fallbackUser,
+      sessionToken: session.rawToken,
+      expiresAt: session.expiresAt
+    };
   }
-
-  const valid = await verifyPassword(normalizedPassword, user.passwordHash);
-  if (!valid) {
-    return null;
-  }
-
-  const session = await createSession(user.id);
-  const loginAt = nowIso();
-  await getDb()
-    .update(adminUsersTable)
-    .set({ lastLoginAt: loginAt, updatedAt: loginAt })
-    .where(eq(adminUsersTable.id, user.id));
-
-  return {
-    user: mapAdminUser({ ...user, lastLoginAt: loginAt, updatedAt: loginAt }),
-    sessionToken: session.rawToken,
-    expiresAt: session.expiresAt
-  };
 }
 
 export async function logoutAdminUser(request: Request) {
@@ -542,23 +679,30 @@ export async function getAdminAuditLogs(limit = 50): Promise<AdminAuditLogEntry[
     return [];
   }
 
-  const rows = await getDb()
-    .select()
-    .from(adminAuditLogsTable)
-    .orderBy(desc(adminAuditLogsTable.createdAt))
-    .limit(Math.min(Math.max(limit, 1), 200));
+  try {
+    const rows = await getDb()
+      .select()
+      .from(adminAuditLogsTable)
+      .orderBy(desc(adminAuditLogsTable.createdAt))
+      .limit(Math.min(Math.max(limit, 1), 200));
 
-  return rows.map((row) => ({
-    id: row.id,
-    action: row.action,
-    entityType: row.entityType,
-    entityId: row.entityId ?? null,
-    userId: row.userId ?? null,
-    ip: row.ip,
-    userAgent: row.userAgent,
-    createdAt: row.createdAt,
-    metadata: row.metadata
-  }));
+    return rows.map((row) => ({
+      id: row.id,
+      action: row.action,
+      entityType: row.entityType,
+      entityId: row.entityId ?? null,
+      userId: row.userId ?? null,
+      ip: row.ip,
+      userAgent: row.userAgent,
+      createdAt: row.createdAt,
+      metadata: row.metadata
+    }));
+  } catch (error) {
+    if (!isMissingAdminSchemaError(error)) {
+      throw error;
+    }
+    return [];
+  }
 }
 
 export function roleLabel(role: AdminRole) {
