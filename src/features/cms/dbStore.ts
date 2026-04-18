@@ -651,8 +651,9 @@ async function ensureDbBootstrap() {
 
   try {
     await bootstrapPromise;
-  } finally {
+  } catch (error) {
     bootstrapPromise = null;
+    throw error;
   }
 }
 

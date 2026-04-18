@@ -595,11 +595,12 @@ export async function assertAdminPermission(
   request: Request,
   permission: AdminPermission
 ): Promise<NextResponse | null> {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const originFailure = assertTrustedMutationRequest(request);
+  if (originFailure) return originFailure;
 
-  // Re-use the session from the already-validated request instead of
-  // querying the database a second time (avoids TOCTOU + double DB hit).
+  const csrfFailure = assertCsrfToken(request);
+  if (csrfFailure) return csrfFailure;
+
   const session = await getAdminSession(request);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

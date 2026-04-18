@@ -8,21 +8,9 @@
 
 ## 1. Security Flaws
 
-### 1.1 Admin Token Comparison Is Not Timing-Safe 🔴 Critical
+### 1.1 ~~Admin Token Comparison Is Not Timing-Safe~~ ✅ Fixed
 
-[isValidAdminToken](file:///d:/web/react-cms/src/features/cms/adminAuth.ts#L416-L420) uses a plain `===` string comparison:
-
-```typescript
-export function isValidAdminToken(token: string | null) {
-  const input = normalize(token);
-  const expected = normalize(env.adminToken);
-  return input.length > 0 && expected.length > 0 && input === expected;
-}
-```
-
-This is vulnerable to **timing attacks**. An attacker can measure response times to progressively guess the token character-by-character. The password path correctly uses `timingSafeEqual`, but the legacy token path does not.
-
-**Fix:** Use `crypto.timingSafeEqual` on fixed-length hashes of both values.
+[isValidAdminToken](file:///d:/web/react-cms/src/features/cms/adminAuth.ts#L416-L423) now uses `crypto.createHash('sha256')` + `crypto.timingSafeEqual` on fixed-length digests of both values, eliminating the timing side-channel.
 
 ---
 
@@ -106,21 +94,9 @@ An attacker can upload arbitrary files (HTML, SVG with scripts, executables) by 
 
 ## 2. Data Integrity & Race Conditions
 
-### 2.1 File Store Has No Concurrency Protection 🔴 Critical
+### 2.1 ~~File Store Has No Concurrency Protection~~ ✅ Fixed
 
-[fileStore.ts](file:///d:/web/react-cms/src/features/cms/fileStore.ts) performs read-modify-write cycles on `data/content.json` with no locking mechanism:
-
-```typescript
-export async function updateBlogPost(id, payload) {
-  const content = await readContent();    // ← READ
-  // ... modify content ...
-  await writeContent(content);            // ← WRITE (clobbers concurrent changes)
-}
-```
-
-Every mutation function (create/update/delete for blog posts, portfolio projects, pages, settings) follows this pattern. Under concurrent admin requests, **data loss is certain** — the last writer wins, silently discarding all intervening changes.
-
-**Fix:** Use a file lock (e.g., `proper-lockfile`) or a write-through queue.
+[fileStore.ts](file:///d:/web/react-cms/src/features/cms/fileStore.ts) now wraps every mutation function's entire read→modify→write cycle inside an in-process `withWriteLock` queue. Concurrent mutations are serialized so no read-modify-write race can occur. The internal `writeFileUnsafe` performs the raw I/O, while the public `writeContent` acquires the lock for external callers.
 
 ---
 
@@ -166,17 +142,9 @@ If a database corruption or import bug produces an unexpected role string (e.g.,
 
 ## 3. Functional Bugs
 
-### 3.1 Scheduled Content Is Never Actually Triggered 🔴 Critical
+### 3.1 ~~Scheduled Content Is Never Actually Triggered~~ ✅ Fixed
 
-The CMS has full scheduling infrastructure — `scheduledPublishAt`, `scheduledUnpublishAt` fields, `isStatusContentLive()` / `isPageLive()` checks in [publicationState.ts](file:///d:/web/react-cms/src/features/cms/publicationState.ts) — but **there is no cron job, background worker, or revalidation trigger** that ever runs these checks on a schedule.
-
-- `isStatusContentLive()` correctly filters at read time, so scheduled items appear/disappear for public visitors only when the **cache is invalidated**.
-- `revalidatePublicCmsCache()` is only called on admin mutations (save, delete, publish).
-- `unstable_cache` entries have **no `revalidate` TTL** set — they persist indefinitely until an explicit `revalidateTag()` call.
-
-**Result:** A post scheduled for 3:00 PM will remain invisible until _someone_ edits _any_ content in the admin panel.
-
-**Fix:** Either add a periodic revalidation (cron API route or `revalidate: 60` TTL on cached functions) or remove the scheduling UI to avoid misleading admins.
+All `unstable_cache` entries in [publicCache.ts](file:///d:/web/react-cms/src/features/cms/publicCache.ts) now have a `revalidate: 60` TTL (`SCHEDULED_CONTENT_TTL`). Content is automatically re-fetched and re-evaluated against `isStatusContentLive()` / `isPageLive()` at most once per minute, so scheduled publish/unpublish transitions take effect without manual intervention.
 
 ---
 

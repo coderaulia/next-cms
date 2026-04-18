@@ -83,11 +83,13 @@ export async function readContent(): Promise<CmsContent> {
   return merged;
 }
 
+async function writeFileUnsafe(content: CmsContent): Promise<void> {
+  await ensureDataFile();
+  await writeFile(DATA_FILE, JSON.stringify(content, null, 2), 'utf-8');
+}
+
 export async function writeContent(content: CmsContent): Promise<void> {
-  return withWriteLock(async () => {
-    await ensureDataFile();
-    await writeFile(DATA_FILE, JSON.stringify(content, null, 2), 'utf-8');
-  });
+  return withWriteLock(() => writeFileUnsafe(content));
 }
 
 export async function getSettings() {
@@ -96,11 +98,13 @@ export async function getSettings() {
 }
 
 export async function updateSettings(settings: SiteSettings): Promise<SiteSettings> {
-  const content = await readContent();
-  const next = normalizeSettings(settings);
-  content.settings = next;
-  await writeContent(content);
-  return next;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const next = normalizeSettings(settings);
+    content.settings = next;
+    await writeFileUnsafe(content);
+    return next;
+  });
 }
 
 export async function getPages() {
@@ -114,11 +118,13 @@ export async function getPageById(id: PageId): Promise<LandingPage | null> {
 }
 
 export async function upsertPage(page: LandingPage): Promise<LandingPage> {
-  const content = await readContent();
-  const nextPage = normalizePageForWrite(page, Object.values(content.pages));
-  content.pages[page.id] = nextPage;
-  await writeContent(content);
-  return nextPage;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const nextPage = normalizePageForWrite(page, Object.values(content.pages));
+    content.pages[page.id] = nextPage;
+    await writeFileUnsafe(content);
+    return nextPage;
+  });
 }
 
 export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
@@ -203,94 +209,102 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 
 export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogPost> {
-  const content = await readContent();
-  const id = crypto.randomUUID();
-  const title = payload?.title?.trim() || 'Untitled post';
-  const slug = uniquePostSlug(content.blogPosts, title, payload?.seo?.slug);
-  const writing = normalizeSettings(content.settings).writing;
-  const requestedStatus = payload?.status;
-  const fallbackStatus = writing.requireReviewBeforePublish ? 'draft' : writing.defaultPostStatus;
-  const status = requestedStatus ?? fallbackStatus;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const id = crypto.randomUUID();
+    const title = payload?.title?.trim() || 'Untitled post';
+    const slug = uniquePostSlug(content.blogPosts, title, payload?.seo?.slug);
+    const writing = normalizeSettings(content.settings).writing;
+    const requestedStatus = payload?.status;
+    const fallbackStatus = writing.requireReviewBeforePublish ? 'draft' : writing.defaultPostStatus;
+    const status = requestedStatus ?? fallbackStatus;
 
-  const post: BlogPost = {
-    id,
-    title,
-    excerpt: payload?.excerpt?.trim() || '',
-    content: payload?.content || '',
-    author: payload?.author?.trim() || writing.defaultPostAuthor || 'Admin',
-    tags:
-      payload?.tags ??
-      (writing.defaultPostCategory ? [writing.defaultPostCategory.toLowerCase()] : []),
-    coverImage: payload?.coverImage || '',
-    status,
-    publishedAt: status === 'published' ? nowIso() : null,
-    scheduledPublishAt: payload?.scheduledPublishAt ?? null,
-    scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
-    updatedAt: nowIso(),
-    seo: {
-      metaTitle: payload?.seo?.metaTitle || title,
-      metaDescription: payload?.seo?.metaDescription || '',
-      slug,
-      canonical: payload?.seo?.canonical || '',
-      socialImage: payload?.seo?.socialImage || '',
-      noIndex: payload?.seo?.noIndex ?? false,
-      keywords: payload?.seo?.keywords ?? []
-    }
-  };
-  content.blogPosts.unshift(post);
-  await writeContent(content);
-  return post;
+    const post: BlogPost = {
+      id,
+      title,
+      excerpt: payload?.excerpt?.trim() || '',
+      content: payload?.content || '',
+      author: payload?.author?.trim() || writing.defaultPostAuthor || 'Admin',
+      tags:
+        payload?.tags ??
+        (writing.defaultPostCategory ? [writing.defaultPostCategory.toLowerCase()] : []),
+      coverImage: payload?.coverImage || '',
+      status,
+      publishedAt: status === 'published' ? nowIso() : null,
+      scheduledPublishAt: payload?.scheduledPublishAt ?? null,
+      scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: payload?.seo?.metaTitle || title,
+        metaDescription: payload?.seo?.metaDescription || '',
+        slug,
+        canonical: payload?.seo?.canonical || '',
+        socialImage: payload?.seo?.socialImage || '',
+        noIndex: payload?.seo?.noIndex ?? false,
+        keywords: payload?.seo?.keywords ?? []
+      }
+    };
+    content.blogPosts.unshift(post);
+    await writeFileUnsafe(content);
+    return post;
+  });
 }
 
 export async function updateBlogPost(id: string, payload: BlogPost): Promise<BlogPost | null> {
-  const content = await readContent();
-  const index = content.blogPosts.findIndex((post) => post.id === id);
-  if (index === -1) return null;
-  const slug = uniquePostSlug(content.blogPosts, payload.title, payload.seo.slug, id);
-  const current = content.blogPosts[index];
-  const next: BlogPost = {
-    ...payload,
-    id,
-    seo: {
-      ...payload.seo,
-      slug
-    },
-    publishedAt:
-      payload.status === 'published'
-        ? current.publishedAt ?? nowIso()
-        : payload.publishedAt ?? null,
-    updatedAt: nowIso()
-  };
-  content.blogPosts[index] = next;
-  await writeContent(content);
-  return next;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const index = content.blogPosts.findIndex((post) => post.id === id);
+    if (index === -1) return null;
+    const slug = uniquePostSlug(content.blogPosts, payload.title, payload.seo.slug, id);
+    const current = content.blogPosts[index];
+    const next: BlogPost = {
+      ...payload,
+      id,
+      seo: {
+        ...payload.seo,
+        slug
+      },
+      publishedAt:
+        payload.status === 'published'
+          ? current.publishedAt ?? nowIso()
+          : payload.publishedAt ?? null,
+      updatedAt: nowIso()
+    };
+    content.blogPosts[index] = next;
+    await writeFileUnsafe(content);
+    return next;
+  });
 }
 
 export async function deleteBlogPost(id: string): Promise<boolean> {
-  const content = await readContent();
-  const nextPosts = content.blogPosts.filter((post) => post.id !== id);
-  if (nextPosts.length === content.blogPosts.length) return false;
-  content.blogPosts = nextPosts;
-  await writeContent(content);
-  return true;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const nextPosts = content.blogPosts.filter((post) => post.id !== id);
+    if (nextPosts.length === content.blogPosts.length) return false;
+    content.blogPosts = nextPosts;
+    await writeFileUnsafe(content);
+    return true;
+  });
 }
 
 export async function setPostStatus(id: string, status: 'draft' | 'published'): Promise<BlogPost | null> {
-  const content = await readContent();
-  const index = content.blogPosts.findIndex((post) => post.id === id);
-  if (index === -1) return null;
-  const existing = content.blogPosts[index];
-  const next: BlogPost = {
-    ...existing,
-    status,
-    publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
-    scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
-    scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
-    updatedAt: nowIso()
-  };
-  content.blogPosts[index] = next;
-  await writeContent(content);
-  return next;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const index = content.blogPosts.findIndex((post) => post.id === id);
+    if (index === -1) return null;
+    const existing = content.blogPosts[index];
+    const next: BlogPost = {
+      ...existing,
+      status,
+      publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+      scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
+      scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
+      updatedAt: nowIso()
+    };
+    content.blogPosts[index] = next;
+    await writeFileUnsafe(content);
+    return next;
+  });
 }
 
 export async function getPortfolioProjects(includeDrafts = false): Promise<PortfolioProject[]> {
@@ -393,111 +407,119 @@ export async function getPortfolioProjectBySlug(slug: string): Promise<Portfolio
 export async function createPortfolioProject(
   payload?: Partial<PortfolioProject>
 ): Promise<PortfolioProject> {
-  const content = await readContent();
-  const id = crypto.randomUUID();
-  const title = payload?.title?.trim() || 'Untitled project';
-  const slug = uniquePortfolioSlug(content.portfolioProjects, title, payload?.seo?.slug);
-  const requestedStatus = payload?.status;
-  const status = requestedStatus ?? 'draft';
-  const maxSort = content.portfolioProjects.reduce((acc, project) => Math.max(acc, project.sortOrder), 0);
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const id = crypto.randomUUID();
+    const title = payload?.title?.trim() || 'Untitled project';
+    const slug = uniquePortfolioSlug(content.portfolioProjects, title, payload?.seo?.slug);
+    const requestedStatus = payload?.status;
+    const status = requestedStatus ?? 'draft';
+    const maxSort = content.portfolioProjects.reduce((acc, project) => Math.max(acc, project.sortOrder), 0);
 
-  const project: PortfolioProject = {
-    id,
-    title,
-    summary: payload?.summary?.trim() || '',
-    challenge: payload?.challenge || '',
-    solution: payload?.solution || '',
-    outcome: payload?.outcome || '',
-    clientName: payload?.clientName?.trim() || '',
-    serviceType: payload?.serviceType?.trim() || '',
-    industry: payload?.industry?.trim() || '',
-    projectUrl: payload?.projectUrl || '',
-    relatedServicePageIds: payload?.relatedServicePageIds ?? [],
-    coverImage: payload?.coverImage || '',
-    gallery: payload?.gallery ?? [],
-    tags: payload?.tags ?? [],
-    featured: payload?.featured ?? false,
-    status,
-    sortOrder: payload?.sortOrder ?? maxSort + 1,
-    publishedAt: status === 'published' ? nowIso() : null,
-    scheduledPublishAt: payload?.scheduledPublishAt ?? null,
-    scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
-    updatedAt: nowIso(),
-    seo: {
-      metaTitle: payload?.seo?.metaTitle || title,
-      metaDescription: payload?.seo?.metaDescription || '',
-      slug,
-      canonical: payload?.seo?.canonical || '',
-      socialImage: payload?.seo?.socialImage || '',
-      noIndex: payload?.seo?.noIndex ?? false,
-      keywords: payload?.seo?.keywords ?? []
-    }
-  };
+    const project: PortfolioProject = {
+      id,
+      title,
+      summary: payload?.summary?.trim() || '',
+      challenge: payload?.challenge || '',
+      solution: payload?.solution || '',
+      outcome: payload?.outcome || '',
+      clientName: payload?.clientName?.trim() || '',
+      serviceType: payload?.serviceType?.trim() || '',
+      industry: payload?.industry?.trim() || '',
+      projectUrl: payload?.projectUrl || '',
+      relatedServicePageIds: payload?.relatedServicePageIds ?? [],
+      coverImage: payload?.coverImage || '',
+      gallery: payload?.gallery ?? [],
+      tags: payload?.tags ?? [],
+      featured: payload?.featured ?? false,
+      status,
+      sortOrder: payload?.sortOrder ?? maxSort + 1,
+      publishedAt: status === 'published' ? nowIso() : null,
+      scheduledPublishAt: payload?.scheduledPublishAt ?? null,
+      scheduledUnpublishAt: payload?.scheduledUnpublishAt ?? null,
+      updatedAt: nowIso(),
+      seo: {
+        metaTitle: payload?.seo?.metaTitle || title,
+        metaDescription: payload?.seo?.metaDescription || '',
+        slug,
+        canonical: payload?.seo?.canonical || '',
+        socialImage: payload?.seo?.socialImage || '',
+        noIndex: payload?.seo?.noIndex ?? false,
+        keywords: payload?.seo?.keywords ?? []
+      }
+    };
 
-  content.portfolioProjects.unshift(project);
-  await writeContent(content);
-  return project;
+    content.portfolioProjects.unshift(project);
+    await writeFileUnsafe(content);
+    return project;
+  });
 }
 
 export async function updatePortfolioProject(
   id: string,
   payload: PortfolioProject
 ): Promise<PortfolioProject | null> {
-  const content = await readContent();
-  const index = content.portfolioProjects.findIndex((project) => project.id === id);
-  if (index === -1) return null;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const index = content.portfolioProjects.findIndex((project) => project.id === id);
+    if (index === -1) return null;
 
-  const slug = uniquePortfolioSlug(content.portfolioProjects, payload.title, payload.seo.slug, id);
-  const current = content.portfolioProjects[index];
+    const slug = uniquePortfolioSlug(content.portfolioProjects, payload.title, payload.seo.slug, id);
+    const current = content.portfolioProjects[index];
 
-  const next: PortfolioProject = {
-    ...payload,
-    id,
-    seo: {
-      ...payload.seo,
-      slug
-    },
-    publishedAt:
-      payload.status === 'published'
-        ? current.publishedAt ?? nowIso()
-        : payload.publishedAt ?? null,
-    updatedAt: nowIso()
-  };
+    const next: PortfolioProject = {
+      ...payload,
+      id,
+      seo: {
+        ...payload.seo,
+        slug
+      },
+      publishedAt:
+        payload.status === 'published'
+          ? current.publishedAt ?? nowIso()
+          : payload.publishedAt ?? null,
+      updatedAt: nowIso()
+    };
 
-  content.portfolioProjects[index] = next;
-  await writeContent(content);
-  return next;
+    content.portfolioProjects[index] = next;
+    await writeFileUnsafe(content);
+    return next;
+  });
 }
 
 export async function deletePortfolioProject(id: string): Promise<boolean> {
-  const content = await readContent();
-  const next = content.portfolioProjects.filter((project) => project.id !== id);
-  if (next.length === content.portfolioProjects.length) return false;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const next = content.portfolioProjects.filter((project) => project.id !== id);
+    if (next.length === content.portfolioProjects.length) return false;
 
-  content.portfolioProjects = next;
-  await writeContent(content);
-  return true;
+    content.portfolioProjects = next;
+    await writeFileUnsafe(content);
+    return true;
+  });
 }
 
 export async function setPortfolioProjectStatus(
   id: string,
   status: 'draft' | 'published'
 ): Promise<PortfolioProject | null> {
-  const content = await readContent();
-  const index = content.portfolioProjects.findIndex((project) => project.id === id);
-  if (index === -1) return null;
+  return withWriteLock(async () => {
+    const content = await readContent();
+    const index = content.portfolioProjects.findIndex((project) => project.id === id);
+    if (index === -1) return null;
 
-  const existing = content.portfolioProjects[index];
-  const next: PortfolioProject = {
-    ...existing,
-    status,
-    publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
-    scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
-    scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
-    updatedAt: nowIso()
-  };
+    const existing = content.portfolioProjects[index];
+    const next: PortfolioProject = {
+      ...existing,
+      status,
+      publishedAt: status === 'published' ? existing.publishedAt ?? nowIso() : null,
+      scheduledPublishAt: status === 'published' ? null : existing.scheduledPublishAt ?? null,
+      scheduledUnpublishAt: status === 'draft' ? null : existing.scheduledUnpublishAt ?? null,
+      updatedAt: nowIso()
+    };
 
-  content.portfolioProjects[index] = next;
-  await writeContent(content);
-  return next;
+    content.portfolioProjects[index] = next;
+    await writeFileUnsafe(content);
+    return next;
+  });
 }
