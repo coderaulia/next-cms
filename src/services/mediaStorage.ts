@@ -59,7 +59,7 @@ function getExtFromMimeType(mimeType: string, fallbackName: string) {
 
 function isAllowedFile(file: File) {
   const mimeType = (file.type || '').toLowerCase();
-  if (!mimeType) return true;
+  if (!mimeType) return false;
   return ALLOWED_MIME_PREFIXES.some((prefix) => mimeType.startsWith(prefix));
 }
 

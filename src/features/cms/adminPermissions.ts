@@ -30,10 +30,10 @@ const permissionsByRole: Record<AdminRole, AdminPermission[]> = {
 
 export function normalizeAdminRole(value: string | null | undefined): AdminRole {
   const normalized = (value ?? '').trim().toLowerCase();
-  if (normalized === 'admin' || normalized === 'editor' || normalized === 'analyst') {
-    return normalized;
-  }
-  return 'super_admin';
+  if (normalized === 'super_admin') return 'super_admin';
+  if (normalized === 'admin') return 'admin';
+  if (normalized === 'editor') return 'editor';
+  return 'analyst';
 }
 
 export function permissionsForRole(role: AdminRole): AdminPermission[] {

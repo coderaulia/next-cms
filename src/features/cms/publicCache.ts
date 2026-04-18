@@ -62,11 +62,16 @@ async function readPublishedPageBySlug(slug: string): Promise<LandingPage | null
   return pages.find((page) => page.seo.slug.toLowerCase() === normalized) ?? null;
 }
 
+// 60-second TTL ensures scheduled publish/unpublish takes effect without a
+// cron job — content is re-checked at most once per minute automatically.
+const SCHEDULED_CONTENT_TTL = 60;
+
 const getCachedSiteSettings = unstable_cache(
   async () => contentStore.getSettings(),
   ['cms-public-settings'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.settings, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.settings, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -74,7 +79,8 @@ const getCachedPublishedPages = unstable_cache(
   readPublishedPages,
   ['cms-public-pages'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.pages, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.pages, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -82,7 +88,8 @@ const getCachedPublishedPageById = unstable_cache(
   readPublishedPageById,
   ['cms-public-page-by-id'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.pages, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.pages, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -90,7 +97,8 @@ const getCachedPublishedPageBySlug = unstable_cache(
   readPublishedPageBySlug,
   ['cms-public-page-by-slug'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.pages, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.pages, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -98,7 +106,8 @@ const getCachedPublishedBlogPosts = unstable_cache(
   async () => contentStore.getBlogPosts(false),
   ['cms-public-blog-posts'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.blog, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.blog, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -106,7 +115,8 @@ const getCachedPublishedBlogPostBySlug = unstable_cache(
   async (slug: string) => contentStore.getBlogPostBySlug(slug),
   ['cms-public-blog-post-by-slug'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.blog, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.blog, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -114,7 +124,8 @@ const getCachedPublishedPortfolioProjects = unstable_cache(
   async () => contentStore.getPortfolioProjects(false),
   ['cms-public-portfolio-projects'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.portfolio, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.portfolio, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -122,7 +133,8 @@ const getCachedPublishedPortfolioProjectBySlug = unstable_cache(
   async (slug: string) => contentStore.getPortfolioProjectBySlug(slug),
   ['cms-public-portfolio-project-by-slug'],
   {
-    tags: withCommonTags(cmsPublicCacheTags.portfolio, cmsPublicCacheTags.media)
+    tags: withCommonTags(cmsPublicCacheTags.portfolio, cmsPublicCacheTags.media),
+    revalidate: SCHEDULED_CONTENT_TTL
   }
 );
 
@@ -164,6 +176,42 @@ export function getCachedPublicPortfolioProjectBySlug(slug: string) {
   );
 }
 
+/** Scoped revalidation helpers — prefer these over revalidatePublicCmsCache for targeted mutations. */
+export function revalidateBlogCache() {
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.blog));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidatePath('/blog'));
+  safelyRevalidate(() => revalidatePath('/blog/[slug]', 'page'));
+  safelyRevalidate(() => revalidatePath('/sitemap.xml'));
+}
+
+export function revalidatePortfolioCache() {
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.portfolio));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidatePath('/portfolio'));
+  safelyRevalidate(() => revalidatePath('/portfolio/[slug]', 'page'));
+  safelyRevalidate(() => revalidatePath('/sitemap.xml'));
+}
+
+export function revalidatePagesCache() {
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.pages));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidatePath('/', 'layout'));
+  safelyRevalidate(() => revalidatePath('/[slug]', 'page'));
+  safelyRevalidate(() => revalidatePath('/sitemap.xml'));
+  safelyRevalidate(() => revalidatePath('/robots.txt'));
+}
+
+export function revalidateSettingsCache() {
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.settings));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.media));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidatePath('/', 'layout'));
+  safelyRevalidate(() => revalidatePath('/sitemap.xml'));
+  safelyRevalidate(() => revalidatePath('/robots.txt'));
+}
+
+/** Full-site blast — use only for import/restore operations that touch all content. */
 export function revalidatePublicCmsCache() {
   for (const tag of Object.values(cmsPublicCacheTags)) {
     safelyRevalidate(() => revalidateTag(tag));

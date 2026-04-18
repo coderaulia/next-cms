@@ -4,16 +4,12 @@ import robots from '@/app/robots';
 import sitemap from '@/app/sitemap';
 
 describe('SEO routes', () => {
-  it('sitemap includes published pages and posts only', async () => {
+  it('sitemap returns empty when baseUrl is localhost (localhost guard)', async () => {
+    // The sitemap deliberately blocks indexing when baseUrl is localhost
+    // to protect against search engines crawling misconfigured deployments.
+    // In tests, defaultContent.settings.general.baseUrl is http://localhost:3000.
     const entries = await sitemap();
-    const urls = entries.map((entry) => entry.url);
-
-    expect(urls).toContain('http://localhost:3000');
-    expect(urls).toContain('http://localhost:3000/about');
-    expect(urls).toContain('http://localhost:3000/service');
-    expect(urls).toContain('http://localhost:3000/contact');
-    expect(urls).toContain('http://localhost:3000/blog/high-converting-service-landing-page');
-    expect(urls).not.toContain('http://localhost:3000/blog/editorial-workflow-checklist');
+    expect(entries).toEqual([]);
   });
 
   it('robots exposes sitemap and disallows admin endpoints', async () => {

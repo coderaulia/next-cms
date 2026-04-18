@@ -23,13 +23,18 @@ export function isDatabaseMode() {
   return Boolean(env.databaseUrl);
 }
 
+let cachedModules: CmsStoreModules | null = null;
+
 export async function loadCmsStoreModules(): Promise<CmsStoreModules> {
+  if (cachedModules) return cachedModules;
+
   if (isDatabaseMode()) {
-    return {
+    cachedModules = {
       mode: 'database',
       contentStore: dbStore,
       collectionsStore: dbCollectionsStore
     };
+    return cachedModules;
   }
 
   const [contentStore, collectionsStore] = await Promise.all([
@@ -37,11 +42,12 @@ export async function loadCmsStoreModules(): Promise<CmsStoreModules> {
     import('./fileCollectionsStore')
   ]);
 
-  return {
+  cachedModules = {
     mode: 'file',
     contentStore,
     collectionsStore
   };
+  return cachedModules;
 }
 
 export async function readRawCmsContent(): Promise<CmsContent> {

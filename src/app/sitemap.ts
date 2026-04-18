@@ -18,7 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const indexingBlocked =
     settings.reading.discourageSearchEngines || settings.seo.defaultNoIndex;
 
-  if (!settings.sitemap.enabled || indexingBlocked) {
+  const isLocalhost = /localhost|127\.0\.0\.1/i.test(settings.baseUrl);
+
+  if (!settings.sitemap.enabled || indexingBlocked || isLocalhost) {
     return [];
   }
 

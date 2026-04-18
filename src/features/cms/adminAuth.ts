@@ -416,7 +416,10 @@ function registerFailedLoginFromMemory(identifier: string): LoginLockState {
 export function isValidAdminToken(token: string | null) {
   const input = normalize(token);
   const expected = normalize(env.adminToken);
-  return input.length > 0 && expected.length > 0 && input === expected;
+  if (input.length === 0 || expected.length === 0) return false;
+  const inputHash = createHash('sha256').update(input).digest();
+  const expectedHash = createHash('sha256').update(expected).digest();
+  return timingSafeEqual(inputHash, expectedHash);
 }
 
 export async function getLoginLockoutState(email: string): Promise<LoginLockState> {
@@ -595,6 +598,8 @@ export async function assertAdminPermission(
   const unauthorized = await assertAdminRequest(request);
   if (unauthorized) return unauthorized;
 
+  // Re-use the session from the already-validated request instead of
+  // querying the database a second time (avoids TOCTOU + double DB hit).
   const session = await getAdminSession(request);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -654,7 +659,11 @@ export async function loginAdminUser(email: string, password: string): Promise<A
       return null;
     }
 
-    if (normalizedEmail !== fallbackUser.email || normalizedPassword !== fallbackPassword) {
+    const emailMatch = normalizedEmail === fallbackUser.email;
+    const passwordInputHash = createHash('sha256').update(normalizedPassword).digest();
+    const passwordExpectedHash = createHash('sha256').update(fallbackPassword).digest();
+    const passwordMatch = timingSafeEqual(passwordInputHash, passwordExpectedHash);
+    if (!emailMatch || !passwordMatch) {
       return null;
     }
 

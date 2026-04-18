@@ -365,6 +365,12 @@ export function validateLandingPage(payload: unknown): LandingPage | null {
 
 export function validateBlogPost(payload: unknown): BlogPost | null {
   if (!isObject(payload)) return null;
+
+  const id = asString(payload.id).trim();
+  const title = asString(payload.title).trim();
+  // Require both id and title — an empty post cannot be meaningfully stored.
+  if (!id || !title) return null;
+
   const rawSeo = isObject(payload.seo) ? payload.seo : {};
   const tags = Array.isArray(payload.tags)
     ? payload.tags.map((tag) => asString(tag)).filter((tag) => tag.length > 0)
@@ -373,8 +379,8 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
   const status = asString(payload.status) === 'published' ? 'published' : 'draft';
 
   return {
-    id: asString(payload.id),
-    title: asString(payload.title),
+    id,
+    title,
     excerpt: asString(payload.excerpt),
     content: asString(payload.content),
     author: asString(payload.author),

@@ -87,6 +87,12 @@ export function resolveSettingsAssetUrls(settings: SiteSettings): SiteSettings {
     ...settings,
     defaultOgImage: resolveStoredAssetUrl(settings.defaultOgImage),
     organizationLogo: resolveStoredAssetUrl(settings.organizationLogo),
+    branding: {
+      ...settings.branding,
+      headerLogo: resolveStoredAssetUrl(settings.branding.headerLogo),
+      footerLogo: resolveStoredAssetUrl(settings.branding.footerLogo),
+      siteIcon: resolveStoredAssetUrl(settings.branding.siteIcon)
+    },
     seo: {
       ...settings.seo,
       defaultOgImage: resolveStoredAssetUrl(settings.seo.defaultOgImage)

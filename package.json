@@ -11,7 +11,7 @@
     "audit:size": "node scripts/report-build-sizes.mjs",
     "build:audit": "npm run build && npm run audit:size",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint ./src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit --incremental false",
     "test": "vitest run",
     "check": "npm run lint && npm run typecheck && npm run test",
@@ -43,7 +43,7 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^16.2.0",
+    "@next/bundle-analyzer": "^15.5.12",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",

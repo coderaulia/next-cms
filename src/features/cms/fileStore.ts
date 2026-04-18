@@ -29,6 +29,22 @@ import { defaultContent } from './defaultContent';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'content.json');
 
+// In-process write lock: serializes all mutations through writeContent to prevent
+// concurrent read-modify-write races that silently clobber data (last-writer-wins).
+let writeLock: Promise<void> = Promise.resolve();
+
+async function withWriteLock<T>(fn: () => Promise<T>): Promise<T> {
+  const prev = writeLock;
+  let resolveLock!: () => void;
+  writeLock = new Promise<void>((resolve) => { resolveLock = resolve; });
+  await prev;
+  try {
+    return await fn();
+  } finally {
+    resolveLock();
+  }
+}
+
 const safeParse = (raw: string): CmsContent | null => {
   try {
     return JSON.parse(raw) as CmsContent;
@@ -68,8 +84,10 @@ export async function readContent(): Promise<CmsContent> {
 }
 
 export async function writeContent(content: CmsContent): Promise<void> {
-  await ensureDataFile();
-  await writeFile(DATA_FILE, JSON.stringify(content, null, 2), 'utf-8');
+  return withWriteLock(async () => {
+    await ensureDataFile();
+    await writeFile(DATA_FILE, JSON.stringify(content, null, 2), 'utf-8');
+  });
 }
 
 export async function getSettings() {

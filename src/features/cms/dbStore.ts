@@ -455,7 +455,7 @@ function portfolioWriteRow(project: PortfolioProject, includeRelations: boolean)
   return (includeRelations ? portfolioToRow(project) : portfolioToLegacyRow(project)) as PortfolioInsertRow;
 }
 
-function portfolioSelectShape(includeRelations: boolean) {
+function portfolioSelectShape(includeRelations: boolean, includeSchedule = true) {
   return {
     id: portfolioProjectsTable.id,
     title: portfolioProjectsTable.title,
@@ -476,8 +476,10 @@ function portfolioSelectShape(includeRelations: boolean) {
     status: portfolioProjectsTable.status,
     sortOrder: portfolioProjectsTable.sortOrder,
     publishedAt: portfolioProjectsTable.publishedAt,
-    scheduledPublishAt: portfolioProjectsTable.scheduledPublishAt,
-    scheduledUnpublishAt: portfolioProjectsTable.scheduledUnpublishAt,
+    ...(includeSchedule ? {
+      scheduledPublishAt: portfolioProjectsTable.scheduledPublishAt,
+      scheduledUnpublishAt: portfolioProjectsTable.scheduledUnpublishAt,
+    } : {}),
     updatedAt: portfolioProjectsTable.updatedAt,
     seo: portfolioProjectsTable.seo
   };
@@ -639,7 +641,7 @@ async function ensureDbBootstrap() {
             () => readLegacyPortfolioProjects()
           ),
         async () => {
-          const rows = await db.select(portfolioSelectShape(false)).from(portfolioProjectsTable);
+          const rows = await db.select(portfolioSelectShape(false, false)).from(portfolioProjectsTable);
           return rows.map((row) => rowToPortfolio(row as PortfolioRowShape));
         }
       );
@@ -692,7 +694,7 @@ async function loadAllPortfolioProjects() {
       });
     }, async () => {
       await ensureDbBootstrap();
-      const rows = await getDb().select(portfolioSelectShape(false)).from(portfolioProjectsTable);
+      const rows = await getDb().select(portfolioSelectShape(false, false)).from(portfolioProjectsTable);
       const tagMap = await mapPortfolioProjectTags(rows.map((row) => row.id));
       return rows.map((row) => rowToPortfolio(row as PortfolioRowShape, tagMap.get(row.id) ?? row.tags));
     });
@@ -1130,7 +1132,7 @@ export async function getPortfolioProjectById(id: string): Promise<PortfolioProj
     }, async () => {
       await ensureDbBootstrap();
       const row = await getDb()
-        .select(portfolioSelectShape(false))
+        .select(portfolioSelectShape(false, false))
         .from(portfolioProjectsTable)
         .where(eq(portfolioProjectsTable.id, id))
         .limit(1);
@@ -1174,7 +1176,7 @@ export async function getPortfolioProjectBySlug(slug: string): Promise<Portfolio
     }, async () => {
       await ensureDbBootstrap();
       const row = await getDb()
-        .select(portfolioSelectShape(false))
+        .select(portfolioSelectShape(false, false))
         .from(portfolioProjectsTable)
         .where(eq(portfolioProjectsTable.slug, normalized))
         .limit(1);

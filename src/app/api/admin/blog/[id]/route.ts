@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { deleteBlogPost, getBlogPostById, updateBlogPost } from '@/features/cms/contentStore';
-import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
+import { revalidateBlogCache } from '@/features/cms/publicCache';
 import { validateBlogPost } from '@/features/cms/validators';
 
 type RouteContext = {
@@ -65,7 +65,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
-  revalidatePublicCmsCache();
+  revalidateBlogCache();
   return NextResponse.json({ post });
 }
 
@@ -101,6 +101,6 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     // swallow audit log failures
   }
 
-  revalidatePublicCmsCache();
+  revalidateBlogCache();
   return NextResponse.json({ ok: true });
 }
