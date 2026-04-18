@@ -1,4 +1,5 @@
 import { defaultContent } from './defaultContent';
+import { captureContentRevision } from './contentRevisions';
 import { readRawCmsContent, writeRawCmsContent } from './storeAdapter';
 import type {
   BlogPost,
@@ -16,6 +17,7 @@ import {
   validatePortfolioProject,
   validateSiteSettings
 } from './validators';
+import { reservedPageSlugs } from './storeShared';
 
 export const CMS_JSON_SCHEMA_VERSION = 1;
 
@@ -237,6 +239,37 @@ function totals(content: CmsContent) {
   };
 }
 
+function assertUniqueLabels(values: string[], label: string) {
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+
+  for (const value of values) {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) continue;
+    if (seen.has(normalized)) {
+      duplicates.add(normalized);
+      continue;
+    }
+    seen.add(normalized);
+  }
+
+  if (duplicates.size > 0) {
+    throw new Error(`${label} must be unique. Duplicate values: ${Array.from(duplicates).join(', ')}.`);
+  }
+}
+
+function assertImportSafety(content: CmsContent) {
+  const pageSlugs = Object.values(content.pages).map((page) => page.seo.slug.trim());
+  const reserved = pageSlugs.filter((slug) => slug && reservedPageSlugs.has(slug));
+  if (reserved.length > 0) {
+    throw new Error(`Pages import uses reserved slugs: ${Array.from(new Set(reserved)).join(', ')}.`);
+  }
+
+  assertUniqueLabels(pageSlugs, 'Page slugs');
+  assertUniqueLabels(content.blogPosts.map((post) => post.seo.slug.trim()), 'Blog slugs');
+  assertUniqueLabels(content.portfolioProjects.map((project) => project.seo.slug.trim()), 'Portfolio slugs');
+}
+
 function countImportedCollection(collection: CmsImportCollection, imported: unknown) {
   if (collection === 'pages' && isRecord(imported)) return Object.keys(imported).length;
   if ((collection === 'blogPosts' || collection === 'portfolioProjects') && Array.isArray(imported)) return imported.length;
@@ -310,6 +343,13 @@ export async function importCmsJson(
     importedCount = countImportedCollection(collection, unwrapEnvelope(payload));
   }
 
+  assertImportSafety(next);
+  await captureContentRevision({
+    entityType: 'full_site',
+    entityId: 'cms',
+    label: `Backup before ${collection} ${mode} import`,
+    payload: current
+  });
   await writeRawCmsContent(next);
 
   return {

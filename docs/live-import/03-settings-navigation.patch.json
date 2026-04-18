@@ -1,0 +1,138 @@
+{
+  "navigation": {
+    "headerLinks": [
+      {
+        "id": "nav-home",
+        "label": "Home",
+        "href": "/",
+        "enabled": true
+      },
+      {
+        "id": "nav-about",
+        "label": "About",
+        "href": "/about",
+        "enabled": true
+      },
+      {
+        "id": "nav-services",
+        "label": "Services",
+        "href": "/service",
+        "enabled": true
+      },
+      {
+        "id": "nav-hris",
+        "label": "HRIS",
+        "href": "/hris",
+        "enabled": true
+      },
+      {
+        "id": "nav-insights",
+        "label": "Insights",
+        "href": "/blog",
+        "enabled": true
+      },
+      {
+        "id": "nav-partnership",
+        "label": "Partnership",
+        "href": "/partnership",
+        "enabled": true
+      },
+      {
+        "id": "nav-portfolio",
+        "label": "Portfolio",
+        "href": "/portfolio",
+        "enabled": true
+      }
+    ],
+    "headerCtaLabel": "Book Consultation",
+    "headerCtaHref": "/contact",
+    "footerNavigatorLinks": [
+      {
+        "id": "footer-nav-home",
+        "label": "Home",
+        "href": "/",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-about",
+        "label": "About Us",
+        "href": "/about",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-services",
+        "label": "Services",
+        "href": "/service",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-hris",
+        "label": "Vanaila HRIS",
+        "href": "/hris",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-insights",
+        "label": "Insights",
+        "href": "/blog",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-partnership",
+        "label": "Partnership",
+        "href": "/partnership",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-contact",
+        "label": "Contact",
+        "href": "/contact",
+        "enabled": true
+      },
+      {
+        "id": "footer-nav-portfolio",
+        "label": "Portfolio",
+        "href": "/portfolio",
+        "enabled": true
+      }
+    ],
+    "footerServiceLinks": [
+      {
+        "id": "footer-service-hris",
+        "label": "Vanaila HRIS",
+        "href": "/hris",
+        "enabled": true
+      },
+      {
+        "id": "footer-service-web",
+        "label": "Website Development",
+        "href": "/website-development",
+        "enabled": true
+      },
+      {
+        "id": "footer-service-shop",
+        "label": "Secure Online Shops",
+        "href": "/secure-online-shops",
+        "enabled": true
+      },
+      {
+        "id": "footer-service-mobile",
+        "label": "Mobile Business App",
+        "href": "/mobile-business-app",
+        "enabled": true
+      },
+      {
+        "id": "footer-service-email",
+        "label": "Official Business Email",
+        "href": "/official-business-email",
+        "enabled": true
+      },
+      {
+        "id": "footer-service-tools",
+        "label": "Custom Business Tools",
+        "href": "/custom-business-tools",
+        "enabled": true
+      }
+    ]
+  }
+}

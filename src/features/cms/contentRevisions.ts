@@ -94,6 +94,10 @@ function buildRevisionSummary(entityType: CmsRevisionEntityType, payload: CmsRev
       const settings = payload as SiteSettings;
       return `${settings.siteName || settings.general.siteName || 'Site settings'} • ${settings.general.baseUrl || 'Base URL not set'}`;
     }
+    case 'full_site': {
+      const content = payload as CmsContent;
+      return `${Object.keys(content.pages).length} pages • ${content.blogPosts.length} posts • ${content.portfolioProjects.length} portfolio`;
+    }
     default:
       return 'Content revision';
   }
@@ -223,6 +227,8 @@ function getCurrentEntityPayload(
       return content.portfolioProjects.find((project) => project.id === entityId) ?? null;
     case 'site_settings':
       return content.settings;
+    case 'full_site':
+      return content;
     default:
       return null;
   }
@@ -268,6 +274,8 @@ function applyEntityPayload(
     }
     case 'site_settings':
       return { ...content, settings: payload as SiteSettings };
+    case 'full_site':
+      return payload as CmsContent;
     default:
       return content;
   }

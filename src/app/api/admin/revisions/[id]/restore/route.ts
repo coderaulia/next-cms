@@ -10,7 +10,7 @@ type RouteContext = {
 };
 
 function requiredPermission(entityType: CmsRevisionEntityType) {
-  return entityType === 'site_settings' ? 'settings:edit' : 'content:edit';
+  return entityType === 'site_settings' || entityType === 'full_site' ? 'settings:edit' : 'content:edit';
 }
 
 export async function POST(request: Request, { params }: RouteContext) {

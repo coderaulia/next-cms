@@ -1,0 +1,246 @@
+{
+  "collection": "settings",
+  "exportedAt": "2026-04-18T20:35:06.5213344+07:00",
+  "schemaVersion": 1,
+  "data": {
+    "general": {
+      "siteName": "Vanaila Digital.",
+      "siteTagline": "Engineering-focused digital agency for ambitious brands.",
+      "baseUrl": "http://localhost:3000",
+      "adminEmail": "hello@example.com",
+      "timezone": "Asia/Jakarta",
+      "language": "en-US",
+      "dateFormat": "MMMM d, yyyy",
+      "timeFormat": "HH:mm",
+      "weekStartsOn": 1
+    },
+    "navigation": {
+      "headerLinks": [
+        {
+          "id": "nav-home",
+          "label": "Home",
+          "href": "/",
+          "enabled": true
+        },
+        {
+          "id": "nav-about",
+          "label": "About",
+          "href": "/about",
+          "enabled": true
+        },
+        {
+          "id": "nav-services",
+          "label": "Services",
+          "href": "/service",
+          "enabled": true
+        },
+        {
+          "id": "nav-hris",
+          "label": "HRIS",
+          "href": "/hris",
+          "enabled": true
+        },
+        {
+          "id": "nav-insights",
+          "label": "Insights",
+          "href": "/blog",
+          "enabled": true
+        },
+        {
+          "id": "nav-partnership",
+          "label": "Partnership",
+          "href": "/partnership",
+          "enabled": true
+        },
+        {
+          "id": "nav-portfolio",
+          "label": "Portfolio",
+          "href": "/portfolio",
+          "enabled": true
+        }
+      ],
+      "headerCtaLabel": "Book Consultation",
+      "headerCtaHref": "/contact",
+      "footerNavigatorLinks": [
+        {
+          "id": "footer-nav-home",
+          "label": "Home",
+          "href": "/",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-about",
+          "label": "About Us",
+          "href": "/about",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-services",
+          "label": "Services",
+          "href": "/service",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-hris",
+          "label": "Vanaila HRIS",
+          "href": "/hris",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-insights",
+          "label": "Insights",
+          "href": "/blog",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-partnership",
+          "label": "Partnership",
+          "href": "/partnership",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-contact",
+          "label": "Contact",
+          "href": "/contact",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-portfolio",
+          "label": "Portfolio",
+          "href": "/portfolio",
+          "enabled": true
+        }
+      ],
+      "footerServiceLinks": [
+        {
+          "id": "footer-service-hris",
+          "label": "Vanaila HRIS",
+          "href": "/hris",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-web",
+          "label": "Website Development",
+          "href": "/website-development",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-shop",
+          "label": "Secure Online Shops",
+          "href": "/secure-online-shops",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-mobile",
+          "label": "Mobile Business App",
+          "href": "/mobile-business-app",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-email",
+          "label": "Official Business Email",
+          "href": "/official-business-email",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-tools",
+          "label": "Custom Business Tools",
+          "href": "/custom-business-tools",
+          "enabled": true
+        }
+      ]
+    },
+    "contact": {
+      "companyName": "Example Studio LLC",
+      "addressLine1": "123 Example Avenue",
+      "addressLine2": "Remote-first team, Global delivery",
+      "globalReachLabel": "Global Reach",
+      "globalReachText": "Supporting partners across SEA, Europe, and North America.",
+      "emailLabel": "Email Us",
+      "emailValue": "hello@example.com",
+      "emailHref": "mailto:hello@example.com",
+      "whatsappLabel": "WhatsApp Business",
+      "whatsappValue": "+62 800 0000 0000",
+      "whatsappHref": "https://wa.me/620000000000",
+      "instagramLabel": "Instagram",
+      "instagramValue": "@example.studio",
+      "instagramHref": "https://instagram.com/example.studio"
+    },
+    "social": {
+      "chatHref": "/contact",
+      "instagramHref": "https://instagram.com/example.studio",
+      "websiteHref": "https://example.com",
+      "emailHref": "mailto:hello@example.com"
+    },
+    "branding": {
+      "headerLogo": "",
+      "footerLogo": "",
+      "siteIcon": "",
+      "footerTagline": "Engineering-focused digital agency delivering high-performance infrastructure.",
+      "footerBadgePrimary": "Glassmorphism Edition",
+      "footerBadgeSecondary": "Premium Engineering",
+      "copyrightText": "© 2026 Example Studio."
+    },
+    "writing": {
+      "defaultPostCategory": "general",
+      "defaultPostFormat": "standard",
+      "defaultPostStatus": "draft",
+      "defaultPostAuthor": "Admin",
+      "convertEmoticons": true,
+      "requireReviewBeforePublish": false,
+      "pingServices": [
+        "https://rpc.pingomatic.com/"
+      ]
+    },
+    "reading": {
+      "homepageDisplay": "static_page",
+      "homepagePageId": "home",
+      "postsPageId": "",
+      "postsPerPage": 10,
+      "feedItems": 10,
+      "feedSummary": "excerpt",
+      "discourageSearchEngines": false
+    },
+    "discussion": {
+      "commentsEnabled": false,
+      "commentRegistrationRequired": false,
+      "closeCommentsAfterDays": 30,
+      "threadedCommentsEnabled": true,
+      "threadDepth": 3,
+      "requireCommentApproval": true,
+      "notifyOnComment": true
+    },
+    "media": {
+      "uploadOrganizeByMonth": true,
+      "thumbnailWidth": 300,
+      "thumbnailHeight": 300,
+      "mediumMaxWidth": 768,
+      "mediumMaxHeight": 768,
+      "largeMaxWidth": 1600,
+      "largeMaxHeight": 1600
+    },
+    "permalinks": {
+      "postPermalinkStructure": "/blog/%postname%",
+      "categoryBase": "category",
+      "tagBase": "tag"
+    },
+    "seo": {
+      "titleTemplate": "%page_title% | %site_name%",
+      "defaultMetaDescription": "Engineering-led digital systems for growth-focused businesses.",
+      "defaultOgImage": "https://placehold.co/1200x630/png",
+      "defaultNoIndex": false
+    },
+    "sitemap": {
+      "enabled": true,
+      "includePages": true,
+      "includePosts": true,
+      "includePortfolio": true,
+      "includeLastModified": true
+    },
+    "siteName": "Vanaila Digital.",
+    "baseUrl": "http://localhost:3000",
+    "organizationName": "Acme Marketing",
+    "organizationLogo": "",
+    "defaultOgImage": "https://placehold.co/1200x630/png"
+  }
+}

@@ -641,38 +641,43 @@ export async function replaceAllCmsContent(content: CmsContent) {
   const db = getDb();
   const normalized = mergeWithDefaults(content);
 
-  await db.delete(postCategoriesTable);
-  await withPortfolioTableFallback(async () => {
-    await db.delete(portfolioProjectTagsTable);
-    await db.delete(portfolioTagsTable);
-  }, undefined);
-  await db.delete(blogPostsTable);
-  await withPortfolioTableFallback(async () => {
-    await db.delete(portfolioProjectsTable);
-  }, undefined);
-  await db.delete(categoriesTable);
-  await db.delete(mediaAssetsTable);
-  await db.delete(pagesTable);
-  await db.delete(siteSettingsTable);
+  await db.transaction(async (tx) => {
+    await tx.delete(postCategoriesTable);
+    await withPortfolioTableFallback(async () => {
+      await tx.delete(portfolioProjectTagsTable);
+      await tx.delete(portfolioTagsTable);
+    }, undefined);
+    await tx.delete(blogPostsTable);
+    await withPortfolioTableFallback(async () => {
+      await tx.delete(portfolioProjectsTable);
+    }, undefined);
+    await tx.delete(categoriesTable);
+    await tx.delete(mediaAssetsTable);
+    await tx.delete(pagesTable);
+    await tx.delete(siteSettingsTable);
 
-  await db.insert(siteSettingsTable).values({
-    id: 'default',
-    payload: normalizeSettings(normalized.settings),
-    updatedAt: nowIso()
+    await tx.insert(siteSettingsTable).values({
+      id: 'default',
+      payload: normalizeSettings(normalized.settings),
+      updatedAt: nowIso()
+    });
+
+    await tx.insert(pagesTable).values(Object.values(normalized.pages).map(pageToRow));
+    await tx.insert(categoriesTable).values(normalized.categories);
+    await tx.insert(blogPostsTable).values(normalized.blogPosts.map(postToRow));
+    await withPortfolioTableFallback(async () => {
+      const includeRelations = await supportsPortfolioRelationsColumn();
+      await tx
+        .insert(portfolioProjectsTable)
+        .values(normalized.portfolioProjects.map((project) => portfolioWriteRow(project, includeRelations)));
+    }, undefined);
+    await tx.insert(mediaAssetsTable).values(normalized.mediaAssets);
   });
 
-  await db.insert(pagesTable).values(Object.values(normalized.pages).map(pageToRow));
-  await db.insert(categoriesTable).values(normalized.categories);
-  await db.insert(blogPostsTable).values(normalized.blogPosts.map(postToRow));
   await syncBlogPostCategoryLinks(normalized.blogPosts);
   await withPortfolioTableFallback(async () => {
-    const includeRelations = await supportsPortfolioRelationsColumn();
-    await db
-      .insert(portfolioProjectsTable)
-      .values(normalized.portfolioProjects.map((project) => portfolioWriteRow(project, includeRelations)));
     await syncPortfolioProjectTagLinks(normalized.portfolioProjects);
   }, undefined);
-  await db.insert(mediaAssetsTable).values(normalized.mediaAssets);
 }
 
 export async function getSettings() {
@@ -1208,4 +1213,3 @@ export async function setPortfolioProjectStatus(
 
   return next;
 }
-

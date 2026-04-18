@@ -6,10 +6,15 @@ import type { CmsContent } from '@/features/cms/types';
 
 const readRawCmsContentMock = vi.fn<() => Promise<CmsContent>>();
 const writeRawCmsContentMock = vi.fn<(content: CmsContent) => Promise<void>>();
+const captureContentRevisionMock = vi.fn();
 
 vi.mock('@/features/cms/storeAdapter', () => ({
   readRawCmsContent: () => readRawCmsContentMock(),
   writeRawCmsContent: (content: CmsContent) => writeRawCmsContentMock(content)
+}));
+
+vi.mock('@/features/cms/contentRevisions', () => ({
+  captureContentRevision: (...args: unknown[]) => captureContentRevisionMock(...args)
 }));
 
 let currentContent: CmsContent;
@@ -18,10 +23,12 @@ beforeEach(() => {
   currentContent = structuredClone(defaultContent);
   readRawCmsContentMock.mockReset();
   writeRawCmsContentMock.mockReset();
+  captureContentRevisionMock.mockReset();
   readRawCmsContentMock.mockImplementation(async () => currentContent);
   writeRawCmsContentMock.mockImplementation(async (content: CmsContent) => {
     currentContent = content;
   });
+  captureContentRevisionMock.mockResolvedValue(null);
 });
 
 describe('import/export helpers', () => {
@@ -58,6 +65,20 @@ describe('import/export helpers', () => {
     expect(currentContent.pages.about.navLabel).toBe('About Us');
     expect(currentContent.pages.home.title).toBe(defaultContent.pages.home.title);
     expect(writeRawCmsContentMock).toHaveBeenCalledTimes(1);
+    expect(captureContentRevisionMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        entityType: 'full_site',
+        entityId: 'cms',
+        label: 'Backup before pages merge import',
+        payload: expect.objectContaining({
+          pages: expect.objectContaining({
+            about: expect.objectContaining({
+              title: defaultContent.pages.about.title
+            })
+          })
+        })
+      })
+    );
   });
 
   it('rejects incomplete full-site replace payloads', async () => {
@@ -75,5 +96,32 @@ describe('import/export helpers', () => {
     ).rejects.toThrow(/full-site replace requires a complete cms backup payload/i);
 
     expect(writeRawCmsContentMock).not.toHaveBeenCalled();
+  });
+
+  it('rejects page imports with duplicate slugs before writing', async () => {
+    const importedAbout = {
+      ...currentContent.pages.about,
+      seo: {
+        ...currentContent.pages.about.seo,
+        slug: currentContent.pages.service.seo.slug
+      }
+    };
+
+    await expect(
+      importCmsJson(
+        'pages',
+        {
+          data: {
+            pages: {
+              about: importedAbout
+            }
+          }
+        },
+        'merge'
+      )
+    ).rejects.toThrow(/page slugs must be unique/i);
+
+    expect(writeRawCmsContentMock).not.toHaveBeenCalled();
+    expect(captureContentRevisionMock).not.toHaveBeenCalled();
   });
 });

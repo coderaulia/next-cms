@@ -410,9 +410,9 @@ export type CmsContent = {
   mediaAssets: MediaAsset[];
 };
 
-export type CmsRevisionEntityType = 'page' | 'blog_post' | 'portfolio_project' | 'site_settings';
+export type CmsRevisionEntityType = 'page' | 'blog_post' | 'portfolio_project' | 'site_settings' | 'full_site';
 
-export type CmsRevisionPayload = LandingPage | BlogPost | PortfolioProject | SiteSettings;
+export type CmsRevisionPayload = LandingPage | BlogPost | PortfolioProject | SiteSettings | CmsContent;
 
 export type CmsContentRevision = {
   id: string;

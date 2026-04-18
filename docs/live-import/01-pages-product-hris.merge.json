@@ -1,0 +1,361 @@
+{
+  "collection": "pages",
+  "exportedAt": "2026-04-18T20:35:06.5213344+07:00",
+  "schemaVersion": 1,
+  "data": {
+    "product-hris": {
+      "id": "product-hris",
+      "title": "Vanaila HRIS",
+      "navLabel": "HRIS",
+      "published": true,
+      "seo": {
+        "metaTitle": "Vanaila HRIS | Performance Management Software for Indonesian Teams",
+        "metaDescription": "Manage appraisals, KPI reviews, probation workflows, PIP tracking, and HR document generation in one role-aware HRIS platform.",
+        "slug": "hris",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "hris indonesia",
+          "performance management software",
+          "kpi management system",
+          "probation tracking software",
+          "hr appraisal system"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Stop Managing Performance.|Start Developing People.",
+          "body": "One platform to run your entire performance lifecycle, from probation to appraisals, KPIs to improvement plans, built for Indonesian organisations that are serious about growing their people.",
+          "ctaLabel": "Performance management, built in",
+          "ctaHref": "/contact",
+          "mediaImage": "/portfolio/hris/employees.jpeg",
+          "mediaAlt": "Vanaila HRIS employee and role management workspace",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-intro",
+          "heading": "Sound familiar?",
+          "body": "There's a better way to run performance management, and it does not require a 6-month implementation.",
+          "ctaLabel": "Operational friction",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-1",
+          "heading": "HR still chases managers for appraisal forms via WhatsApp",
+          "body": "Manual follow-ups delay reviews and make accountability impossible to track.",
+          "ctaLabel": "chat",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-2",
+          "heading": "KPI targets live in spreadsheets no one updates",
+          "body": "Performance targets drift because the system of record is fragmented from the people expected to use it.",
+          "ctaLabel": "schema",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-3",
+          "heading": "Probation deadlines slip through the cracks",
+          "body": "Teams discover critical milestones too late, after extension letters and review notes should already be ready.",
+          "ctaLabel": "calendar_month",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-4",
+          "heading": "Performance data is scattered and hard to report",
+          "body": "Directors need clear signals, but HR spends review season stitching numbers together by hand.",
+          "ctaLabel": "analytics",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-5",
+          "heading": "Nobody knows who's due for a review this month",
+          "body": "The lack of visibility creates surprises, inconsistent follow-through, and unnecessary compliance risk.",
+          "ctaLabel": "schedule",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "product-intro",
+          "heading": "Meet Vanaila HRIS,|performance built in, not bolted on",
+          "body": "Vanaila is a browser-based HR suite designed for the full employee performance lifecycle. No desktop installs. No complex setup. Role-aware from day one, so managers see their teams, HR sees everything, and employees only see what is theirs.",
+          "ctaLabel": "Browser-based HR suite",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/kpi-management.jpeg",
+          "mediaAlt": "Vanaila HRIS KPI management workspace",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-intro",
+          "heading": "Everything your HR team needs to run a fair, consistent, and documented appraisal process",
+          "body": "One system to define standards, run reviews, generate documents, and report with confidence.",
+          "ctaLabel": "Core product modules",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-1",
+          "heading": "Competency assessments",
+          "body": "Define the competency frameworks that matter for your organisation. Score employees consistently against configurable criteria, not guesswork, not gut feeling. Every assessment is recorded, traceable, and reportable.",
+          "ctaLabel": "fact_check",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/add-assessment.jpeg",
+          "mediaAlt": "Vanaila HRIS competency assessment input",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-2",
+          "heading": "KPI governance",
+          "body": "Set targets. Track progress. Run approvals. KPI definitions flow from HR down to managers and employees with a built-in workflow, so everyone knows what is expected and results are documented when review season arrives.",
+          "ctaLabel": "trending_up",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/kpi-division.jpeg",
+          "mediaAlt": "Vanaila HRIS division KPI governance view",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-3",
+          "heading": "Probation and PIP workflows",
+          "body": "Never miss a probation deadline again. Vanaila tracks every new hire probation period, flags upcoming milestones, and keeps a full audit trail of performance improvement plans.",
+          "ctaLabel": "calendar_month",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/probation-pip.jpeg",
+          "mediaAlt": "Vanaila HRIS probation and PIP workflow screen",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-4",
+          "heading": "HR documents generated in seconds",
+          "body": "From warning letters to employment contracts, generate legally formatted HR documents directly from the platform. Templates are editable, signer-ready, and export as clean A4 PDFs.",
+          "ctaLabel": "description",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/hr-document.jpeg",
+          "mediaAlt": "Vanaila HRIS HR document generator",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-5",
+          "heading": "Dashboard and reporting",
+          "body": "Aggregated performance views for directors and HR leadership. Export KPI and probation reports without digging through spreadsheets. Real data, on demand.",
+          "ctaLabel": "analytics",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/kpi-records.jpeg",
+          "mediaAlt": "Vanaila HRIS KPI records and reporting dashboard",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-6",
+          "heading": "Role-aware access, always",
+          "body": "Employees. Managers. HR. Directors. Every user sees exactly what they should, nothing more, nothing less. Built-in role separation means no accidental data exposure and no permission headaches.",
+          "ctaLabel": "verified_user",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/employees.jpeg",
+          "mediaAlt": "Vanaila HRIS employee access and role separation view",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "trust",
+          "heading": "Built for how Indonesian HR teams actually work",
+          "body": "We did not build a generic HRIS and translate it. Vanaila was designed with Indonesian HR workflows in mind, including Bahasa Indonesia document templates, local probation and PIP practices, and the audit documentation your disnaker compliance process actually requires.",
+          "ctaLabel": "Local-first workflows",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-intro",
+          "heading": "Up and running without an IT project",
+          "body": "Launch in clear operational steps instead of a heavyweight implementation cycle.",
+          "ctaLabel": "Fast rollout",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-1",
+          "heading": "Set up your organisation",
+          "body": "Add employees, assign roles, and configure your competency and KPI frameworks so every review starts from the same baseline.",
+          "ctaLabel": "settings_suggest",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-2",
+          "heading": "Run your cycles",
+          "body": "Track probation, mid-year and annual appraisals, KPI reviews, and PIP monitoring in one role-aware workflow.",
+          "ctaLabel": "sync_alt",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-3",
+          "heading": "Generate and export",
+          "body": "Produce official HR documents, export reports, and keep a full history of every decision when leadership or compliance asks for it.",
+          "ctaLabel": "description",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pricing",
+          "heading": "Performance management should not cost a fortune|to implement",
+          "body": "Vanaila is priced for growing Indonesian companies, not enterprise multinationals. No per-module licensing. No surprise implementation fees.",
+          "ctaLabel": "Lihat Paket Harga",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Hubungi Kami untuk Demo",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Your next appraisal cycle|does not have to be a fire drill",
+          "body": "Give your HR team the structure, the tools, and the records they need to run performance management with confidence.",
+          "ctaLabel": "Mulai Sekarang - Gratis",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-04-18T00:00:00.000Z"
+    }
+  }
+}

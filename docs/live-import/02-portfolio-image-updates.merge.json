@@ -1,0 +1,179 @@
+{
+  "collection": "portfolioProjects",
+  "exportedAt": "2026-04-18T20:35:06.5213344+07:00",
+  "schemaVersion": 1,
+  "data": [
+    {
+      "id": "portfolio-assessment-app",
+      "title": "Assessment App",
+      "summary": "Custom web application built for psychologists to collect structured socio-cultural research data. The product was later discontinued in 2022 after the research cycle ended.",
+      "challenge": "The research team needed a secure and easy way to distribute assessments, capture participant responses, and reduce manual spreadsheet handling during the data-collection phase.",
+      "solution": "We designed a custom web app with guided participant flows, form-based intake screens, and a lightweight admin workflow that made field data collection easier for non-technical researchers.",
+      "outcome": "The team gained a cleaner collection workflow for research operations. The platform is now inactive because the program concluded in 2022, but it remains a strong example of a purpose-built internal application.",
+      "clientName": "Assessment App",
+      "serviceType": "Custom Web App",
+      "industry": "Psychology Research",
+      "projectUrl": "/custom-business-tools",
+      "relatedServicePageIds": [
+        "service-custom-business-tools"
+      ],
+      "coverImage": "/portfolio/assessment-app.jpg",
+      "gallery": [
+        "/portfolio/assessment-app.jpg"
+      ],
+      "tags": [
+        "Custom App",
+        "Research",
+        "Psychology"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 2,
+      "publishedAt": "2026-03-16T12:55:58.614Z",
+      "updatedAt": "2026-03-16T12:55:58.614Z",
+      "seo": {
+        "metaTitle": "Assessment App Case Study | Research Data Collection Web App",
+        "metaDescription": "Case study of a custom assessment web app built to help psychologists collect structured research data more efficiently.",
+        "slug": "assessment-app",
+        "canonical": "",
+        "socialImage": "/portfolio/assessment-app.jpg",
+        "noIndex": false,
+        "keywords": [
+          "assessment web app",
+          "research data collection",
+          "psychology app",
+          "custom web app"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-greenretech",
+      "title": "Greenretech",
+      "summary": "WooCommerce website created to sell wood pellet products to international buyers with a cleaner product showcase and export-oriented positioning.",
+      "challenge": "The business needed a professional ecommerce presence that could communicate product credibility, showcase catalog information, and support international buying interest.",
+      "solution": "We built a WooCommerce-based storefront with product sections, trust messaging, and a global-friendly presentation tailored to industrial export customers.",
+      "outcome": "Greenretech gained a more credible ecommerce channel for premium wood pellet sales and a stronger digital presentation for international inquiries.",
+      "clientName": "Greenretech",
+      "serviceType": "Secure Online Shops",
+      "industry": "Energy Export",
+      "projectUrl": "/secure-online-shops",
+      "relatedServicePageIds": [
+        "service-secure-online-shops"
+      ],
+      "coverImage": "/portfolio/Greenretech.jpg",
+      "gallery": [
+        "/portfolio/Greenretech.jpg"
+      ],
+      "tags": [
+        "WooCommerce",
+        "Ecommerce",
+        "Export"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 4,
+      "publishedAt": "2026-03-16T12:55:58.614Z",
+      "updatedAt": "2026-03-16T12:55:58.614Z",
+      "seo": {
+        "metaTitle": "Greenretech Case Study | WooCommerce Export Website",
+        "metaDescription": "WooCommerce case study for Greenretech, built to sell wood pellet products for international customers with a professional ecommerce experience.",
+        "slug": "greenretech",
+        "canonical": "",
+        "socialImage": "/portfolio/Greenretech.jpg",
+        "noIndex": false,
+        "keywords": [
+          "woocommerce website",
+          "export ecommerce",
+          "wood pellet website",
+          "online shop"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-maza-adventure",
+      "title": "Maza Adventure",
+      "summary": "Company profile website for an event and tour organizer, featuring outdoor programs, travel packages, and a more energetic visual direction.",
+      "challenge": "The brand needed a modern web presence that could showcase experiences, build trust quickly, and make the core programs easier to understand online.",
+      "solution": "We built a tourism-focused company profile website with hero storytelling, program highlights, and clearer pathways for potential customers to explore activities.",
+      "outcome": "Maza Adventure gained a stronger promotional website that presents its event and tour services with more confidence and clearer conversion paths.",
+      "clientName": "Maza Adventure",
+      "serviceType": "Website Development",
+      "industry": "Tourism & Events",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/maza.jpg",
+      "gallery": [
+        "/portfolio/maza.jpg"
+      ],
+      "tags": [
+        "Tourism",
+        "Events",
+        "Website"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 6,
+      "publishedAt": "2026-03-16T12:55:58.614Z",
+      "updatedAt": "2026-03-16T12:55:58.614Z",
+      "seo": {
+        "metaTitle": "Maza Adventure Case Study | Tour Organizer Website",
+        "metaDescription": "Website case study for Maza Adventure, built to present event and tour programs with clearer storytelling and conversion-focused structure.",
+        "slug": "maza-adventure",
+        "canonical": "",
+        "socialImage": "/portfolio/maza.jpg",
+        "noIndex": false,
+        "keywords": [
+          "tour website",
+          "event organizer website",
+          "travel company profile",
+          "website development"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-rumah-psikologi",
+      "title": "Rumah Psikologi",
+      "summary": "Company profile website for a psychology practice, designed to communicate services, consultation pathways, and a calm approachable brand identity.",
+      "challenge": "The practice needed a friendlier and more trustworthy website to introduce its services and help visitors understand how to start a consultation.",
+      "solution": "We created a soft visual system and a structured company profile website that highlights the practice, service offerings, and primary consultation actions.",
+      "outcome": "Rumah Psikologi gained a clearer digital front door for prospective clients and a more approachable service presentation.",
+      "clientName": "Rumah Psikologi",
+      "serviceType": "Website Development",
+      "industry": "Psychology Practice",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/rumah-psikologi.jpg",
+      "gallery": [
+        "/portfolio/rumah-psikologi.jpg"
+      ],
+      "tags": [
+        "Psychology",
+        "Company Profile",
+        "Website"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 7,
+      "publishedAt": "2026-03-16T12:55:58.614Z",
+      "updatedAt": "2026-03-16T12:55:58.614Z",
+      "seo": {
+        "metaTitle": "Rumah Psikologi Case Study | Psychology Practice Website",
+        "metaDescription": "Psychology company profile website case study focused on service clarity, trust-building, and consultation readiness.",
+        "slug": "rumah-psikologi",
+        "canonical": "",
+        "socialImage": "/portfolio/rumah-psikologi.jpg",
+        "noIndex": false,
+        "keywords": [
+          "psychology website",
+          "company profile website",
+          "consultation website",
+          "website development"
+        ]
+      }
+    }
+  ]
+}
