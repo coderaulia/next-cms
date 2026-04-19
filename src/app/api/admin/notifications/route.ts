@@ -7,8 +7,9 @@ import { assertAdminPermission } from '@/features/cms/adminAuth';
 import type { Notification, NotificationType } from '@/features/cms/notifications';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'dashboard:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'dashboard:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 100);
@@ -45,8 +46,9 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'dashboard:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'dashboard:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const notificationId = searchParams.get('id');
@@ -79,8 +81,9 @@ export async function DELETE(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'dashboard:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'dashboard:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const session = await import('@/features/cms/adminAuth').then((m) => m.getAdminSession(request));
   if (!session) {

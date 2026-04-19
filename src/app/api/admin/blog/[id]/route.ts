@@ -11,8 +11,8 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if (auth instanceof NextResponse) return auth;
 
   const { id } = await params;
   const post = await getBlogPostById(id);
@@ -23,8 +23,9 @@ export async function GET(request: Request, { params }: RouteContext) {
 }
 
 export async function PUT(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'content:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const payload = validateBlogPost(await request.json().catch(() => null));
@@ -36,7 +37,6 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   const saveMode = (request.headers.get('x-cms-save-mode') ?? 'manual').trim().toLowerCase();
   try {
     if (saveMode !== 'autosave') {
@@ -45,7 +45,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
         entityId: post.id,
         label: post.status === 'published' ? 'Saved published post' : 'Saved draft post',
         payload: post,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         userDisplayName: session?.user.displayName ?? null
       });
     }
@@ -54,7 +54,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
       action: 'blog.update',
       entityType: 'blog_post',
       entityId: post.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: post.title,
         slug: post.seo.slug,
@@ -70,8 +70,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'content:delete');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:delete');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const post = await getBlogPostById(id);
@@ -84,13 +85,12 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   try {
     await logAdminAuditEvent(request, {
       action: 'blog.delete',
       entityType: 'blog_post',
       entityId: post.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: post.title,
         slug: post.seo.slug,

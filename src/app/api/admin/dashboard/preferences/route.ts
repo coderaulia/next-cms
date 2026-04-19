@@ -13,8 +13,9 @@ export type DashboardPreferences = {
 };
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'dashboard:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'dashboard:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const session = await import('@/features/cms/adminAuth').then((m) => m.getAdminSession(request));
   if (!session) {
@@ -47,8 +48,9 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'dashboard:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'dashboard:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const session = await import('@/features/cms/adminAuth').then((m) => m.getAdminSession(request));
   if (!session) {

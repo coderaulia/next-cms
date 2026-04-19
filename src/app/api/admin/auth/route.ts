@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import {
   applyAdminSessionCookie,
+  assertAdminRequest,
   clearAdminSessionCookie,
   clearLoginLockout,
   getAdminSession,
@@ -15,10 +16,9 @@ import type { AdminLoginPayload } from '@/features/cms/adminTypes';
 import { assertCsrfToken, assertRateLimit, assertTrustedMutationRequest } from '@/services/requestSecurity';
 
 export async function GET(request: Request) {
-  const session = await getAdminSession(request);
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const auth = await assertAdminRequest(request);
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   return NextResponse.json({ ok: true, user: session.user });
 }
@@ -93,19 +93,20 @@ export async function DELETE(request: Request) {
   const csrfFailure = assertCsrfToken(request);
   if (csrfFailure) return csrfFailure;
 
-  const session = await getAdminSession(request);
+  const auth = await assertAdminRequest(request);
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
+
   await logoutAdminUser(request);
 
-  if (session) {
-    try {
-      await logAdminAuditEvent(request, {
-        action: 'admin.logout',
-        entityType: 'auth',
-        userId: session.user.id
-      });
-    } catch {
-      // swallow audit log failures
-    }
+  try {
+    await logAdminAuditEvent(request, {
+      action: 'admin.logout',
+      entityType: 'auth',
+      userId: session.user.id
+    });
+  } catch {
+    // swallow audit log failures
   }
 
   const response = NextResponse.json({ ok: true });

@@ -4,8 +4,9 @@ import { assertAdminRequest } from '@/features/cms/adminAuth';
 import { getPages } from '@/features/cms/contentStore';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const pages = await getPages();
   const ordered = [

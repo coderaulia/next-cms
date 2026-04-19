@@ -3,8 +3,9 @@ import { NextResponse } from 'next/server';
 import { assertAdminPermission, getAdminAuditLogs } from '@/features/cms/adminAuth';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'audit:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'audit:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const limit = Number(searchParams.get('limit') ?? '50');

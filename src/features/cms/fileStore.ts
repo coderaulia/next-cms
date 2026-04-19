@@ -29,6 +29,11 @@ import { defaultContent } from './defaultContent';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'content.json');
 
+// In-process cache to avoid reading the entire file on every operation
+let cachedContent: CmsContent | null = null;
+let cacheTimestamp: number = 0;
+const CACHE_TTL = 5000; // 5 seconds TTL for cache
+
 // In-process write lock: serializes all mutations through writeContent to prevent
 // concurrent read-modify-write races that silently clobber data (last-writer-wins).
 let writeLock: Promise<void> = Promise.resolve();
@@ -63,12 +68,19 @@ async function ensureDataFile(): Promise<void> {
 }
 
 export async function readContent(): Promise<CmsContent> {
+  const now = Date.now();
+  if (cachedContent && (now - cacheTimestamp) < CACHE_TTL) {
+    return structuredClone(cachedContent);
+  }
+
   await ensureDataFile();
   const raw = await readFile(DATA_FILE, 'utf-8');
   const parsed = safeParse(raw);
   if (!parsed) {
     await writeFile(DATA_FILE, JSON.stringify(defaultContent, null, 2), 'utf-8');
-    return structuredClone(defaultContent);
+    cachedContent = structuredClone(defaultContent);
+    cacheTimestamp = now;
+    return cachedContent;
   }
 
   const merged = mergeWithDefaults(parsed);
@@ -80,12 +92,16 @@ export async function readContent(): Promise<CmsContent> {
     await writeFile(DATA_FILE, JSON.stringify(merged, null, 2), 'utf-8');
   }
 
-  return merged;
+  cachedContent = merged;
+  cacheTimestamp = now;
+  return structuredClone(merged);
 }
 
 async function writeFileUnsafe(content: CmsContent): Promise<void> {
   await ensureDataFile();
   await writeFile(DATA_FILE, JSON.stringify(content, null, 2), 'utf-8');
+  cachedContent = structuredClone(content);
+  cacheTimestamp = Date.now();
 }
 
 export async function writeContent(content: CmsContent): Promise<void> {

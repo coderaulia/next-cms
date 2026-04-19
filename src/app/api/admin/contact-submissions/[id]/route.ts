@@ -8,8 +8,9 @@ export async function PATCH(
   request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const body = await request.json().catch(() => null);
   const status = validateContactSubmissionStatus(body?.status);
@@ -23,13 +24,12 @@ export async function PATCH(
     return NextResponse.json({ error: 'Submission not found.' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   try {
     await logAdminAuditEvent(request, {
       action: 'contact_submission.update_status',
       entityType: 'contact_submission',
       entityId: submission.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         status: submission.status,
         email: submission.email,

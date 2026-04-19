@@ -13,8 +13,9 @@ function errorResponse(error: unknown) {
 }
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'team:manage');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'team:manage');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   if (!env.databaseUrl) {
     return NextResponse.json({ available: false, members: [] });
@@ -29,8 +30,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'team:manage');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'team:manage');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const body = (await request.json().catch(() => null)) as
     | {
@@ -49,13 +51,12 @@ export async function POST(request: Request) {
       password: body?.password ?? ''
     });
 
-    const session = await getAdminSession(request);
     try {
       await logAdminAuditEvent(request, {
         action: 'team.create',
         entityType: 'admin_user',
         entityId: member.id,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         metadata: {
           email: member.email,
           role: member.role

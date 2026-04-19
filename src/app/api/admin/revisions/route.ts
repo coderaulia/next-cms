@@ -25,8 +25,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Invalid revision query.' }, { status: 400 });
   }
 
-  const unauthorized = await assertAdminPermission(request, requiredPermission(entityType));
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, requiredPermission(entityType));
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const revisions = await listContentRevisions(entityType, entityId, limit);
   return NextResponse.json({ revisions });

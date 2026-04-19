@@ -24,8 +24,9 @@ function isImageMimeType(value: string) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'media:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'media:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   try {
     const form = await request.formData();
@@ -76,13 +77,12 @@ export async function POST(request: Request) {
         updatedAt: nowIso()
       });
 
-      const session = await getAdminSession(request);
       try {
         await logAdminAuditEvent(request, {
           action: 'media.upload',
           entityType: 'media_asset',
           entityId: mediaAsset.id,
-          userId: session?.user.id ?? null,
+          userId: session.user.id,
           metadata: {
             title: mediaAsset.title,
             url: mediaAsset.url,

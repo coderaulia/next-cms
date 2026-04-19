@@ -6,8 +6,9 @@ import { revalidateBlogCache } from '@/features/cms/publicCache';
 import type { BlogPost } from '@/features/cms/types';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const includeDrafts = searchParams.get('includeDrafts') === '1';
@@ -31,19 +32,20 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'content:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in auth) return auth.error;
+
+  const session = auth.session;
 
   const payload = (await request.json().catch(() => null)) as Partial<BlogPost> | null;
   const post = await createBlogPost(payload ?? {});
-  const session = await getAdminSession(request);
 
   try {
     await logAdminAuditEvent(request, {
       action: 'blog.create',
       entityType: 'blog_post',
       entityId: post.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: post.title,
         slug: post.seo.slug,

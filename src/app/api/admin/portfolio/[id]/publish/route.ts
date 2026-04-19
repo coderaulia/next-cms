@@ -10,8 +10,9 @@ type RouteContext = {
 };
 
 export async function POST(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'content:publish');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:publish');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const existing = await getPortfolioProjectById(id);
@@ -24,14 +25,13 @@ export async function POST(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Portfolio project not found' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   try {
     await captureContentRevision({
       entityType: 'portfolio_project',
       entityId: project.id,
       label: 'Published project',
       payload: project,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       userDisplayName: session?.user.displayName ?? null
     });
 
@@ -39,7 +39,7 @@ export async function POST(request: Request, { params }: RouteContext) {
       action: 'portfolio.publish',
       entityType: 'portfolio_project',
       entityId: project.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: project.title,
         slug: project.seo.slug,

@@ -64,7 +64,8 @@ The CSP allows `'unsafe-inline'` for scripts (L12), which significantly increase
 
 ```typescript
 export function getClientIdentifier(request: Request) {
-  const forwardedFor = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '';
+  const forwardedFor =
+    request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '';
   const firstIp = forwardedFor.split(',')[0]?.trim();
   return firstIp || 'unknown';
 }
@@ -81,7 +82,7 @@ Without a trusted proxy configuration, attackers can **bypass all rate limits** 
 ```typescript
 function isAllowedFile(file: File) {
   const mimeType = (file.type || '').toLowerCase();
-  if (!mimeType) return true;  // ← BYPASSES TYPE CHECK
+  if (!mimeType) return true; // ← BYPASSES TYPE CHECK
   return ALLOWED_MIME_PREFIXES.some((prefix) => mimeType.startsWith(prefix));
 }
 ```
@@ -114,29 +115,15 @@ An attacker can upload arbitrary files (HTML, SVG with scripts, executables) by 
 
 ---
 
-### 2.3 `bootstrapPromise` in `dbStore.ts` Can Swallow Errors Permanently 🟡 High
+### 2.3 ~~`bootstrapPromise` in `dbStore.ts` Can Swallow Errors Permanently~~ ✅ Fixed
 
-[ensureDbBootstrap](file:///d:/web/react-cms/src/features/cms/dbStore.ts#L539-L655) sets `bootstrapPromise = null` in the `finally` block only for the initial caller. But if the promise rejects, **all concurrent waiters** at L547 (`await bootstrapPromise`) will also reject, potentially crashing request handlers. After that, `bootstrapPromise` is null again, so the next request will retry — but the partial bootstrap state is unknown.
+[ensureDbBootstrap](file:///d:/web/react-cms/src/features/cms/dbStore.ts#L539-L655) now resets `bootstrapPromise` on both success and error, allowing retries after failures.
 
 ---
 
-### 2.4 `normalizeAdminRole` Defaults Unknown Roles to `super_admin` 🟡 High
+### 2.4 ~~`normalizeAdminRole` Defaults Unknown Roles to `super_admin`~~ ✅ Fixed
 
-[normalizeAdminRole](file:///d:/web/react-cms/src/features/cms/adminPermissions.ts#L31-L37):
-
-```typescript
-export function normalizeAdminRole(value: string | null | undefined): AdminRole {
-  const normalized = (value ?? '').trim().toLowerCase();
-  if (normalized === 'admin' || normalized === 'editor' || normalized === 'analyst') {
-    return normalized;
-  }
-  return 'super_admin';  // ← ANY garbage value gets FULL permissions
-}
-```
-
-If a database corruption or import bug produces an unexpected role string (e.g., `"viewer"`, `"moderator"`, or empty string), the user silently receives **super_admin privileges**.
-
-**Fix:** Default to the least-privileged role (`analyst`), or throw on unrecognized values.
+[normalizeAdminRole](file:///d:/web/react-cms/src/features/cms/adminPermissions.ts#L31-L37) now defaults to `'analyst'` instead of `'super_admin'`.
 
 ---
 
@@ -210,7 +197,7 @@ Drizzle requires tables to have a primary key for proper ORM operations. The com
 [sitemap.ts L29](file:///d:/web/react-cms/src/app/sitemap.ts#L29):
 
 ```typescript
-url: `${settings.baseUrl}${page.seo.slug ? `/${page.seo.slug}` : ''}`
+url: `${settings.baseUrl}${page.seo.slug ? `/${page.seo.slug}` : ''}`;
 ```
 
 If `settings.baseUrl` is empty (which `asSafeBaseUrl` allows via `env.ts` fallback to `http://localhost:3000`), the sitemap will contain `http://localhost:3000/about` URLs in production. There's no guard preventing this from being served to search engines.
@@ -236,20 +223,9 @@ This runs **server-side** where `getTimezoneOffset()` returns the server's timez
 
 ## 4. Architectural Issues
 
-### 4.1 `loadCmsStoreModules()` Is Called on Every Single Operation 🟡 High
+### 4.1 ~~`loadCmsStoreModules()` Is Called on Every Single Operation~~ ✅ Fixed
 
-Every function in [contentStore.ts](file:///d:/web/react-cms/src/features/cms/contentStore.ts) calls `loadCmsStoreModules()`:
-
-```typescript
-export async function getBlogPosts(includeDrafts = false) {
-  const { contentStore } = await loadCmsStoreModules();
-  ...
-}
-```
-
-This re-evaluates `isDatabaseMode()` 30+ times per admin page load. While `isDatabaseMode()` itself is cheap, the file-mode path performs `Promise.all([import('./fileStore'), import('./fileCollectionsStore')])` on every call. Module imports are cached by Node, but the Promise allocation and resolution is not free.
-
-**Fix:** Cache the resolved modules in a module-level variable.
+[loadCmsStoreModules](file:///d:/web/react-cms/src/features/cms/storeAdapter.ts#L28-L50) now caches the resolved modules in a module-level variable, avoiding repeated evaluations.
 
 ---
 
@@ -280,7 +256,7 @@ if (latest && payloadSignature(latest.payload) === payloadSignature(input.payloa
 }
 
 function payloadSignature(payload: CmsRevisionPayload) {
-  return JSON.stringify(payload);  // Full-site payloads can be 100KB+
+  return JSON.stringify(payload); // Full-site payloads can be 100KB+
 }
 ```
 
@@ -373,18 +349,9 @@ These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`.
 
 ## 7. Performance Concerns
 
-### 7.1 File Store Reads Entire Content on Every Operation 🟡 High
+### 7.1 ~~File Store Reads Entire Content on Every Operation~~ ✅ Fixed
 
-Every single operation in `fileStore.ts` — even reading a single blog post by ID — parses the **entire** `content.json` file:
-
-```typescript
-export async function getBlogPostById(id: string) {
-  const content = await readContent();  // Parses ALL content
-  return content.blogPosts.find((post) => post.id === id) ?? null;
-}
-```
-
-As content grows, this becomes O(n) for every read operation.
+[fileStore.ts](file:///d:/web/react-cms/src/features/cms/fileStore.ts) now caches the parsed content in memory with a 5-second TTL, reducing disk I/O for frequent operations.
 
 ---
 
@@ -402,34 +369,34 @@ As content grows, this becomes O(n) for every read operation.
 
 ## Summary Table
 
-| # | Finding | Severity | Category |
-|---|---------|----------|----------|
-| 1.1 | Admin token timing-unsafe comparison | 🔴 Critical | Security |
-| 1.2 | Double `getAdminSession` call + TOCTOU | 🟡 High | Security |
-| 1.3 | Plaintext password comparison in fallback | 🟡 High | Security |
-| 1.4 | CSRF + `unsafe-inline` script-src | 🟠 Medium | Security |
-| 1.5 | Rate limiter spoofable via headers | 🟠 Medium | Security |
-| 1.6 | Media upload bypasses type check | 🟠 Medium | Security |
-| 2.1 | File store has no write locking | 🔴 Critical | Data Integrity |
-| 2.2 | DB rate limiter race condition | 🟡 High | Data Integrity |
-| 2.3 | Bootstrap promise error handling | 🟡 High | Data Integrity |
-| 2.4 | Unknown roles default to super_admin | 🟡 High | Data Integrity |
-| 3.1 | Scheduled content never triggers | 🔴 Critical | Functional |
-| 3.2 | Blog validator accepts empty required fields | 🟠 Medium | Functional |
-| 3.3 | Tags used as categories, real Categories unused | 🟠 Medium | Functional |
-| 3.4 | `postCategoriesTable` missing primary key | 🟠 Medium | Functional |
-| 3.5 | Sitemap generates localhost URLs | 🟠 Medium | Functional |
-| 3.6 | Schedule editor timezone bug | 🟠 Medium | Functional |
-| 4.1 | Store modules resolved on every call | 🟡 High | Architecture |
-| 4.2 | Settings normalization spreads unknown keys | 🟠 Medium | Architecture |
-| 4.3 | Revision dedup via full JSON comparison | 🟠 Medium | Architecture |
-| 4.4 | 64KB hardcoded default content | 🟢 Low | Architecture |
-| 5.1 | `next lint` deprecated | 🟠 Medium | Tooling |
-| 5.2 | Bundle analyzer version mismatch | 🟢 Low | Tooling |
-| 5.3 | tsconfig includes scripts | 🟢 Low | Tooling |
-| 6.1 | Legacy settings aliases | 🟠 Medium | Tech Debt |
-| 6.2 | Duplicate utility functions | 🟢 Low | Tech Debt |
-| 6.3 | Branding assets not URL-resolved | 🟢 Low | Tech Debt |
-| 7.1 | File store full-parse on every read | 🟡 High | Performance |
-| 7.2 | Cache invalidation is all-or-nothing | 🟠 Medium | Performance |
-| 7.3 | No session/rate-limit table cleanup | 🟠 Medium | Performance |
+| #   | Finding                                         | Severity  | Category       |
+| --- | ----------------------------------------------- | --------- | -------------- |
+| 1.1 | Admin token timing-unsafe comparison            | ✅ Fixed  | Security       |
+| 1.2 | Double `getAdminSession` call + TOCTOU          | 🟡 High   | Security       |
+| 1.3 | Plaintext password comparison in fallback       | 🟡 High   | Security       |
+| 1.4 | CSRF + `unsafe-inline` script-src               | 🟠 Medium | Security       |
+| 1.5 | Rate limiter spoofable via headers              | 🟠 Medium | Security       |
+| 1.6 | Media upload bypasses type check                | 🟠 Medium | Security       |
+| 2.1 | File store has no write locking                 | ✅ Fixed  | Data Integrity |
+| 2.2 | DB rate limiter race condition                  | 🟡 High   | Data Integrity |
+| 2.3 | Bootstrap promise error handling                | ✅ Fixed  | Data Integrity |
+| 2.4 | Unknown roles default to super_admin            | ✅ Fixed  | Data Integrity |
+| 3.1 | Scheduled content never triggers                | ✅ Fixed  | Functional     |
+| 3.2 | Blog validator accepts empty required fields    | 🟠 Medium | Functional     |
+| 3.3 | Tags used as categories, real Categories unused | 🟠 Medium | Functional     |
+| 3.4 | `postCategoriesTable` missing primary key       | 🟠 Medium | Functional     |
+| 3.5 | Sitemap generates localhost URLs                | 🟠 Medium | Functional     |
+| 3.6 | Schedule editor timezone bug                    | 🟠 Medium | Functional     |
+| 4.1 | Store modules resolved on every call            | ✅ Fixed  | Architecture   |
+| 4.2 | Settings normalization spreads unknown keys     | 🟠 Medium | Architecture   |
+| 4.3 | Revision dedup via full JSON comparison         | 🟠 Medium | Architecture   |
+| 4.4 | 64KB hardcoded default content                  | 🟢 Low    | Architecture   |
+| 5.1 | `next lint` deprecated                          | 🟠 Medium | Tooling        |
+| 5.2 | Bundle analyzer version mismatch                | 🟢 Low    | Tooling        |
+| 5.3 | tsconfig includes scripts                       | 🟢 Low    | Tooling        |
+| 6.1 | Legacy settings aliases                         | 🟠 Medium | Tech Debt      |
+| 6.2 | Duplicate utility functions                     | 🟢 Low    | Tech Debt      |
+| 6.3 | Branding assets not URL-resolved                | 🟢 Low    | Tech Debt      |
+| 7.1 | File store full-parse on every read             | ✅ Fixed  | Performance    |
+| 7.2 | Cache invalidation is all-or-nothing            | 🟠 Medium | Performance    |
+| 7.3 | No session/rate-limit table cleanup             | 🟠 Medium | Performance    |

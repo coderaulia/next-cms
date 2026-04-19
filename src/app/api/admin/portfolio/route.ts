@@ -6,8 +6,9 @@ import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import type { PortfolioProject } from '@/features/cms/types';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const includeDrafts = searchParams.get('includeDrafts') === '1';
@@ -34,19 +35,19 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'content:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const payload = (await request.json().catch(() => null)) as Partial<PortfolioProject> | null;
   const project = await createPortfolioProject(payload ?? {});
-  const session = await getAdminSession(request);
 
   try {
     await logAdminAuditEvent(request, {
       action: 'portfolio.create',
       entityType: 'portfolio_project',
       entityId: project.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: project.title,
         slug: project.seo.slug,

@@ -9,8 +9,9 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const mediaAsset = await getMediaAssetById(id);

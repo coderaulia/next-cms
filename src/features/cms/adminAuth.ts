@@ -573,7 +573,7 @@ export async function getAdminSession(request: Request): Promise<AdminSession | 
   }
 }
 
-export async function assertAdminRequest(request: Request): Promise<NextResponse | null> {
+export async function assertAdminRequest(request: Request): Promise<AdminSession | NextResponse> {
   const originFailure = assertTrustedMutationRequest(request);
   if (originFailure) {
     return originFailure;
@@ -588,29 +588,25 @@ export async function assertAdminRequest(request: Request): Promise<NextResponse
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  return null;
+  return session;
 }
 
 export async function assertAdminPermission(
   request: Request,
   permission: AdminPermission
-): Promise<NextResponse | null> {
-  const originFailure = assertTrustedMutationRequest(request);
-  if (originFailure) return originFailure;
-
-  const csrfFailure = assertCsrfToken(request);
-  if (csrfFailure) return csrfFailure;
-
-  const session = await getAdminSession(request);
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+): Promise<{ session: AdminSession } | { error: NextResponse }> {
+  const auth = await assertAdminRequest(request);
+  if (auth instanceof NextResponse) {
+    return { error: auth };
   }
+
+  const session = auth;
 
   if (!hasAdminPermission(session.user.role, permission)) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    return { error: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) };
   }
 
-  return null;
+  return { session };
 }
 
 export async function loginAdminUser(email: string, password: string): Promise<AdminLoginResult | null> {
@@ -652,6 +648,10 @@ export async function loginAdminUser(email: string, password: string): Promise<A
   } catch (error) {
     if (!isMissingAdminSchemaError(error)) {
       throw error;
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      return null;
     }
 
     const fallbackUser = getFallbackAdminUser();

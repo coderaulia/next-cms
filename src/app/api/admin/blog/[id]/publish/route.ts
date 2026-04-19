@@ -10,8 +10,9 @@ type RouteContext = {
 };
 
 export async function POST(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'content:publish');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:publish');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const post = await setPostStatus(id, 'published');
@@ -19,14 +20,13 @@ export async function POST(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   try {
     await captureContentRevision({
       entityType: 'blog_post',
       entityId: post.id,
       label: 'Published post',
       payload: post,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       userDisplayName: session?.user.displayName ?? null
     });
 
@@ -34,7 +34,7 @@ export async function POST(request: Request, { params }: RouteContext) {
       action: 'blog.publish',
       entityType: 'blog_post',
       entityId: post.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: post.title,
         slug: post.seo.slug,

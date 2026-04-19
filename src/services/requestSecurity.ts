@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { eq } from 'drizzle-orm';
+import { and, eq, gt, lt, sql } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import { requestRateLimitsTable } from '@/db/schema';
@@ -136,28 +136,29 @@ async function assertRateLimitInDatabase(
 
   const current = rows[0];
 
-  if (!current || new Date(current.resetAt).getTime() <= now) {
-    await getDb()
-      .insert(requestRateLimitsTable)
-      .values({
-        key,
-        count: 1,
-        resetAt: resetAtIso,
-        updatedAt: nowIso
-      })
-      .onConflictDoUpdate({
-        target: requestRateLimitsTable.key,
-        set: {
-          count: 1,
-          resetAt: resetAtIso,
-          updatedAt: nowIso
-        }
-      });
+  // Try to atomically increment if exists and not expired and count < limit
+  const updateResult = await getDb()
+    .update(requestRateLimitsTable)
+    .set({
+      count: sql`${requestRateLimitsTable.count} + 1`,
+      updatedAt: nowIso
+    })
+    .where(
+      and(
+        eq(requestRateLimitsTable.key, key),
+        lt(requestRateLimitsTable.count, limit),
+        gt(requestRateLimitsTable.resetAt, nowIso)
+      )
+    )
+    .returning({ count: requestRateLimitsTable.count });
 
+  if (updateResult.length > 0) {
+    // Successfully incremented
     return null;
   }
 
-  if (current.count >= limit) {
+  // Check if blocked
+  if (current && new Date(current.resetAt).getTime() > now && current.count >= limit) {
     const retryAfter = Math.max(1, Math.ceil((new Date(current.resetAt).getTime() - now) / 1000));
     return NextResponse.json(
       { error: 'Too many requests. Please retry later.' },
@@ -171,13 +172,23 @@ async function assertRateLimitInDatabase(
     );
   }
 
+  // Insert or reset if not exists or expired
   await getDb()
-    .update(requestRateLimitsTable)
-    .set({
-      count: current.count + 1,
+    .insert(requestRateLimitsTable)
+    .values({
+      key,
+      count: 1,
+      resetAt: resetAtIso,
       updatedAt: nowIso
     })
-    .where(eq(requestRateLimitsTable.key, key));
+    .onConflictDoUpdate({
+      target: requestRateLimitsTable.key,
+      set: {
+        count: 1,
+        resetAt: resetAtIso,
+        updatedAt: nowIso
+      }
+    });
 
   return null;
 }

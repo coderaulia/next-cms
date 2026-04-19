@@ -20,8 +20,9 @@ export type AdminSessionInfo = {
 };
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'team:manage');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'team:manage');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const db = getDb();
 
@@ -62,8 +63,9 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'team:manage');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'team:manage');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get('id');

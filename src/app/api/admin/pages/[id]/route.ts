@@ -11,8 +11,9 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   if (!isValidPageId(id)) {
@@ -54,7 +55,6 @@ export async function PUT(request: Request, { params }: RouteContext) {
   }
 
   const page = await upsertPage(payload);
-  const session = await getAdminSession(request);
   const saveMode = (request.headers.get('x-cms-save-mode') ?? 'manual').trim().toLowerCase();
 
   try {
@@ -64,7 +64,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
         entityId: page.id,
         label: publishStateChanged ? 'Saved page with publish changes' : 'Saved page',
         payload: page,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         userDisplayName: session?.user.displayName ?? null
       });
     }
@@ -73,7 +73,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
       action: 'page.update',
       entityType: 'page',
       entityId: page.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: page.title,
         slug: page.seo.slug,

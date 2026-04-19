@@ -11,8 +11,9 @@ function sanitizePath(value: string | null) {
 }
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'content:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { searchParams } = new URL(request.url);
   const redirectTo = sanitizePath(searchParams.get('path'));

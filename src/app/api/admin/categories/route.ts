@@ -6,16 +6,19 @@ import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { validateCategory } from '@/features/cms/validators';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const categories = await getCategories();
   return NextResponse.json({ categories });
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'taxonomy:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'taxonomy:edit');
+  if ('error' in auth) return auth.error;
+
+  const session = auth.session;
 
   const payload = validateCategory(await request.json().catch(() => null));
   if (!payload) {
@@ -23,14 +26,13 @@ export async function POST(request: Request) {
   }
 
   const category = await createCategory(payload);
-  const session = await getAdminSession(request);
 
   try {
     await logAdminAuditEvent(request, {
       action: 'category.create',
       entityType: 'category',
       entityId: category.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         name: category.name,
         slug: category.slug

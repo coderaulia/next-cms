@@ -15,8 +15,9 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const project = await getPortfolioProjectById(id);
@@ -27,8 +28,9 @@ export async function GET(request: Request, { params }: RouteContext) {
 }
 
 export async function PUT(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'content:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const payload = validatePortfolioProject(await request.json().catch(() => null));
@@ -41,7 +43,6 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Portfolio project not found' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   const saveMode = (request.headers.get('x-cms-save-mode') ?? 'manual').trim().toLowerCase();
   try {
     if (saveMode !== 'autosave') {
@@ -50,7 +51,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
         entityId: project.id,
         label: project.status === 'published' ? 'Saved published project' : 'Saved draft project',
         payload: project,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         userDisplayName: session?.user.displayName ?? null
       });
     }
@@ -59,7 +60,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
       action: 'portfolio.update',
       entityType: 'portfolio_project',
       entityId: project.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: project.title,
         slug: project.seo.slug,
@@ -75,8 +76,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'content:delete');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'content:delete');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const project = await getPortfolioProjectById(id);
@@ -89,13 +91,12 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Portfolio project not found' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   try {
     await logAdminAuditEvent(request, {
       action: 'portfolio.delete',
       entityType: 'portfolio_project',
       entityId: project.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: project.title,
         slug: project.seo.slug,

@@ -7,16 +7,19 @@ import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { validateSiteSettings } from '@/features/cms/validators';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const settings = await getSettings();
   return NextResponse.json({ settings });
 }
 
 export async function PUT(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'settings:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'settings:edit');
+  if ('error' in auth) return auth.error;
+
+  const session = auth.session;
 
   const payload = validateSiteSettings(await request.json().catch(() => null));
   if (!payload) {
@@ -24,7 +27,6 @@ export async function PUT(request: Request) {
   }
 
   const settings = await updateSettings(payload);
-  const session = await getAdminSession(request);
 
   try {
     await captureContentRevision({
@@ -32,7 +34,7 @@ export async function PUT(request: Request) {
       entityId: 'default',
       label: 'Settings saved',
       payload: settings,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       userDisplayName: session?.user.displayName ?? null
     });
 
@@ -40,7 +42,7 @@ export async function PUT(request: Request) {
       action: 'settings.update',
       entityType: 'site_settings',
       entityId: 'global',
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         siteName: settings.siteName,
         baseUrl: settings.general.baseUrl,

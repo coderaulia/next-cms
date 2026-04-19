@@ -16,8 +16,9 @@ function errorResponse(error: unknown) {
 }
 
 export async function PUT(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'team:manage');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'team:manage');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const body = (await request.json().catch(() => null)) as
@@ -29,7 +30,6 @@ export async function PUT(request: Request, { params }: RouteContext) {
     | null;
 
   try {
-    const session = await getAdminSession(request);
     const member = await updateAdminTeamMember(
       id,
       {
@@ -45,7 +45,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
         action: 'team.update',
         entityType: 'admin_user',
         entityId: member.id,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         metadata: {
           email: member.email,
           role: member.role
@@ -62,13 +62,13 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'team:manage');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'team:manage');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
 
   try {
-    const session = await getAdminSession(request);
     const member = await deleteAdminTeamMember(id, session?.user.id ?? null);
 
     try {
@@ -76,7 +76,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
         action: 'team.delete',
         entityType: 'admin_user',
         entityId: member.id,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         metadata: {
           email: member.email,
           role: member.role

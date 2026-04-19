@@ -68,7 +68,7 @@ describe('admin auth', () => {
     });
 
     const result = await assertAdminRequest(request);
-    expect(result?.status).toBe(401);
+    expect(result).toHaveProperty('status', 401);
   });
 
   it('returns null when authorized in non-production mode', async () => {
@@ -84,7 +84,7 @@ describe('admin auth', () => {
     });
 
     const result = await assertAdminRequest(request);
-    expect(result).toBeNull();
+    expect(result).toHaveProperty('user');
   });
 
   it('does not accept legacy header token in production mode', async () => {
@@ -101,7 +101,7 @@ describe('admin auth', () => {
     });
 
     const result = await assertAdminRequest(request);
-    expect(result?.status).toBe(401);
+    expect(result).toHaveProperty('status', 401);
   });
 
   it('falls back to env-backed sessions when admin tables are missing', async () => {

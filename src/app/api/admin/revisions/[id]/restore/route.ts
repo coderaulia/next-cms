@@ -20,12 +20,12 @@ export async function POST(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Revision not found.' }, { status: 404 });
   }
 
-  const unauthorized = await assertAdminPermission(request, requiredPermission(revision.entityType));
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, requiredPermission(revision.entityType));
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
-  const session = await getAdminSession(request);
   const restored = await restoreContentRevision(id, {
-    userId: session?.user.id ?? null,
+    userId: session.user.id,
     userDisplayName: session?.user.displayName ?? null
   });
 
@@ -38,7 +38,7 @@ export async function POST(request: Request, { params }: RouteContext) {
       action: 'content.restore',
       entityType: restored.entityType,
       entityId: restored.entityId,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         revisionId: id,
         restoredEntityType: restored.entityType

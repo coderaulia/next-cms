@@ -4,8 +4,9 @@ import { assertAdminPermission } from '@/features/cms/adminAuth';
 import { getContentHealthReport } from '@/features/cms/contentHealth';
 
 export async function GET(request: Request) {
-  const unauthorized = await assertAdminPermission(request, 'analytics:view');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'analytics:view');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   try {
     const report = await getContentHealthReport();

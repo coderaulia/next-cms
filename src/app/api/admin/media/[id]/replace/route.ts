@@ -24,8 +24,9 @@ function isImageMimeType(value: string) {
 }
 
 export async function POST(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'media:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'media:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const existing = await getMediaAssetById(id);
@@ -85,13 +86,12 @@ export async function POST(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Media asset not found.' }, { status: 404 });
   }
 
-  const session = await getAdminSession(request);
   try {
     await logAdminAuditEvent(request, {
       action: 'media.replace',
       entityType: 'media_asset',
       entityId: mediaAsset.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: mediaAsset.title,
         url: mediaAsset.url,

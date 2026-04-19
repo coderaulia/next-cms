@@ -12,8 +12,9 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminRequest(request);
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const mediaAsset = await getMediaAssetById(id);
@@ -25,8 +26,9 @@ export async function GET(request: Request, { params }: RouteContext) {
 }
 
 export async function PUT(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'media:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'media:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const existing = await getMediaAssetById(id);
@@ -55,13 +57,12 @@ export async function PUT(request: Request, { params }: RouteContext) {
     await deleteUploadedMedia(existing.storageKey || '', existing.storageProvider);
   }
 
-  const session = await getAdminSession(request);
   try {
     await logAdminAuditEvent(request, {
       action: 'media.update',
       entityType: 'media_asset',
       entityId: mediaAsset.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: mediaAsset.title,
         url: mediaAsset.url,
@@ -77,8 +78,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
-  const unauthorized = await assertAdminPermission(request, 'media:edit');
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, 'media:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const { id } = await params;
   const mediaAsset = await getMediaAssetById(id);
@@ -113,13 +115,12 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     }
   }
 
-  const session = await getAdminSession(request);
   try {
     await logAdminAuditEvent(request, {
       action: 'media.delete',
       entityType: 'media_asset',
       entityId: mediaAsset.id,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         title: mediaAsset.title,
         url: mediaAsset.url,

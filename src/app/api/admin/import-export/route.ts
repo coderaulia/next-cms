@@ -9,7 +9,6 @@ import {
 import {
   assertAdminPermission,
   assertAdminRequest,
-  getAdminSession,
   logAdminAuditEvent
 } from '@/features/cms/adminAuth';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
@@ -36,18 +35,18 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Invalid collection.' }, { status: 400 });
   }
 
-  const unauthorized = await assertAdminPermission(request, requiredPermission(collection));
-  if (unauthorized) return unauthorized;
+  const auth = await assertAdminPermission(request, requiredPermission(collection));
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const payload = await exportCmsJson(collection);
-  const session = await getAdminSession(request);
 
   try {
     await logAdminAuditEvent(request, {
       action: 'content.export',
       entityType: collection,
       entityId: null,
-      userId: session?.user.id ?? null,
+      userId: session.user.id,
       metadata: {
         collection
       }
@@ -64,8 +63,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const unauthorizedRequest = await assertAdminRequest(request);
-  if (unauthorizedRequest) return unauthorizedRequest;
+  const auth = await assertAdminRequest(request);
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const body = (await request.json().catch(() => null)) as {
     collection?: string;
@@ -78,19 +78,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid collection.' }, { status: 400 });
   }
 
-  const unauthorized = await assertAdminPermission(request, requiredPermission(collection));
-  if (unauthorized) return unauthorized;
+  const authPerm = await assertAdminPermission(request, requiredPermission(collection));
+  if ('error' in authPerm) return authPerm.error;
+  const session = authPerm.session;
 
   try {
     const result = await importCmsJson(collection, body?.payload ?? null, parseMode(body?.mode));
-    const session = await getAdminSession(request);
 
     try {
       await logAdminAuditEvent(request, {
         action: 'content.import',
         entityType: collection,
         entityId: null,
-        userId: session?.user.id ?? null,
+        userId: session.user.id,
         metadata: {
           collection,
           mode: result.mode,
