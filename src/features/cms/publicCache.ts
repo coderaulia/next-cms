@@ -178,24 +178,24 @@ export function getCachedPublicPortfolioProjectBySlug(slug: string) {
 
 /** Scoped revalidation helpers — prefer these over revalidatePublicCmsCache for targeted mutations. */
 export function revalidateBlogCache() {
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.blog));
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.blog, 'max'));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all, 'max'));
   safelyRevalidate(() => revalidatePath('/blog'));
   safelyRevalidate(() => revalidatePath('/blog/[slug]', 'page'));
   safelyRevalidate(() => revalidatePath('/sitemap.xml'));
 }
 
 export function revalidatePortfolioCache() {
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.portfolio));
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.portfolio, 'max'));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all, 'max'));
   safelyRevalidate(() => revalidatePath('/portfolio'));
   safelyRevalidate(() => revalidatePath('/portfolio/[slug]', 'page'));
   safelyRevalidate(() => revalidatePath('/sitemap.xml'));
 }
 
 export function revalidatePagesCache() {
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.pages));
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.pages, 'max'));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all, 'max'));
   safelyRevalidate(() => revalidatePath('/', 'layout'));
   safelyRevalidate(() => revalidatePath('/[slug]', 'page'));
   safelyRevalidate(() => revalidatePath('/sitemap.xml'));
@@ -203,9 +203,9 @@ export function revalidatePagesCache() {
 }
 
 export function revalidateSettingsCache() {
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.settings));
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.media));
-  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.settings, 'max'));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.media, 'max'));
+  safelyRevalidate(() => revalidateTag(cmsPublicCacheTags.all, 'max'));
   safelyRevalidate(() => revalidatePath('/', 'layout'));
   safelyRevalidate(() => revalidatePath('/sitemap.xml'));
   safelyRevalidate(() => revalidatePath('/robots.txt'));
@@ -214,7 +214,7 @@ export function revalidateSettingsCache() {
 /** Full-site blast — use only for import/restore operations that touch all content. */
 export function revalidatePublicCmsCache() {
   for (const tag of Object.values(cmsPublicCacheTags)) {
-    safelyRevalidate(() => revalidateTag(tag));
+    safelyRevalidate(() => revalidateTag(tag, 'max'));
   }
 
   safelyRevalidate(() => revalidatePath('/', 'layout'));

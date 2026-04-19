@@ -8,8 +8,8 @@ import { validateSiteSettings } from '@/features/cms/validators';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const settings = await getSettings();
   return NextResponse.json({ settings });

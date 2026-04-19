@@ -7,8 +7,8 @@ import type { PortfolioProject } from '@/features/cms/types';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const { searchParams } = new URL(request.url);
   const includeDrafts = searchParams.get('includeDrafts') === '1';

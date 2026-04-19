@@ -11,8 +11,8 @@ type RouteContext = {
 
 export async function GET(request: Request, { params }: RouteContext) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const { id } = await params;
   const category = await getCategoryById(id);

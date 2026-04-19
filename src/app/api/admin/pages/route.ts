@@ -5,8 +5,8 @@ import { getPages } from '@/features/cms/contentStore';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const pages = await getPages();
   const ordered = [
@@ -26,5 +26,4 @@ export async function GET(request: Request) {
     .filter(Boolean);
   return NextResponse.json({ pages: ordered });
 }
-
 

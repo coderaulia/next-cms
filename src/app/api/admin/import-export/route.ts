@@ -64,7 +64,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
+  if (auth instanceof NextResponse) return auth;
 
   const body = (await request.json().catch(() => null)) as {
     collection?: string;

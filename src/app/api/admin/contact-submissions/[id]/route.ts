@@ -9,8 +9,8 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const body = await request.json().catch(() => null);
   const status = validateContactSubmissionStatus(body?.status);

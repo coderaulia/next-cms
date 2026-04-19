@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createBlogPost, queryBlogPosts } from '@/features/cms/contentStore';
 import { revalidateBlogCache } from '@/features/cms/publicCache';
 import type { BlogPost } from '@/features/cms/types';
 
 export async function GET(request: Request) {
-  const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  const session = await getAdminSession(request);
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   const { searchParams } = new URL(request.url);
   const includeDrafts = searchParams.get('includeDrafts') === '1';

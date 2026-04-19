@@ -5,8 +5,8 @@ import { listContactSubmissions } from '@/features/cms/contactSubmissionsStore';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const submissions = await listContactSubmissions();
   return NextResponse.json({ submissions });

@@ -12,8 +12,8 @@ type RouteContext = {
 
 export async function GET(request: Request, { params }: RouteContext) {
   const auth = await assertAdminRequest(request);
-  if ('error' in auth) return auth.error;
-  const session = auth.session;
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
 
   const { id } = await params;
   if (!isValidPageId(id)) {
@@ -37,8 +37,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Page not found' }, { status: 404 });
   }
 
-  const editFailure = await assertAdminPermission(request, 'content:edit');
-  if (editFailure) return editFailure;
+  const editAuth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in editAuth) return editAuth.error;
+  const session = editAuth.session;
 
   const payload = validateLandingPage(await request.json().catch(() => null));
   if (!payload || payload.id !== id) {
@@ -50,8 +51,8 @@ export async function PUT(request: Request, { params }: RouteContext) {
     (existing.scheduledPublishAt ?? null) !== (payload.scheduledPublishAt ?? null) ||
     (existing.scheduledUnpublishAt ?? null) !== (payload.scheduledUnpublishAt ?? null);
   if (publishStateChanged) {
-    const publishFailure = await assertAdminPermission(request, 'content:publish');
-    if (publishFailure) return publishFailure;
+    const publishAuth = await assertAdminPermission(request, 'content:publish');
+    if ('error' in publishAuth) return publishAuth.error;
   }
 
   const page = await upsertPage(payload);
