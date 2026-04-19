@@ -37,7 +37,7 @@ export async function GET(request: Request) {
 
   const auth = await assertAdminPermission(request, requiredPermission(collection));
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  const adminSession = auth.session;
 
   const payload = await exportCmsJson(collection);
 
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
       action: 'content.export',
       entityType: collection,
       entityId: null,
-      userId: session.user.id,
+      userId: adminSession.user.id,
       metadata: {
         collection
       }
@@ -65,7 +65,6 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const auth = await assertAdminRequest(request);
   if ('error' in auth) return auth.error;
-  const session = auth.session;
 
   const body = (await request.json().catch(() => null)) as {
     collection?: string;
@@ -80,7 +79,7 @@ export async function POST(request: Request) {
 
   const authPerm = await assertAdminPermission(request, requiredPermission(collection));
   if ('error' in authPerm) return authPerm.error;
-  const session = authPerm.session;
+  const permissionSession = authPerm.session;
 
   try {
     const result = await importCmsJson(collection, body?.payload ?? null, parseMode(body?.mode));
@@ -90,7 +89,7 @@ export async function POST(request: Request) {
         action: 'content.import',
         entityType: collection,
         entityId: null,
-        userId: session.user.id,
+        userId: permissionSession.user.id,
         metadata: {
           collection,
           mode: result.mode,

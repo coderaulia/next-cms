@@ -15,19 +15,14 @@ export type DashboardPreferences = {
 export async function GET(request: Request) {
   const auth = await assertAdminPermission(request, 'dashboard:view');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
-
-  const session = await import('@/features/cms/adminAuth').then((m) => m.getAdminSession(request));
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const adminSession = auth.session;
 
   const db = getDb();
 
   const rows = await db
     .select()
     .from(userDashboardPreferencesTable)
-    .where(eq(userDashboardPreferencesTable.userId, session.user.id))
+    .where(eq(userDashboardPreferencesTable.userId, adminSession.user.id))
     .limit(1);
 
   if (rows.length === 0) {
@@ -50,12 +45,7 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   const auth = await assertAdminPermission(request, 'dashboard:view');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
-
-  const session = await import('@/features/cms/adminAuth').then((m) => m.getAdminSession(request));
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const adminSession = auth.session;
 
   const body = await request.json().catch(() => null) as DashboardPreferences | null;
   if (!body) {
@@ -70,13 +60,13 @@ export async function PUT(request: Request) {
   const existing = await db
     .select()
     .from(userDashboardPreferencesTable)
-    .where(eq(userDashboardPreferencesTable.userId, session.user.id))
+    .where(eq(userDashboardPreferencesTable.userId, adminSession.user.id))
     .limit(1);
 
   if (existing.length === 0) {
     await db.insert(userDashboardPreferencesTable).values({
       id: randomUUID(),
-      userId: session.user.id,
+      userId: adminSession.user.id,
       widgetOrder,
       hiddenWidgets,
       updatedAt: nowIso()
@@ -89,7 +79,7 @@ export async function PUT(request: Request) {
         hiddenWidgets,
         updatedAt: nowIso()
       })
-      .where(eq(userDashboardPreferencesTable.userId, session.user.id));
+      .where(eq(userDashboardPreferencesTable.userId, adminSession.user.id));
   }
 
   return NextResponse.json({

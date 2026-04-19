@@ -22,7 +22,6 @@ export type AdminSessionInfo = {
 export async function GET(request: Request) {
   const auth = await assertAdminPermission(request, 'team:manage');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
 
   const db = getDb();
 
@@ -45,17 +44,17 @@ export async function GET(request: Request) {
   const sessions: AdminSessionInfo[] = rows
     .filter((row) => row.user != null)
     .map((row) => {
-      const session = row.session;
+      const dbSession = row.session;
       const user = row.user!;
       return {
-        id: session.id,
-        userId: session.userId,
+        id: dbSession.id,
+        userId: dbSession.userId,
         userEmail: user.email,
         userDisplayName: user.displayName,
         userRole: user.role,
-        expiresAt: session.expiresAt,
-        createdAt: session.createdAt,
-        isCurrent: session.sessionToken === currentTokenHash
+        expiresAt: dbSession.expiresAt,
+        createdAt: dbSession.createdAt,
+        isCurrent: dbSession.sessionToken === currentTokenHash
       };
     });
 
@@ -65,7 +64,7 @@ export async function GET(request: Request) {
 export async function DELETE(request: Request) {
   const auth = await assertAdminPermission(request, 'team:manage');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  const adminSession = auth.session;
 
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get('id');
@@ -78,8 +77,8 @@ export async function DELETE(request: Request) {
 
   const rows = await db.select().from(adminSessionsTable).where(eq(adminSessionsTable.id, sessionId)).limit(1);
 
-  const session = rows[0];
-  if (!session) {
+  const targetSession = rows[0];
+  if (!targetSession) {
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
 
@@ -89,7 +88,8 @@ export async function DELETE(request: Request) {
     action: 'session.revoked',
     entityType: 'session',
     entityId: sessionId,
-    metadata: { revokedUserId: session.userId }
+    userId: adminSession.user.id,
+    metadata: { revokedUserId: targetSession.userId }
   });
 
   return NextResponse.json({ success: true });
