@@ -65,7 +65,6 @@ export function WhySplitBlockView({ block }: WhySplitBlockViewProps) {
 
                 <div className="w-32 h-32 bg-white rounded-2xl shadow-xl flex items-center justify-center border border-slate-50 z-20 relative transform -rotate-3 overflow-hidden">
                   {hasImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img src={block.mediaImage} alt={block.mediaAlt || block.heading} className="w-full h-full object-cover" />
                   ) : (
                     <SymbolIcon className="text-6xl text-transparent bg-clip-text bg-gradient-to-br from-electricBlue to-vanailaNavy" name="hub" />

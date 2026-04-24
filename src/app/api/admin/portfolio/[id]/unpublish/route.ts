@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { getPortfolioProjectById, setPortfolioProjectStatus } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';

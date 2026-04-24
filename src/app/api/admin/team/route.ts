@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { AdminTeamError, createAdminTeamMember, listAdminTeamMembers } from '@/features/cms/adminTeam';
 import { env } from '@/services/env';
 
@@ -15,7 +15,7 @@ function errorResponse(error: unknown) {
 export async function GET(request: Request) {
   const auth = await assertAdminPermission(request, 'team:manage');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  
 
   if (!env.databaseUrl) {
     return NextResponse.json({ available: false, members: [] });
@@ -32,7 +32,8 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const auth = await assertAdminPermission(request, 'team:manage');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  const { session } = auth;
+  
 
   const body = (await request.json().catch(() => null)) as
     | {

@@ -9,7 +9,7 @@ import { nowIso } from '@/features/cms/storeShared';
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await assertAdminPermission(request, 'settings:edit');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  
 
   const { id } = await params;
 
@@ -61,7 +61,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await assertAdminPermission(request, 'settings:edit');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  
 
   const { id } = await params;
 

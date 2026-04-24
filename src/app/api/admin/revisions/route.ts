@@ -27,6 +27,7 @@ export async function GET(request: Request) {
 
   const auth = await assertAdminPermission(request, requiredPermission(entityType));
   if ('error' in auth) return auth.error;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const session = auth.session;
 
   const revisions = await listContentRevisions(entityType, entityId, limit);

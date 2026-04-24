@@ -274,6 +274,7 @@ export type NavigationLink = {
   label: string;
   href: string;
   enabled: boolean;
+  children?: NavigationLink[];
 };
 
 export type NavigationSettings = {

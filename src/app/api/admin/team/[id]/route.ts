@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { AdminTeamError, deleteAdminTeamMember, updateAdminTeamMember } from '@/features/cms/adminTeam';
 
 type RouteContext = {

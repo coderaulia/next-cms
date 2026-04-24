@@ -564,11 +564,16 @@ function asNavigationLinks(
       const enabled = typeof item.enabled === 'boolean' ? item.enabled : true;
       if (!label || !href) return null;
 
+      const children = Array.isArray(item.children) 
+        ? asNavigationLinks(item.children, `${fallbackPrefix}-${index + 1}-child`) 
+        : undefined;
+
       return {
         id: asString(item.id).trim() || `${fallbackPrefix}-${index + 1}`,
         label,
         href,
-        enabled
+        enabled,
+        ...(children && children.length > 0 ? { children } : {})
       };
     })
     .filter((entry): entry is SiteSettings['navigation']['headerLinks'][number] => Boolean(entry));

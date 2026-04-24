@@ -498,7 +498,11 @@ export async function logAdminAuditEvent(request: Request, event: AdminAuditEven
 }
 
 export async function getAdminSession(request: Request): Promise<AdminSession | null> {
-  const headerToken = process.env.NODE_ENV !== 'production' ? request.headers.get('x-admin-token') : null;
+  // Legacy token auth: only active in non-production AND when explicitly enabled via CMS_ENABLE_DEV_AUTH=true.
+  // This prevents the bypass from silently activating on staging environments where NODE_ENV !== 'production'.
+  const devAuthEnabled =
+    process.env.NODE_ENV !== 'production' && env.enableDevAuth;
+  const headerToken = devAuthEnabled ? request.headers.get('x-admin-token') : null;
   if (isValidAdminToken(headerToken)) {
     let bootstrapped: AdminUserRow | null = null;
     if (env.databaseUrl) {

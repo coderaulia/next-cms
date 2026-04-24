@@ -654,7 +654,6 @@ async function ensureDbBootstrap() {
     bootstrapPromise = null; // Reset only on success
   } catch (error) {
     bootstrapPromise = null; // Reset on error to allow retry
-    bootstrapPromise = null; // Reset on error to allow retry
     throw error;
   }
 }

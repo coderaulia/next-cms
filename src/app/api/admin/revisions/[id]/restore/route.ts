@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getContentRevision, restoreContentRevision } from '@/features/cms/contentRevisions';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import type { CmsRevisionEntityType } from '@/features/cms/types';

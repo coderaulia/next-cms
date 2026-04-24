@@ -19,7 +19,7 @@ export type Redirect = {
 export async function GET(request: Request) {
   const auth = await assertAdminPermission(request, 'settings:edit');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  
 
   const db = getDb();
 
@@ -43,7 +43,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const auth = await assertAdminPermission(request, 'settings:edit');
   if ('error' in auth) return auth.error;
-  const session = auth.session;
+  
 
   const body = await request.json().catch(() => null) as { fromPath?: string; toPath?: string; type?: string } | null;
 

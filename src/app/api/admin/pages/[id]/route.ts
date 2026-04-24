@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, assertAdminRequest, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { getPageById, upsertPage } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
@@ -13,6 +13,7 @@ type RouteContext = {
 export async function GET(request: Request, { params }: RouteContext) {
   const auth = await assertAdminRequest(request);
   if (auth instanceof NextResponse) return auth;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const session = auth;
 
   const { id } = await params;

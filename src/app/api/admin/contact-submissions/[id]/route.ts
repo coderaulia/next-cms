@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminRequest, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { updateContactSubmissionStatus } from '@/features/cms/contactSubmissionsStore';
 import { validateContactSubmissionStatus } from '@/features/cms/validators';
 

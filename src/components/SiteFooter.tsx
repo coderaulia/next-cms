@@ -4,6 +4,13 @@ import { SymbolIcon } from '@/components/ui/symbol-icon';
 import { siteProfile } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
 
+type NavLink = {
+  href: string;
+  label: string;
+  enabled?: boolean;
+  children?: NavLink[];
+};
+
 type SiteFooterProps = {
   siteName: string;
   settings: SiteSettings;
@@ -13,15 +20,21 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
   const footerLogo = settings.branding.footerLogo || settings.branding.headerLogo || settings.organizationLogo;
 
+  const mapLink = (link: NavLink): NavLink => ({
+    href: link.href,
+    label: link.label,
+    children: link.children?.filter((c) => c.enabled).map(mapLink)
+  });
+
   const navigatorLinks = settings.navigation.footerNavigatorLinks.filter((link) => link.enabled);
   const serviceLinks = settings.navigation.footerServiceLinks.filter((link) => link.enabled);
   const footerNavigator =
     navigatorLinks.length > 0
-      ? navigatorLinks.map((link) => ({ href: link.href, label: link.label }))
+      ? navigatorLinks.map(mapLink)
       : siteProfile.navigation.fallbackNavigator;
   const footerServices =
     serviceLinks.length > 0
-      ? serviceLinks.map((link) => ({ href: link.href, label: link.label }))
+      ? serviceLinks.map(mapLink)
       : siteProfile.navigation.fallbackServices;
 
   const socialLinks = [
@@ -98,11 +111,22 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
               <span className="w-1.5 h-1.5 rounded-full bg-electricBlue" /> Navigator
             </h5>
             <ul className="space-y-4 text-sm text-slate-500 font-medium uppercase tracking-wider">
-              {footerNavigator.map((item) => (
-                <li key={`${item.href}-${item.label}`}>
+              {(footerNavigator as NavLink[]).map((item) => (
+                <li key={`${item.href}-${item.label}`} className="flex flex-col gap-2">
                   <Link className="hover:text-electricBlue transition-colors" href={item.href}>
                     {item.label}
                   </Link>
+                  {item.children && item.children.length > 0 && (
+                    <ul className="pl-4 space-y-3 mt-1 border-l-2 border-slate-100/50">
+                      {item.children.map((child) => (
+                        <li key={`${child.href}-${child.label}`}>
+                          <Link className="text-xs text-slate-400 hover:text-electricBlue transition-colors" href={child.href}>
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
@@ -113,11 +137,22 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
               <span className="w-1.5 h-1.5 rounded-full bg-electricBlue" /> Services
             </h5>
             <ul className="space-y-4 text-sm text-slate-500 font-medium uppercase tracking-wider">
-              {footerServices.map((item) => (
-                <li key={`${item.href}-${item.label}`}>
+              {(footerServices as NavLink[]).map((item) => (
+                <li key={`${item.href}-${item.label}`} className="flex flex-col gap-2">
                   <Link className="hover:text-electricBlue transition-colors" href={item.href}>
                     {item.label}
                   </Link>
+                  {item.children && item.children.length > 0 && (
+                    <ul className="pl-4 space-y-3 mt-1 border-l-2 border-slate-100/50">
+                      {item.children.map((child) => (
+                        <li key={`${child.href}-${child.label}`}>
+                          <Link className="text-xs text-slate-400 hover:text-electricBlue transition-colors" href={child.href}>
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>

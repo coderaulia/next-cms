@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 import { NextResponse } from 'next/server';
 
-import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getMediaAssetById, getMediaAssets, updateMediaAsset } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { saveUploadedMedia } from '@/services/mediaStorage';

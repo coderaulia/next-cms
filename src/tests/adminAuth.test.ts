@@ -1,63 +1,20 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-const processEnv = process.env as Record<string, string | undefined>;
-const originalToken = processEnv.CMS_ADMIN_TOKEN;
-const originalNodeEnv = processEnv.NODE_ENV;
-const originalDatabaseUrl = processEnv.DATABASE_URL;
-const originalAdminEmail = processEnv.CMS_ADMIN_EMAIL;
-const originalAdminPassword = processEnv.CMS_ADMIN_PASSWORD;
-const originalAdminName = processEnv.CMS_ADMIN_NAME;
-
 afterEach(() => {
-  if (typeof originalToken === 'undefined') {
-    delete processEnv.CMS_ADMIN_TOKEN;
-  } else {
-    processEnv.CMS_ADMIN_TOKEN = originalToken;
-  }
-
-  if (typeof originalNodeEnv === 'undefined') {
-    delete processEnv.NODE_ENV;
-  } else {
-    processEnv.NODE_ENV = originalNodeEnv;
-  }
-
-  if (typeof originalDatabaseUrl === 'undefined') {
-    delete processEnv.DATABASE_URL;
-  } else {
-    processEnv.DATABASE_URL = originalDatabaseUrl;
-  }
-
-  if (typeof originalAdminEmail === 'undefined') {
-    delete processEnv.CMS_ADMIN_EMAIL;
-  } else {
-    processEnv.CMS_ADMIN_EMAIL = originalAdminEmail;
-  }
-
-  if (typeof originalAdminPassword === 'undefined') {
-    delete processEnv.CMS_ADMIN_PASSWORD;
-  } else {
-    processEnv.CMS_ADMIN_PASSWORD = originalAdminPassword;
-  }
-
-  if (typeof originalAdminName === 'undefined') {
-    delete processEnv.CMS_ADMIN_NAME;
-  } else {
-    processEnv.CMS_ADMIN_NAME = originalAdminName;
-  }
-
+  vi.unstubAllEnvs();
   vi.resetModules();
 });
 
 describe('admin auth', () => {
   it('accepts valid token with surrounding whitespace', async () => {
-    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
+    vi.stubEnv('CMS_ADMIN_TOKEN', 'my-secret-token');
     vi.resetModules();
     const { isValidAdminToken } = await import('@/features/cms/adminAuth');
     expect(isValidAdminToken(' my-secret-token ')).toBe(true);
   });
 
   it('rejects invalid token and returns unauthorized response', async () => {
-    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
+    vi.stubEnv('CMS_ADMIN_TOKEN', 'my-secret-token');
     vi.resetModules();
     const { assertAdminRequest } = await import('@/features/cms/adminAuth');
 
@@ -72,8 +29,9 @@ describe('admin auth', () => {
   });
 
   it('returns null when authorized in non-production mode', async () => {
-    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
-    processEnv.NODE_ENV = 'test';
+    vi.stubEnv('CMS_ADMIN_TOKEN', 'my-secret-token');
+    vi.stubEnv('NODE_ENV', 'test');
+    vi.stubEnv('CMS_ENABLE_DEV_AUTH', 'true');
     vi.resetModules();
     const { assertAdminRequest } = await import('@/features/cms/adminAuth');
 
@@ -88,8 +46,8 @@ describe('admin auth', () => {
   });
 
   it('does not accept legacy header token in production mode', async () => {
-    processEnv.CMS_ADMIN_TOKEN = 'my-secret-token';
-    processEnv.NODE_ENV = 'production';
+    vi.stubEnv('CMS_ADMIN_TOKEN', 'my-secret-token');
+    vi.stubEnv('NODE_ENV', 'production');
     vi.resetModules();
     const { assertAdminRequest } = await import('@/features/cms/adminAuth');
 
@@ -107,10 +65,11 @@ describe('admin auth', () => {
   it('falls back to env-backed sessions when admin tables are missing', async () => {
     const missingTableError = Object.assign(new Error('relation does not exist'), { code: '42P01' });
 
-    processEnv.DATABASE_URL = 'postgresql://example.invalid/postgres';
-    processEnv.CMS_ADMIN_EMAIL = 'admin@example.com';
-    processEnv.CMS_ADMIN_PASSWORD = 'super-secret';
-    processEnv.CMS_ADMIN_NAME = 'Admin';
+    vi.stubEnv('DATABASE_URL', 'postgresql://example.invalid/postgres');
+    vi.stubEnv('CMS_ADMIN_EMAIL', 'admin@example.com');
+    vi.stubEnv('CMS_ADMIN_PASSWORD', 'super-secret');
+    vi.stubEnv('CMS_ADMIN_NAME', 'Admin');
+    vi.stubEnv('NODE_ENV', 'test');
 
     vi.doMock('@/db/client', () => ({
       getDb: () => ({

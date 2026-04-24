@@ -60,5 +60,9 @@ export const env = {
   },
   get contactNotificationWebhookToken() {
     return clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_TOKEN);
+  },
+  /** Set CMS_ENABLE_DEV_AUTH=true to allow x-admin-token header auth in non-production environments. */
+  get enableDevAuth() {
+    return clean(process.env.CMS_ENABLE_DEV_AUTH).toLowerCase() === 'true';
   }
 };
