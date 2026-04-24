@@ -151,16 +151,6 @@ function BlogList({ user }: BlogListProps) {
         </section>
       ) : null}
 
-      <JsonImportExportCard
-        collection="blogPosts"
-        title="Bulk import / export"
-        description="Download the current post collection or import a JSON batch for draft and published blog content."
-        onImported={async () => {
-          setSelectedIds([]);
-          await loadPosts();
-        }}
-      />
-
       <section className="admin-card">
         <div className="admin-filter-bar">
           <label>
@@ -279,6 +269,16 @@ function BlogList({ user }: BlogListProps) {
           onNext={() => setPage((current) => current + 1)}
         />
       </section>
+
+      <JsonImportExportCard
+        collection="blogPosts"
+        title="Bulk import / export"
+        description="Download the current post collection or import a JSON batch for draft and published blog content."
+        onImported={async () => {
+          setSelectedIds([]);
+          await loadPosts();
+        }}
+      />
     </div>
   );
 }

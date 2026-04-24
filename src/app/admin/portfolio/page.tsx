@@ -191,16 +191,6 @@ function PortfolioList({ user }: PortfolioListProps) {
         </section>
       ) : null}
 
-      <JsonImportExportCard
-        collection="portfolioProjects"
-        title="Bulk import / export"
-        description="Download current portfolio JSON or import multiple case studies at once using the portfolio schema."
-        onImported={async () => {
-          setSelectedIds([]);
-          await loadProjects();
-        }}
-      />
-
       <section className="admin-card">
         <div className="admin-filter-bar">
           <label>
@@ -414,6 +404,16 @@ function PortfolioList({ user }: PortfolioListProps) {
           </div>
         </div>
       </section>
+
+      <JsonImportExportCard
+        collection="portfolioProjects"
+        title="Bulk import / export"
+        description="Download current portfolio JSON or import multiple case studies at once using the portfolio schema."
+        onImported={async () => {
+          setSelectedIds([]);
+          await loadProjects();
+        }}
+      />
     </div>
   );
 }

@@ -126,16 +126,6 @@ function PagesList({ user }: PagesListProps) {
         </section>
       ) : null}
 
-      <JsonImportExportCard
-        collection="pages"
-        title="Bulk import / export"
-        description="Download current landing-page JSON or import a batch update that matches the page schema used by this CMS."
-        onImported={async () => {
-          setSelectedIds([]);
-          await loadPages();
-        }}
-      />
-
       <section className="admin-card">
         <div className="admin-filter-bar">
           <label>
@@ -269,6 +259,16 @@ function PagesList({ user }: PagesListProps) {
           </table>
         </div>
       </section>
+
+      <JsonImportExportCard
+        collection="pages"
+        title="Bulk import / export"
+        description="Download current landing-page JSON or import a batch update that matches the page schema used by this CMS."
+        onImported={async () => {
+          setSelectedIds([]);
+          await loadPages();
+        }}
+      />
     </div>
   );
 }
