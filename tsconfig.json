@@ -31,14 +31,17 @@
     }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "src/**/*",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "next.config.mjs",
+    "middleware.ts",
+    "vitest.setup.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "scripts/**/*",
+    "vitest.config.ts"
   ]
 }

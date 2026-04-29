@@ -7,11 +7,10 @@ import type {
   PortfolioProject,
   SiteSettings
 } from './types';
+import { isObject, nowIso } from '@/lib/utils';
+export { isObject, nowIso } from '@/lib/utils';
 
-export const nowIso = () => new Date().toISOString();
 
-export const isObject = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null && !Array.isArray(value);
 
 function isPlaceholderAssetUrl(value: string) {
   try {
@@ -118,13 +117,12 @@ export function normalizeSettings(input: unknown): SiteSettings {
   next.branding.headerLogo = normalizeBrandAssetValue(next.branding.headerLogo);
   next.branding.footerLogo = normalizeBrandAssetValue(next.branding.footerLogo);
   next.branding.siteIcon = normalizeBrandAssetValue(next.branding.siteIcon);
-  next.organizationLogo = normalizeBrandAssetValue(source.organizationLogo ?? next.organizationLogo);
-  if (!next.organizationLogo && next.branding.headerLogo) {
-    next.organizationLogo = next.branding.headerLogo;
-  }
 
+  // Sync legacy aliases from nested values so all consumers see consistent data.
   next.siteName = next.general.siteName;
   next.baseUrl = next.general.baseUrl;
+  next.organizationName = next.contact.companyName || next.general.siteName;
+  next.organizationLogo = normalizeBrandAssetValue((source as Record<string, unknown>).organizationLogo ?? next.branding.headerLogo);
   next.defaultOgImage = next.seo.defaultOgImage;
 
   return next;
@@ -236,8 +234,8 @@ export function normalizePageForWrite(
     homeBlocks:
       page.id === 'home'
         ? normalizeHomeBlocks(
-            page.homeBlocks ?? existingPages.find((entry) => entry.id === 'home')?.homeBlocks ?? []
-          )
+          page.homeBlocks ?? existingPages.find((entry) => entry.id === 'home')?.homeBlocks ?? []
+        )
         : page.homeBlocks,
     seo: {
       ...page.seo,

@@ -184,6 +184,7 @@ export type BlogPost = {
   excerpt: string;
   content: string;
   author: string;
+  categoryId: string | null;
   tags: string[];
   coverImage: string;
   status: BlogStatus;
@@ -394,7 +395,7 @@ export type SiteSettings = {
   seo: SeoGlobalSettings;
   sitemap: SitemapSettings;
 
-  // Legacy aliases retained for backward compatibility in existing renderers.
+  /** @deprecated — use `general.siteName` directly. These aliases will be removed once all consumers are updated. */
   siteName: string;
   baseUrl: string;
   organizationName: string;

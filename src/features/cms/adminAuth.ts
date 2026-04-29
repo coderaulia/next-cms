@@ -1,7 +1,7 @@
 import { createHash, randomBytes, randomUUID, scrypt as nodeScrypt, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 
-import { and, desc, eq, gt } from 'drizzle-orm';
+import { and, desc, eq, gt, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
 import { getDb } from '@/db/client';
@@ -497,6 +497,16 @@ export async function logAdminAuditEvent(request: Request, event: AdminAuditEven
   }
 }
 
+async function pruneExpiredSessions() {
+  if (!env.databaseUrl) return;
+  try {
+    const now = new Date().toISOString();
+    await getDb().delete(adminSessionsTable).where(sql`${adminSessionsTable.expiresAt} < ${now}`);
+  } catch {
+    // ignore cleanup errors
+  }
+}
+
 export async function getAdminSession(request: Request): Promise<AdminSession | null> {
   // Legacy token auth: only active in non-production AND when explicitly enabled via CMS_ENABLE_DEV_AUTH=true.
   // This prevents the bypass from silently activating on staging environments where NODE_ENV !== 'production'.
@@ -532,6 +542,10 @@ export async function getAdminSession(request: Request): Promise<AdminSession | 
 
   if (!env.databaseUrl) {
     return null;
+  }
+
+  if (Math.random() < 0.01) {
+    void pruneExpiredSessions();
   }
 
   const rawToken = readSessionTokenFromRequest(request);

@@ -40,6 +40,7 @@ function makeInvalidPost(): BlogPost {
     excerpt: 'Excerpt',
     content: '',
     author: '',
+    categoryId: null,
     tags: [],
     coverImage: '',
     status: 'draft',

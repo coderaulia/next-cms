@@ -13,7 +13,7 @@ const absoluteUrl = (baseUrl: string, candidate: string) => {
 
 function resolveTitle(site: SiteSettings, seoTitle: string, fallbackTitle: string) {
   const baseTitle = seoTitle.trim() || fallbackTitle.trim();
-  if (!baseTitle) return site.siteName;
+  if (!baseTitle) return site.general.siteName;
 
   // Respect explicit SEO title verbatim; apply template only for fallback-derived titles.
   if (seoTitle.trim().length > 0) return seoTitle.trim();
@@ -21,10 +21,10 @@ function resolveTitle(site: SiteSettings, seoTitle: string, fallbackTitle: strin
   const template = site.seo.titleTemplate?.trim() || '%page_title% | %site_name%';
   const resolved = template
     .replaceAll('%page_title%', baseTitle)
-    .replaceAll('%site_name%', site.siteName)
+    .replaceAll('%site_name%', site.general.siteName)
     .trim();
 
-  return resolved.length > 0 ? resolved : `${baseTitle} | ${site.siteName}`;
+  return resolved.length > 0 ? resolved : `${baseTitle} | ${site.general.siteName}`;
 }
 
 export function buildCanonical(baseUrl: string, slug: string, explicitCanonical?: string) {
@@ -44,8 +44,8 @@ export function buildMetadata(
   const title = resolveTitle(site, seo.metaTitle, fallbackTitle);
   const description =
     seo.metaDescription || fallbackDescription || site.seo.defaultMetaDescription || '';
-  const canonical = buildCanonical(site.baseUrl, seo.slug, seo.canonical);
-  const ogImage = seo.socialImage || site.seo.defaultOgImage || site.defaultOgImage;
+  const canonical = buildCanonical(site.general.baseUrl, seo.slug, seo.canonical);
+  const ogImage = seo.socialImage || site.seo.defaultOgImage;
   const keywords = Array.isArray(seo.keywords)
     ? seo.keywords
         .map((keyword) => keyword.trim())

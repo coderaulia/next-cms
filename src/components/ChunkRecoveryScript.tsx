@@ -47,6 +47,13 @@ const chunkRecoverySource = `
 })();
 `;
 
-export function ChunkRecoveryScript() {
-  return <script id="cms-chunk-recovery" dangerouslySetInnerHTML={{ __html: chunkRecoverySource }} suppressHydrationWarning />;
+export function ChunkRecoveryScript({ nonce }: { nonce?: string }) {
+  return (
+    <script
+      id="cms-chunk-recovery"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: chunkRecoverySource }}
+      suppressHydrationWarning
+    />
+  );
 }

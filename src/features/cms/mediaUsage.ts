@@ -37,7 +37,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
   const usages: MediaUsageEntry[] = [];
   const pages = Object.values(pagesMap);
 
-  if (settings.organizationLogo === assetUrl) {
+  if (settings.branding.headerLogo === assetUrl) {
     usages.push({
       entityType: 'settings',
       entityId: 'default',
@@ -47,7 +47,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
     });
   }
 
-  if (settings.defaultOgImage === assetUrl || settings.seo.defaultOgImage === assetUrl) {
+  if (settings.seo.defaultOgImage === assetUrl) {
     usages.push({
       entityType: 'settings',
       entityId: 'default',

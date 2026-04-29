@@ -15,6 +15,7 @@ import type {
   SiteSettings
 } from './types';
 import { isServiceDetailPageId } from './servicePages';
+import { asBoolean, asString, isObject } from '@/lib/utils';
 
 const PAGE_IDS: PageId[] = [
   'home',
@@ -41,13 +42,6 @@ const HOME_BLOCK_TYPES: HomeBlockType[] = [
   'logo_cloud',
   'primary_cta'
 ];
-
-const isObject = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null && !Array.isArray(value);
-
-const asString = (value: unknown) => (typeof value === 'string' ? value : '');
-
-const asBoolean = (value: unknown) => Boolean(value);
 
 const asKeywords = (value: unknown): string[] => {
   const values = Array.isArray(value)
@@ -384,6 +378,7 @@ export function validateBlogPost(payload: unknown): BlogPost | null {
     excerpt: asString(payload.excerpt),
     content: asString(payload.content),
     author: asString(payload.author),
+    categoryId: payload.categoryId ? asString(payload.categoryId) : null,
     tags,
     coverImage: asSafeAssetUrl(payload.coverImage),
     status,

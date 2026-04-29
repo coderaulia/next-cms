@@ -166,14 +166,9 @@ export async function queryBlogPosts(input: BlogQueryInput) {
       ? Math.min(Number(input.pageSize), 50)
       : 10;
 
-  const categories = Array.from(
-    new Set(
-      content.blogPosts
-        .flatMap((post) => post.tags)
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0)
-    )
-  ).sort((a, b) => (a > b ? 1 : -1));
+  const categories = content.categories.map((c) => c.name).sort((a, b) => (a > b ? 1 : -1));
+  const categoryMap = new Map(content.categories.map((c) => [c.id, c]));
+  const categorySlugMap = new Map(content.categories.map((c) => [c.slug.toLowerCase(), c]));
 
   let posts = content.blogPosts.filter((post) => {
     if (!input.includeDrafts && !isBlogPostLive(post)) return false;
@@ -183,8 +178,21 @@ export async function queryBlogPosts(input: BlogQueryInput) {
       if (!haystack.includes(query)) return false;
     }
     if (category.length > 0) {
-      const hasCategory = post.tags.some((tag) => tag.toLowerCase() === category);
-      if (!hasCategory) return false;
+      // 1. Try matching by categoryId
+      const postCategory = post.categoryId ? categoryMap.get(post.categoryId) : null;
+      if (postCategory && (postCategory.name.toLowerCase() === category || postCategory.slug.toLowerCase() === category)) {
+        return true;
+      }
+
+      // 2. Try matching by slug
+      const targetCategory = categorySlugMap.get(category);
+      if (targetCategory && post.categoryId === targetCategory.id) {
+        return true;
+      }
+
+      // 3. Fallback to tags for backward compatibility
+      const hasCategoryTag = post.tags.some((tag) => tag.toLowerCase() === category);
+      if (!hasCategoryTag) return false;
     }
     return true;
   });
@@ -241,6 +249,7 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
       excerpt: payload?.excerpt?.trim() || '',
       content: payload?.content || '',
       author: payload?.author?.trim() || writing.defaultPostAuthor || 'Admin',
+      categoryId: payload?.categoryId ?? null,
       tags:
         payload?.tags ??
         (writing.defaultPostCategory ? [writing.defaultPostCategory.toLowerCase()] : []),

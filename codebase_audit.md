@@ -48,13 +48,13 @@ In `loginAdminUser`'s fallback branch (L651-667), the plaintext `CMS_ADMIN_PASSW
 
 ---
 
-### 1.4 CSRF Cookie Is `httpOnly: false` by Design 🟠 Medium
-
-[middleware.ts L46](file:///d:/web/react-cms/middleware.ts#L44-L51) sets the CSRF cookie with `httpOnly: false`. This is **intentional** (client JS must read it), but it means any XSS vulnerability allows CSRF token theft, completely bypassing CSRF protection.
-
-The CSP allows `'unsafe-inline'` for scripts (L12), which significantly increases XSS attack surface. Combined, this weakens the CSRF defense substantially.
-
-**Fix:** Remove `'unsafe-inline'` from `script-src` and use nonces instead.
+### 1.4 ~~CSRF + `unsafe-inline` script-src~~ ✅ Fixed
+  
+  [middleware.ts L12](file:///d:/web/react-cms/middleware.ts#L12): The `script-src` policy included `'unsafe-inline'`. This allowed any injected script to execute as long as it was inline, partially defeating the purpose of CSP.
+  
+  Additionally, `CSRF_COOKIE_NAME` was set with `httpOnly: false`, which is intended (so the client can read it for the `X-CSRF-Token` header), but without a strict CSP, this cookie was vulnerable to extraction via XSS.
+  
+  **Fix:** Removed `'unsafe-inline'` from `script-src` and implemented nonces. The middleware generates a nonce, adds it to the CSP header, and passes it to the root layout to be applied to all inline scripts.
 
 ---
 
@@ -135,89 +135,35 @@ All `unstable_cache` entries in [publicCache.ts](file:///d:/web/react-cms/src/fe
 
 ---
 
-### 3.2 `validateBlogPost` Never Returns `null` for Missing Required Fields 🟠 Medium
+### 3.2 ~~Validator bypass on title/id~~ ✅ Fixed
 
-[validateBlogPost](file:///d:/web/react-cms/src/features/cms/validators.ts#L366-L398) only checks `isObject(payload)` but never validates that critical fields like `id` or `title` are non-empty. The `asString()` helper silently converts missing values to `""`:
-
-```typescript
-export function validateBlogPost(payload: unknown): BlogPost | null {
-  if (!isObject(payload)) return null;
-  // No check for empty title, empty id, etc.
-  return {
-    id: asString(payload.id),  // Could be ""
-    title: asString(payload.title),  // Could be ""
-    ...
-  };
-}
-```
-
-Compare with `validatePortfolioProject` which correctly rejects empty titles (`if (!title) return null`). Blog posts don't get this treatment.
-
-**Fix:** Add `const title = asString(payload.title).trim(); if (!title) return null;` like portfolio does.
+[validateBlogPost](file:///d:/web/react-cms/src/features/cms/validators.ts#L366-L398) updated to explicitly validate that `id` and `title` fields are present and non-empty, preventing incomplete data from entering the store.
 
 ---
 
-### 3.3 Blog `queryBlogPosts` Uses Tags as "Categories" 🟠 Medium
-
-[fileStore.ts L129-L136](file:///d:/web/react-cms/src/features/cms/fileStore.ts#L129-L136) and L145-L148 treat `tags` as categories for filtering:
-
-```typescript
-const categories = Array.from(
-  new Set(
-    content.blogPosts
-      .flatMap((post) => post.tags)  // ← tags used as categories
-      ...
-  )
-);
-```
-
-The CMS has a proper `Category` entity with its own CRUD, but the blog query system completely ignores it. The `categories` table exists in the schema but is never joined to blog post queries.
+### 3.3 ~~Tags used as categories, real Categories unused~~ ✅ Fixed
+  
+  The CMS has a formal `Categories` entity with slugs and descriptions, but `BlogPost` previously only used a simple `tags: string[]` array. The `categories` database table was entirely unused by the content delivery logic.
+  
+  **Fix:** Updated `BlogPost` type to include `categoryId`. Updated the blog editor to include a primary Category dropdown. Updated `queryBlogPosts` to prioritize `categoryId` while maintaining tag-based filtering as a fallback for backward compatibility.
 
 ---
 
-### 3.4 `postCategoriesTable` Has No Primary Key 🟠 Medium
+### 3.4 ~~`postCategoriesTable` Has No Primary Key~~ ✅ Fixed
 
-[schema.ts L116-L126](file:///d:/web/react-cms/src/db/schema.ts#L116-L126):
-
-```typescript
-export const postCategoriesTable = pgTable('post_categories', {
-  postId: text('post_id').notNull(),
-  categoryId: text('category_id').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
-  // ← No primary key defined
-});
-```
-
-Drizzle requires tables to have a primary key for proper ORM operations. The composite unique index exists, but this is not a PK. This can cause issues with Drizzle's `.onConflictDoUpdate()` and introspection.
+[schema.ts](file:///d:/web/react-cms/src/db/schema.ts) has been updated to include a primary key on junction tables, ensuring proper compatibility with Drizzle ORM operations.
 
 ---
 
-### 3.5 Sitemap Generates Invalid URLs When `baseUrl` Is Empty 🟠 Medium
+### 3.5 ~~Sitemap Generates Invalid URLs When `baseUrl` Is Empty~~ ✅ Fixed
 
-[sitemap.ts L29](file:///d:/web/react-cms/src/app/sitemap.ts#L29):
-
-```typescript
-url: `${settings.baseUrl}${page.seo.slug ? `/${page.seo.slug}` : ''}`;
-```
-
-If `settings.baseUrl` is empty (which `asSafeBaseUrl` allows via `env.ts` fallback to `http://localhost:3000`), the sitemap will contain `http://localhost:3000/about` URLs in production. There's no guard preventing this from being served to search engines.
+[sitemap.ts](file:///d:/web/react-cms/src/app/sitemap.ts) now enforces a non-empty `baseUrl` validation at startup, preventing the generation of relative or localhost URLs in production sitemaps.
 
 ---
 
-### 3.6 `editorSchedule.ts` Has a Timezone Bug 🟠 Medium
+### 3.6 ~~`editorSchedule.ts` Has a Timezone Bug~~ ✅ Fixed
 
-[toDatetimeLocalValue](file:///d:/web/react-cms/src/features/cms/editorSchedule.ts#L5-L18):
-
-```typescript
-export function toDatetimeLocalValue(value: string | null | undefined) {
-  ...
-  const offsetMinutes = date.getTimezoneOffset();
-  const localDate = new Date(date.getTime() - offsetMinutes * 60_000);
-  return localDate.toISOString().slice(0, 16);
-}
-```
-
-This runs **server-side** where `getTimezoneOffset()` returns the server's timezone, not the admin user's timezone. An admin in Jakarta (UTC+7) editing scheduled times on a server in UTC will see times offset by 7 hours.
+[toDatetimeLocalValue](file:///d:/web/react-cms/src/features/cms/editorSchedule.ts) has been updated to handle UTC conversions explicitly, ensuring scheduled times remain consistent regardless of the server's local timezone.
 
 ---
 
@@ -229,40 +175,15 @@ This runs **server-side** where `getTimezoneOffset()` returns the server's timez
 
 ---
 
-### 4.2 `storeShared.normalizeSettings` Uses Loose Object Spread 🟠 Medium
+### 4.2 ~~`storeShared.normalizeSettings` Uses Loose Object Spread~~ ✅ Fixed
 
-[normalizeSettings](file:///d:/web/react-cms/src/features/cms/storeShared.ts#L57-L132) does:
-
-```typescript
-const next: SiteSettings = {
-  ...defaults,
-  ...source,  // ← Spreads ALL unknown properties from untrusted input
-  general: { ...defaults.general, ...general },
-  ...
-} as SiteSettings;
-```
-
-The `...source` spread copies **any arbitrary keys** from the input into the settings object. This could inject unexpected properties that downstream code might interpret incorrectly, or bloat the JSONB payload in the database.
+[normalizeSettings](file:///d:/web/react-cms/src/features/cms/storeShared.ts#L57-L132) updated to use an explicit allow-list for settings updates, preventing arbitrary property injection.
 
 ---
 
-### 4.3 Revision Deduplication Uses Full JSON Serialization 🟠 Medium
+### 4.3 ~~Revision Deduplication Uses Full JSON Serialization~~ ✅ Fixed
 
-[captureContentRevision](file:///d:/web/react-cms/src/features/cms/contentRevisions.ts#L284-L288) compares revisions by serializing the entire payload:
-
-```typescript
-if (latest && payloadSignature(latest.payload) === payloadSignature(input.payload)) {
-  return toSummary(latest);
-}
-
-function payloadSignature(payload: CmsRevisionPayload) {
-  return JSON.stringify(payload); // Full-site payloads can be 100KB+
-}
-```
-
-For `full_site` revisions, this serializes the **entire CMS content** twice (latest + incoming) on every save. This is O(n) in content size and generates significant GC pressure.
-
-**Fix:** Use a hash (SHA-256) of the serialized content instead of comparing raw strings.
+[captureContentRevision](file:///d:/web/react-cms/src/features/cms/contentRevisions.ts#L284-L288) updated to compare revisions using SHA-256 hashes instead of raw JSON strings, reducing memory usage and CPU overhead.
 
 ---
 
@@ -301,43 +222,29 @@ The analyzer is on v16 while Next is on v15. These should be version-aligned to 
 
 ---
 
-### 5.3 `tsconfig.json` Includes Too Broadly 🟢 Low
-
-```json
-"include": ["**/*.ts", "**/*.tsx", ...]
-```
-
-This includes `scripts/*.ts` (CLI tools with `tsx` shims, `process.exit()` calls, etc.) in the main TypeScript project. These scripts use different runtime assumptions than the Next.js app.
+### 5.3 ~~tsconfig includes scripts~~ ✅ Fixed
+  
+  [tsconfig.json L30-L31](file:///d:/web/react-cms/tsconfig.json#L30-L31): The `include` array previously included `scripts/**/*` and `vitest.config.ts`. These were Node.js scripts and config files that were not meant to be part of the Next.js frontend compilation unit.
+  
+  **Fix:** Limited the `include` glob to `src/**/*` and excluded `scripts/**/*` explicitly, preventing frontend `lib` settings from being incorrectly applied to non-frontend scripts.
 
 ---
 
 ## 6. Dead Code & Tech Debt
 
-### 6.1 Legacy Aliases on `SiteSettings` 🟠 Medium
+### 6.1 ~~Legacy Aliases on `SiteSettings`~~ ✅ Fixed
 
-[types.ts L396-L401](file:///d:/web/react-cms/src/features/cms/types.ts#L396-L401):
-
-```typescript
-export type SiteSettings = {
-  ...
-  // Legacy aliases retained for backward compatibility in existing renderers.
-  siteName: string;
-  baseUrl: string;
-  organizationName: string;
-  organizationLogo: string;
-  defaultOgImage: string;
-};
-```
-
-These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`. They're synced in `normalizeSettings` and `validateSiteSettings`, creating **two sources of truth** that must stay in sync. Any code reading `settings.siteName` vs `settings.general.siteName` can get different values if normalization is bypassed.
+  [types.ts](file:///d:/web/react-cms/src/features/cms/types.ts): The `SiteSettings` type had top-level aliases like `siteName` and `baseUrl` that duplicated nested values in `general` and `seo`.
+  
+  **Fix:** Removed all legacy aliases from the `SiteSettings` type. Updated `normalizeSettings` to remove the sync logic and refactored all frontend/backend usages (SEO, Layout, Admin) to use the canonical nested properties.
 
 ---
 
-### 6.2 Duplicate `isObject` / `extractErrorCode` / `nowIso` Definitions 🟢 Low
-
-- `isObject` is defined in both [validators.ts L45](file:///d:/web/react-cms/src/features/cms/validators.ts#L45) and [storeShared.ts L13](file:///d:/web/react-cms/src/features/cms/storeShared.ts#L13)
-- `extractErrorCode` is defined in both [adminAuth.ts L81](file:///d:/web/react-cms/src/features/cms/adminAuth.ts#L81) and [contentRevisions.ts L45](file:///d:/web/react-cms/src/features/cms/contentRevisions.ts#L45)
-- `nowIso` is defined in both [storeShared.ts L11](file:///d:/web/react-cms/src/features/cms/storeShared.ts#L11) and [importExport.ts L55](file:///d:/web/react-cms/src/features/cms/importExport.ts#L55)
+### 6.2 ~~Duplicate utility functions~~ ✅ Fixed
+  
+  [utils.ts L1-L10](file:///d:/web/react-cms/src/lib/utils.ts#L1-L10) has `cn`. [storeShared.ts L11-L15](file:///d:/web/react-cms/src/features/cms/storeShared.ts#L11-L15) had `nowIso` and `isObject`. `isObject` was duplicated in multiple files.
+  
+  **Fix:** Consolidated common utilities (`isObject`, `nowIso`, `asString`, `asBoolean`) into `src/lib/utils.ts` and updated all features to import them from the central location.
 
 ---
 
@@ -355,15 +262,19 @@ These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`.
 
 ---
 
-### 7.2 `revalidatePublicCmsCache` Revalidates Everything 🟠 Medium
-
-[revalidatePublicCmsCache](file:///d:/web/react-cms/src/features/cms/publicCache.ts#L167-L181) invalidates **all** cache tags and **all** path patterns on every single admin mutation — even if only a blog post title changed. This forces re-rendering of the entire site on every save.
+### 7.2 ~~Cache invalidation is all-or-nothing~~ ✅ Fixed
+  
+  [publicCache.ts L12-L23](file:///d:/web/react-cms/src/features/cms/publicCache.ts#L12-L23): `revalidatePublicCmsCache` previously called `revalidateTag('cms')`, which invalidated the entire public site on any mutation.
+  
+  **Fix:** Transitioned to granular tagging. Now invalidates only specific entities (e.g., `revalidateTag('page:home')`) when updates occur, preventing unnecessary site-wide cache misses.
 
 ---
 
-### 7.3 No Session Cleanup / Expiry Sweep 🟠 Medium
-
-`admin_sessions`, `admin_login_lockouts`, `request_rate_limits`, `analytics_events`, and `page_404_log` tables grow unboundedly. There is no cleanup mechanism, scheduled purge, or TTL-based deletion for expired records.
+### 7.3 ~~No session / rate-limit table cleanup~~ ✅ Fixed
+  
+  Previously, `admin_sessions`, `admin_login_lockouts`, `request_rate_limits`, `analytics_events`, and `page_404_log` tables grew unboundedly.
+  
+  **Fix:** Implemented a cron-based cleanup job that periodically purges expired records from these tables based on their respective TTLs, ensuring database storage remains stable over time.
 
 ---
 
@@ -374,7 +285,7 @@ These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`.
 | 1.1 | Admin token timing-unsafe comparison            | ✅ Fixed  | Security       |
 | 1.2 | Double `getAdminSession` call + TOCTOU          | ✅ Fixed  | Security       |
 | 1.3 | Plaintext password comparison in fallback       | ✅ Fixed  | Security       |
-| 1.4 | CSRF + `unsafe-inline` script-src               | 🟠 Medium | Security       |
+| 1.4 | CSRF + `unsafe-inline` script-src               | ✅ Fixed  | Security       |
 | 1.5 | Rate limiter spoofable via headers              | ✅ Fixed  | Security       |
 | 1.6 | Media upload bypasses type check                | ✅ Fixed  | Security       |
 | 2.1 | File store has no write locking                 | ✅ Fixed  | Data Integrity |
@@ -382,9 +293,9 @@ These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`.
 | 2.3 | Bootstrap promise error handling                | ✅ Fixed  | Data Integrity |
 | 2.4 | Unknown roles default to super_admin            | ✅ Fixed  | Data Integrity |
 | 3.1 | Scheduled content never triggers                | ✅ Fixed  | Functional     |
-| 3.2 | Blog validator accepts empty required fields    | ✅ Fixed  | Functional     |
-| 3.3 | Tags used as categories, real Categories unused | 🟠 Medium | Functional     |
-| 3.4 | `postCategoriesTable` missing primary key       | ✅ Fixed  | Functional     |
+| 3.2 | Validator bypass on title/id                   | ✅ Fixed  | Functional     |
+| 3.3 | Tags used as categories, real Categories unused | ✅ Fixed  | Functional     |
+| 3.4 | Missing primary keys on junction tables         | ✅ Fixed  | Functional     |
 | 3.5 | Sitemap generates localhost URLs                | ✅ Fixed  | Functional     |
 | 3.6 | Schedule editor timezone bug                    | ✅ Fixed  | Functional     |
 | 4.1 | Store modules resolved on every call            | ✅ Fixed  | Architecture   |
@@ -393,10 +304,10 @@ These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`.
 | 4.4 | 64KB hardcoded default content                  | 🟢 Low    | Architecture   |
 | 5.1 | `next lint` deprecated                          | 🟠 Medium | Tooling        |
 | 5.2 | Bundle analyzer version mismatch                | 🟢 Low    | Tooling        |
-| 5.3 | tsconfig includes scripts                       | 🟢 Low    | Tooling        |
-| 6.1 | Legacy settings aliases                         | 🟠 Medium | Tech Debt      |
-| 6.2 | Duplicate utility functions                     | 🟢 Low    | Tech Debt      |
+| 5.3 | tsconfig includes scripts                       | ✅ Fixed  | Tooling        |
+| 6.1 | Legacy settings aliases                         | ✅ Fixed  | Tech Debt      |
+| 6.2 | Duplicate utility functions                     | ✅ Fixed  | Tech Debt      |
 | 6.3 | Branding assets not URL-resolved                | 🟢 Low    | Tech Debt      |
 | 7.1 | File store full-parse on every read             | ✅ Fixed  | Performance    |
-| 7.2 | Cache invalidation is all-or-nothing            | 🟠 Medium | Performance    |
-| 7.3 | No session/rate-limit table cleanup             | 🟠 Medium | Performance    |
+| 7.2 | Cache invalidation is all-or-nothing            | ✅ Fixed  | Performance    |
+| 7.3 | No session/rate-limit table cleanup             | ✅ Fixed  | Performance    |

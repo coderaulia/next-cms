@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Sora } from 'next/font/google';
+import { Sora, Playfair_Display } from 'next/font/google';
 import { Suspense } from 'react';
+import { headers } from 'next/headers';
 
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { AppShell } from '@/components/AppShell';
@@ -36,12 +37,12 @@ const fontAccent = Playfair_Display({
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
-  const icon = settings.branding.siteIcon || settings.branding.headerLogo || settings.organizationLogo || undefined;
+  const icon = settings.branding.siteIcon || settings.branding.headerLogo || undefined;
 
   return {
     metadataBase: resolveMetadataBase(),
     title: {
-      default: settings.siteName || siteProfile.brand.wordmark,
+      default: settings.general.siteName || siteProfile.brand.wordmark,
       template: '%s'
     },
     description:
@@ -49,10 +50,10 @@ export async function generateMetadata(): Promise<Metadata> {
       'High-performance CMS starter with editable pages, blog, portfolio, and admin workflows.',
     icons: icon
       ? {
-          icon,
-          shortcut: icon,
-          apple: icon
-        }
+        icon,
+        shortcut: icon,
+        apple: icon
+      }
       : undefined
   };
 }
@@ -62,6 +63,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get('x-nonce') || undefined;
   const [settings, pages] = await Promise.all([getSiteSettings(), getPublishedPages()]);
 
   const pageNavMap = new Map(
@@ -81,36 +83,36 @@ export default async function RootLayout({
   const orgSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: settings.organizationName,
-    url: settings.baseUrl,
-    logo: settings.organizationLogo
+    name: settings.general.siteName,
+    url: settings.general.baseUrl,
+    logo: settings.branding.headerLogo
   };
 
   const siteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: settings.siteName,
-    url: settings.baseUrl,
+    name: settings.general.siteName,
+    url: settings.general.baseUrl,
     ...(settings.sitemap.includePosts
       ? {
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: `${settings.baseUrl}/blog?query={search_term_string}`,
-            'query-input': 'required name=search_term_string'
-          }
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: `${settings.general.baseUrl}/blog?query={search_term_string}`,
+          'query-input': 'required name=search_term_string'
         }
+      }
       : {})
   };
 
   return (
     <html lang={settings.general.language || 'en'} className={`${fontBody.variable} ${fontAccent.variable}`}>
       <body className="v2-site">
-        <ChunkRecoveryScript />
+        <ChunkRecoveryScript nonce={nonce} />
         <Suspense fallback={null}>
           <AnalyticsTracker />
         </Suspense>
-        <SeoJsonLd data={[orgSchema, siteSchema]} />
-        <AppShell siteName={settings.siteName} navItems={navItems} settings={settings}>
+        <SeoJsonLd data={[orgSchema, siteSchema]} nonce={nonce} />
+        <AppShell siteName={settings.general.siteName} navItems={navItems} settings={settings}>
           {children}
         </AppShell>
       </body>

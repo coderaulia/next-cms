@@ -18,3 +18,16 @@ export function cn(...inputs: ClassValue[]): string {
 
   return flatten(inputs).join(' ');
 }
+
+export const nowIso = () => new Date().toISOString();
+
+export const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+export const asString = (value: unknown): string => (typeof value === 'string' ? value : '');
+
+export const asBoolean = (value: unknown): boolean => {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') return value.toLowerCase() === 'true';
+  return false;
+};

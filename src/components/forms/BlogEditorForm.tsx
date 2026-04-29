@@ -103,8 +103,8 @@ export function BlogEditorForm({
   const canSave = validationIssues.length === 0;
   const canDeleteConfirm = deleteConfirmText.trim().toUpperCase() === 'DELETE';
 
-  const toggleCategory = (slug: string) => {
-    const next = new Set(selectedCategories);
+  const toggleTag = (slug: string) => {
+    const next = new Set(post.tags);
     if (next.has(slug)) {
       next.delete(slug);
     } else {
@@ -403,17 +403,31 @@ export function BlogEditorForm({
           />
           {fieldErrors.author ? <span className="admin-error-text">{fieldErrors.author}</span> : null}
         </label>
+        <label>
+          Primary Category
+          <select
+            value={post.categoryId || ''}
+            onChange={(event) => setPost({ ...post, categoryId: event.target.value || null })}
+          >
+            <option value="">Uncategorized</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </label>
         <div>
-          <p className="admin-kpi-label">Categories</p>
+          <p className="admin-kpi-label">Tags (Quick Select)</p>
           <div className="admin-actions" style={{ flexWrap: 'wrap' }}>
             {categories.map((category) => {
-              const active = selectedCategories.has(category.slug);
+              const active = post.tags.includes(category.slug);
               return (
                 <button
                   key={category.id}
                   type="button"
                   className={active ? 'v2-btn v2-btn-primary' : 'v2-btn v2-btn-secondary'}
-                  onClick={() => toggleCategory(category.slug)}
+                  onClick={() => toggleTag(category.slug)}
                 >
                   {category.name}
                 </button>
@@ -422,7 +436,7 @@ export function BlogEditorForm({
           </div>
         </div>
         <label>
-          Category slugs (comma separated)
+          Tags (comma separated)
           <input
             value={post.tags.join(', ')}
             onChange={(event) =>

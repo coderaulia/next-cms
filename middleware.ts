@@ -3,13 +3,13 @@ import type { NextRequest } from 'next/server';
 
 import { CSRF_COOKIE_NAME } from '@/services/securityConstants';
 
-const contentSecurityPolicy = [
+const contentSecurityPolicyBase = [
   "default-src 'self'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'nonce-REPLACE_ME_NONCE'",
   "script-src-attr 'none'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob: https:",
@@ -18,7 +18,15 @@ const contentSecurityPolicy = [
   "frame-src 'none'",
   "worker-src 'self' blob:",
   'upgrade-insecure-requests'
-].join('; ');
+];
+
+function generateNonce() {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+}
 
 function generateCsrfToken() {
   try {
@@ -29,10 +37,16 @@ function generateCsrfToken() {
 }
 
 export function middleware(request: NextRequest) {
+  const nonce = generateNonce();
+  const csp = contentSecurityPolicyBase
+    .join('; ')
+    .replace(/REPLACE_ME_NONCE/g, nonce);
+
   const response = NextResponse.next();
   const pathname = request.nextUrl.pathname;
 
-  response.headers.set('Content-Security-Policy', contentSecurityPolicy);
+  response.headers.set('Content-Security-Policy', csp);
+  response.headers.set('x-nonce', nonce);
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');

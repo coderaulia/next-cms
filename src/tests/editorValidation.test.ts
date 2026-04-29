@@ -10,6 +10,7 @@ function makeBlogPost(overrides: Partial<BlogPost> = {}): BlogPost {
     excerpt: 'Excerpt',
     content: 'Body content',
     author: 'Admin',
+    categoryId: null,
     tags: ['engineering'],
     coverImage: '',
     status: 'draft',

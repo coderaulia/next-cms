@@ -223,8 +223,22 @@ function assertRateLimitInMemory(request: Request, scope: string, limit: number,
   return null;
 }
 
+async function pruneExpiredRateLimits() {
+  if (!env.databaseUrl) return;
+  try {
+    const nowIso = new Date().toISOString();
+    await getDb().delete(requestRateLimitsTable).where(lt(requestRateLimitsTable.resetAt, nowIso));
+  } catch {
+    // ignore cleanup errors
+  }
+}
+
 export async function assertRateLimit(request: Request, scope: string, limit: number, windowMs: number) {
   if (env.databaseUrl) {
+    if (Math.random() < 0.01) {
+      void pruneExpiredRateLimits();
+    }
+
     try {
       return await assertRateLimitInDatabase(request, scope, limit, windowMs);
     } catch {

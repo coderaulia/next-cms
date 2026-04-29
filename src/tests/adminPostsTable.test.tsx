@@ -21,6 +21,7 @@ describe('AdminPostsTable', () => {
         excerpt: 'Excerpt',
         content: 'Content',
         author: 'Admin',
+        categoryId: null,
         tags: ['engineering'],
         coverImage: '',
         status: 'published',

@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
 class MockIntersectionObserver implements IntersectionObserver {
   readonly root: Element | Document | null = null;

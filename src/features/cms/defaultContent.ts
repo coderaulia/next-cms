@@ -1219,6 +1219,7 @@ High-converting pages are clear, specific, and fast.
 
 Keep sections simple and measurable.`,
       author: 'Editorial Team',
+      categoryId: 'category-engineering',
       tags: ['engineering', 'performance', 'seo'],
       coverImage: 'https://placehold.co/1200x630/png',
       status: 'published',
@@ -1246,6 +1247,7 @@ Use statuses, approvals, and clear owners.
 
 Draft quickly, review carefully, then publish with SEO checks.`,
       author: 'Editorial Team',
+      categoryId: 'category-workflow',
       tags: ['workflow', 'cms'],
       coverImage: 'https://placehold.co/1200x630/png',
       status: 'draft',
@@ -1508,7 +1510,7 @@ Draft quickly, review carefully, then publish with SEO checks.`,
         keywords: ['psychology website', 'company profile website', 'consultation website', 'website development']
       }
     }
-  ],  categories: [
+  ], categories: [
     category('General', 'general', 'Default publishing category for uncategorized content.'),
     category('Engineering', 'engineering', 'Technical engineering insights and implementation notes.'),
     category('Performance', 'performance', 'Web performance, speed, and optimization topics.'),

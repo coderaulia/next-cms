@@ -149,6 +149,7 @@ async function readAllPosts(): Promise<BlogPost[]> {
     excerpt: row.excerpt,
     content: row.content,
     author: row.author,
+    categoryId: null,
     tags: tagMap.get(row.id) ?? row.tags,
     coverImage: row.coverImage,
     status: row.status,

@@ -1,4 +1,4 @@
-import { eq, sql } from 'drizzle-orm';
+﻿import { eq, sql } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import {
@@ -244,6 +244,7 @@ function rowToLegacyPost(row: LegacyPostRow, tags = row.tags): BlogPost {
     excerpt: row.excerpt,
     content: row.content,
     author: row.author,
+    categoryId: null,
     tags,
     coverImage: row.coverImage,
     status: row.status,
@@ -403,6 +404,7 @@ function rowToPost(row: typeof blogPostsTable.$inferSelect, tags = row.tags): Bl
     excerpt: row.excerpt,
     content: row.content,
     author: row.author,
+    categoryId: null,
     tags,
     coverImage: row.coverImage,
     status: row.status,
@@ -948,6 +950,7 @@ export async function createBlogPost(payload?: Partial<BlogPost>): Promise<BlogP
     excerpt: payload?.excerpt?.trim() || '',
     content: payload?.content || '',
     author: payload?.author?.trim() || writing.defaultPostAuthor || 'Admin',
+    categoryId: payload?.categoryId ?? null,
     tags:
       payload?.tags ??
       (writing.defaultPostCategory ? [writing.defaultPostCategory.toLowerCase()] : []),
