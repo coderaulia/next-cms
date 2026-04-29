@@ -1,4 +1,4 @@
-import { pgTable, text, boolean, jsonb, timestamp, integer, uniqueIndex, index } from 'drizzle-orm/pg-core';
+import { pgTable, text, boolean, jsonb, timestamp, integer, uniqueIndex, index, primaryKey } from 'drizzle-orm/pg-core';
 
 import type {
   BlogPost,
@@ -121,7 +121,7 @@ export const postCategoriesTable = pgTable('post_categories', {
   (table) => ({
     postIdIdx: index('post_categories_post_id_idx').on(table.postId),
     categoryIdIdx: index('post_categories_category_id_idx').on(table.categoryId),
-    postCategoryUnique: uniqueIndex('post_categories_post_category_unique').on(table.postId, table.categoryId)
+    pk: primaryKey({ columns: [table.postId, table.categoryId] })
   })
 );
 
@@ -149,7 +149,7 @@ export const portfolioProjectTagsTable = pgTable(
   (table) => ({
     projectIdIdx: index('portfolio_project_tags_project_id_idx').on(table.projectId),
     tagIdIdx: index('portfolio_project_tags_tag_id_idx').on(table.tagId),
-    projectTagUnique: uniqueIndex('portfolio_project_tags_project_tag_unique').on(table.projectId, table.tagId)
+    pk: primaryKey({ columns: [table.projectId, table.tagId] })
   })
 );
 

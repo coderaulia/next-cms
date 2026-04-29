@@ -73,7 +73,6 @@ export function normalizeSettings(input: unknown): SiteSettings {
 
   const next: SiteSettings = {
     ...defaults,
-    ...source,
     general: { ...defaults.general, ...general },
     navigation: {
       ...defaults.navigation,

@@ -372,24 +372,24 @@ These duplicate `general.siteName`, `general.baseUrl`, and `seo.defaultOgImage`.
 | #   | Finding                                         | Severity  | Category       |
 | --- | ----------------------------------------------- | --------- | -------------- |
 | 1.1 | Admin token timing-unsafe comparison            | ✅ Fixed  | Security       |
-| 1.2 | Double `getAdminSession` call + TOCTOU          | 🟡 High   | Security       |
-| 1.3 | Plaintext password comparison in fallback       | 🟡 High   | Security       |
+| 1.2 | Double `getAdminSession` call + TOCTOU          | ✅ Fixed  | Security       |
+| 1.3 | Plaintext password comparison in fallback       | ✅ Fixed  | Security       |
 | 1.4 | CSRF + `unsafe-inline` script-src               | 🟠 Medium | Security       |
-| 1.5 | Rate limiter spoofable via headers              | 🟠 Medium | Security       |
-| 1.6 | Media upload bypasses type check                | 🟠 Medium | Security       |
+| 1.5 | Rate limiter spoofable via headers              | ✅ Fixed  | Security       |
+| 1.6 | Media upload bypasses type check                | ✅ Fixed  | Security       |
 | 2.1 | File store has no write locking                 | ✅ Fixed  | Data Integrity |
-| 2.2 | DB rate limiter race condition                  | 🟡 High   | Data Integrity |
+| 2.2 | DB rate limiter race condition                  | ✅ Fixed  | Data Integrity |
 | 2.3 | Bootstrap promise error handling                | ✅ Fixed  | Data Integrity |
 | 2.4 | Unknown roles default to super_admin            | ✅ Fixed  | Data Integrity |
 | 3.1 | Scheduled content never triggers                | ✅ Fixed  | Functional     |
-| 3.2 | Blog validator accepts empty required fields    | 🟠 Medium | Functional     |
+| 3.2 | Blog validator accepts empty required fields    | ✅ Fixed  | Functional     |
 | 3.3 | Tags used as categories, real Categories unused | 🟠 Medium | Functional     |
-| 3.4 | `postCategoriesTable` missing primary key       | 🟠 Medium | Functional     |
-| 3.5 | Sitemap generates localhost URLs                | 🟠 Medium | Functional     |
-| 3.6 | Schedule editor timezone bug                    | 🟠 Medium | Functional     |
+| 3.4 | `postCategoriesTable` missing primary key       | ✅ Fixed  | Functional     |
+| 3.5 | Sitemap generates localhost URLs                | ✅ Fixed  | Functional     |
+| 3.6 | Schedule editor timezone bug                    | ✅ Fixed  | Functional     |
 | 4.1 | Store modules resolved on every call            | ✅ Fixed  | Architecture   |
-| 4.2 | Settings normalization spreads unknown keys     | 🟠 Medium | Architecture   |
-| 4.3 | Revision dedup via full JSON comparison         | 🟠 Medium | Architecture   |
+| 4.2 | Settings normalization spreads unknown keys     | ✅ Fixed  | Architecture   |
+| 4.3 | Revision dedup via full JSON comparison         | ✅ Fixed  | Architecture   |
 | 4.4 | 64KB hardcoded default content                  | 🟢 Low    | Architecture   |
 | 5.1 | `next lint` deprecated                          | 🟠 Medium | Tooling        |
 | 5.2 | Bundle analyzer version mismatch                | 🟢 Low    | Tooling        |

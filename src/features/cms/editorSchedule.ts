@@ -12,9 +12,7 @@ export function toDatetimeLocalValue(value: string | null | undefined) {
     return '';
   }
 
-  const offsetMinutes = date.getTimezoneOffset();
-  const localDate = new Date(date.getTime() - offsetMinutes * 60_000);
-  return localDate.toISOString().slice(0, 16);
+  return date.toISOString().slice(0, 16);
 }
 
 export function fromDatetimeLocalValue(value: string) {
@@ -22,7 +20,7 @@ export function fromDatetimeLocalValue(value: string) {
     return null;
   }
 
-  const date = new Date(value);
+  const date = new Date(`${value}Z`);
   if (Number.isNaN(date.getTime())) {
     return null;
   }

@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -68,7 +68,7 @@ function toSummary(revision: CmsContentRevision): CmsContentRevisionSummary {
 }
 
 function payloadSignature(payload: CmsRevisionPayload) {
-  return JSON.stringify(payload);
+  return createHash('sha256').update(JSON.stringify(payload)).digest('hex');
 }
 
 function normalizePathLabel(slug: string) {

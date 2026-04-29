@@ -71,8 +71,8 @@ function parseCookies(cookieHeader: string | null) {
 
 export function getClientIdentifier(request: Request) {
   const forwardedFor = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '';
-  const firstIp = forwardedFor.split(',')[0]?.trim();
-  return firstIp || 'unknown';
+  const ips = forwardedFor.split(',').map((ip) => ip.trim()).filter(Boolean);
+  return ips.length > 0 ? ips[ips.length - 1] : 'unknown';
 }
 
 export function readCookieValue(request: Request, name: string) {
