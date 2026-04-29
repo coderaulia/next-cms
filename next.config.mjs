@@ -9,6 +9,7 @@ const nextConfig = {
   compress: true,
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react']
+  }
 };
 
 export default withBundleAnalyzer(nextConfig);
