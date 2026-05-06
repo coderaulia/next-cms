@@ -1,241 +1,388 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
-import { ContactBriefForm } from '@/components/forms/ContactBriefForm';
-import { SymbolIcon } from '@/components/ui/symbol-icon';
+import { useCursorMode } from '@/components/CustomCursor';
+import { trackClientAnalyticsEvent } from '@/lib/analyticsClient';
+import { csrfFetch } from '@/lib/clientCsrf';
 import type { LandingPage, SiteSettings } from '@/features/cms/types';
-
-import { sectionWithFallback, splitAccent } from './sectionContent';
-import { Reveal } from '@/components/animations/Reveal';
 
 type ContactPageViewProps = {
   page: LandingPage;
   settings?: Pick<SiteSettings, 'contact'>;
 };
 
-export function ContactPageView({ page, settings }: ContactPageViewProps) {
-  const contactSettings = settings?.contact;
+const SERVICES = [
+  'Website Development',
+  'Custom Web App Development',
+  'Mobile App Development (React Native)',
+  'High-Conversion Landing Page',
+  'Online Shop / E-Commerce',
+  'Professional Business Email',
+] as const;
 
-  const hero = sectionWithFallback(page, 0, {
-    id: 'contact-hero',
-    heading: "Let's Build Your|Digital Edge",
-    body: 'From high-performance web applications to enterprise-grade architectures, we turn technical complexity into business advantage.',
-    ctaLabel: 'Connect with the lab',
-    ctaHref: '/contact',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const brief = sectionWithFallback(page, 1, {
-    id: 'contact-brief',
-    heading: 'Strategic Brief',
-    body: "Tell us about your mission. We'll analyze your needs and respond within 24 business hours.",
-    ctaLabel: 'Submit Project Brief',
-    ctaHref: '/contact',
-    mediaImage: '',
-    mediaAlt: 'Response in 24 business hours',
-    layout: 'stacked'
-  });
-  const meet = sectionWithFallback(page, 2, {
-    id: 'contact-meet',
-    heading: 'Prefer a face-to-face|discussion?',
-    body: "Skip the form and jump straight into a strategy session. We'll explore your technical requirements and business goals in real-time.",
-    ctaLabel: 'Book a Google Meet Session',
-    ctaHref: contactSettings?.emailHref || 'mailto:hello@example.com?subject=Google%20Meet%20Consultation',
-    mediaImage: '',
-    mediaAlt: 'Instant Booking',
-    layout: 'split'
-  });
-  const bookingOne = sectionWithFallback(page, 3, {
-    id: 'contact-booking-1',
-    heading: '30-minute technical evaluation',
-    body: '',
-    ctaLabel: 'check',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const bookingTwo = sectionWithFallback(page, 4, {
-    id: 'contact-booking-2',
-    heading: 'Direct access to lead architects',
-    body: '',
-    ctaLabel: 'check',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const bookingThree = sectionWithFallback(page, 5, {
-    id: 'contact-booking-3',
-    heading: 'No-obligation consultation',
-    body: '',
-    ctaLabel: 'check',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
+export function ContactPageView({ page: _page, settings }: ContactPageViewProps) {
+  const { setMode } = useCursorMode();
+  const c = settings?.contact;
 
-  const company = sectionWithFallback(page, 6, {
-    id: 'contact-company',
-    heading: contactSettings?.companyName || 'Example Studio LLC',
-    body: `${contactSettings?.addressLine1 || '123 Example Avenue'}\n${
-      contactSettings?.addressLine2 || 'Remote-first team, Global delivery'
-    }\n\n${contactSettings?.globalReachLabel || 'Global reach'}\n${
-      contactSettings?.globalReachText || 'Supporting partners across SEA, Europe, and North America.'
-    }`,
-    ctaLabel: '',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const email = sectionWithFallback(page, 7, {
-    id: 'contact-email',
-    heading: contactSettings?.emailLabel || 'Email Us',
-    body: contactSettings?.emailValue || 'hello@example.com',
-    ctaLabel: 'alternate_email',
-    ctaHref: contactSettings?.emailHref || 'mailto:hello@example.com',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const whatsapp = sectionWithFallback(page, 8, {
-    id: 'contact-whatsapp',
-    heading: contactSettings?.whatsappLabel || 'WhatsApp Business',
-    body: contactSettings?.whatsappValue || '+62 800 0000 0000',
-    ctaLabel: 'chat',
-    ctaHref: contactSettings?.whatsappHref || 'https://wa.me/620000000000',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const instagram = sectionWithFallback(page, 9, {
-    id: 'contact-instagram',
-    heading: contactSettings?.instagramLabel || 'Instagram',
-    body: contactSettings?.instagramValue || '@example.studio',
-    ctaLabel: 'photo_camera',
-    ctaHref: contactSettings?.instagramHref || 'https://instagram.com/example.studio',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
+  const emailValue = c?.emailValue || 'care@vanaila.com';
+  const emailHref = c?.emailHref || 'mailto:care@vanaila.com';
+  const whatsappValue = c?.whatsappValue || '+62 851 744 133 23';
+  const whatsappHref = c?.whatsappHref || 'https://wa.me/6285174413323';
+  const companyName = c?.companyName || 'PT Vanaila Digital Vision';
+  const addressLine1 = c?.addressLine1 || 'Bogor, Indonesia';
 
-  const { primary: heroPrimary, accent: heroAccent } = splitAccent(hero.heading, 'Digital Edge');
-  const { primary: meetPrimary, accent: meetAccent } = splitAccent(meet.heading, 'discussion?');
+  const [interests, setInterests] = useState<string[]>([]);
+  const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
+  const [emailField, setEmailField] = useState('');
+  const [overview, setOverview] = useState('');
+  const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const companyLines = company.body.split(/\n+/).map((row) => row.trim()).filter((row) => row.length > 0);
+  const toggle = (s: string) =>
+    setInterests((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
+
+  const handleSubmit = async ({ preventDefault }: { preventDefault(): void }) => {
+    preventDefault();
+    setStatus('saving');
+    setErrorMsg('');
+    const res = await csrfFetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        company,
+        email: emailField,
+        serviceCategory: interests.join(', '),
+        projectOverview: overview,
+      }),
+    });
+    if (!res.ok) {
+      const payload = (await res.json().catch(() => null)) as { error?: string } | null;
+      setStatus('error');
+      setErrorMsg(payload?.error || 'Failed to submit. Please try again.');
+      return;
+    }
+    setStatus('success');
+    void trackClientAnalyticsEvent('contact_submit', interests.join(', ') || 'Contact brief');
+  };
 
   return (
-    <main>
-      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-blue-50/50 border border-blue-100/50 mb-8 backdrop-blur-sm mx-auto">
-            <span className="w-1.5 h-1.5 rounded-full bg-electricBlue animate-pulse" />
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-600">
-              {hero.ctaLabel || 'Connect with the lab'}
-            </span>
+    <main className="v-contact">
+      {/* HERO */}
+      <section className="v-contact-hero">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span key={i} />
+          ))}
+        </div>
+
+        <nav className="v-svc-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/">Home</Link>
+          <span>/</span>
+          <span>Contact</span>
+        </nav>
+
+        <div className="v-contact-hero-meta">
+          <span>[ CONTACT / BRIEF ]</span>
+          <span>RESPONSE WITHIN 24 BUSINESS HOURS</span>
+          <span className="v-svc-status">● BOOKING NEW PROJECTS</span>
+        </div>
+
+        <h1 className="v-contact-h1">
+          Build your
+          <br />
+          <em>competitive edge</em>
+          <br />
+          —&nbsp;<del>offline.</del>&nbsp;<em>online.</em>
+        </h1>
+
+        <div className="v-contact-hero-foot">
+          <p>
+            From lightning-fast Svelte web apps to scalable WordPress ecosystems — Vanaila Digital
+            turns your vision into a product that performs.
+          </p>
+          <div className="v-home-actions">
+            <a
+              href="#brief"
+              className="v-home-btn v-home-btn-primary"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Submit a project brief <span>↓</span>
+            </a>
+            <a
+              href="#meet"
+              className="v-home-btn v-home-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Or book a Google Meet
+            </a>
           </div>
-          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
-            {heroPrimary}
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
-              {heroAccent}
-            </span>
-          </h1>
-          <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">{hero.body}</p>
         </div>
-      </Reveal>
+      </section>
 
-      <Reveal as="section" className="py-20 relative">
-        <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <ContactBriefForm
-            heading={brief.heading}
-            body={brief.body}
-            submitLabel={brief.ctaLabel || 'Submit Project Brief'}
-            helperText={brief.mediaAlt || 'Response in 24 business hours'}
-          />
-        </div>
-      </Reveal>
-
-      <Reveal as="section" className="py-24 bg-deepSlate relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-10" />
-          <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-10" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-12">
-              <h2 className="text-4xl md:text-5xl font-display font-black text-white leading-tight">
-                {meetPrimary}
-                <br />
-                <span className="text-electricBlue italic font-light">{meetAccent}</span>
-              </h2>
-              <p className="text-slate-400 text-lg font-light leading-relaxed max-w-md">{meet.body}</p>
-              <div className="flex flex-wrap gap-6">
-                <Link href={meet.ctaHref || '/contact'} className="px-8 py-5 bg-white text-deepSlate font-display font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:shadow-2xl transition-all flex items-center gap-3">
-                  {meet.ctaLabel || 'Book a Google Meet Session'}
-                  <SymbolIcon className="text-xl" name="videocam" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="glass-panel bg-white/5 border-white/10 p-12 rounded-[3rem] relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8">
-                <SymbolIcon className="text-6xl text-white/5 group-hover:text-electricBlue/20 transition-colors duration-500" name="calendar_month" />
-              </div>
-              <h3 className="text-2xl font-display font-bold text-white mb-2">{meet.mediaAlt || 'Instant Booking'}</h3>
-              <p className="text-slate-400 mb-10 text-sm">Synchronize with our engineering team.</p>
-
-              <ul className="space-y-6">
-                {[bookingOne, bookingTwo, bookingThree].map((item) => (
-                  <li key={item.id} className="flex items-center gap-4 text-slate-300">
-                    <span className="w-6 h-6 rounded-full bg-electricBlue/20 flex items-center justify-center text-electricBlue">
-                      <SymbolIcon className="text-sm" name={item.ctaLabel || 'check'} />
-                    </span>
-                    <span className="text-sm font-medium">{item.heading}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* TWO-COLUMN: FORM + SIDEBAR */}
+      <section id="brief" className="v-contact-main">
+        {/* FORM SIDE */}
+        <div className="v-contact-form-side">
+          <div className="v-contact-form-head">
+            <span className="v-contact-eyebrow">[ 01 ] LEAD QUALIFIER</span>
+            <h2>
+              Start with a brief,
+              <br />
+              not a <em>vendor request.</em>
+            </h2>
+            <p>Tell us what you&apos;re building — we&apos;ll tell you how to make it work.</p>
           </div>
 
-          <div className="mt-32 pt-20 border-t border-white/5 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-            <div className="space-y-4">
-              <h4 className="text-white font-display font-black text-xl">{company.heading}</h4>
-              <p className="text-slate-500 text-sm font-light leading-relaxed">
-                {companyLines[0] || ''}
-                <br />
-                {companyLines[1] || ''}
+          {status === 'success' ? (
+            <div className="v-contact-success">
+              <span className="v-contact-success-mark">●</span>
+              <h3>Brief received.</h3>
+              <p>
+                A founder — not a bot — will read your brief and respond within 24 business hours.
+                Check <strong>{emailValue}</strong> in your inbox.
               </p>
-              <div className="pt-4">
-                <p className="text-[10px] uppercase font-bold tracking-[0.3em] text-slate-600 mb-2">
-                  {companyLines[2] || 'Global Reach'}
-                </p>
-                <p className="text-slate-500 text-xs leading-relaxed">{companyLines[3] || ''}</p>
-              </div>
             </div>
+          ) : (
+            <form className="v-contact-form" onSubmit={handleSubmit}>
+              <div className="v-contact-row-2">
+                <label className="v-contact-field">
+                  <span className="v-contact-label">
+                    Your name <em>*</em>
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Full name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </label>
+                <label className="v-contact-field">
+                  <span className="v-contact-label">Company name</span>
+                  <input
+                    type="text"
+                    placeholder="Company / organization"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
+                </label>
+              </div>
 
-            <Link href={email.ctaHref || '/contact'} className="glass-panel bg-white/5 border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors group cursor-pointer block">
-              <SymbolIcon className="text-electricBlue mb-6 group-hover:scale-110 transition-transform" name={email.ctaLabel || 'alternate_email'} />
-              <h5 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{email.heading}</h5>
-              <p className="text-slate-400 text-sm">{email.body}</p>
-            </Link>
+              <label className="v-contact-field">
+                <span className="v-contact-label">
+                  Business email <em>*</em>
+                </span>
+                <input
+                  type="email"
+                  placeholder="you@company.com"
+                  required
+                  value={emailField}
+                  onChange={(e) => setEmailField(e.target.value)}
+                />
+              </label>
 
-            <Link href={whatsapp.ctaHref || '/contact'} className="glass-panel bg-white/5 border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors group cursor-pointer block">
-              <SymbolIcon className="text-emerald-400 mb-6 group-hover:scale-110 transition-transform" name={whatsapp.ctaLabel || 'chat'} />
-              <h5 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{whatsapp.heading}</h5>
-              <p className="text-slate-400 text-sm">{whatsapp.body}</p>
-            </Link>
+              <div className="v-contact-field">
+                <span className="v-contact-label">
+                  I&apos;m interested in <em>*</em>
+                </span>
+                <div className="v-contact-chips">
+                  {SERVICES.map((s) => (
+                    <button
+                      type="button"
+                      key={s}
+                      className={`v-contact-chip${interests.includes(s) ? ' is-on' : ''}`}
+                      onClick={() => toggle(s)}
+                      onMouseEnter={() => setMode('link')}
+                      onMouseLeave={() => setMode('default')}
+                    >
+                      <span className="v-contact-chip-dot" />
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            <Link href={instagram.ctaHref || '/contact'} className="glass-panel bg-white/5 border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors group cursor-pointer block">
-              <SymbolIcon className="text-pink-400 mb-6 group-hover:scale-110 transition-transform" name={instagram.ctaLabel || 'photo_camera'} />
-              <h5 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{instagram.heading}</h5>
-              <p className="text-slate-400 text-sm">{instagram.body}</p>
-            </Link>
+              <label className="v-contact-field">
+                <span className="v-contact-label">
+                  Project overview <em>*</em>
+                </span>
+                <span className="v-contact-hint">
+                  What are you trying to achieve, and what&apos;s holding you back right now?
+                </span>
+                <textarea
+                  rows={6}
+                  placeholder="A few honest paragraphs beat a 30-page RFP. Tell us the goal, the obstacle, and the timeline."
+                  required
+                  value={overview}
+                  onChange={(e) => setOverview(e.target.value)}
+                />
+              </label>
+
+              {errorMsg && (
+                <p style={{ color: '#BD3146', fontSize: 13, margin: 0 }}>{errorMsg}</p>
+              )}
+
+              <div className="v-contact-form-foot">
+                <button
+                  type="submit"
+                  disabled={status === 'saving' || interests.length === 0}
+                  className="v-home-btn v-home-btn-primary v-home-btn-large"
+                  onMouseEnter={() => setMode('link')}
+                  onMouseLeave={() => setMode('default')}
+                >
+                  {status === 'saving' ? 'Submitting…' : 'Submit my project brief →'}
+                </button>
+                <span className="v-contact-form-note">Reviewed by a human. No auto-replies.</span>
+              </div>
+            </form>
+          )}
+        </div>
+
+        {/* SIDEBAR */}
+        <aside className="v-contact-aside">
+          {/* Priority Scheduling */}
+          <div id="meet" className="v-contact-card v-contact-card-blue">
+            <span className="v-contact-eyebrow v-contact-eyebrow-light">
+              [ 02 ] PRIORITY SCHEDULING
+            </span>
+            <h3>
+              Ready to talk
+              <br />
+              architecture
+              <br />
+              and <em>timelines?</em>
+            </h3>
+            <p>
+              Skip the form. If your project is defined and you&apos;re ready to move, book a
+              15-minute discovery call directly.
+            </p>
+            <a
+              href={emailHref}
+              className="v-contact-card-cta"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Invite us to a Google Meet</span>
+              <span className="v-contact-card-arrow">→</span>
+            </a>
+            <a
+              href={emailHref}
+              className="v-contact-card-mail"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              {emailValue}
+            </a>
+          </div>
+
+          {/* Promise */}
+          <div className="v-contact-card v-contact-card-cream">
+            <span className="v-contact-eyebrow">[ 03 ] OUR PROMISE</span>
+            <h3>
+              Every brief, read by a <em>human.</em>
+            </h3>
+            <p>
+              We respond within 24 business hours — no auto-replies, no telephone game, no
+              runaround.
+            </p>
+            <div className="v-contact-promise-bar">
+              <span className="v-contact-promise-dot" />
+              <span>Average response: under 9 hours</span>
+            </div>
+          </div>
+
+          {/* Direct Channels */}
+          <div className="v-contact-card v-contact-card-ink">
+            <span className="v-contact-eyebrow v-contact-eyebrow-light">
+              [ 04 ] DIRECT CHANNELS
+            </span>
+            <h3>
+              Faster than <em>a form.</em>
+            </h3>
+            <ul className="v-contact-channels">
+              <li>
+                <span className="v-contact-channel-k">Email</span>
+                <a
+                  href={emailHref}
+                  className="v-contact-channel-v"
+                  onMouseEnter={() => setMode('link')}
+                  onMouseLeave={() => setMode('default')}
+                >
+                  {emailValue}
+                </a>
+              </li>
+              <li>
+                <span className="v-contact-channel-k">WhatsApp</span>
+                <a
+                  href={whatsappHref}
+                  className="v-contact-channel-v"
+                  onMouseEnter={() => setMode('link')}
+                  onMouseLeave={() => setMode('default')}
+                >
+                  {whatsappValue}
+                </a>
+              </li>
+              <li>
+                <span className="v-contact-channel-k">Google Meet</span>
+                <span className="v-contact-channel-v">15-min discovery</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      {/* GLOBAL REACH */}
+      <section className="v-contact-global">
+        <div className="v-contact-global-head">
+          <span className="v-contact-eyebrow v-contact-eyebrow-light">
+            [ 05 ] GLOBAL REACH, LOCAL ROOTS
+          </span>
+          <h2>
+            Bogor-built.
+            <br />
+            <em>Worldwide-shipped.</em>
+          </h2>
+        </div>
+        <div className="v-contact-global-grid">
+          <div className="v-contact-global-cell">
+            <span className="v-contact-global-label">Legal Entity</span>
+            <h4>{companyName}</h4>
+            <p>Registered in Indonesia. Serving SMEs and innovators worldwide.</p>
+          </div>
+          <div className="v-contact-global-cell">
+            <span className="v-contact-global-label">Headquarters</span>
+            <h4>
+              <span style={{ color: 'var(--v-blue-glow, #2D5FFF)' }}>◉</span> {addressLine1}
+            </h4>
+            <p>West Java · GMT+7. Working remote across Southeast Asia, Europe, and the Americas.</p>
+          </div>
+          <div className="v-contact-global-cell v-contact-global-cta">
+            <span className="v-contact-global-label">Reach Us</span>
+            <a
+              href={emailHref}
+              className="v-contact-global-link"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              {emailValue} →
+            </a>
+            <a
+              href={whatsappHref}
+              className="v-contact-global-link"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              {whatsappValue} (WhatsApp) →
+            </a>
           </div>
         </div>
-      </Reveal>
+      </section>
     </main>
   );
 }
