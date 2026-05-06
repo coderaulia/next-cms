@@ -9,7 +9,9 @@ type BlogCardProps = {
 export function BlogCard({ post }: BlogCardProps) {
   return (
     <article className="blog-card">
-      {post.coverImage ? <img src={post.coverImage} alt={post.title} className="blog-image" /> : null}
+      {post.coverImage ? (
+        <img src={post.coverImage} alt={post.title} className="blog-image" decoding="async" loading="lazy" />
+      ) : null}
       <div className="blog-content">
         <p className="blog-meta">
           {post.author} {post.publishedAt ? `• ${new Date(post.publishedAt).toLocaleDateString()}` : ''}

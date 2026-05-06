@@ -1,21 +1,34 @@
-import Link from 'next/link';
+'use client';
 
-import { SymbolIcon } from '@/components/ui/symbol-icon';
+import Link from 'next/link';
+import type { CSSProperties } from 'react';
+
+import { Reveal } from '@/components/animations/Reveal';
+import { useCursorMode } from '@/components/CustomCursor';
 import type { LandingPage } from '@/features/cms/types';
 
 import { paragraphs, sectionWithFallback, splitAccent } from './sectionContent';
-import { Reveal } from '@/components/animations/Reveal';
 
 type AboutPageViewProps = {
   page: LandingPage;
 };
 
+const storyStats = [
+  { k: '8+', v: 'Years shipping digital systems' },
+  { k: '50+', v: 'Projects across web, app, and commerce' },
+  { k: '3', v: 'Operating standards: speed, security, scale' }
+];
+
+const pillarTones = ['ink', 'blue', 'lime'] as const;
+
 export function AboutPageView({ page }: AboutPageViewProps) {
+  const { setMode } = useCursorMode();
+
   const hero = sectionWithFallback(page, 0, {
     id: 'about-hero',
     heading: 'A Decade of|Engineering Excellence',
     body: 'Founded on the principles of precision and scalability, we have spent over 8 years perfecting the digital infrastructure that powers ambitious brands.',
-    ctaLabel: 'Example Studio:',
+    ctaLabel: 'About Vanaila',
     ctaHref: '/about',
     mediaImage: '',
     mediaAlt: '',
@@ -24,9 +37,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const story = sectionWithFallback(page, 1, {
     id: 'about-story',
     heading: 'Our Technical DNA',
-    body: 'Example Studio was formed around a simple observation: many teams were forced to choose between visual polish and reliable engineering.\n\nFor over 8 years, we have cultivated a culture of architectural foresight, building not just for today\'s launch, but for next year\'s scale.',
-    ctaLabel: '2023',
-    ctaHref: 'Established remotely',
+    body: "Vanaila Digital was formed around a simple observation: many teams were forced to choose between visual polish and reliable engineering.\n\nFor over 8 years, we have cultivated a culture of architectural foresight, building not just for today's launch, but for next year's scale.",
+    ctaLabel: '2018',
+    ctaHref: 'Founded in Indonesia',
     mediaImage: '',
     mediaAlt: 'We prioritize speed, security, and stability above all else, ensuring your digital presence is as reliable as it is beautiful.',
     layout: 'split'
@@ -35,7 +48,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     id: 'about-vision',
     heading: 'Our Vision',
     body: 'To redefine the standard of digital craftsmanship by proving that high-performance engineering is the truest form of modern design.',
-    ctaLabel: 'visibility',
+    ctaLabel: 'Vision',
     ctaHref: '',
     mediaImage: '',
     mediaAlt: '',
@@ -45,7 +58,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     id: 'about-mission',
     heading: 'Our Mission',
     body: 'To empower forward-thinking businesses with digital infrastructure that scales effortlessly, with transparency in code and clarity in communication.',
-    ctaLabel: 'rocket_launch',
+    ctaLabel: 'Mission',
     ctaHref: '',
     mediaImage: '',
     mediaAlt: '',
@@ -53,49 +66,51 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const pillarsIntro = sectionWithFallback(page, 4, {
     id: 'about-pillars-intro',
-    heading: 'The Pillars of Example Studio',
-    body: 'Three core principles that have guided our engineering decisions for nearly a decade.',
-    ctaLabel: '',
+    heading: 'The Pillars of Vanaila Digital',
+    body: 'Three core principles that guide our engineering decisions for every client, every sprint, and every launch.',
+    ctaLabel: 'Principles',
     ctaHref: '',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
   });
-  const pillarOne = sectionWithFallback(page, 5, {
-    id: 'about-pillar-1',
-    heading: 'Architectural Foresight',
-    body: 'We architect for the future. Every line of code is written with scalability and maintenance in mind.',
-    ctaLabel: 'architecture',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const pillarTwo = sectionWithFallback(page, 6, {
-    id: 'about-pillar-2',
-    heading: 'Precision & Care',
-    body: 'From pixel-perfect responsiveness to optimized database queries, we treat every project like our own product.',
-    ctaLabel: 'psychology',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const pillarThree = sectionWithFallback(page, 7, {
-    id: 'about-pillar-3',
-    heading: 'Results-Driven Approach',
-    body: 'We measure success through load times, conversion rates, and the tangible growth of our partners.',
-    ctaLabel: 'trending_up',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
+  const pillars = [
+    sectionWithFallback(page, 5, {
+      id: 'about-pillar-1',
+      heading: 'Architectural Foresight',
+      body: 'We architect for the future. Every line of code is written with scalability and maintenance in mind.',
+      ctaLabel: '01',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    sectionWithFallback(page, 6, {
+      id: 'about-pillar-2',
+      heading: 'Precision & Care',
+      body: 'From pixel-perfect responsiveness to optimized database queries, we treat every project like our own product.',
+      ctaLabel: '02',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    }),
+    sectionWithFallback(page, 7, {
+      id: 'about-pillar-3',
+      heading: 'Results-Driven Approach',
+      body: 'We measure success through load times, conversion rates, and the tangible growth of our partners.',
+      ctaLabel: '03',
+      ctaHref: '',
+      mediaImage: '',
+      mediaAlt: '',
+      layout: 'stacked'
+    })
+  ];
   const quote = sectionWithFallback(page, 8, {
     id: 'about-quote',
     heading: 'We believe that true potential is unlocked when complex problems meet elegant engineering.',
     body: 'Whether you are a startup looking to disrupt or an enterprise aiming to optimize, our team is ready to translate your vision into a digital reality that stands the test of time.',
-    ctaLabel: 'format_quote',
+    ctaLabel: 'Founder Note',
     ctaHref: '',
     mediaImage: '',
     mediaAlt: '',
@@ -105,187 +120,183 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     id: 'about-cta',
     heading: 'Unlock Your|Digital Potential',
     body: 'Partner with an engineering team that understands the intersection of technology and business growth.',
-    ctaLabel: 'Claim Free Consultation Call',
+    ctaLabel: 'Claim free consultation',
     ctaHref: '/contact',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
   });
 
-  const { primary: heroPrimary, accent: heroAccent } = splitAccent(
-    hero.heading,
-    'Engineering Excellence'
-  );
-  const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(
-    cta.heading,
-    'Digital Potential'
-  );
+  const { primary: heroPrimary, accent: heroAccent } = splitAccent(hero.heading, 'Engineering Excellence');
+  const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(cta.heading, 'Digital Potential');
   const storyParts = paragraphs(story.body);
-  const quoteHeadline = quote.heading.replace(/\"/g, '').trim();
-
-  const pillars = [pillarOne, pillarTwo, pillarThree];
 
   return (
-    <main>
-      <Reveal as="section" className="relative min-h-[80vh] flex items-center pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[700px] bg-gradient-to-tr from-vanailaNavy via-electricBlue to-royalPurple opacity-20 filter blur-[100px] rounded-full animate-pulse duration-[10s]" />
-          <div className="absolute top-10 left-10 w-64 h-64 bg-electricBlue opacity-20 filter blur-[80px] rounded-full mix-blend-multiply" />
-          <div className="absolute bottom-1/4 right-10 w-80 h-80 bg-indigo-500 opacity-15 filter blur-[90px] rounded-full mix-blend-multiply" />
+    <main className="v-svc">
+      <Reveal as="section" className="v-svc-hero">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
         </div>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          <div className="bg-white/30 backdrop-blur-2xl p-12 md:p-20 rounded-[3rem] relative overflow-hidden ring-1 ring-white/40 shadow-[0_8px_60px_-12px_rgba(37,99,235,0.15)]">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/50 via-white/10 to-blue-50/20 pointer-events-none" />
-            <div className="hero-badge inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-white/60 border border-white/60 mb-8 backdrop-blur-sm shadow-sm mx-auto">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electricBlue opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-electricBlue" />
-              </span>
-              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-600">
-                {hero.ctaLabel || 'Example Studio:'}
-              </span>
-            </div>
-            <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[1.0] tracking-tighter mb-8 drop-shadow-sm">
-              {heroPrimary}
-              <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
-                {heroAccent}
-              </span>
-            </h1>
-            <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 font-light leading-relaxed">
-              {hero.body}
-            </p>
+
+        <nav className="v-svc-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+            Home
+          </Link>
+          <span>/</span>
+          <span>About</span>
+        </nav>
+
+        <div className="v-svc-hero-meta">
+          <span>[ ABOUT / VANAILA DIGITAL ]</span>
+          <span>ENGINEERING CULTURE / BUSINESS CLARITY</span>
+          <span className="v-svc-status">BOOKING NEW PROJECTS</span>
+        </div>
+
+        <h1 className="v-svc-h1">
+          {heroPrimary}
+          <br />
+          <em>{heroAccent}</em>
+          <br />
+          for brands that <del>guess.</del>
+          <br />
+          <em>grow.</em>
+        </h1>
+
+        <div className="v-svc-hero-foot">
+          <p>{hero.body}</p>
+          <div className="v-svc-actions">
+            <Link
+              href="#story"
+              className="v-svc-btn-primary"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Read our story</span>
+              <span>-&gt;</span>
+            </Link>
+            <Link
+              href="/service"
+              className="v-svc-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Explore services
+            </Link>
           </div>
         </div>
       </Reveal>
 
-      <Reveal as="section" className="py-24 relative" id="story">
-        <div className="absolute top-[10%] right-[-10%] w-[50%] h-[60%] shard-gradient-soft -rotate-12 z-0" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="glass-card rounded-[3rem] p-10 md:p-16 overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white/60 via-transparent to-white/40 pointer-events-none z-0" />
-            <div className="grid lg:grid-cols-12 gap-12 relative z-10 items-center">
-              <div className="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
-                <div className="relative">
-                  <span className="text-[10rem] md:text-[12rem] font-display font-black text-slate-100 leading-none select-none absolute -top-16 -left-10 z-0">
-                    8
-                  </span>
-                  <h2 className="text-6xl md:text-8xl font-display font-black text-deepSlate relative z-10">
-                    {story.ctaLabel || '2023'}
-                  </h2>
-                </div>
-                <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electricBlue/10 text-electricBlue font-bold uppercase tracking-widest text-xs">
-                  <SymbolIcon className="text-sm" name="flag" />
-                  {story.ctaHref || 'Established remotely'}
-                </div>
+      <Reveal as="section" className="v-svc-block v-svc-block-ink" id="story" style={{ '--accent': '#C8E64B' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">01</span>
+          <span className="v-svc-block-tag">{story.ctaLabel || '2018'}</span>
+        </div>
+        <div className="v-svc-block-head">
+          <h2>{story.heading}</h2>
+          <span className="v-svc-block-sub">{story.ctaHref || 'Founded in Indonesia'}</span>
+        </div>
+        <p className="v-svc-lede">{storyParts[0] || story.body}</p>
+        <div className="v-svc-deliverables">
+          {storyStats.map((item) => (
+            <article className="v-svc-deliverable" key={item.k}>
+              <div className="v-svc-deliverable-header">
+                <span>{item.k}</span>
+                <span className="v-svc-deliverable-bar" />
               </div>
-              <div className="lg:col-span-7 space-y-6">
-                <h3 className="text-3xl font-display font-bold text-deepSlate">{story.heading}</h3>
-                <p className="text-lg text-slate-600 font-light leading-relaxed">
-                  {storyParts[0] || story.body}
-                </p>
-                <p className="text-lg text-slate-600 font-light leading-relaxed">
-                  {storyParts[1] || story.mediaAlt}
-                </p>
-              </div>
-            </div>
-          </div>
+              <h3>{item.v}</h3>
+              <p>{storyParts[1] || story.mediaAlt}</p>
+            </article>
+          ))}
         </div>
       </Reveal>
 
-      <Reveal as="section" className="py-20 relative bg-white/30 backdrop-blur-sm" id="vision">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/50 opacity-60 z-0" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
-            <div className="glass-panel rounded-[2.5rem] p-12 hover:-translate-y-2 transition-transform duration-500 border-t-4 border-t-electricBlue">
-              <div className="w-16 h-16 rounded-2xl bg-electricBlue/10 flex items-center justify-center text-electricBlue mb-8">
-                <SymbolIcon className="text-3xl" name={vision.ctaLabel || 'visibility'} />
+      <Reveal as="section" className="v-svc-block v-svc-block-cream" id="direction" style={{ '--accent': '#0033FF' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">02</span>
+          <span className="v-svc-block-tag">Direction</span>
+        </div>
+        <div className="v-svc-block-head">
+          <h2>What we are building toward.</h2>
+          <span className="v-svc-block-sub">Vision / Mission</span>
+        </div>
+        <div className="v-svc-deliverables">
+          {[vision, mission].map((item, index) => (
+            <article className="v-svc-deliverable" key={item.id}>
+              <div className="v-svc-deliverable-header">
+                <span>0{index + 1}</span>
+                <span className="v-svc-deliverable-bar" />
               </div>
-              <h3 className="text-4xl font-display font-bold text-deepSlate mb-6">{vision.heading}</h3>
-              <p className="text-slate-600 font-light text-lg leading-relaxed">{vision.body}</p>
-            </div>
-            <div className="glass-panel rounded-[2.5rem] p-12 hover:-translate-y-2 transition-transform duration-500 border-t-4 border-t-royalPurple">
-              <div className="w-16 h-16 rounded-2xl bg-royalPurple/10 flex items-center justify-center text-royalPurple mb-8">
-                <SymbolIcon className="text-3xl" name={mission.ctaLabel || 'rocket_launch'} />
-              </div>
-              <h3 className="text-4xl font-display font-bold text-deepSlate mb-6">{mission.heading}</h3>
-              <p className="text-slate-600 font-light text-lg leading-relaxed">{mission.body}</p>
-            </div>
-          </div>
+              <h3>{item.heading}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
         </div>
       </Reveal>
 
-      <Reveal as="section" className="py-32 relative" id="values">
-        <div className="absolute bottom-0 left-0 w-full h-full shard-gradient-soft opacity-30 pointer-events-none z-0" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-display font-black text-deepSlate mb-6">
-              {pillarsIntro.heading}
-            </h2>
-            <p className="text-xl text-slate-500 font-light max-w-2xl mx-auto">{pillarsIntro.body}</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {pillars.map((item, index) => (
-              <div key={item.id} className="glass-card rounded-3xl p-10 flex flex-col items-center text-center group hover:bg-white transition-colors duration-300">
-                <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center mb-6 group-hover:text-white transition-all shadow-sm text-electricBlue group-hover:bg-electricBlue">
-                  <SymbolIcon
-                    className="text-2xl"
-                    name={item.ctaLabel || (index === 0 ? 'architecture' : index === 1 ? 'psychology' : 'trending_up')}
-                  />
-                </div>
-                <h4 className="text-xl font-bold font-display text-deepSlate mb-4">{item.heading}</h4>
-                <p className="text-slate-500 text-sm leading-relaxed">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal as="section" className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-50/80 pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
-          <SymbolIcon className="text-6xl text-slate-200 mb-8" name={quote.ctaLabel || 'format_quote'} />
-          <h2 className="text-3xl md:text-5xl font-display font-light text-slate-700 leading-tight mb-8">
-            &ldquo;{quoteHeadline}&rdquo;
+      <Reveal as="section" className="v-svc-why" id="values">
+        <div className="v-svc-why-head">
+          <span className="v-svc-why-eyebrow">[ 03 ] {pillarsIntro.ctaLabel || 'Principles'}</span>
+          <h2>
+            {pillarsIntro.heading}
+            <br />
+            <em>in practice.</em>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-electricBlue to-vanailaNavy mx-auto rounded-full mb-8" />
-          <p className="text-lg text-slate-500 leading-relaxed">{quote.body}</p>
+        </div>
+        <div className="v-svc-why-grid">
+          {pillars.map((item, index) => (
+            <article className={`v-svc-why-cell v-svc-why-${pillarTones[index % pillarTones.length]}`} key={item.id}>
+              <span className="v-svc-why-n">{item.ctaLabel || `0${index + 1}`}</span>
+              <h3>{item.heading}</h3>
+              <p>{item.body}</p>
+              <div className="v-svc-why-glyph" aria-hidden>
+                {index + 1}
+              </div>
+            </article>
+          ))}
         </div>
       </Reveal>
 
-      <Reveal as="section" className="relative py-32 overflow-hidden" id="contact">
-        <div className="absolute inset-0 z-0 bg-slate-50">
-          <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-30" />
-          <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-30" />
+      <Reveal as="section" className="v-svc-block v-svc-block-blue" style={{ '--accent': '#C8E64B' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">04</span>
+          <span className="v-svc-block-tag">{quote.ctaLabel || 'Founder Note'}</span>
         </div>
-        <div className="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 w-full">
-          <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white/50 w-full">
-            <div className="relative z-10">
-              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
-                {ctaPrimary}
-                <br />
-                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
-              </h2>
-              <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">
-                {cta.body}
-              </p>
-              <Link href={cta.ctaHref || '/contact'} className="group relative px-12 py-6 bg-vanailaNavy text-white font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full overflow-hidden hover:shadow-2xl hover:shadow-blue-900/30 transition-all duration-300 inline-block">
-                <span className="relative z-10 group-hover:text-white transition-colors">
-                  {cta.ctaLabel || 'Claim Free Consultation Call'}
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-electricBlue to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Link>
-            </div>
+        <div className="v-svc-block-head">
+          <h2>{quote.heading.replace(/"/g, '').trim()}</h2>
+          <span className="v-svc-block-sub">Build with care.</span>
+        </div>
+        <p className="v-svc-lede">{quote.body}</p>
+      </Reveal>
+
+      <Reveal as="section" className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ NEXT STEP ]</span>
+        <h2>
+          {ctaPrimary}
+          <br />
+          <span className="v-svc-cta-blue">{ctaAccent}</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>{cta.body}</p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href={cta.ctaHref || '/contact'}
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>{cta.ctaLabel || 'Claim free consultation'}</span>
+              <span>-&gt;</span>
+            </Link>
           </div>
         </div>
       </Reveal>
     </main>
   );
 }
-
-
-
-
-
-
-

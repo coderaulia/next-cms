@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 
 import { Reveal } from '@/components/animations/Reveal';
-import { SymbolIcon } from '@/components/ui/symbol-icon';
+import { useCursorMode } from '@/components/CustomCursor';
 import { isServiceDetailPageId } from '@/config/site-profile';
 import type { LandingPage, PageSection, PortfolioProject } from '@/features/cms/types';
 
@@ -37,12 +40,7 @@ function mergeSection(base: PageSection, incoming: Partial<PageSection> | null |
   };
 }
 
-function resolveSection(
-  page: LandingPage,
-  id: string,
-  fallback: PageSection,
-  fallbackIndex?: number
-): PageSection {
+function resolveSection(page: LandingPage, id: string, fallback: PageSection, fallbackIndex?: number): PageSection {
   const directMatch = page.sections.find((section) => section.id === id);
   if (directMatch) {
     return mergeSection(fallback, directMatch);
@@ -56,12 +54,7 @@ function resolveSection(
   return fallback;
 }
 
-function resolveCollection(
-  page: LandingPage,
-  prefix: string,
-  fallbackRangeStart: number,
-  fallbackRangeEnd: number
-) {
+function resolveCollection(page: LandingPage, prefix: string, fallbackRangeStart: number, fallbackRangeEnd: number) {
   const prefixed = page.sections.filter((section) => section.id.startsWith(prefix));
   if (prefixed.length > 0) {
     return prefixed;
@@ -75,7 +68,12 @@ type ServiceDetailPageViewProps = {
   portfolioProjects?: PortfolioProject[];
 };
 
+const whyTones = ['ink', 'blue', 'lime', 'ink'] as const;
+const planAccents = ['#0033FF', '#FF5B22', '#C8E64B'] as const;
+
 export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceDetailPageViewProps) {
+  const { setMode } = useCursorMode();
+
   if (!isServiceDetailPageId(page.id)) {
     return null;
   }
@@ -135,7 +133,7 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
           id: section.id || `why-${index + 1}`,
           heading: section.heading || `Reason ${index + 1}`,
           body: section.body,
-          ctaLabel: section.ctaLabel || 'verified',
+          ctaLabel: section.ctaLabel || `0${index + 1}`,
           layout: 'stacked',
           theme: section.theme
         }),
@@ -164,7 +162,7 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
           id: section.id || `lifecycle-${index + 1}`,
           heading: section.heading || `Step ${index + 1}`,
           body: section.body,
-          ctaLabel: section.ctaLabel || 'code',
+          ctaLabel: section.ctaLabel || `0${index + 1}`,
           layout: 'stacked',
           theme: section.theme
         }),
@@ -208,192 +206,238 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
   const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(cta.heading, page.title);
 
   return (
-    <main>
-      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          {hero.ctaLabel ? (
-            <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-blue-50/50 border border-blue-100/50 mb-8 backdrop-blur-sm mx-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-electricBlue animate-pulse" />
-              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-600">{hero.ctaLabel}</span>
-            </div>
-          ) : null}
-          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
-            {heroPrimary}
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
-              {heroAccent}
-            </span>
-          </h1>
-          <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">{hero.body}</p>
+    <main className="v-svc">
+      <Reveal as="section" className="v-svc-hero">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+
+        <nav className="v-svc-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+            Home
+          </Link>
+          <span>/</span>
+          <Link href="/service" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+            Services
+          </Link>
+          <span>/</span>
+          <span>{page.title}</span>
+        </nav>
+
+        <div className="v-svc-hero-meta">
+          <span>[ SERVICE DETAIL / {page.title.toUpperCase()} ]</span>
+          <span>{hero.ctaLabel || 'SERVICE OVERVIEW'}</span>
+          <span className="v-svc-status">SCOPING AVAILABLE</span>
+        </div>
+
+        <h1 className="v-svc-h1">
+          {heroPrimary}
+          <br />
+          <em>{heroAccent}</em>
+          <br />
+          without <del>guesswork.</del>
+          <br />
+          <em>technical clarity.</em>
+        </h1>
+
+        <div className="v-svc-hero-foot">
+          <p>{hero.body}</p>
+          <div className="v-svc-actions">
+            <Link
+              href="#packages"
+              className="v-svc-btn-primary"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>See packages</span>
+              <span>-&gt;</span>
+            </Link>
+            <Link
+              href="/service"
+              className="v-svc-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              All services
+            </Link>
+          </div>
         </div>
       </Reveal>
 
       {plans.length > 0 ? (
-        <Reveal as="section" className="py-20 relative">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-            <div className="grid md:grid-cols-3 gap-8 items-stretch">
-              {plans.map((plan) => {
-                const features = plan.body
-                  .split(/\n+/)
-                  .map((row) => row.trim())
-                  .filter((row) => row.length > 0);
-                const featured = plan.layout === 'split';
-                const buttonLabel =
-                  plan.theme.accent && !plan.theme.accent.startsWith('#') ? plan.theme.accent : 'Select Package';
+        <Reveal as="section" className="v-svc-block v-svc-block-cream" id="packages" style={{ '--accent': '#0033FF' } as CSSProperties}>
+          <div className="v-svc-block-marker">
+            <span className="v-svc-block-n">01</span>
+            <span className="v-svc-block-tag">Packages</span>
+          </div>
+          <div className="v-svc-block-head">
+            <h2>Choose the right entry point.</h2>
+            <span className="v-svc-block-sub">Scope / Budget</span>
+          </div>
+          <div className="v-detail-plan-grid">
+            {plans.map((plan, index) => {
+              const features = plan.body
+                .split(/\n+/)
+                .map((row) => row.trim())
+                .filter((row) => row.length > 0);
+              const featured = plan.layout === 'split';
+              const buttonLabel = plan.theme.accent && !plan.theme.accent.startsWith('#') ? plan.theme.accent : 'Select package';
 
-                return (
-                  <div
-                    className={`glass-panel p-10 rounded-[3rem] bg-white border border-slate-100 flex flex-col h-full relative ${featured ? 'ring-2 ring-electricBlue shadow-2xl scale-105 z-20' : 'z-10'}`}
-                    key={plan.id}
-                  >
-                    {featured ? (
-                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-electricBlue text-white text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg">
-                        Top Choice!
-                      </div>
-                    ) : null}
-                    <div className="mb-8">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-2 block">
-                        {plan.ctaLabel}
-                      </span>
-                      <h3 className="text-3xl font-display font-black text-deepSlate">{plan.heading}</h3>
-                    </div>
-                    <div className="mb-10">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
-                        {plan.mediaImage || 'Starting From'}
-                      </span>
-                      <div className="text-4xl font-display font-black text-deepSlate">{plan.mediaAlt || '-'}</div>
-                    </div>
-
-                    <ul className="space-y-4 mb-12 flex-grow">
-                      {features.map((feature) => (
-                        <li className="flex items-center gap-3 text-sm text-slate-500 font-light" key={`${plan.id}-${feature}`}>
-                          <SymbolIcon className="text-electricBlue text-lg" name="check_circle" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      href={plan.ctaHref || '/contact'}
-                      className={`w-full py-5 rounded-full font-display font-bold text-xs uppercase tracking-[0.2em] text-center transition-all ${featured ? 'bg-deepSlate text-white hover:bg-black shadow-xl' : 'bg-slate-50 text-deepSlate border border-slate-100 hover:bg-white hover:border-electricBlue'}`}
-                    >
-                      {buttonLabel}
-                    </Link>
+              return (
+                <article
+                  className={`v-detail-plan-card${featured ? ' is-featured' : ''}`}
+                  key={plan.id}
+                  style={{ '--accent': planAccents[index % planAccents.length] } as CSSProperties}
+                >
+                  <span className="v-detail-plan-kicker">{plan.ctaLabel || `Package ${index + 1}`}</span>
+                  <h3>{plan.heading}</h3>
+                  <div className="v-detail-price">
+                    <span>{plan.mediaImage || 'Starting From'}</span>
+                    <strong>{plan.mediaAlt || '-'}</strong>
                   </div>
-                );
-              })}
-            </div>
+                  <ul>
+                    {features.map((feature) => (
+                      <li key={`${plan.id}-${feature}`}>{feature}</li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={plan.ctaHref || '/contact'}
+                    onMouseEnter={() => setMode('link')}
+                    onMouseLeave={() => setMode('default')}
+                  >
+                    {buttonLabel} <span>-&gt;</span>
+                  </Link>
+                </article>
+              );
+            })}
           </div>
         </Reveal>
       ) : null}
 
       {whyItems.length > 0 ? (
-        <Reveal as="section" className="py-24 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-            <div className="text-center mb-16">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 block">
-                {whyIntro.ctaLabel || 'Differentiation'}
-              </span>
-              <h2 className="text-4xl font-display font-black text-deepSlate">{whyIntro.heading}</h2>
-              <div className="w-20 h-1 bg-electricBlue mx-auto mt-6 rounded-full" />
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {whyItems.map((item) => (
-                <div className="glass-panel p-8 rounded-[2rem] bg-white border border-slate-50 hover:shadow-xl transition-all group" key={item.id}>
-                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-electricBlue mb-6 group-hover:bg-electricBlue group-hover:text-white transition-all">
-                    <SymbolIcon name={item.ctaLabel || 'verified'} />
-                  </div>
-                  <h4 className="text-lg font-bold text-deepSlate mb-3">{item.heading}</h4>
-                  <p className="text-xs text-slate-500 font-light leading-relaxed">{item.body}</p>
+        <Reveal as="section" className="v-svc-why">
+          <div className="v-svc-why-head">
+            <span className="v-svc-why-eyebrow">[ 02 ] {whyIntro.ctaLabel || 'Differentiation'}</span>
+            <h2>
+              {whyIntro.heading}
+              <br />
+              <em>with receipts.</em>
+            </h2>
+          </div>
+          <div className="v-svc-why-grid">
+            {whyItems.map((item, index) => (
+              <article className={`v-svc-why-cell v-svc-why-${whyTones[index % whyTones.length]}`} key={item.id}>
+                <span className="v-svc-why-n">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{item.heading}</h3>
+                <p>{item.body}</p>
+                <div className="v-svc-why-glyph" aria-hidden>
+                  {index + 1}
                 </div>
-              ))}
-            </div>
+              </article>
+            ))}
           </div>
         </Reveal>
       ) : null}
 
       {lifecycleItems.length > 0 ? (
-        <Reveal as="section" className="py-24 relative overflow-hidden bg-slate-50/30">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-            <div className="text-center mb-20">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 block">
-                {lifecycleIntro.ctaLabel || 'Methodology'}
-              </span>
-              <h2 className="text-4xl font-display font-black text-deepSlate italic">{lifecycleIntro.heading}</h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-start relative">
-              {lifecycleItems.map((item, index) => (
-                <div className="text-center group" key={item.id}>
-                  <div className="relative inline-block mb-6">
-                    <div className="w-16 h-16 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-electricBlue group-hover:border-electricBlue transition-all shadow-sm">
-                      <SymbolIcon className="text-2xl" name={item.ctaLabel || 'code'} />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-deepSlate text-white text-[10px] font-black rounded-full flex items-center justify-center">
-                      {index + 1}
-                    </div>
-                  </div>
-                  <h4 className="text-sm font-bold text-deepSlate mb-2 tracking-tight">{item.heading}</h4>
-                  <p className="text-[10px] text-slate-400 font-medium leading-relaxed">{item.body}</p>
-                </div>
-              ))}
-            </div>
+        <Reveal as="section" className="v-svc-block v-svc-block-blue" style={{ '--accent': '#C8E64B' } as CSSProperties}>
+          <div className="v-svc-block-marker">
+            <span className="v-svc-block-n">03</span>
+            <span className="v-svc-block-tag">{lifecycleIntro.ctaLabel || 'Methodology'}</span>
+          </div>
+          <div className="v-svc-block-head">
+            <h2>{lifecycleIntro.heading}</h2>
+            <span className="v-svc-block-sub">From brief to launch.</span>
+          </div>
+          <p className="v-svc-lede">{lifecycleIntro.body}</p>
+          <div className="v-detail-process">
+            {lifecycleItems.map((item, index) => (
+              <article className="v-detail-process-step" key={item.id}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{item.heading}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
           </div>
         </Reveal>
       ) : null}
 
       {relatedProjects.length > 0 ? (
-        <Reveal as="section" className="py-24 bg-white border-y border-slate-100">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="text-center mb-14">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 block">Delivered work</span>
-              <h2 className="text-4xl font-display font-black text-deepSlate">Related projects for this service</h2>
-              <p className="max-w-2xl mx-auto text-slate-500 font-light leading-relaxed mt-4">
-                Recent case studies connected to the service you are viewing.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {relatedProjects.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/portfolio/${project.seo.slug}`}
-                  className="glass-panel p-4 rounded-[2rem] bg-white hover:shadow-xl transition-all"
-                >
-                  <div className="aspect-video rounded-[1.5rem] bg-slate-100 overflow-hidden mb-4">
-                    {project.coverImage ? (
-                      <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" />
-                    ) : null}
+        <Reveal as="section" className="v-svc-block v-svc-block-ink" style={{ '--accent': '#FF5B22' } as CSSProperties}>
+          <div className="v-svc-block-marker">
+            <span className="v-svc-block-n">04</span>
+            <span className="v-svc-block-tag">Delivered Work</span>
+          </div>
+          <div className="v-svc-block-head">
+            <h2>Related projects for this service.</h2>
+            <span className="v-svc-block-sub">Proof / Portfolio</span>
+          </div>
+          <div className="v-blog-grid v-detail-project-grid">
+            {relatedProjects.map((project, index) => (
+              <Link
+                key={project.id}
+                href={`/portfolio/${project.seo.slug}`}
+                className="v-blog-card"
+                style={{ '--accent': planAccents[index % planAccents.length] } as CSSProperties}
+                onMouseEnter={() => setMode('view')}
+                onMouseLeave={() => setMode('default')}
+              >
+                <div className="v-blog-card-image">
+                  {project.coverImage ? (
+                    <img src={project.coverImage} alt={project.title} decoding="async" loading="lazy" />
+                  ) : (
+                    <span>{project.serviceType || 'Project'}</span>
+                  )}
+                </div>
+                <div className="v-blog-card-body">
+                  <span className="v-blog-card-kicker">{project.clientName || project.serviceType || 'Project'}</span>
+                  <h3>{project.title}</h3>
+                  <p>{project.summary}</p>
+                  <div className="v-blog-card-foot">
+                    <span>View project</span>
+                    <span>-&gt;</span>
                   </div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-electricBlue mb-2">
-                    {project.clientName || project.serviceType || 'Project'}
-                  </p>
-                  <h3 className="text-lg font-display font-black text-deepSlate leading-tight mb-2">{project.title}</h3>
-                  <p className="text-slate-500 text-sm font-light leading-relaxed">{project.summary}</p>
-                </Link>
-              ))}
-            </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </Reveal>
       ) : null}
 
-      <Reveal as="section" className="relative py-40 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white w-full shadow-2xl shadow-blue-900/5 border border-white">
-            <div className="relative z-10 w-full max-w-4xl mx-auto">
-              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
-                {ctaPrimary}
-                <br />
-                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
-              </h2>
-              <p className="text-slate-500 text-lg font-light mb-12 max-w-xl mx-auto">{cta.body}</p>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <Link href={cta.ctaHref || '/contact'} className="px-12 py-5 bg-deepSlate text-white font-display font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-black transition-all shadow-lg shadow-black/10">
-                  {cta.ctaLabel || 'Book a Strategy Call'}
-                </Link>
-                <Link href={cta.mediaImage || '/contact'} className="px-12 py-5 bg-white border-2 border-slate-100 text-deepSlate font-bold text-xs uppercase tracking-[0.2em] hover:border-electricBlue hover:text-electricBlue transition-all rounded-full">
-                  {cta.mediaAlt || 'Get a Free Technical Audit'}
-                </Link>
-              </div>
-            </div>
+      <Reveal as="section" className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ NEXT STEP ]</span>
+        <h2>
+          {ctaPrimary}
+          <br />
+          <span className="v-svc-cta-blue">{ctaAccent}</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>{cta.body}</p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href={cta.ctaHref || '/contact'}
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>{cta.ctaLabel || 'Book a Strategy Call'}</span>
+              <span>-&gt;</span>
+            </Link>
+            <Link
+              href={cta.mediaImage || '/contact'}
+              className="v-svc-cta-mail"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              {cta.mediaAlt || 'Get a Free Technical Audit'}
+            </Link>
           </div>
         </div>
       </Reveal>

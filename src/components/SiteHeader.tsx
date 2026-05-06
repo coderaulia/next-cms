@@ -93,7 +93,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
             borderLeft: '1px solid rgba(10,14,26,0.12)',
           }}
         >
-          {siteProfile.brand.wordmark.replace('.', '').toUpperCase()} · SINCE 2017
+          {siteProfile.brand.wordmark.replace('.', '').toUpperCase()} · SINCE 2018
         </span>
       </div>
 

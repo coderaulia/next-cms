@@ -8,7 +8,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   compress: true,
   experimental: {
-    optimizePackageImports: ['framer-motion', 'lucide-react']
+    optimizePackageImports: ['lucide-react']
   }
 };
 

@@ -30,10 +30,21 @@ describe('contact submission validation', () => {
     expect(payload).toBeNull();
   });
 
+  it('rejects oversized contact submission fields', () => {
+    const payload = validateContactSubmission({
+      name: 'Alex',
+      company: 'Vanaila',
+      email: 'hello@example.com',
+      serviceCategory: 'Website Development',
+      projectOverview: 'x'.repeat(5001)
+    });
+
+    expect(payload).toBeNull();
+  });
+
   it('validates contact submission status values', () => {
     expect(validateContactSubmissionStatus('new')).toBe('new');
     expect(validateContactSubmissionStatus('closed')).toBe('closed');
     expect(validateContactSubmissionStatus('unknown')).toBeNull();
   });
 });
-

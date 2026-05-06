@@ -8,6 +8,10 @@ const parsePositiveInt = (value: string | undefined) => {
   if (!Number.isFinite(parsed) || parsed < 1) return null;
   return parsed;
 };
+const parseContactWebhookMethod = (value: string | undefined): 'POST' | 'PUT' | 'PATCH' => {
+  const normalized = clean(value).toUpperCase();
+  return normalized === 'PUT' || normalized === 'PATCH' ? normalized : 'POST';
+};
 
 export const env = {
   get siteUrl() {
@@ -56,7 +60,7 @@ export const env = {
     return clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_URL);
   },
   get contactNotificationWebhookMethod() {
-    return (clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_METHOD) || 'POST').toUpperCase() as 'POST' | 'PUT' | 'PATCH';
+    return parseContactWebhookMethod(process.env.CONTACT_NOTIFICATION_WEBHOOK_METHOD);
   },
   get contactNotificationWebhookToken() {
     return clean(process.env.CONTACT_NOTIFICATION_WEBHOOK_TOKEN);

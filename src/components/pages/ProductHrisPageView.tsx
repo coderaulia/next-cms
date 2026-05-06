@@ -288,6 +288,7 @@ export function ProductHrisPageView({ page }: ProductHrisPageViewProps) {
                       src={hero.mediaImage}
                       alt={hero.mediaAlt || page.title}
                       className="h-full w-full rounded-[2rem] object-cover"
+                      decoding="async"
                     />
                   </div>
                 </div>
@@ -344,6 +345,8 @@ export function ProductHrisPageView({ page }: ProductHrisPageViewProps) {
                     src={productIntro.mediaImage}
                     alt={productIntro.mediaAlt || productIntro.heading}
                     className="h-full w-full rounded-[1.5rem] object-cover"
+                    decoding="async"
+                    loading="lazy"
                   />
                 </div>
               ) : null}
@@ -372,6 +375,8 @@ export function ProductHrisPageView({ page }: ProductHrisPageViewProps) {
                       src={feature.mediaImage}
                       alt={feature.mediaAlt || feature.heading}
                       className="aspect-[4/3] w-full rounded-[1.2rem] object-cover"
+                      decoding="async"
+                      loading="lazy"
                     />
                   </div>
                 ) : null}

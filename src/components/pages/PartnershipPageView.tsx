@@ -1,18 +1,24 @@
-import Link from 'next/link';
+'use client';
 
-import { SymbolIcon } from '@/components/ui/symbol-icon';
+import Link from 'next/link';
+import type { CSSProperties } from 'react';
+
+import { Reveal } from '@/components/animations/Reveal';
+import { useCursorMode } from '@/components/CustomCursor';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback, splitAccent } from './sectionContent';
-import { Reveal } from '@/components/animations/Reveal';
 
 type PartnershipPageViewProps = {
   page: LandingPage;
 };
 
-const PROGRAM_COLORS = ['text-electricBlue bg-electricBlue/10', 'text-royalPurple bg-royalPurple/10', 'text-vibrantCyan bg-vibrantCyan/10'] as const;
+const programAccents = ['#0033FF', '#FF5B22', '#C8E64B'] as const;
+const standardTones = ['ink', 'blue', 'lime', 'ink'] as const;
 
 export function PartnershipPageView({ page }: PartnershipPageViewProps) {
+  const { setMode } = useCursorMode();
+
   const hero = sectionWithFallback(page, 0, {
     id: 'hero',
     heading: 'Build the Future|Scale with Vanaila.',
@@ -40,30 +46,30 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       id: 'program-1',
       heading: 'Referral Alpha',
       body: 'Earn commissions by connecting clients with our engineering services.',
-      ctaLabel: 'handshake',
-      ctaHref: '/contact',
+      ctaLabel: 'Referral',
+      ctaHref: '/contact?interest=partnership',
       mediaImage: '',
-      mediaAlt: '',
+      mediaAlt: 'Client fit / qualified lead / shared trust',
       layout: 'stacked'
     }),
     sectionWithFallback(page, 3, {
       id: 'program-2',
       heading: 'Technical Alliance',
       body: 'Embed our lead architects into your project workflow with white-label support.',
-      ctaLabel: 'hub',
-      ctaHref: '/contact',
+      ctaLabel: 'Alliance',
+      ctaHref: '/contact?interest=partnership',
       mediaImage: '',
-      mediaAlt: '',
+      mediaAlt: 'Delivery bench / architecture support / escalation',
       layout: 'split'
     }),
     sectionWithFallback(page, 4, {
       id: 'program-3',
       heading: 'Service Expansion',
       body: 'Offer cloud infra and mobile app delivery under your own brand.',
-      ctaLabel: 'rocket_launch',
-      ctaHref: '/contact',
+      ctaLabel: 'Expansion',
+      ctaHref: '/contact?interest=partnership',
       mediaImage: '',
-      mediaAlt: '',
+      mediaAlt: 'New capability / deeper retention / shared growth',
       layout: 'stacked'
     })
   ];
@@ -138,7 +144,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       id: 'perk-1',
       heading: 'Architecture Audits',
       body: 'Free consultation for complex cloud infrastructure designs.',
-      ctaLabel: 'architecture',
+      ctaLabel: '01',
       ctaHref: '',
       mediaImage: '',
       mediaAlt: '',
@@ -148,7 +154,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       id: 'perk-2',
       heading: 'Priority Support',
       body: 'Direct line to senior architects for emergency escalations.',
-      ctaLabel: 'monitoring',
+      ctaLabel: '02',
       ctaHref: '',
       mediaImage: '',
       mediaAlt: '',
@@ -158,7 +164,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       id: 'perk-3',
       heading: 'Co-Marketing',
       body: 'Join webinars and white papers to boost visibility.',
-      ctaLabel: 'local_atm',
+      ctaLabel: '03',
       ctaHref: '',
       mediaImage: '',
       mediaAlt: '',
@@ -171,7 +177,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
     heading: 'Ready to Build Partner Value?|Join our ecosystem network.',
     body: 'Tell us your capabilities and we will map the best collaboration model for your team.',
     ctaLabel: 'Start Partnership Discussion',
-    ctaHref: '/contact',
+    ctaHref: '/contact?interest=partnership',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
@@ -179,127 +185,178 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
 
   const { primary: heroPrimary, accent: heroAccent } = splitAccent(hero.heading, 'Scale with Vanaila.');
   const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(cta.heading, 'Join our ecosystem network.');
+  const partnershipContactHref = '/contact?interest=partnership';
+  const finalCtaHref = !cta.ctaHref || cta.ctaHref === '/contact' ? partnershipContactHref : cta.ctaHref;
 
   return (
-    <main>
-      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden bg-vanailaNavy text-white">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#3B82F6,transparent)]" />
+    <main className="v-svc">
+      <Reveal as="section" className="v-svc-hero">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
         </div>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-electricBlue text-[10px] font-bold uppercase tracking-widest mb-8 hero-badge">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electricBlue opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-electricBlue" />
-            </span>
-            {hero.ctaLabel}
+
+        <nav className="v-svc-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+            Home
+          </Link>
+          <span>/</span>
+          <span>Partnership</span>
+        </nav>
+
+        <div className="v-svc-hero-meta">
+          <span>[ PARTNERSHIP / ECOSYSTEM ]</span>
+          <span>REFERRAL / ALLIANCE / EXPANSION</span>
+          <span className="v-svc-status">PARTNER INTAKE OPEN</span>
+        </div>
+
+        <h1 className="v-svc-h1">
+          {heroPrimary}
+          <br />
+          <em>{heroAccent}</em>
+          <br />
+          without <del>handoff chaos.</del>
+          <br />
+          <em>shared delivery.</em>
+        </h1>
+
+        <div className="v-svc-hero-foot">
+          <p>{hero.body}</p>
+          <div className="v-svc-actions">
+            <Link
+              href="#tracks"
+              className="v-svc-btn-primary"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Compare tracks</span>
+              <span>-&gt;</span>
+            </Link>
+            <Link
+              href="/contact?interest=partnership"
+              className="v-svc-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Start a discussion
+            </Link>
           </div>
-          <h1 className="hero-heading-safe font-display font-black leading-[1.1] mb-8 tracking-tighter">
-            {heroPrimary}
+        </div>
+      </Reveal>
+
+      <Reveal as="section" className="v-svc-block v-svc-block-blue" id="tracks" style={{ '--accent': '#C8E64B' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">01</span>
+          <span className="v-svc-block-tag">{programIntro.ctaLabel || 'Program'}</span>
+        </div>
+        <div className="v-svc-block-head">
+          <h2>{programIntro.heading}</h2>
+          <span className="v-svc-block-sub">Choose your fit.</span>
+        </div>
+        <p className="v-svc-lede">{programIntro.body}</p>
+        <div className="v-svc-deliverables">
+          {programCards.map((card, index) => {
+            const tags = (card.mediaAlt || '')
+              .split('/')
+              .map((tag) => tag.trim())
+              .filter(Boolean);
+
+            return (
+              <article className="v-home-service-card" key={card.id} style={{ '--accent': programAccents[index % programAccents.length] } as CSSProperties}>
+                <span className="v-home-service-top">
+                  <small>{String(index + 1).padStart(2, '0')}</small>
+                  <b>-&gt;</b>
+                </span>
+                <h3>{card.heading}</h3>
+                <p>{card.body}</p>
+                <span className="v-home-service-label">{card.ctaLabel || 'Partner track'}</span>
+                <span className="v-home-service-bar" />
+                <div className="v-svc-tags" aria-label={`${card.heading} focus areas`}>
+                  {tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </Reveal>
+
+      <Reveal as="section" className="v-svc-why">
+        <div className="v-svc-why-head">
+          <span className="v-svc-why-eyebrow">[ 02 ] {standardsIntro.ctaLabel || 'Standards'}</span>
+          <h2>
+            {standardsIntro.heading}
             <br />
-            <span className="bg-gradient-to-r from-electricBlue via-vibrantCyan to-electricBlue bg-clip-text text-transparent">
-              {heroAccent}
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
-            {hero.body}
-          </p>
+            <em>before we shake hands.</em>
+          </h2>
         </div>
-      </Reveal>
-
-      <Reveal as="section" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="text-4xl md:text-5xl font-display font-black text-deepSlate mb-4">{programIntro.heading}</h2>
-            <p className="text-slate-500 font-light leading-relaxed">{programIntro.body}</p>
-          </div>
-          <div className="grid lg:grid-cols-3 gap-12">
-            {programCards.map((card, index) => (
-              <Link
-                key={card.id}
-                href={card.ctaHref || '/contact'}
-                className={`p-10 rounded-[2.5rem] border border-slate-100 hover:shadow-xl transition-all group block ${card.layout === 'split' ? 'lg:scale-105 bg-white z-10 shadow-2xl shadow-blue-900/5' : 'bg-slate-50'}`}
-              >
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform ${PROGRAM_COLORS[index % PROGRAM_COLORS.length]}`}>
-                  <SymbolIcon className="text-3xl" name={card.ctaLabel || 'hub'} />
-                </div>
-                <h3 className="text-2xl font-display font-black text-deepSlate mb-4">{card.heading}</h3>
-                <p className="text-slate-500 font-light leading-relaxed">{card.body}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal as="section" className="py-24 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="glass-panel p-12 md:p-20 rounded-[4rem] border border-white/60 shadow-2xl shadow-blue-500/5 bg-white/40 backdrop-blur-3xl">
-            <div className="max-w-3xl mb-16">
-              <h2 className="text-4xl md:text-5xl font-display font-black text-deepSlate leading-tight mb-6">
-                {standardsIntro.heading}
-              </h2>
-              <p className="text-lg text-slate-500 font-light leading-relaxed">{standardsIntro.body}</p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-              {standards.map((item) => (
-                <div className="space-y-4" key={item.id}>
-                  <div className="text-4xl font-display font-black text-slate-100">{item.ctaLabel}</div>
-                  <h4 className="font-bold text-deepSlate uppercase tracking-widest text-xs">{item.heading}</h4>
-                  <p className="text-sm text-slate-500 font-light leading-relaxed">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal as="section" className="py-32 bg-vanailaNavy text-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="text-center mb-20 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight italic">{perksIntro.heading}</h2>
-            <p className="text-slate-400 font-light text-lg">{perksIntro.body}</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {perks.map((item) => (
-              <div className="p-8 border border-white/10 rounded-3xl hover:bg-white/5 transition-colors" key={item.id}>
-                <SymbolIcon className="text-electricBlue mb-6" name={item.ctaLabel || 'architecture'} />
-                <h4 className="text-xl font-bold mb-4">{item.heading}</h4>
-                <p className="text-slate-400 text-sm font-light">{item.body}</p>
+        <div className="v-svc-why-grid">
+          {standards.map((item, index) => (
+            <article className={`v-svc-why-cell v-svc-why-${standardTones[index % standardTones.length]}`} key={item.id}>
+              <span className="v-svc-why-n">{item.ctaLabel || `0${index + 1}`}</span>
+              <h3>{item.heading}</h3>
+              <p>{item.body}</p>
+              <div className="v-svc-why-glyph" aria-hidden>
+                {index + 1}
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
       </Reveal>
 
-      <Reveal as="section" className="relative py-40 overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-slate-50">
-          <div className="absolute top-0 right-[-10%] w-[60%] h-[120%] shard-gradient-1 rotate-12 opacity-30" />
-          <div className="absolute bottom-0 left-[-10%] w-[60%] h-[120%] shard-gradient-2 -rotate-12 opacity-30" />
+      <Reveal as="section" className="v-svc-block v-svc-block-ink" style={{ '--accent': '#FF5B22' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">03</span>
+          <span className="v-svc-block-tag">{perksIntro.ctaLabel || 'Perks'}</span>
         </div>
-        <div className="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 w-full">
-          <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white/50 w-full">
-            <div className="relative z-10 w-full max-w-4xl mx-auto">
-              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
-                {ctaPrimary}
-                <br />
-                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
-              </h2>
-              <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">{cta.body}</p>
-              <Link
-                href={cta.ctaHref || '/contact'}
-                className="group relative px-12 py-6 bg-vanailaNavy text-white font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full overflow-hidden hover:shadow-2xl hover:shadow-blue-900/30 transition-all duration-300 inline-block"
-              >
-                <span className="relative z-10 group-hover:text-white transition-colors">{cta.ctaLabel}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-electricBlue to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Link>
-            </div>
+        <div className="v-svc-block-head">
+          <h2>{perksIntro.heading}</h2>
+          <span className="v-svc-block-sub">Built for leverage.</span>
+        </div>
+        <p className="v-svc-lede">{perksIntro.body}</p>
+        <div className="v-svc-deliverables">
+          {perks.map((item) => (
+            <article className="v-svc-deliverable" key={item.id}>
+              <div className="v-svc-deliverable-header">
+                <span>{item.ctaLabel}</span>
+                <span className="v-svc-deliverable-bar" />
+              </div>
+              <h3>{item.heading}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal as="section" className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ NEXT STEP ]</span>
+        <h2>
+          {ctaPrimary}
+          <br />
+          <span className="v-svc-cta-blue">{ctaAccent}</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>{cta.body}</p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href={finalCtaHref}
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>{cta.ctaLabel || 'Start Partnership Discussion'}</span>
+              <span>-&gt;</span>
+            </Link>
           </div>
         </div>
       </Reveal>
     </main>
   );
 }
-
-
-
-

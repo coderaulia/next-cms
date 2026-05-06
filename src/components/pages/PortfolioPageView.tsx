@@ -1,10 +1,13 @@
-import Link from 'next/link';
+'use client';
 
-import { SymbolIcon } from '@/components/ui/symbol-icon';
+import Link from 'next/link';
+import type { CSSProperties } from 'react';
+
+import { Reveal } from '@/components/animations/Reveal';
+import { useCursorMode } from '@/components/CustomCursor';
 import type { PortfolioProject } from '@/features/cms/types';
 
 import { formatDateLabel } from './sectionContent';
-import { Reveal } from '@/components/animations/Reveal';
 
 type PortfolioPageViewProps = {
   projects: PortfolioProject[];
@@ -15,6 +18,7 @@ type PortfolioPageViewProps = {
 };
 
 const defaultPageSize = 6;
+const projectAccents = ['#0033FF', '#FF5B22', '#C8E64B', '#0A0E1A'] as const;
 
 function urlForPortfolio(query: string, tag: string, page: number) {
   const params = new URLSearchParams();
@@ -25,19 +29,12 @@ function urlForPortfolio(query: string, tag: string, page: number) {
   return qs.length > 0 ? `/portfolio?${qs}` : '/portfolio';
 }
 
-export function PortfolioPageView({
-  projects,
-  query,
-  activeTag,
-  page,
-  pageSize = defaultPageSize
-}: PortfolioPageViewProps) {
+export function PortfolioPageView({ projects, query, activeTag, page, pageSize = defaultPageSize }: PortfolioPageViewProps) {
+  const { setMode } = useCursorMode();
   const normalizedQuery = query.trim().toLowerCase();
   const normalizedTag = activeTag.trim().toLowerCase() || 'all';
 
-  const tags = Array.from(
-    new Set(projects.flatMap((project) => project.tags.map((tag) => tag.trim())).filter(Boolean))
-  );
+  const tags = Array.from(new Set(projects.flatMap((project) => project.tags.map((tag) => tag.trim())).filter(Boolean)));
 
   const filtered = projects.filter((project) => {
     if (normalizedTag !== 'all' && !project.tags.some((tag) => tag.toLowerCase() === normalizedTag)) {
@@ -65,208 +62,247 @@ export function PortfolioPageView({
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <main>
-      <Reveal as="section" className="relative pt-32 pb-12 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-slate-50/50 border border-slate-100/50 mb-8 backdrop-blur-sm mx-auto">
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-400">Case Studies</span>
+    <main className="v-svc">
+      <Reveal as="section" className="v-svc-hero">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+
+        <nav className="v-svc-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+            Home
+          </Link>
+          <span>/</span>
+          <span>Portfolio</span>
+        </nav>
+
+        <div className="v-svc-hero-meta">
+          <span>[ PORTFOLIO / CASE STUDIES ]</span>
+          <span>{projects.length} CMS PROJECTS</span>
+          <span className="v-svc-status">RESULTS IN PRODUCTION</span>
+        </div>
+
+        <h1 className="v-svc-h1">
+          Portfolio of
+          <br />
+          <em>delivered</em>
+          <br />
+          not <del>promised.</del>
+          <br />
+          <em>results.</em>
+        </h1>
+
+        <div className="v-svc-hero-foot">
+          <p>Real projects, measurable outcomes, and production-grade implementations delivered for growth-focused teams.</p>
+          <div className="v-svc-actions">
+            <a
+              href="#projects"
+              className="v-svc-btn-primary"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Browse case studies</span>
+              <span>-&gt;</span>
+            </a>
+            <Link
+              href="/contact"
+              className="v-svc-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Start your project
+            </Link>
           </div>
-          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
-            Portfolio of
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
-              Delivered Results
-            </span>
-          </h1>
-          <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">
-            Real projects, measurable outcomes, and production-grade implementations delivered for growth-focused teams.
-          </p>
         </div>
       </Reveal>
 
       {featured ? (
-        <Reveal as="section" className="py-12 relative">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-            <Link
-              href={`/portfolio/${featured.seo.slug}`}
-              className="glass-panel p-4 rounded-[3rem] bg-white overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-700 block"
-            >
-              <div className="grid lg:grid-cols-2 gap-8 items-center">
-                <div className="bg-deepSlate aspect-video lg:aspect-square rounded-[2.5rem] overflow-hidden relative">
-                  {featured.coverImage ? (
-                    <img src={featured.coverImage} alt={featured.title} className="absolute inset-0 w-full h-full object-cover" />
-                  ) : null}
-                  <div className="absolute inset-0 bg-gradient-to-br from-electricBlue/20 to-transparent z-10" />
-                  <div className="absolute bottom-8 left-8 z-20">
-                    <span className="px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-[10px] uppercase tracking-widest rounded-full group-hover:bg-white group-hover:text-deepSlate transition-colors">
-                      Featured Project
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-8 lg:p-12 space-y-8">
-                  <div className="space-y-4">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-electricBlue">
-                      {featured.serviceType || 'Implementation'}
-                    </span>
-                    <h2 className="text-4xl md:text-5xl font-display font-black text-deepSlate leading-tight group-hover:text-electricBlue transition-colors">
-                      {featured.title}
-                    </h2>
-                    <p className="text-slate-500 font-light leading-relaxed text-lg">{featured.summary}</p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    {featured.tags.map((tag) => (
-                      <span
-                        key={`${featured.id}-${tag}`}
-                        className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-full text-[9px] font-bold uppercase tracking-wider text-slate-500"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-8 border-t border-slate-50">
-                    <div>
-                      <h4 className="text-sm font-bold text-deepSlate">{featured.clientName || 'Confidential client'}</h4>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                        {formatDateLabel(featured.publishedAt || featured.updatedAt) || 'Recently delivered'}
-                      </p>
-                    </div>
-                    <span className="text-xs font-bold uppercase tracking-widest text-electricBlue flex items-center gap-2 group/link">
-                      View Case Study
-                      <SymbolIcon className="text-sm group-hover/link:translate-x-1 transition-transform" name="arrow_forward" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
+        <Reveal as="section" className="v-svc-block v-svc-block-ink" style={{ '--accent': '#C8E64B' } as CSSProperties}>
+          <div className="v-svc-block-marker">
+            <span className="v-svc-block-n">01</span>
+            <span className="v-svc-block-tag">Featured Project</span>
           </div>
+          <Link
+            href={`/portfolio/${featured.seo.slug}`}
+            className="v-blog-featured"
+            onMouseEnter={() => setMode('view')}
+            onMouseLeave={() => setMode('default')}
+          >
+            <div className="v-blog-featured-image">
+              {featured.coverImage ? (
+                <img src={featured.coverImage} alt={featured.title} decoding="async" loading="lazy" />
+              ) : (
+                <span>{featured.serviceType || 'Case Study'}</span>
+              )}
+            </div>
+            <div className="v-blog-featured-copy">
+              <div className="v-svc-block-head">
+                <h2>{featured.title}</h2>
+                <span className="v-svc-block-sub">{featured.serviceType || 'Implementation'}</span>
+              </div>
+              <p className="v-svc-lede">{featured.summary}</p>
+              <div className="v-svc-tags" aria-label={`${featured.title} tags`}>
+                {featured.tags.map((tag) => (
+                  <span key={`${featured.id}-${tag}`}>{tag}</span>
+                ))}
+              </div>
+              <div className="v-blog-meta-row">
+                <span>{featured.clientName || 'Confidential client'}</span>
+                <span>{featured.industry || 'Digital infrastructure'}</span>
+                <span>{formatDateLabel(featured.publishedAt || featured.updatedAt) || 'Recently delivered'}</span>
+              </div>
+            </div>
+          </Link>
         </Reveal>
       ) : null}
 
-      <Reveal as="section" className="py-20 relative">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
-            <div className="flex gap-4 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
-              <Link
-                href={urlForPortfolio(query, 'all', 1)}
-                className={`px-6 py-2 font-bold text-[10px] uppercase tracking-widest rounded-full whitespace-nowrap border transition-all ${normalizedTag === 'all' ? 'bg-deepSlate text-white border-deepSlate' : 'bg-slate-50 text-slate-400 border-slate-100 hover:bg-white hover:text-deepSlate'}`}
-              >
-                All Projects
-              </Link>
-              {tags.map((tag) => {
-                const normalized = tag.toLowerCase();
-                const active = normalizedTag === normalized;
-                return (
-                  <Link
-                    key={tag}
-                    href={urlForPortfolio(query, normalized, 1)}
-                    className={`px-6 py-2 font-bold text-[10px] uppercase tracking-widest rounded-full border whitespace-nowrap transition-all ${active ? 'bg-deepSlate text-white border-deepSlate' : 'bg-slate-50 text-slate-400 border-slate-100 hover:bg-white hover:text-deepSlate'}`}
-                  >
-                    {tag}
-                  </Link>
-                );
-              })}
-            </div>
+      <Reveal as="section" className="v-svc-block v-svc-block-cream" id="projects" style={{ '--accent': '#0033FF' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">02</span>
+          <span className="v-svc-block-tag">Archive</span>
+        </div>
+        <div className="v-svc-block-head">
+          <h2>Selected work, filtered.</h2>
+          <span className="v-svc-block-sub">{filtered.length} results</span>
+        </div>
 
-            <form method="get" className="relative w-full md:w-72">
-              {normalizedTag !== 'all' ? <input type="hidden" name="tag" value={normalizedTag} /> : null}
-              <input
-                type="text"
-                id="portfolio-search"
-                name="q"
-                defaultValue={query}
-                placeholder="Search projects..."
-                className="w-full px-6 py-3 bg-slate-50 border border-slate-100 rounded-full focus:outline-none text-xs font-medium"
-              />
-              <SymbolIcon className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm" name="search" />
-            </form>
+        <div className="v-blog-filter-row">
+          <div className="v-blog-tags" aria-label="Portfolio categories">
+            <Link
+              href={urlForPortfolio(query, 'all', 1)}
+              className={`v-blog-tag${normalizedTag === 'all' ? ' is-active' : ''}`}
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              All Projects
+            </Link>
+            {tags.map((tag) => {
+              const normalized = tag.toLowerCase();
+              const active = normalizedTag === normalized;
+              return (
+                <Link
+                  key={tag}
+                  href={urlForPortfolio(query, normalized, 1)}
+                  className={`v-blog-tag${active ? ' is-active' : ''}`}
+                  onMouseEnter={() => setMode('link')}
+                  onMouseLeave={() => setMode('default')}
+                >
+                  {tag}
+                </Link>
+              );
+            })}
           </div>
 
-          {visible.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {visible.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/portfolio/${project.seo.slug}`}
-                  className="glass-panel p-4 rounded-[2.5rem] bg-white group cursor-pointer flex flex-col h-full hover:shadow-2xl hover:shadow-blue-500/5 transition-all"
-                >
-                  <div className="bg-blue-100/30 aspect-video rounded-[2rem] mb-8 overflow-hidden relative">
-                    {project.coverImage ? (
-                      <img src={project.coverImage} alt={project.title} className="absolute inset-0 w-full h-full object-cover" />
-                    ) : null}
-                    {project.featured ? (
-                      <span className="absolute top-4 left-4 px-4 py-1.5 bg-white/80 backdrop-blur-sm border border-white/40 text-electricBlue font-bold text-[8px] uppercase tracking-widest rounded-full z-10">
-                        Featured
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="px-6 pb-6 space-y-4 flex-grow flex flex-col">
-                    <div className="flex items-center gap-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                      <span>{project.serviceType || 'Implementation'}</span>
-                      <span>•</span>
-                      <span>{project.clientName || 'Confidential'}</span>
-                    </div>
-                    <h3 className="text-xl font-display font-black text-deepSlate group-hover:text-electricBlue transition-colors leading-tight">
-                      {project.title}
-                    </h3>
-                    <p className="text-slate-500 text-sm font-light leading-relaxed mb-4 flex-grow">
-                      {project.summary}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <span
-                          key={`${project.id}-${tag}`}
-                          className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-full text-[8px] font-bold uppercase tracking-wider text-slate-500"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-deepSlate flex items-center gap-2 pt-4 border-t border-slate-50">
-                      View Case Study
-                      <SymbolIcon className="text-xs" name="arrow_outward" />
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="glass-panel p-10 rounded-[2rem] text-center text-slate-500">
-              No portfolio projects match your current filter.
-            </div>
-          )}
+          <form method="get" className="v-blog-search">
+            {normalizedTag !== 'all' ? <input type="hidden" name="tag" value={normalizedTag} /> : null}
+            <input type="text" id="portfolio-search" name="q" defaultValue={query} placeholder="Search projects" />
+            <button type="submit" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+              Search
+            </button>
+          </form>
+        </div>
 
-          {totalPages > 1 ? (
-            <div className="mt-20 flex justify-center items-center gap-4">
+        {visible.length > 0 ? (
+          <div className="v-blog-grid">
+            {visible.map((project, index) => (
               <Link
-                href={urlForPortfolio(query, normalizedTag, Math.max(1, currentPage - 1))}
-                className="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-deepSlate hover:text-white transition-all"
-                aria-label="Previous page"
+                key={project.id}
+                href={`/portfolio/${project.seo.slug}`}
+                className="v-blog-card"
+                style={{ '--accent': projectAccents[index % projectAccents.length] } as CSSProperties}
+                onMouseEnter={() => setMode('view')}
+                onMouseLeave={() => setMode('default')}
               >
-                <SymbolIcon className="text-sm" name="chevron_left" />
+                <div className="v-blog-card-image">
+                  {project.coverImage ? (
+                    <img src={project.coverImage} alt={project.title} decoding="async" loading="lazy" />
+                  ) : (
+                    <span>{project.serviceType || 'Project'}</span>
+                  )}
+                </div>
+                <div className="v-blog-card-body">
+                  <span className="v-blog-card-kicker">{project.serviceType || 'Implementation'}</span>
+                  <h3>{project.title}</h3>
+                  <p>{project.summary}</p>
+                  <div className="v-svc-tags" aria-label={`${project.title} tags`}>
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span key={`${project.id}-${tag}`}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="v-blog-card-foot">
+                    <span>{project.clientName || 'Confidential'}</span>
+                    <span>View -&gt;</span>
+                  </div>
+                </div>
               </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="v-blog-empty">No portfolio projects match your current filter.</div>
+        )}
 
-              {pageNumbers.map((pageNumber) => (
-                <Link
-                  key={pageNumber}
-                  href={urlForPortfolio(query, normalizedTag, pageNumber)}
-                  className={`w-10 h-10 rounded-full font-bold text-[10px] flex items-center justify-center transition-all ${pageNumber === currentPage ? 'bg-deepSlate text-white' : 'bg-slate-50 text-slate-400 hover:bg-white hover:text-deepSlate border border-transparent hover:border-slate-100'}`}
-                >
-                  {pageNumber}
-                </Link>
-              ))}
+        {totalPages > 1 ? (
+          <div className="v-blog-pagination" aria-label="Portfolio pagination">
+            <Link
+              href={urlForPortfolio(query, normalizedTag, Math.max(1, currentPage - 1))}
+              aria-label="Previous page"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Prev
+            </Link>
 
+            {pageNumbers.map((pageNumber) => (
               <Link
-                href={urlForPortfolio(query, normalizedTag, Math.min(totalPages, currentPage + 1))}
-                className="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-deepSlate hover:text-white transition-all"
-                aria-label="Next page"
+                key={pageNumber}
+                href={urlForPortfolio(query, normalizedTag, pageNumber)}
+                className={pageNumber === currentPage ? 'is-active' : ''}
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
               >
-                <SymbolIcon className="text-sm" name="chevron_right" />
+                {pageNumber}
               </Link>
-            </div>
-          ) : null}
+            ))}
+
+            <Link
+              href={urlForPortfolio(query, normalizedTag, Math.min(totalPages, currentPage + 1))}
+              aria-label="Next page"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Next
+            </Link>
+          </div>
+        ) : null}
+      </Reveal>
+
+      <Reveal as="section" className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ YOUR TURN ]</span>
+        <h2>
+          Need work this
+          <br />
+          <span className="v-svc-cta-blue">reliable?</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>Bring us the business problem. We will map the technical path, timeline, and launch plan.</p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href="/contact"
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Start your project brief</span>
+              <span>-&gt;</span>
+            </Link>
+          </div>
         </div>
       </Reveal>
     </main>

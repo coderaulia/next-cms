@@ -4,6 +4,7 @@ import {
   assertCsrfToken,
   assertRateLimit,
   assertTrustedMutationRequest,
+  readJsonWithLimit,
   serializeJsonForScript
 } from '@/services/requestSecurity';
 
@@ -75,10 +76,31 @@ describe('request security', () => {
     expect((await assertRateLimit(request, 'contact', 2, 60_000))?.status).toBe(429);
   });
 
+  it('rejects oversized JSON request bodies before parsing', async () => {
+    const request = new Request('https://example.com/api/contact', {
+      method: 'POST',
+      body: JSON.stringify({ projectOverview: 'x'.repeat(32) })
+    });
+
+    const result = await readJsonWithLimit(request, 16);
+    expect(result.ok).toBe(false);
+    expect(result.ok ? null : result.response.status).toBe(413);
+  });
+
+  it('parses JSON request bodies within the configured limit', async () => {
+    const request = new Request('https://example.com/api/contact', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Alex' })
+    });
+
+    const result = await readJsonWithLimit(request, 1024);
+    expect(result.ok).toBe(true);
+    expect(result.ok ? result.value : null).toEqual({ name: 'Alex' });
+  });
+
   it('escapes script-breaking characters in JSON-LD payloads', async () => {
     const html = serializeJsonForScript({ dangerous: '</script><script>alert(1)</script>' });
     expect(html).not.toContain('</script>');
     expect(html).toContain('\\u003c/script\\u003e');
   });
 });
-

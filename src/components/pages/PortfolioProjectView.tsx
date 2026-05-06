@@ -21,7 +21,12 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
     <main className="bg-slate-50/30">
       <Reveal as="section" className="relative h-[60vh] min-h-[500px] w-full overflow-hidden bg-deepSlate">
         {project.coverImage ? (
-          <img src={project.coverImage} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-40" />
+          <img
+            src={project.coverImage}
+            alt={project.title}
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+            decoding="async"
+          />
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-deepSlate/20 to-deepSlate/60" />
 
@@ -94,7 +99,13 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
             <div className="grid md:grid-cols-2 gap-8">
               {gallery.map((imageUrl, index) => (
                 <div key={`${project.id}-gallery-${index}`} className="rounded-[2rem] overflow-hidden border border-slate-100 bg-white shadow-lg shadow-slate-200/60">
-                  <img src={imageUrl} alt={`${project.title} visual ${index + 1}`} className="w-full h-full object-cover" />
+                  <img
+                    src={imageUrl}
+                    alt={`${project.title} visual ${index + 1}`}
+                    className="w-full h-full object-cover"
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </div>
               ))}
             </div>
@@ -126,7 +137,13 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
                 >
                   <div className="aspect-video rounded-[1.5rem] bg-slate-100 overflow-hidden mb-4">
                     {item.coverImage ? (
-                      <img src={item.coverImage} alt={item.title} className="w-full h-full object-cover" />
+                      <img
+                        src={item.coverImage}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                        decoding="async"
+                        loading="lazy"
+                      />
                     ) : null}
                   </div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-electricBlue mb-2">

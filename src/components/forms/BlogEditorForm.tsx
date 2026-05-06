@@ -93,7 +93,6 @@ export function BlogEditorForm({
       });
   }, []);
 
-  const selectedCategories = useMemo(() => new Set(post.tags), [post.tags]);
   const isDirty = useMemo(() => JSON.stringify(post) !== JSON.stringify(baseline), [post, baseline]);
   const previewHref = normalizePreviewHref(post);
   const previewModePath = previewModeHref(previewHref);

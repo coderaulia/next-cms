@@ -34,6 +34,13 @@ const HOME_THEMES: HomeThemeToken[] = ['light', 'blue-soft', 'mist'];
 const CTA_STYLES: CtaStyleToken[] = ['primary', 'secondary', 'ghost'];
 const CONTACT_SUBMISSION_STATUSES: ContactSubmissionStatus[] = ['new', 'in_review', 'closed'];
 const PORTFOLIO_STATUSES: PortfolioStatus[] = ['draft', 'published'];
+const contactSubmissionMaxLengths = {
+  name: 120,
+  company: 160,
+  email: 254,
+  serviceCategory: 200,
+  projectOverview: 5000
+} as const;
 const HOME_BLOCK_TYPES: HomeBlockType[] = [
   'hero',
   'value_triplet',
@@ -111,14 +118,15 @@ const isSafeAbsoluteUrl = (value: string, allowedProtocols: string[]) => {
 const asSafeHref = (value: unknown) => {
   const trimmed = asString(value).trim();
   if (!trimmed) return '';
-  if (trimmed.startsWith('/') || trimmed.startsWith('#')) return trimmed;
+  if (trimmed.startsWith('#')) return trimmed;
+  if (trimmed.startsWith('/')) return trimmed.startsWith('//') ? '' : trimmed;
   return isSafeAbsoluteUrl(trimmed, ['http:', 'https:', 'mailto:', 'tel:']) ? trimmed : '';
 };
 
 const asSafeAssetUrl = (value: unknown) => {
   const trimmed = asString(value).trim();
   if (!trimmed) return '';
-  if (trimmed.startsWith('/')) return trimmed;
+  if (trimmed.startsWith('/')) return trimmed.startsWith('//') ? '' : trimmed;
   return isSafeAbsoluteUrl(trimmed, ['http:', 'https:']) ? trimmed : '';
 };
 
@@ -519,19 +527,27 @@ export function validateContactSubmission(payload: unknown): ContactSubmission |
   if (!isObject(payload)) return null;
 
   const name = asString(payload.name).trim();
+  const company = asString(payload.company).trim();
   const email = asString(payload.email).trim().toLowerCase();
   const serviceCategory = asString(payload.serviceCategory).trim();
   const projectOverview = asString(payload.projectOverview).trim();
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if (!name || !emailOk || !serviceCategory || !projectOverview) {
+  const lengthsOk =
+    name.length <= contactSubmissionMaxLengths.name &&
+    company.length <= contactSubmissionMaxLengths.company &&
+    email.length <= contactSubmissionMaxLengths.email &&
+    serviceCategory.length <= contactSubmissionMaxLengths.serviceCategory &&
+    projectOverview.length <= contactSubmissionMaxLengths.projectOverview;
+
+  if (!name || !emailOk || !serviceCategory || !projectOverview || !lengthsOk) {
     return null;
   }
 
   return {
     id: asString(payload.id) || crypto.randomUUID(),
     name,
-    company: asString(payload.company).trim(),
+    company,
     email,
     serviceCategory,
     projectOverview,
