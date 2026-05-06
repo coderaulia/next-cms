@@ -2,12 +2,13 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, normalize, relative, resolve } from 'node:path';
 
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createClient } from '@supabase/supabase-js';
 
 import { env } from '@/services/env';
 
 type StoredMedia = {
-  storageProvider: 'local' | 'supabase';
+  storageProvider: 'local' | 'supabase' | 'r2';
   storageKey: string;
   url: string;
   sizeBytes: number;
@@ -24,6 +25,7 @@ const MAX_SAFE_FILE_NAME_LENGTH = 64;
 const ALLOWED_MIME_PREFIXES = ['image/', 'video/'];
 const FALLBACK_EXTENSION = '.png';
 let supabaseStorageClient: ReturnType<typeof createClient> | null = null;
+let r2Client: S3Client | null = null;
 
 function sanitizeFilename(value: string) {
   const safe = value
@@ -94,6 +96,12 @@ function isSupabaseStorageEnabled() {
   return Boolean(env.supabaseUrl && env.supabaseServiceRoleKey && env.supabaseStorageBucket);
 }
 
+function isR2Enabled() {
+  return Boolean(
+    env.r2AccountId && env.r2AccessKeyId && env.r2SecretAccessKey && env.r2Bucket && env.r2PublicUrl
+  );
+}
+
 function getSupabaseStorageClient() {
   if (!isSupabaseStorageEnabled()) {
     throw new Error('Supabase media storage is not configured.');
@@ -109,6 +117,25 @@ function getSupabaseStorageClient() {
   }
 
   return supabaseStorageClient;
+}
+
+function getR2Client() {
+  if (!isR2Enabled()) {
+    throw new Error('R2 storage is not configured.');
+  }
+
+  if (!r2Client) {
+    r2Client = new S3Client({
+      region: 'auto',
+      endpoint: `https://${env.r2AccountId}.r2.cloudflarestorage.com`,
+      credentials: {
+        accessKeyId: env.r2AccessKeyId,
+        secretAccessKey: env.r2SecretAccessKey
+      }
+    });
+  }
+
+  return r2Client;
 }
 
 function generateStorageKey(file: File) {
@@ -133,6 +160,27 @@ export async function saveUploadedMedia(file: File, options: SaveUploadedMediaOp
 
   const storageKey = normalizeStorageKey(options.storageKey || generateStorageKey(file));
   const buffer = Buffer.from(await file.arrayBuffer());
+
+  // R2 takes priority, then Supabase, then local
+  if (isR2Enabled()) {
+    const client = getR2Client();
+    await client.send(
+      new PutObjectCommand({
+        Bucket: env.r2Bucket,
+        Key: storageKey,
+        Body: buffer,
+        ContentType: file.type || undefined,
+        CacheControl: 'public, max-age=31536000'
+      })
+    );
+
+    return {
+      storageProvider: 'r2',
+      storageKey,
+      url: `${env.r2PublicUrl.replace(/\/+$/, '')}/${storageKey}`,
+      sizeBytes: buffer.length
+    } as StoredMedia;
+  }
 
   if (isSupabaseStorageEnabled()) {
     const client = getSupabaseStorageClient();
@@ -179,6 +227,18 @@ export async function deleteUploadedMedia(storageKey: string, storageProvider: s
   if (!storageKey) return;
 
   const normalized = normalizeStorageKey(storageKey);
+
+  if (storageProvider === 'r2') {
+    if (!isR2Enabled()) return;
+    const client = getR2Client();
+    try {
+      await client.send(new DeleteObjectCommand({ Bucket: env.r2Bucket, Key: normalized }));
+    } catch (error) {
+      if (error instanceof Error && error.name === 'NoSuchKey') return;
+      throw error;
+    }
+    return;
+  }
 
   if (storageProvider === 'supabase') {
     if (!isSupabaseStorageEnabled()) {

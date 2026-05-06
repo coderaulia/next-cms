@@ -50,6 +50,25 @@ export const env = {
   get supabaseStorageBucket() {
     return clean(process.env.SUPABASE_STORAGE_BUCKET) || 'cms-media';
   },
+  get r2AccountId() {
+    return clean(process.env.R2_ACCOUNT_ID);
+  },
+  get r2AccessKeyId() {
+    return clean(process.env.R2_ACCESS_KEY_ID);
+  },
+  get r2SecretAccessKey() {
+    return clean(process.env.R2_SECRET_ACCESS_KEY);
+  },
+  get r2Bucket() {
+    return clean(process.env.R2_BUCKET);
+  },
+  get r2PublicUrl() {
+    return clean(process.env.R2_PUBLIC_URL);
+  },
+  /** Storage quota in MB. Default 1000 MB (≈1 GB — fits Supabase free tier). R2 free tier is 10 GB. */
+  get storageQuotaMb() {
+    return parsePositiveInt(process.env.CMS_STORAGE_QUOTA_MB) ?? 1000;
+  },
   get databaseMigrationUrl() {
     return clean(process.env.DATABASE_URL_MIGRATION) || clean(process.env.DATABASE_URL);
   },

@@ -6,6 +6,7 @@ import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminA
 import { getMediaAssetById, getMediaAssets, updateMediaAsset } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { saveUploadedMedia } from '@/services/mediaStorage';
+import { env } from '@/services/env';
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -34,7 +35,7 @@ export async function POST(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Media asset not found.' }, { status: 404 });
   }
 
-  if (!existing.storageKey || !['local', 'supabase'].includes(existing.storageProvider)) {
+  if (!existing.storageKey || !['local', 'supabase', 'r2'].includes(existing.storageProvider)) {
     return NextResponse.json(
       { error: 'Only managed media assets can be replaced without changing the public URL.' },
       { status: 400 }
@@ -63,6 +64,19 @@ export async function POST(request: Request, { params }: RouteContext) {
         duplicateOf: duplicate
       },
       { status: 409 }
+    );
+  }
+
+  const totalUsed = existingAssets.reduce((sum, a) => sum + (a.sizeBytes ?? 0), 0);
+  const oldSize = existing.sizeBytes ?? 0;
+  const netDelta = buffer.length - oldSize;
+  const quotaBytes = env.storageQuotaMb * 1024 * 1024;
+  if (netDelta > 0 && totalUsed + netDelta > quotaBytes) {
+    return NextResponse.json(
+      {
+        error: `Storage quota exceeded. Used ${Math.round(totalUsed / 1024 / 1024)} MB of ${env.storageQuotaMb} MB limit.`
+      },
+      { status: 413 }
     );
   }
 

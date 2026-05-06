@@ -1,6 +1,6 @@
 # Source Audit And Gzip Plan
 
-Audit date: 2026-04-18
+Audit date: 2026-04-18 (last updated 2026-05-06)
 
 ## Biggest `src` files
 
@@ -21,7 +21,10 @@ Top raw-size offenders from the current audit:
 
 - Added `npm run audit:src` to report `src/` file sizes with gzip estimates.
 - Updated `npm run audit:size` so build output now reports both raw and gzipped sizes.
+- Added `npm run build:audit` (build + audit:size in one pass).
 - Lazy-loaded the large admin editor forms for page, blog, and portfolio editor routes so those routes do not eagerly pull the full editor form code into the initial route chunk.
+- Removed the `presets.ts` animation constants (now inlined in `Reveal.tsx` and `StaggerGroup.tsx`) as part of the Vanaila redesign cleanup.
+- Removed unused dependencies to reduce install and bundle size.
 
 ## Refactor Plan
 

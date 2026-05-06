@@ -25,8 +25,15 @@ npm run db:studio     # Drizzle Studio UI
 npm run db:reseed     # Full reset: purge + migrate + seed
 npm run db:seed:file -- --fixture <name>   # Seed with preset fixture
 
-# Utilities
+# Media
+npm run media:migrate:supabase:dry   # Preview local→Supabase media migration
+npm run media:migrate:supabase       # Execute local→Supabase media migration
+
+# Bundle / size auditing
 npm run analyze       # Bundle analyzer (sets ANALYZE=true)
+npm run audit:src     # Report src/ file sizes with gzip estimates
+npm run audit:size    # Report build output sizes (raw + gzip)
+npm run build:audit   # build + audit:size in one pass
 ```
 
 ## Architecture
@@ -44,14 +51,27 @@ All read/write goes through `contentStore.ts`, which delegates to the active sto
 ```
 src/
   app/
-    (public)/         # Public-facing pages (home, about, blog, portfolio, contact)
+    page.tsx          # Home — uses VanailaRedesignHome (homepage block system)
+    about/            # About page
+    blog/             # Blog listing + post detail
+    contact/          # Contact page
+    portfolio/        # Portfolio listing + project detail
+    service/          # Service listing page
+    [slug]/           # Catch-all for dynamic CMS pages (partnership, product-hris, etc.)
     admin/            # Admin shell and all admin pages
     api/admin/        # REST API (requires auth)
     api/public/       # Public REST API (contact form, etc.)
   components/
     admin/            # Admin UI components
-    home/blocks/      # Typed homepage block components
+    animations/       # Vanaila design system primitives: Reveal, StaggerGroup
+    home/blocks/      # Typed homepage block components (hero, value_triplet, etc.)
+    pages/            # Per-page view components (AboutPageView, ServicePageView, etc.)
     ui/               # Generic reusable UI
+    AppShell.tsx      # Public layout wrapper (SiteHeader + SiteFooter + CustomCursor)
+    CustomCursor.tsx  # Branded custom cursor (Vanaila design system)
+    SiteHeader.tsx    # Navigation header
+    SiteFooter.tsx    # Site footer
+    MarketingPageRenderer.tsx  # Generic section renderer for CMS-managed pages
   features/cms/       # Core CMS logic — start here for any data/content work
     storeAdapter.ts   # DB vs file store switch
     contentStore.ts   # Unified read/write API
@@ -76,7 +96,7 @@ src/
 
 ### Data flow
 
-**Public page render:** `app/(public)/page.tsx` → `publicApi.getPublishedPage()` → storeAdapter → DB or file store → ISR cached
+**Public page render:** `app/page.tsx` (or `app/[slug]/page.tsx`) → `publicApi.getPublishedPage()` → storeAdapter → DB or file store → ISR cached
 
 **Admin mutation:** `app/admin/` page → `fetch('/api/admin/...')` → API route → `assertAdminPermission()` → `contentStore` → `publicCache.revalidate()` (triggers ISR)
 
@@ -93,13 +113,25 @@ return NextResponse.json(result);
 
 ### Homepage block system
 
-`pagesTable.homeBlocks` stores a typed discriminated union: `hero | value_triplet | solutions_grid | why_split | logo_cloud | primary_cta`. Each block type has its own component in `src/components/home/blocks/`.
+`pagesTable.homeBlocks` stores a typed discriminated union: `hero | value_triplet | solutions_grid | why_split | logo_cloud | primary_cta`. Each block type has its own component in `src/components/home/blocks/`. The home page is rendered by `VanailaRedesignHome` — a fully custom component that fuses the block data with the Vanaila design system layout and motion primitives instead of going through `MarketingPageRenderer`.
+
+### Vanaila design system
+
+The public-facing UI uses the Vanaila design system (branded to the current client). Key pieces:
+
+- `src/components/animations/Reveal.tsx` — scroll-triggered reveal with CSS-class-based animation (`fadeUp`, `fadeIn`, `scaleInSoft` presets, no external motion library)
+- `src/components/animations/StaggerGroup.tsx` — stagger wrapper for list items
+- `src/components/CustomCursor.tsx` — branded cursor with `useCursorMode` hook
+- `src/app/globals.css` — design tokens, `reveal-motion-*` keyframes, `marketing-section` layout utilities
+- All public page views (`AboutPageView`, `ServicePageView`, etc.) in `src/components/pages/` follow Vanaila layout conventions
+
+When modifying public pages, keep animation and layout classes consistent with existing page views.
 
 ### Auth
 
 - Cookie-based sessions (`cms_admin_session`, httpOnly, 7-day TTL)
 - scrypt password hashing (100k iterations)
-- Roles: `editor | admin | owner` with action-gated permissions (`content:edit`, `settings:manage`, `team:manage`)
+- Roles: `super_admin | admin | editor | analyst` with action-gated permissions (`content:edit`, `settings:manage`, `team:manage`)
 - Login lockout after 5 failures (15-min window)
 - CSRF: token in cookie, must be sent as header on POST/PUT/DELETE
 - First-run bootstrap: if `admin_users` table empty, creates admin from `CMS_ADMIN_EMAIL` + `CMS_ADMIN_PASSWORD` env vars

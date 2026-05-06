@@ -6,6 +6,7 @@ import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminA
 import { createMediaAsset, getMediaAssets } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia, saveUploadedMedia } from '@/services/mediaStorage';
+import { env } from '@/services/env';
 
 function parseText(value: FormDataEntryValue | null) {
   return typeof value === 'string' ? value.trim() : '';
@@ -56,6 +57,17 @@ export async function POST(request: Request) {
           duplicateOf: duplicate
         },
         { status: 409 }
+      );
+    }
+
+    const totalUsed = existingAssets.reduce((sum, a) => sum + (a.sizeBytes ?? 0), 0);
+    const quotaBytes = env.storageQuotaMb * 1024 * 1024;
+    if (totalUsed + buffer.length > quotaBytes) {
+      return NextResponse.json(
+        {
+          error: `Storage quota exceeded. Used ${Math.round(totalUsed / 1024 / 1024)} MB of ${env.storageQuotaMb} MB limit.`
+        },
+        { status: 413 }
       );
     }
 

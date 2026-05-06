@@ -22,11 +22,21 @@ Recommended runtime extras:
 Schema / migration:
 - `DATABASE_URL_MIGRATION`
 
-Supabase media storage:
+Supabase media storage (option A):
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `SUPABASE_STORAGE_BUCKET`
 - `MEDIA_PUBLIC_BASE_URL`
+
+Cloudflare R2 media storage (option B — takes priority over Supabase if all five are set):
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_BUCKET`
+- `R2_PUBLIC_URL` — custom domain or `https://pub-xxx.r2.dev` URL for the bucket
+
+Storage quota (applies to all providers):
+- `CMS_STORAGE_QUOTA_MB` — total media storage cap in MB, default `1000` (1 GB). Set to `900` for Supabase free tier safety margin, `10000` for R2 free tier.
 
 ## Connection Strategy
 
@@ -61,11 +71,12 @@ Current expected validation:
 
 Recommended order:
 1. Set database env vars.
-2. Set Supabase storage env vars if production media should not live on local disk.
+2. Set cloud media storage env vars (R2 or Supabase) — do not rely on local disk in production.
 3. Run `npm run db:push` against the target database when schema changed.
 4. Seed content if needed with `npm run db:seed:file`.
-5. Run `npm run media:migrate:supabase:dry`.
-6. Run `npm run media:migrate:supabase` after reviewing the dry run.
+5. If migrating existing local media to Supabase: `npm run media:migrate:supabase:dry`, then `npm run media:migrate:supabase`.
+
+Media storage provider priority at runtime: **R2 → Supabase → local disk**.
 
 ## Hosting Notes
 
@@ -75,9 +86,12 @@ Recommended production setup:
 - Hostinger Node.js hosting for the Next.js app
 
 Important:
-- Do not rely on local file writes for long-term production media persistence.
+- Do not rely on local file writes for long-term production media persistence (ephemeral on containers/Vercel).
 - Runtime DB should normally use the pooled URL.
 - The app now includes one-time stale chunk recovery for deploy propagation issues, but clean deploys and consistent CDN caching are still preferred.
+- R2 has no egress fees; preferred for high-traffic or cost-sensitive deployments.
+- Supabase free tier: 1 GB storage — set `CMS_STORAGE_QUOTA_MB=900`.
+- R2 free tier: 10 GB storage — set `CMS_STORAGE_QUOTA_MB=10000`.
 
 ## Current Admin Handoff Checklist
 

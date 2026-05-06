@@ -88,6 +88,8 @@ Home page supports:
 - theme token selection (`light`, `blue-soft`, `mist`)
 - block-specific payload editing
 
+Note: the home page public rendering uses the Vanaila custom layout (`VanailaRedesignHome`), not the generic `MarketingPageRenderer`. Block data still drives the content; only the visual presentation differs.
+
 Non-home pages support:
 - section editing
 - layout switching (`stacked` / `split`)
@@ -144,6 +146,12 @@ Current media behavior:
 - selected assets show aspect ratio, size, and storage info
 - delete is blocked when the asset is still referenced
 - the asset detail panel shows "Where this asset is used"
+- upload and replace are blocked when total storage exceeds the configured quota (default 1 GB, set via `CMS_STORAGE_QUOTA_MB`)
+
+Storage providers (configured via env vars, first match wins):
+1. Cloudflare R2 — set all `R2_*` vars
+2. Supabase Storage — set all `SUPABASE_*` vars
+3. Local disk — fallback, not suitable for containerized/serverless hosting
 
 Editors also support direct upload from page/post/portfolio image fields, so users do not need to open the media library first.
 

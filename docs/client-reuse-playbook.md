@@ -98,7 +98,19 @@ When page requirements change:
 Rule:
 - every public page you plan to ship should exist in CMS and be editable in admin
 
-## 6) Wire Dynamic Rendering
+## 6) Rebrand the Design System
+
+The current public-facing UI uses the Vanaila design system. Entry points to restyle for a new client:
+
+1. `src/app/globals.css` — design tokens (colors, fonts, spacing), `reveal-motion-*` animation keyframes, marketing layout utilities.
+2. `src/components/CustomCursor.tsx` — remove or swap the branded cursor.
+3. `src/components/pages/*` — per-page Vanaila layout; replace or adapt section structure.
+4. `src/components/home/VanailaRedesignHome.tsx` — home page layout; replace with a new home component or repurpose.
+5. `src/components/SiteHeader.tsx` / `SiteFooter.tsx` — navigation and footer.
+
+The animation primitives (`Reveal`, `StaggerGroup`) are generic and reusable — keep them unless switching to a different motion approach.
+
+## 7) Wire Dynamic Rendering
 
 Adjust the public rendering layer in:
 - `src/app/[slug]/page.tsx`
@@ -108,7 +120,7 @@ Adjust the public rendering layer in:
 Keep CMS contracts stable when redesigning:
 - do not remove fields unless the admin forms, validators, storage, and public renderers are all updated together
 
-## 7) Reuse the Current Admin Surface
+## 8) Reuse the Current Admin Surface
 
 Current reusable admin capabilities:
 - preview mode
@@ -127,7 +139,7 @@ For client projects with multiple editors:
 - keep team management enabled
 - validate permissions before handoff
 
-## 8) Media Strategy
+## 9) Media Strategy
 
 For production client sites:
 1. Prefer managed media storage over local disk.
@@ -135,7 +147,7 @@ For production client sites:
 3. Keep alt text requirements enabled in editorial workflow.
 4. Use replace-in-place when updating client assets so URLs do not break.
 
-## 9) SEO + Launch Requirements
+## 10) SEO + Launch Requirements
 
 Before launch:
 1. Verify each page/post/project has:
@@ -155,7 +167,7 @@ npm run check
 npm run build
 ```
 
-## 10) Delivery Checklist
+## 11) Delivery Checklist
 
 1. Branding applied.
 2. Required pages editable in admin.

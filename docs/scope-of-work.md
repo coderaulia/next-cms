@@ -2,7 +2,7 @@
 
 Historical note:
 - This is the original scoping document from the early build.
-- The current repository now exceeds this baseline with portfolio management, media workflows, analytics, audit logging, revisions, team management, and Supabase-backed media support.
+- The current repository now exceeds this baseline with portfolio management, media workflows, analytics, audit logging, revisions, team management, Supabase-backed media support, and a fully custom Vanaila public-facing design system applied across all pages.
 - Use `docs/admin-usage.md`, `docs/deployment-handoff.md`, and `docs/client-reuse-playbook.md` as the current operating docs.
 
 ## 1. Project Overview
