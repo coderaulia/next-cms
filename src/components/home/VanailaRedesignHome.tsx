@@ -47,7 +47,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </div>
         <div className="v-home-hero-meta">
           <span>[ 01 / Home ]</span>
-          <span>Est. 2017 / 8+ years / 50+ projects</span>
+          <span>Est. 2018 / 8+ years / 50+ projects</span>
           <span className="v-home-status">Booking new projects</span>
         </div>
         <h1 className="v-home-hero-title">

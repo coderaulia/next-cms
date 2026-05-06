@@ -1,277 +1,325 @@
-import Link from 'next/link';
+'use client';
 
-import { SymbolIcon } from '@/components/ui/symbol-icon';
+import Link from 'next/link';
+import type { CSSProperties } from 'react';
+
+import { useCursorMode } from '@/components/CustomCursor';
 import type { LandingPage } from '@/features/cms/types';
 
-import { sectionWithFallback, splitAccent } from './sectionContent';
-import { Reveal } from '@/components/animations/Reveal';
+import { sectionWithFallback } from './sectionContent';
 
 type ServicePageViewProps = {
   page: LandingPage;
 };
 
+type ServiceDef = {
+  n: string;
+  accent: string;
+  tone: 'cream' | 'ink' | 'blue' | 'lime';
+  tag: string;
+  title: string;
+  sub: string;
+  lede: string;
+  blocks: { k: string; v: string }[];
+  tags: string[];
+};
+
+const SERVICE_DEFAULTS: ServiceDef[] = [
+  {
+    n: '01', accent: '#0033FF', tone: 'cream', tag: 'WEB',
+    title: 'Website Development',
+    sub: 'React & WordPress',
+    lede: 'High-performance digital presence, built with the right tool for the job.',
+    blocks: [
+      { k: 'Framework-Powered Sites', v: 'React-based builds for projects that demand maximum speed and SEO. We shift work from the browser to a build step — ultra-lightweight, instantly fast.' },
+      { k: 'Custom WordPress Solutions', v: 'For teams that need an intuitive CMS, we build secure, custom-themed WordPress environments — content updates without technical friction.' },
+    ],
+    tags: ['React', 'Next.js', 'WordPress', 'Headless CMS'],
+  },
+  {
+    n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP',
+    title: 'Custom Web-App Development',
+    sub: 'Python & React',
+    lede: 'Complex, data-driven applications tailored to your internal or customer-facing workflows.',
+    blocks: [
+      { k: 'Frontend', v: 'React and modern JavaScript for dynamic, responsive interfaces that hold up under real-world load.' },
+      { k: 'Backend', v: 'Python for secure, scalable server-side logic and clean API design — built to integrate.' },
+      { k: 'Ecosystem Integration', v: 'We connect your app with the CRMs, databases, and automation workflows you already rely on.' },
+    ],
+    tags: ['Python', 'React', 'PostgreSQL', 'REST', 'CRM'],
+  },
+  {
+    n: '03', accent: '#C8E64B', tone: 'blue', tag: 'MOBILE',
+    title: 'Mobile App Development',
+    sub: 'React Native',
+    lede: 'Reach customers on iOS and Android with a single, high-fidelity codebase.',
+    blocks: [
+      { k: 'Cross-Platform Efficiency', v: 'React Native delivers native-like performance with the cost-efficiency of one codebase — ship once, run everywhere.' },
+      { k: 'Enterprise Features', v: 'Push notifications, location services, and offline data sync — your app keeps working anywhere your users are.' },
+    ],
+    tags: ['React Native', 'iOS', 'Android', 'Push', 'Offline-first'],
+  },
+  {
+    n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH',
+    title: 'High-Conversion Landing Pages',
+    sub: 'Marketing-led builds',
+    lede: 'Pages designed to turn paid traffic into pipeline — for commercial and non-profit campaigns alike.',
+    blocks: [
+      { k: 'Performance Focused', v: "Engineered for speed so paid clicks and social traffic don't bounce before the page paints." },
+      { k: 'Conversion Optimization', v: 'Structured around UX principles that lift lead generation, sign-ups, and engagement — measurable, iterable.' },
+    ],
+    tags: ['A/B testing', 'Analytics', 'Lead capture', 'SEO'],
+  },
+  {
+    n: '05', accent: '#FF5B22', tone: 'ink', tag: 'COMMERCE',
+    title: 'Online Shop & E-commerce',
+    sub: 'WooCommerce & Custom Stores',
+    lede: 'Complete retail ecosystems connecting your products to your customers — and your back office.',
+    blocks: [
+      { k: 'Payment Gateway Integration', v: 'Seamless Midtrans for the Indonesian market, Stripe for international transactions — checkout that just works.' },
+      { k: 'Operational Stability', v: 'Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking.' },
+    ],
+    tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'],
+  },
+  {
+    n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE',
+    title: 'Professional Business Infrastructure',
+    sub: 'Email · Domain · Workspace',
+    lede: "Establish digital authority and secure your team's day-to-day communications.",
+    blocks: [
+      { k: 'Company Email Setup', v: 'Professional Google Workspace deployment — enterprise-grade email, cloud storage, and collaboration on yourcompany.com.' },
+      { k: 'Professional Mail Services', v: 'Reliable business email on your own domain, configured for high deliverability and security from day one.' },
+    ],
+    tags: ['Google Workspace', 'M365', 'DNS', 'Deliverability'],
+  },
+];
+
+const TRUST_ITEMS = [
+  { k: 'Versatile expertise', v: 'Our portfolio spans agile SMEs, large corporate entities, and mission-driven non-profits.', tone: 'ink', glyph: '◐' },
+  { k: 'Ecosystem ready', v: 'We know the Indonesian tech landscape — your tools integrate cleanly with local payment and logistics providers.', tone: 'blue', glyph: '◑' },
+  { k: '8+ years of technical leadership', v: 'Nearly a decade of hands-on development experience. Every line of code is an asset, not a liability.', tone: 'lime', glyph: '◒' },
+];
+
 export function ServicePageView({ page }: ServicePageViewProps) {
-  const hero = sectionWithFallback(page, 0, {
+  const { setMode } = useCursorMode();
+
+  const heroSection = sectionWithFallback(page, 0, {
     id: 'service-hero',
-    heading: 'Our Services:|Tailored Digital Infrastructure',
-    body: 'We bridge the gap between complex engineering and seamless user experience. Explore our specialized services designed to establish and scale your digital authority.',
-    ctaLabel: 'Tailored Solutions',
-    ctaHref: '/service',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const intro = sectionWithFallback(page, 1, {
-    id: 'service-intro',
-    heading: 'Our Solutions',
-    body: 'Engineered solutions for modern business infrastructure. We build for performance, scale, and uncompromising quality.',
-    ctaLabel: '',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-
-  const cards = [
-    sectionWithFallback(page, 2, {
-      id: 'service-card-1',
-      heading: 'Website Development',
-      body: 'Clean, fast-loading digital authority. We build premium corporate presences that balance aesthetic minimalism with architectural performance.',
-      ctaLabel: 'language',
-      ctaHref: '/website-development',
-      mediaImage: '',
-      mediaAlt: 'Svelte,WordPress,SEO',
-      layout: 'stacked'
-    }),
-    sectionWithFallback(page, 3, {
-      id: 'service-card-2',
-      heading: 'Custom Business Tools',
-      body: 'Bespoke automation systems including HR portals and recruitment tools. Engineered to streamline internal workflows and reduce operational friction.',
-      ctaLabel: 'integration_instructions',
-      ctaHref: '/custom-business-tools',
-      mediaImage: '',
-      mediaAlt: 'Python,React,Automation',
-      layout: 'stacked'
-    }),
-    sectionWithFallback(page, 4, {
-      id: 'service-card-3',
-      heading: 'Secure Online Shops',
-      body: 'Robust retail systems built for secure payments and performance. We prioritize high-security payment processing and custom inventory integrations.',
-      ctaLabel: 'shopping_cart',
-      ctaHref: '/secure-online-shops',
-      mediaImage: '',
-      mediaAlt: 'WooCommerce,Store,Security',
-      layout: 'stacked'
-    }),
-    sectionWithFallback(page, 5, {
-      id: 'service-card-4',
-      heading: 'Mobile Business App',
-      body: 'Professional iOS and Android development using React Native to deliver native-feel experiences and reliable architecture.',
-      ctaLabel: 'smartphone',
-      ctaHref: '/mobile-business-app',
-      mediaImage: '',
-      mediaAlt: 'React Native,iOS,Android',
-      layout: 'stacked'
-    }),
-    sectionWithFallback(page, 6, {
-      id: 'service-card-5',
-      heading: 'Official Business Email',
-      body: 'Complete domain and business email setup for professional image, reliable deliverability, and better infrastructure control.',
-      ctaLabel: 'email',
-      ctaHref: '/official-business-email',
-      mediaImage: '',
-      mediaAlt: 'GWS,DNS Setup,Infrastructure',
-      layout: 'stacked'
-    })
-  ];
-
-  const trustIntro = sectionWithFallback(page, 7, {
-    id: 'service-trust-intro',
-    heading: 'Why Trust Vanaila',
-    body: '',
-    ctaLabel: '',
-    ctaHref: '',
-    mediaImage: '',
-    mediaAlt: '',
-    layout: 'stacked'
-  });
-  const trustItems = [
-    sectionWithFallback(page, 8, {
-      id: 'service-trust-1',
-      heading: 'Versatile Expertise',
-      body: 'From simple blogs to complex data pipelines, our team masters the full stack.',
-      ctaLabel: 'terminal',
-      ctaHref: '',
-      mediaImage: '',
-      mediaAlt: '',
-      layout: 'stacked'
-    }),
-    sectionWithFallback(page, 9, {
-      id: 'service-trust-2',
-      heading: 'Ecosystem Ready',
-      body: 'We build solutions that play well with your existing stack and third-party APIs.',
-      ctaLabel: 'hub',
-      ctaHref: '',
-      mediaImage: '',
-      mediaAlt: '',
-      layout: 'stacked'
-    }),
-    sectionWithFallback(page, 10, {
-      id: 'service-trust-3',
-      heading: '8+ Years Leadership',
-      body: 'Nearly a decade of technical excellence and proven delivery for global clients.',
-      ctaLabel: 'verified',
-      ctaHref: '',
-      mediaImage: '',
-      mediaAlt: '',
-      layout: 'stacked'
-    })
-  ];
-
-  const cta = sectionWithFallback(page, 11, {
-    id: 'service-cta',
-    heading: 'Ready to scale your|digital infrastructure?',
-    body: 'Let\'s discuss how our engineering approach can solve your specific business challenges. No commitment, just technical clarity.',
-    ctaLabel: 'Claim Free Consultation',
+    heading: 'Tailored digital infrastructure, built around your goals.',
+    body: "End-to-end technical solutions engineered for performance and scale. We don't sell one-size-fits-all — we choose the optimal stack for your goals, whether you're a high-growth startup, a global corporation, or a mission-driven non-profit.",
+    ctaLabel: 'Claim free consultation',
     ctaHref: '/contact',
     mediaImage: '',
     mediaAlt: '',
-    layout: 'stacked'
+    layout: 'stacked',
   });
 
-  const { primary: heroPrimary, accent: heroAccent } = splitAccent(
-    hero.heading,
-    'Tailored Digital Infrastructure'
-  );
-  const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(
-    cta.heading,
-    'digital infrastructure?'
+  const svcSections = SERVICE_DEFAULTS.map((svc, i) =>
+    sectionWithFallback(page, 2 + i, {
+      id: `service-card-${i + 1}`,
+      heading: svc.title,
+      body: svc.lede,
+      ctaLabel: svc.sub,
+      ctaHref: '/contact',
+      mediaImage: '',
+      mediaAlt: svc.tags.join(','),
+      layout: 'stacked',
+    })
   );
 
   return (
-    <main>
-      <Reveal as="section" className="relative pt-32 pb-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-blue-50/50 border border-blue-100/50 mb-8 backdrop-blur-sm mx-auto">
-            <span className="w-1.5 h-1.5 rounded-full bg-electricBlue" />
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-600">
-              {hero.ctaLabel || 'Tailored Solutions'}
-            </span>
-          </div>
-          <h1 className="hero-heading-safe font-display font-black text-deepSlate leading-[0.95] tracking-tighter mb-8">
-            {heroPrimary}
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-electricBlue to-indigo-500 italic font-light inline-block px-1 sm:px-2">
-              {heroAccent}
-            </span>
-          </h1>
-          <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">{hero.body}</p>
+    <main className="v-svc">
+      {/* HERO */}
+      <section className="v-svc-hero">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span key={i} />
+          ))}
         </div>
-      </Reveal>
 
-      <Reveal as="section" className="py-20 relative">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-display font-black text-deepSlate mb-6">
-              {intro.heading}
-            </h2>
-            <p className="max-w-3xl mx-auto text-lg text-slate-500 font-light leading-relaxed">{intro.body}</p>
-          </div>
+        <nav className="v-svc-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/" onMouseEnter={() => setMode('link')} onMouseLeave={() => setMode('default')}>
+            Home
+          </Link>
+          <span>/</span>
+          <span>Solutions</span>
+        </nav>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {cards.map((card, index) => {
-              const tags = (card.mediaAlt || '')
-                .split(',')
-                .map((row) => row.trim())
-                .filter((row) => row.length > 0)
-                .slice(0, 3);
+        <div className="v-svc-hero-meta">
+          <span>[ SOLUTIONS / 06 SERVICES ]</span>
+          <span>END-TO-END · STACK-AGNOSTIC</span>
+          <span className="v-svc-status">● BOOKING NEW PROJECTS</span>
+        </div>
 
-              return (
-                <Link
-                  key={card.id}
-                  href={card.ctaHref || '/service'}
-                  className="glass-panel p-10 rounded-[2.5rem] bg-white hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 group relative block"
-                >
-                  <div className="absolute top-8 right-10 text-[10px] font-black text-slate-100 group-hover:text-slate-200 transition-colors">
-                    #{index + 1}
-                  </div>
-                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-electricBlue mb-8 group-hover:bg-electricBlue group-hover:text-white transition-colors shadow-sm">
-                    <SymbolIcon name={card.ctaLabel || 'language'} />
-                  </div>
-                  <h3 className="text-2xl font-display font-bold text-deepSlate mb-4">{card.heading}</h3>
-                  <p className="text-slate-500 font-light text-sm leading-relaxed mb-8 min-h-[80px]">
-                    {card.body}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.length > 0
-                      ? tags.map((tag) => (
-                          <span
-                            key={`${card.id}-${tag}`}
-                            className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-full text-[8px] font-bold uppercase tracking-widest text-slate-400"
-                          >
-                            {tag}
-                          </span>
-                        ))
-                      : null}
-                  </div>
-                </Link>
-              );
-            })}
+        <h1 className="v-svc-h1">
+          Tailored digital
+          <br />
+          <em>infrastructure</em>,
+          <br />
+          built around <del>templates.</del>
+          <br />
+          <em>your goals.</em>
+        </h1>
+
+        <div className="v-svc-hero-foot">
+          <p>{heroSection.body}</p>
+          <div className="v-svc-actions">
+            <Link
+              href="/contact"
+              className="v-svc-btn-primary"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Claim free consultation</span>
+              <span>→</span>
+            </Link>
+            <Link
+              href="/portfolio"
+              className="v-svc-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              See selected work
+            </Link>
           </div>
         </div>
-      </Reveal>
 
-      <Reveal as="section" className="py-24 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-center">
-          <h2 className="text-4xl font-display font-black text-deepSlate mb-20">{trustIntro.heading}</h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            {trustItems.map((item) => (
-              <div className="space-y-6" key={item.id}>
-                <div className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-electricBlue mx-auto shadow-sm">
-                  <SymbolIcon className="text-3xl" name={item.ctaLabel || 'verified'} />
-                </div>
-                <h4 className="text-xl font-bold font-display text-deepSlate">{item.heading}</h4>
-                <p className="text-slate-500 text-sm leading-relaxed font-light">{item.body}</p>
-              </div>
-            ))}
-          </div>
+        <div className="v-svc-index">
+          {SERVICE_DEFAULTS.map((svc) => (
+            <a
+              key={svc.n}
+              href={`#svc-${svc.n}`}
+              className="v-svc-pill"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span className="v-svc-pill-n">{svc.n}</span>
+              <span>{svc.tag}</span>
+            </a>
+          ))}
         </div>
-      </Reveal>
+      </section>
 
-      <Reveal as="section" className="relative py-40 overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 lg:px-12 relative z-10 w-full text-center">
-          <div className="glass-panel p-16 md:p-24 rounded-[4rem] text-center relative overflow-hidden bg-white/50 w-full shadow-2xl shadow-slate-200">
-            <div className="relative z-10 w-full max-w-4xl mx-auto">
-              <h2 className="cta-heading-safe font-display font-black text-deepSlate leading-[0.95] mb-8 tracking-tighter pb-4">
-                {ctaPrimary}
-                <br />
-                <span className="text-brand-gradient italic font-light inline-block px-1 sm:px-2">{ctaAccent}</span>
-              </h2>
-              <p className="text-slate-500 text-lg md:text-xl font-light mb-12 max-w-xl mx-auto">
-                {cta.body}
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <Link
-                  href={cta.ctaHref || '/contact'}
-                  className="group relative px-12 py-6 bg-vanailaNavy text-white font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full overflow-hidden hover:shadow-2xl hover:shadow-blue-900/30 transition-all duration-300 inline-block"
-                >
-                  <span className="relative z-10 group-hover:text-white transition-colors">
-                    {cta.ctaLabel || 'Claim Free Consultation'}
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-electricBlue to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Link>
-              </div>
+      {/* SERVICE BLOCKS */}
+      {SERVICE_DEFAULTS.map((svc, i) => {
+        const section = svcSections[i];
+        const tags = (section.mediaAlt || svc.tags.join(','))
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean);
+
+        return (
+          <section
+            id={`svc-${svc.n}`}
+            key={svc.n}
+            className={`v-svc-block v-svc-block-${svc.tone}`}
+            style={{ '--accent': svc.accent } as CSSProperties}
+          >
+            <div className="v-svc-block-marker">
+              <span className="v-svc-block-n">{svc.n}</span>
+              <span className="v-svc-block-tag">{svc.tag}</span>
             </div>
+
+            <div className="v-svc-block-head">
+              <h2>{section.heading || svc.title}</h2>
+              <span className="v-svc-block-sub">{section.ctaLabel || svc.sub}</span>
+            </div>
+
+            <p className="v-svc-lede">{section.body || svc.lede}</p>
+
+            <div className="v-svc-deliverables">
+              {svc.blocks.map((block, bi) => (
+                <div key={bi} className="v-svc-deliverable">
+                  <div className="v-svc-deliverable-header">
+                    <span>{String(bi + 1).padStart(2, '0')}</span>
+                    <span className="v-svc-deliverable-bar" />
+                  </div>
+                  <h3>{block.k}</h3>
+                  <p>{block.v}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="v-svc-block-foot">
+              <div className="v-svc-tags">
+                {tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+              <Link
+                href="/contact"
+                className="v-svc-discuss-link"
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
+              >
+                Discuss this solution <span>→</span>
+              </Link>
+            </div>
+          </section>
+        );
+      })}
+
+      {/* WHY US */}
+      <section className="v-svc-why">
+        <div className="v-svc-why-head">
+          <span className="v-svc-why-eyebrow">[ TRUST ] WHY ORGANIZATIONS CHOOSE VANAILA</span>
+          <h2>
+            Eight years of
+            <br />
+            engineering, <em>compounding.</em>
+          </h2>
+        </div>
+        <div className="v-svc-why-grid">
+          {TRUST_ITEMS.map((trust, i) => (
+            <div key={trust.k} className={`v-svc-why-cell v-svc-why-${trust.tone}`}>
+              <span className="v-svc-why-n">0{i + 1}</span>
+              <h3>{trust.k}</h3>
+              <p>{trust.v}</p>
+              <div className="v-svc-why-glyph">{trust.glyph}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span key={i} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ NEXT STEP ]</span>
+        <h2>
+          Pick a discipline,
+          <br />
+          or <span className="v-svc-cta-blue">compose them.</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>
+            Tell us what you&apos;re building. We&apos;ll come back within two business days with a recommended stack
+            and an honest scope — free, no commitment.
+          </p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href="/contact"
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              <span>Claim free consultation</span>
+              <span>→</span>
+            </Link>
+            <a
+              href="mailto:care@vanaila.com"
+              className="v-svc-cta-mail"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              or email care@vanaila.com
+            </a>
           </div>
         </div>
-      </Reveal>
+      </section>
     </main>
   );
 }
-
-
-
-
-
-
-
