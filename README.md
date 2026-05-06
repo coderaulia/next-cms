@@ -1,271 +1,149 @@
-# React CMS (Marketing + Blog)
+# Vanaila CMS
 
-Production-ready CMS for marketing websites using Next.js and TypeScript.
+Production-ready CMS starter for marketing websites, built with Next.js App Router, TypeScript, Drizzle ORM, and a reusable admin surface.
 
-It includes:
-- Editable landing pages (home, about, services, service details, partnership, contact)
-- Typed homepage block system (`hero`, `value_triplet`, `solutions_grid`, `why_split`, `logo_cloud`, `primary_cta`)
-- Blog management: create, edit, publish, unpublish, delete
-- Separate admin login + dedicated admin shell (no public header/footer in admin)
-- Website Settings module (General, Writing, Reading, Discussion, Media, Permalinks, Meta Tags, Sitemaps)
-- Technical SEO defaults: metadata, canonicals, OG/Twitter tags, sitemap, robots, JSON-LD
-- Dual persistence mode: local file store by default, Postgres when `DATABASE_URL` is configured
-- Database-backed admin users and cookie sessions when database mode is enabled
-- Working admin modules for categories, contact submissions, and media library metadata
-- Optional Supabase Storage uploads for portfolio, page, and post media assets
+The app ships with editable public pages, blog, portfolio/case studies, media management, SEO controls, contact leads, analytics, audit logs, revision restore, scheduled publishing, and role-based admin access.
 
-## Stack Decision
+## Production Stack
 
-- Framework: Next.js App Router
-- Language: TypeScript (strict)
-- Package manager: npm
-- Test baseline: Vitest
-- Database: PostgreSQL-compatible database (recommended: Supabase) + Drizzle ORM
+- Next.js 16 App Router and React 19
+- TypeScript strict mode
+- Drizzle ORM with PostgreSQL-compatible databases
+- Local JSON persistence for development fallback
+- Managed media storage through Cloudflare R2 or Supabase Storage
+- Vitest for the test baseline
 
-## Getting Started
+## Production Requirements
 
-1. Install dependencies:
+Use managed services for production:
+
+- PostgreSQL-compatible database, recommended Supabase Postgres
+- Managed object storage, recommended Cloudflare R2 or Supabase Storage
+- Node.js 20 or newer
+- HTTPS public site URL
+
+Required environment variables:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+CMS_ADMIN_EMAIL=admin@example.com
+CMS_ADMIN_PASSWORD=strong-password
+CMS_ADMIN_NAME=Administrator
+DATABASE_URL=postgres-runtime-url
+```
+
+Recommended production variables:
+
+```bash
+DATABASE_URL_MIGRATION=postgres-migration-url
+CMS_DB_POOL_MAX=2
+CMS_STORAGE_QUOTA_MB=10000
+```
+
+For media storage, configure either R2 or Supabase. R2 is preferred when bandwidth cost matters.
+
+## Local Development
 
 ```bash
 npm install
-```
-
-2. Configure environment:
-
-```bash
 cp .env.example .env.local
-```
-
-3. Start development server:
-
-```bash
 npm run dev
 ```
 
-4. Open:
+Open:
+
 - Public site: `http://localhost:3000`
 - Admin login: `http://localhost:3000/admin/login`
 
-## Admin Access
+File mode works when `DATABASE_URL` is not set. Use it for local exploration only; production should use database mode.
 
-Preferred setup:
-- Set `CMS_ADMIN_EMAIL`
-- Set `CMS_ADMIN_PASSWORD`
-- Optional: set `CMS_ADMIN_NAME`
+## Database And Media Setup
 
-Behavior:
-- The first admin login bootstraps an admin user into the database if `admin_users` is empty.
-- Admin UI uses secure cookie sessions.
-- Legacy `CMS_ADMIN_TOKEN` / `x-admin-token` support remains only as a compatibility fallback for migration and tests.
-
-## Scripts
-
-- `npm run dev` - start dev server
-- `npm run build` - production build
-- `npm run analyze` - production build with bundle analyzer report
-- `npm run audit:size` - report `public/` and build output sizes
-- `npm run build:audit` - production build followed by size audit
-- `npm run start` - run production server
-- `npm run lint` - eslint
-- `npm run typecheck` - TypeScript checks
-- `npm run test` - Vitest tests
-- `npm run check` - lint + typecheck + test
-- `npm run db:generate` - generate Drizzle SQL migrations
-- `npm run db:migrate` - apply migrations
-- `npm run db:push` - push schema directly to database
-- `npm run db:studio` - open Drizzle Studio
-- `npm run db:seed:file` - import local `data/content.json` if present, otherwise seed sanitized defaults or a fixture via `--fixture <name>`
-- `npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio"` - generate a new client starter from this repo
-- `npm run media:migrate:supabase:dry` - preview which `/media/...` and `/portfolio/...` assets will be uploaded and rewritten
-- `npm run media:migrate:supabase` - upload local assets to Supabase Storage and rewrite stored CMS URLs
-
-## Bootstrap a New Client Starter
-
-Use the generator when you want a fresh client project based on this repo without manually editing seed files.
-
-Example:
+For a new production environment:
 
 ```bash
-npm run bootstrap:client -- \
-  --output ../acme-cms \
-  --site-name "Acme Studio" \
-  --variant portfolio-case-studies \
-  --fixture portfolio-case-studies \
-  --color-dark "#17304a" \
-  --color-primary "#0f79ff" \
-  --color-secondary "#7c3aed" \
-  --color-accent "#14b8a6" \
-  --color-text "#0f172a"
+npm run db:migrate
+npm run db:seed:file
+npm run media:migrate:supabase:dry
 ```
 
-What the generator customizes in the output project:
-- package name
-- tracked `data/content.json` starter content
-- `src/config/site-profile.ts`
-- `.env.example`
-- `tailwind.config.mjs` brand tokens
-- `src/app/globals.css` core CSS palette tokens
-
-Supported modules:
-- `services`
-- `blog`
-- `portfolio`
-- `partnership`
-
-Supported variants:
-- `brochure`
-- `blog-seo`
-- `portfolio-case-studies`
-- `lead-gen`
-
-Supported fixture presets:
-- `full-service`
-- `brochure`
-- `blog-seo`
-- `portfolio-case-studies`
-- `lead-gen`
-
-Supported seeded top-level pages:
-- `about`
-- `service`
-- `partnership`
-- `contact`
-
-`home` is always included. If you enable `services`, the service overview page and all service detail pages are seeded automatically.
-
-You can also provide a JSON config file:
+Run the real media migration only after the storage bucket and public URL are confirmed:
 
 ```bash
-npm run bootstrap:client -- --config ./docs/client-bootstrap.example.json
+npm run media:migrate:supabase
 ```
 
-Seed the database with one of the same deterministic fixtures when you want regression coverage across multiple client shapes:
+For direct schema sync during development, use:
 
 ```bash
-npm run db:seed:file -- --fixture brochure
+npm run db:push
 ```
 
-## Content Model
+## Verify A Release
 
-### Landing page
+Run the full local gate before deployment:
 
-- `id`: one of
-  - `home`
-  - `about`
-  - `service`
-  - `service-website-development`
-  - `service-custom-business-tools`
-  - `service-secure-online-shops`
-  - `service-mobile-business-app`
-  - `service-official-business-email`
-  - `partnership`
-  - `contact`
-- `title`, `navLabel`, `published`
-- `seo`: `metaTitle`, `metaDescription`, `slug`, `canonical`, `socialImage`, `noIndex`
-- `sections[]`: legacy section model for non-home pages
-- `homeBlocks[]` (home only): typed dynamic block model
-
-### Blog post
-
-- `id`
-- `title`, `excerpt`, `content`, `author`, `tags[]`, `coverImage`
-- `status`: `draft` or `published`
-- `publishedAt`, `updatedAt`
-- `seo`: `metaTitle`, `metaDescription`, `slug`, `canonical`, `socialImage`, `noIndex`
-
-Database note:
-- flexible content stays in JSONB (`seo`, `sections`, `homeBlocks`, gallery data)
-- query/filter facets are normalized when using Postgres:
-  - blog categories via `categories` + `post_categories`
-  - portfolio tags via `portfolio_tags` + `portfolio_project_tags`
-
-### Site settings
-
-- `general`: site identity, URL, timezone, language, date/time format
-- `writing`: default category/author/format/status + review policy
-- `reading`: homepage mode, posts page, posts-per-page, indexing preference
-- `discussion`: comment policy controls
-- `media`: image size defaults
-- `permalinks`: post/category/tag URL bases
-- `seo`: title template, default meta description/OG image, default noindex
-- `sitemap`: include/exclude pages/posts/lastmod
-
-## Admin Blog List API
-
-`GET /api/admin/blog` supports:
-- `includeDrafts=1`
-- `q`
-- `status=all|draft|published`
-- `category`
-- `dateSort=newest|oldest`
-- `page`
-- `pageSize`
-
-Response:
-- `posts[]`
-- `meta.total`
-- `meta.page`
-- `meta.pageSize`
-- `meta.categories[]`
-
-## SEO Behavior
-
-- Per-page and per-post metadata controls
-- Global SEO defaults from Website Settings
-- Canonical URLs
-- Open Graph + Twitter tags
-- `/sitemap.xml` respects sitemap settings and indexing flags
-- `/robots.txt` respects indexing flags and sitemap enabled state
-- Structured data:
-  - Organization + WebSite (global)
-  - BlogPosting (blog detail pages)
-
-## Folder Structure
-
-```txt
-src/
-  app/
-    (public pages, admin pages, api routes, sitemap, robots)
-  components/
-    home/
-      blocks/
-    admin/
-  db/
-  features/cms/
-  services/
-  tests/
-data/
-  content.json (generated locally, gitignored)
-docs/
-  admin-usage.md
-  deployment-handoff.md
+```bash
+npm run check
+npm run build
 ```
 
-## Deployment Notes
+Optional size checks:
 
-- Set `NEXT_PUBLIC_SITE_URL` to production domain.
-- Set `CMS_ADMIN_EMAIL`, `CMS_ADMIN_PASSWORD`, and `CMS_ADMIN_NAME`.
-- For database mode, set `DATABASE_URL` and optionally `DATABASE_URL_MIGRATION`.
-- For Supabase-backed media uploads, set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET`.
-- Run `npm run media:migrate:supabase:dry` before production cutover, then `npm run media:migrate:supabase` once the bucket is ready.
-- If you need old `/media/...` or `/portfolio/...` paths to resolve from a CDN or Supabase public bucket, set `MEDIA_PUBLIC_BASE_URL`.
-- Local file persistence still works when `DATABASE_URL` is not set, but a database is the recommended production path.
-- For Hostinger deployment, use database mode and Supabase Storage instead of relying on local uploaded files.
+```bash
+npm run audit:src
+npm run build:audit
+```
 
-See:
-- [Admin usage guide](./docs/admin-usage.md)
+Expected production validation:
+
+- ESLint passes
+- TypeScript passes
+- Vitest passes
+- Next production build succeeds
+- `/`, `/admin/login`, `/sitemap.xml`, and `/robots.txt` load correctly
+
+## Deployment Checklist
+
+1. Set production environment variables.
+2. Run migrations against the production database.
+3. Seed initial content if needed.
+4. Configure R2 or Supabase Storage for uploads.
+5. Rotate bootstrap admin credentials after first login.
+6. Confirm at least one `super_admin` user exists.
+7. Verify Dashboard, Settings, Media, Team, Analytics, and Audit Log.
+8. Verify image uploads and revision restore.
+9. Confirm sitemap, robots, metadata, and indexing settings.
+10. Run a final `npm run check` and `npm run build`.
+
+## Common Commands
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run check
+npm run test
+npm run db:migrate
+npm run db:seed:file
+npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio"
+```
+
+## Documentation
+
+- [Docs index](./docs/README.md)
 - [Deployment handoff](./docs/deployment-handoff.md)
-- [Phase 4 testing checklist](./docs/testing-phase-4.md)
+- [Admin usage guide](./docs/admin-usage.md)
+- [Technical reference](./docs/technical-reference.md)
 - [Client reuse playbook](./docs/client-reuse-playbook.md)
 - [Supabase + Hostinger setup](./docs/supabase-hostinger-setup.md)
 - [Security hardening notes](./docs/security-hardening.md)
+- [Source audit and gzip plan](./docs/src-audit-gzip-plan.md)
 
-## Assumptions
+## Operational Notes
 
-- Single language deployment.
-- Free/open-source libraries only.
-
-## Risks
-
-- Existing content entries that point to files no longer available in `public/` cannot be auto-recovered; the migration script will report those missing keys.
-- SEO outcomes depend on content quality and ongoing strategy.
+- Do not rely on local disk for long-term production uploads.
+- Keep database and storage credentials least-privilege where possible.
+- Add upstream WAF/CDN rate limiting for public launch.
+- Back up database content and media references before major imports.
+- SEO performance still depends on content quality, not only technical output.
