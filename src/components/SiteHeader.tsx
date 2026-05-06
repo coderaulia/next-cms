@@ -1,7 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 
 import { siteProfile } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
+
+import { useCursorMode } from './CustomCursor';
 
 type NavItem = {
   href: string;
@@ -17,105 +21,148 @@ type SiteHeaderProps = {
 };
 
 export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
+  const { setMode } = useCursorMode();
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
   const brandLogo = settings.branding.headerLogo || settings.organizationLogo;
-  
+
   const mapLink = (link: NavItem): NavItem => ({
     href: link.href,
     label: link.label,
-    children: link.children?.filter((c) => c.enabled).map(mapLink)
+    children: link.children?.filter((c) => c.enabled).map(mapLink),
   });
 
-  const configuredLinks = settings.navigation.headerLinks
-    .filter((link) => link.enabled)
-    .map(mapLink);
-    
+  const configuredLinks = settings.navigation.headerLinks.filter((l) => l.enabled).map(mapLink);
   const links = configuredLinks.length > 0 ? configuredLinks : navItems;
 
   return (
-    <header className="sticky w-full z-[100] top-0 bg-white/80 backdrop-blur-md border-b border-white/40">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="flex justify-between items-center h-20 md:h-24">
-          <Link href="/" className="flex items-center gap-3 md:gap-4 group cursor-pointer no-underline">
-            {brandLogo ? (
-              <img
-                src={brandLogo}
-                alt={brandName}
-                className="h-10 md:h-12 w-auto max-w-[180px] object-contain"
-              />
-            ) : (
-              <>
-                <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-vanailaNavy to-deepSlate rounded-xl flex items-center justify-center text-white font-display font-black text-lg md:text-xl rotate-3 shadow-lg group-hover:rotate-12 transition-transform duration-500">
-                  {siteProfile.brand.mark}
-                </div>
-                <span className="font-display text-lg md:text-xl font-black tracking-tighter text-deepSlate">
-                  {brandName}
-                  <span className="text-electricBlue">.</span>
-                </span>
-              </>
-            )}
-          </Link>
-
-          <nav className="hidden md:flex space-x-8 items-center" aria-label="Primary navigation">
-            {links.map((link) => {
-              if (link.children && link.children.length > 0) {
-                return (
-                  <div key={`${link.href}-${link.label}`} className="relative group">
-                    <button
-                      className="text-[10px] font-bold uppercase tracking-widest text-slate-600 group-hover:text-electricBlue transition-colors flex items-center gap-1.5 py-2"
-                    >
-                      {link.label}
-                      <svg className="w-3 h-3 text-slate-400 group-hover:text-electricBlue transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      <div className="bg-white border border-slate-100 shadow-xl rounded-2xl p-2 w-48 flex flex-col gap-1">
-                        {link.children.map((child) => (
-                          <Link
-                            key={`${child.href}-${child.label}`}
-                            href={child.href}
-                            className="block px-4 py-3 text-xs font-semibold text-slate-600 hover:text-electricBlue hover:bg-slate-50 rounded-xl transition-colors no-underline"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  key={`${link.href}-${link.label}`}
-                  className="text-[10px] font-bold uppercase tracking-widest text-slate-600 hover:text-electricBlue transition-colors"
-                  href={link.href}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            <Link
-              className="px-6 py-2.5 bg-vanailaNavy text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:shadow-lg hover:shadow-blue-900/20 hover:bg-deepSlate transition-all border border-slate-700 no-underline"
-              href={settings.navigation.headerCtaHref || '/contact'}
-              data-analytics-event="cta_click"
-              data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
-            >
-              {settings.navigation.headerCtaLabel || 'Book Consultation'}
-            </Link>
-          </nav>
-
-          <Link
-            href={settings.navigation.headerCtaHref || '/contact'}
-            className="md:hidden px-4 py-2 bg-vanailaNavy text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
-            data-analytics-event="cta_click"
-            data-analytics-label={settings.navigation.headerCtaLabel || 'Mobile header CTA'}
-          >
-            {settings.navigation.headerCtaLabel || 'Contact'}
-          </Link>
-        </div>
+    <header
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '22px 48px',
+        borderBottom: '1px solid rgba(10,14,26,0.12)',
+        position: 'sticky',
+        top: 0,
+        background: 'rgba(244,244,240,0.88)',
+        backdropFilter: 'blur(12px)',
+        zIndex: 100,
+        fontFamily: 'var(--font-tight, sans-serif)',
+        letterSpacing: '-0.011em',
+      }}
+    >
+      {/* Logo + sub-mark */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <Link
+          href="/"
+          className="no-underline"
+          onMouseEnter={() => setMode('link')}
+          onMouseLeave={() => setMode('default')}
+        >
+          {brandLogo ? (
+            <img
+              src={brandLogo}
+              alt={brandName}
+              style={{ height: 36, width: 'auto', maxWidth: 160, objectFit: 'contain' }}
+            />
+          ) : (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-serif, Georgia)',
+                  fontSize: 26,
+                  fontStyle: 'italic',
+                  letterSpacing: '-0.02em',
+                  color: '#0A0E1A',
+                  lineHeight: 1,
+                }}
+              >
+                {brandName.toLowerCase()}
+              </span>
+              <span style={{ color: '#0033FF', fontSize: 22, lineHeight: 1 }}>●</span>
+            </span>
+          )}
+        </Link>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono, monospace)',
+            fontSize: 10,
+            letterSpacing: '0.1em',
+            color: 'rgba(10,14,26,0.55)',
+            paddingLeft: 14,
+            borderLeft: '1px solid rgba(10,14,26,0.12)',
+          }}
+        >
+          {siteProfile.brand.wordmark.replace('.', '').toUpperCase()} · SINCE 2017
+        </span>
       </div>
+
+      {/* Nav links */}
+      <nav className="hidden md:flex" style={{ gap: 36 }}>
+        {links.map((link) => (
+          <Link
+            key={`${link.href}-${link.label}`}
+            href={link.href}
+            className="no-underline"
+            style={{ fontSize: 14, color: '#0A0E1A', transition: 'color 0.2s' }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = '#0033FF';
+              setMode('link');
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = '#0A0E1A';
+              setMode('default');
+            }}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+
+      {/* CTA pill */}
+      <Link
+        href={settings.navigation.headerCtaHref || '/contact'}
+        className="no-underline hidden md:inline-flex items-center"
+        style={{
+          background: '#0A0E1A',
+          color: '#F4F4F0',
+          padding: '10px 18px',
+          borderRadius: 999,
+          fontSize: 13,
+          gap: 10,
+          transition: 'background 0.2s',
+        }}
+        data-analytics-event="cta_click"
+        data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLAnchorElement).style.background = '#0033FF';
+          setMode('link');
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLAnchorElement).style.background = '#0A0E1A';
+          setMode('default');
+        }}
+      >
+        {settings.navigation.headerCtaLabel || 'Free consultation'}
+        <span>→</span>
+      </Link>
+
+      {/* Mobile CTA */}
+      <Link
+        href={settings.navigation.headerCtaHref || '/contact'}
+        className="md:hidden no-underline"
+        style={{
+          background: '#0A0E1A',
+          color: '#F4F4F0',
+          padding: '8px 16px',
+          borderRadius: 999,
+          fontSize: 12,
+        }}
+        data-analytics-event="cta_click"
+        data-analytics-label={settings.navigation.headerCtaLabel || 'Mobile header CTA'}
+      >
+        {settings.navigation.headerCtaLabel || 'Contact'}
+      </Link>
     </header>
   );
 }

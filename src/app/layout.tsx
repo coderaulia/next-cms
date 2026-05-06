@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Sora, Playfair_Display } from 'next/font/google';
+import { Sora, Playfair_Display, Inter_Tight, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 
@@ -32,6 +32,28 @@ const fontAccent = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-accent',
   style: ['italic'],
+  display: 'swap'
+});
+
+const fontTight = Inter_Tight({
+  subsets: ['latin'],
+  variable: '--font-tight',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap'
+});
+
+const fontSerif = Instrument_Serif({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  style: ['normal', 'italic'],
+  weight: '400',
+  display: 'swap'
+});
+
+const fontMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '500'],
   display: 'swap'
 });
 
@@ -105,7 +127,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={settings.general.language || 'en'} className={`${fontBody.variable} ${fontAccent.variable}`}>
+    <html lang={settings.general.language || 'en'} className={`${fontBody.variable} ${fontAccent.variable} ${fontTight.variable} ${fontSerif.variable} ${fontMono.variable}`}>
       <body className="v2-site">
         <ChunkRecoveryScript nonce={nonce} />
         <Suspense fallback={null}>

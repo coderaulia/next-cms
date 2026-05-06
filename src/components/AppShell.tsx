@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 
 import type { SiteSettings } from '@/features/cms/types';
 
+import { CustomCursorProvider } from './CustomCursor';
 import { SiteFooter } from './SiteFooter';
 import { SiteHeader } from './SiteHeader';
 
@@ -28,10 +29,12 @@ export function AppShell({ siteName, navItems, settings, children }: AppShellPro
   }
 
   return (
-    <>
-      <SiteHeader siteName={siteName} navItems={navItems} settings={settings} />
-      <div className="v2-page">{children}</div>
-      <SiteFooter siteName={siteName} settings={settings} />
-    </>
+    <CustomCursorProvider>
+      <div className="v-cursor-none" style={{ background: '#F4F4F0' }}>
+        <SiteHeader siteName={siteName} navItems={navItems} settings={settings} />
+        <div className="v2-page">{children}</div>
+        <SiteFooter siteName={siteName} settings={settings} />
+      </div>
+    </CustomCursorProvider>
   );
 }
