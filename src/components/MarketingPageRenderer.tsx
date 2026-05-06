@@ -39,7 +39,12 @@ export function MarketingPageRenderer({ page }: MarketingPageRendererProps) {
               </div>
               {section.layout === 'split' ? (
                 <div>
-                  <img src={section.mediaImage} alt={section.mediaAlt || section.heading} />
+                  <img
+                    src={section.mediaImage}
+                    alt={section.mediaAlt || section.heading}
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </div>
               ) : null}
             </div>

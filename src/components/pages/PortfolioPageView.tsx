@@ -131,7 +131,11 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
             onMouseLeave={() => setMode('default')}
           >
             <div className="v-blog-featured-image">
-              {featured.coverImage ? <img src={featured.coverImage} alt={featured.title} /> : <span>{featured.serviceType || 'Case Study'}</span>}
+              {featured.coverImage ? (
+                <img src={featured.coverImage} alt={featured.title} decoding="async" loading="lazy" />
+              ) : (
+                <span>{featured.serviceType || 'Case Study'}</span>
+              )}
             </div>
             <div className="v-blog-featured-copy">
               <div className="v-svc-block-head">
@@ -212,7 +216,11 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
                 onMouseLeave={() => setMode('default')}
               >
                 <div className="v-blog-card-image">
-                  {project.coverImage ? <img src={project.coverImage} alt={project.title} /> : <span>{project.serviceType || 'Project'}</span>}
+                  {project.coverImage ? (
+                    <img src={project.coverImage} alt={project.title} decoding="async" loading="lazy" />
+                  ) : (
+                    <span>{project.serviceType || 'Project'}</span>
+                  )}
                 </div>
                 <div className="v-blog-card-body">
                   <span className="v-blog-card-kicker">{project.serviceType || 'Implementation'}</span>

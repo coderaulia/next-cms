@@ -1,16 +1,16 @@
 'use client';
 
-import { domAnimation, LazyMotion, m, useReducedMotion } from 'framer-motion';
+import { createElement, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { revealTransitions, revealVariants, revealViewport, type RevealPreset } from './presets';
+import { revealViewport, type RevealPreset } from './presets';
 
 type GroupTag = 'div' | 'section' | 'ul';
 type ItemTag = 'div' | 'article' | 'li';
 
 type StaggerGroupProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   as?: GroupTag;
   staggerChildren?: number;
@@ -20,22 +20,16 @@ type StaggerGroupProps = {
 };
 
 type StaggerItemProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   as?: ItemTag;
   preset?: RevealPreset;
 };
 
-const groupMap = {
-  div: m.div,
-  section: m.section,
-  ul: m.ul
-};
-
-const itemMap = {
-  div: m.div,
-  article: m.article,
-  li: m.li
+const presetClassNames: Record<RevealPreset, string> = {
+  fadeUp: 'reveal-motion-fade-up',
+  fadeIn: 'reveal-motion-fade-in',
+  scaleInSoft: 'reveal-motion-scale-in-soft'
 };
 
 export function StaggerGroup({
@@ -47,54 +41,55 @@ export function StaggerGroup({
   once = revealViewport.once,
   amount = revealViewport.amount
 }: StaggerGroupProps) {
-  const reducedMotion = useReducedMotion();
+  const nodeRef = useRef<HTMLElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  if (reducedMotion) {
-    const StaticTag = as;
-    return <StaticTag className={className}>{children}</StaticTag>;
-  }
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return undefined;
 
-  const MotionTag = groupMap[as];
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return undefined;
+    }
 
-  return (
-    <LazyMotion features={domAnimation}>
-      <MotionTag
-        className={cn(className)}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once, amount }}
-        variants={{
-          hidden: { opacity: 1 },
-          visible: {
-            opacity: 1,
-            transition: {
-              staggerChildren,
-              delayChildren
-            }
-          }
-        }}
-      >
-        {children}
-      </MotionTag>
-    </LazyMotion>
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const nextVisible = Boolean(entry?.isIntersecting);
+        setIsVisible(nextVisible);
+        if (nextVisible && once) {
+          observer.disconnect();
+        }
+      },
+      { threshold: amount }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [amount, once]);
+
+  return createElement(
+    as,
+    {
+      className: cn('reveal-stagger', isVisible && 'is-visible', className),
+      ref: (node: HTMLElement | null) => {
+        nodeRef.current = node;
+      },
+      style: {
+        '--stagger-delay': `${delayChildren}s`,
+        '--stagger-step': `${staggerChildren}s`
+      } as CSSProperties
+    },
+    children
   );
 }
 
 export function StaggerItem({ children, className, as = 'div', preset = 'fadeUp' }: StaggerItemProps) {
-  const reducedMotion = useReducedMotion();
-
-  if (reducedMotion) {
-    const StaticTag = as;
-    return <StaticTag className={className}>{children}</StaticTag>;
-  }
-
-  const MotionTag = itemMap[as];
-
-  return (
-    <LazyMotion features={domAnimation}>
-      <MotionTag className={cn(className)} variants={revealVariants[preset]} transition={revealTransitions[preset]}>
-        {children}
-      </MotionTag>
-    </LazyMotion>
+  return createElement(
+    as,
+    {
+      className: cn('reveal-motion', 'reveal-stagger-item', presetClassNames[preset], className)
+    },
+    children
   );
 }

@@ -1,8 +1,16 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
-import { useRef, type CSSProperties } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentPropsWithoutRef,
+  type CSSProperties,
+  type RefObject,
+  type ReactNode
+} from 'react';
 
 import type { HeroBlock, LandingPage, PortfolioProject, PrimaryCtaBlock, SolutionsGridBlock, ValueTripletBlock, WhySplitBlock } from '@/features/cms/types';
 
@@ -35,9 +43,93 @@ const staggerSlow = {
   visible: { transition: { staggerChildren: 0.15 } },
 };
 
-function Section({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) {
+type MotionOnlyProps = {
+  animate?: unknown;
+  initial?: unknown;
+  transition?: unknown;
+  variants?: unknown;
+};
+
+function omitMotionProps<T extends MotionOnlyProps>(props: T) {
+  const { animate, initial, transition, variants, ...rest } = props;
+  void animate;
+  void initial;
+  void transition;
+  void variants;
+  return rest;
+}
+
+const MotionDiv = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<'div'> & MotionOnlyProps>((props, ref) => (
+  <div ref={ref} {...omitMotionProps(props)} />
+));
+MotionDiv.displayName = 'MotionDiv';
+
+const MotionSection = forwardRef<HTMLElement, ComponentPropsWithoutRef<'section'> & MotionOnlyProps>((props, ref) => (
+  <section ref={ref} {...omitMotionProps(props)} />
+));
+MotionSection.displayName = 'MotionSection';
+
+const MotionHeading = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<'h1'> & MotionOnlyProps>((props, ref) => (
+  <h1 ref={ref} {...omitMotionProps(props)} />
+));
+MotionHeading.displayName = 'MotionHeading';
+
+const MotionSubheading = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<'h2'> & MotionOnlyProps>((props, ref) => (
+  <h2 ref={ref} {...omitMotionProps(props)} />
+));
+MotionSubheading.displayName = 'MotionSubheading';
+
+const MotionArticle = forwardRef<HTMLElement, ComponentPropsWithoutRef<'article'> & MotionOnlyProps>((props, ref) => (
+  <article ref={ref} {...omitMotionProps(props)} />
+));
+MotionArticle.displayName = 'MotionArticle';
+
+const MotionSpan = forwardRef<HTMLSpanElement, ComponentPropsWithoutRef<'span'> & MotionOnlyProps>((props, ref) => (
+  <span ref={ref} {...omitMotionProps(props)} />
+));
+MotionSpan.displayName = 'MotionSpan';
+
+const motion = {
+  article: MotionArticle,
+  div: MotionDiv,
+  h1: MotionHeading,
+  h2: MotionSubheading,
+  section: MotionSection,
+  span: MotionSpan
+};
+
+function useInViewOnce(ref: RefObject<HTMLElement | null>, rootMargin = '-80px') {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || inView) return undefined;
+
+    if (!('IntersectionObserver' in window)) {
+      setInView(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [inView, ref, rootMargin]);
+
+  return inView;
+}
+
+function Section({ children, className, id }: { children: ReactNode; className?: string; id?: string }) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInViewOnce(ref);
   return (
     <motion.section ref={ref} className={className} id={id} initial="hidden" animate={inView ? 'visible' : 'hidden'} variants={stagger}>
       {children}
@@ -58,7 +150,7 @@ function splitHeroTitle(page: LandingPage) {
 
 export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps) {
   const { setMode } = useCursorMode();
-  const { hero, primary, accent } = splitHeroTitle(page);
+  const { hero, accent } = splitHeroTitle(page);
   const values = findBlock<ValueTripletBlock>(page, 'value_triplet');
   const solutions = findBlock<SolutionsGridBlock>(page, 'solutions_grid');
   const why = findBlock<WhySplitBlock>(page, 'why_split');
@@ -77,12 +169,10 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </div>
         <motion.div className="v-home-hero-meta" variants={fadeUp}>
           <span>[ 01 / Home ]</span>
-          <span>Est. 2018 / 8+ years / 50+ projects</span>
-          <span className="v-home-status">Booking new projects</span>
+          <span>Est. 2018 / 8+ years / 30+ projects</span>
+          <span className="v-home-status">Start your solution projects</span>
         </motion.div>
         <motion.h1 className="v-home-hero-title" variants={fadeUp} transition={{ delay: 0.1 }}>
-          {primary}
-          <br />
           <span>{accent.replace('Scaled Results.', 'Faster, smarter,')}</span>
           <br />
           and built to <del>struggle.</del>
@@ -204,7 +294,11 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
                 onMouseLeave={() => setMode('default')}
               >
                 <div className="v-home-work-image">
-                  {project.coverImage ? <img src={project.coverImage} alt={project.title} /> : <span>{project.serviceType}</span>}
+                  {project.coverImage ? (
+                    <img src={project.coverImage} alt={project.title} decoding="async" loading="lazy" />
+                  ) : (
+                    <span>{project.serviceType}</span>
+                  )}
                 </div>
                 <div className="v-home-work-meta">
                   <span>{project.serviceType}</span>

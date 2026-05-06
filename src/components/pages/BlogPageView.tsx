@@ -132,7 +132,11 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
             onMouseLeave={() => setMode('default')}
           >
             <div className="v-blog-featured-image">
-              {featured.coverImage ? <img src={featured.coverImage} alt={featured.title} /> : <span>{featured.tags[0] || 'Insight'}</span>}
+              {featured.coverImage ? (
+                <img src={featured.coverImage} alt={featured.title} decoding="async" loading="lazy" />
+              ) : (
+                <span>{featured.tags[0] || 'Insight'}</span>
+              )}
             </div>
             <div className="v-blog-featured-copy">
               <div className="v-svc-block-head">
@@ -208,7 +212,11 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
                 onMouseLeave={() => setMode('default')}
               >
                 <div className="v-blog-card-image">
-                  {post.coverImage ? <img src={post.coverImage} alt={post.title} /> : <span>{post.tags[0] || 'Insight'}</span>}
+                  {post.coverImage ? (
+                    <img src={post.coverImage} alt={post.title} decoding="async" loading="lazy" />
+                  ) : (
+                    <span>{post.tags[0] || 'Insight'}</span>
+                  )}
                 </div>
                 <div className="v-blog-card-body">
                   <span className="v-blog-card-kicker">{post.tags[0] || 'Insight'}</span>

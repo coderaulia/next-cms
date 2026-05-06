@@ -170,4 +170,41 @@ describe('CMS validators', () => {
     expect(page?.sections[0].mediaImage).toBe('');
     expect(media).toBeNull();
   });
+
+  it('sanitizes protocol-relative URLs from CMS payloads', () => {
+    const page = validateLandingPage({
+      id: 'partnership',
+      title: 'Partnership',
+      navLabel: 'Partnership',
+      published: true,
+      seo: {
+        metaTitle: 'Partnership',
+        metaDescription: 'desc',
+        slug: 'partnership',
+        canonical: '',
+        socialImage: '//evil.example/social.png',
+        noIndex: false
+      },
+      sections: [
+        {
+          id: 'cta',
+          heading: 'CTA',
+          body: 'Body',
+          ctaLabel: 'CTA',
+          ctaHref: '//evil.example',
+          mediaImage: '//evil.example/image.png',
+          layout: 'stacked',
+          theme: {
+            background: '#fff',
+            text: '#000',
+            accent: '#00f'
+          }
+        }
+      ]
+    });
+
+    expect(page?.seo.socialImage).toBe('');
+    expect(page?.sections[0].ctaHref).toBe('');
+    expect(page?.sections[0].mediaImage).toBe('');
+  });
 });

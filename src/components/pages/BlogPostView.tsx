@@ -20,7 +20,14 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
   return (
     <main className="bg-slate-50/30">
       <Reveal as="section" className="relative h-[60vh] min-h-[500px] w-full overflow-hidden bg-deepSlate">
-        {post.coverImage ? <img src={post.coverImage} alt={post.title} className="absolute inset-0 w-full h-full object-cover opacity-40" /> : null}
+        {post.coverImage ? (
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+            decoding="async"
+          />
+        ) : null}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-deepSlate/20 to-deepSlate/60" />
 
         <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col justify-end pb-24">
@@ -118,7 +125,15 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
                   className="glass-panel p-4 rounded-[2rem] bg-white hover:shadow-xl transition-all"
                 >
                   <div className="aspect-video rounded-[1.5rem] bg-slate-100 overflow-hidden mb-4">
-                    {item.coverImage ? <img src={item.coverImage} alt={item.title} className="w-full h-full object-cover" /> : null}
+                    {item.coverImage ? (
+                      <img
+                        src={item.coverImage}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    ) : null}
                   </div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-electricBlue mb-2">
                     {item.tags[0] || 'Insight'}
@@ -134,6 +149,5 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
     </main>
   );
 }
-
 
 

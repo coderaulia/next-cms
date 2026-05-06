@@ -42,29 +42,34 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
     setStatus('saving');
     setMessage('');
 
-    const response = await csrfFetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: form.name,
-        company: '',
-        email: form.email,
-        serviceCategory: form.serviceCategory,
-        projectOverview: form.projectOverview
-      })
-    });
+    try {
+      const response = await csrfFetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          company: '',
+          email: form.email,
+          serviceCategory: form.serviceCategory,
+          projectOverview: form.projectOverview
+        })
+      });
 
-    if (!response.ok) {
-      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        setStatus('error');
+        setMessage(payload?.error || 'Failed to submit your brief.');
+        return;
+      }
+
+      setStatus('success');
+      setMessage('Project brief submitted. We will respond within 24 business hours.');
+      void trackClientAnalyticsEvent('contact_submit', form.serviceCategory || 'Contact brief');
+      setForm(initialForm);
+    } catch {
       setStatus('error');
-      setMessage(payload?.error || 'Failed to submit your brief.');
-      return;
+      setMessage('Failed to submit your brief.');
     }
-
-    setStatus('success');
-    setMessage('Project brief submitted. We will respond within 24 business hours.');
-    void trackClientAnalyticsEvent('contact_submit', form.serviceCategory || 'Contact brief');
-    setForm(initialForm);
   };
 
   return (
@@ -82,6 +87,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
             <input
               type="text"
               required
+              maxLength={120}
               value={form.name}
               onChange={(event) => updateField('name', event.target.value)}
               placeholder="John Doe or Acme Inc."
@@ -93,6 +99,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
             <input
               type="email"
               required
+              maxLength={254}
               value={form.email}
               onChange={(event) => updateField('email', event.target.value)}
               placeholder="hello@yourbrand.com"
@@ -121,6 +128,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
           <textarea
             rows={4}
             required
+            maxLength={5000}
             value={form.projectOverview}
             onChange={(event) => updateField('projectOverview', event.target.value)}
             placeholder="Tell us about your project goals, timeline, and current pain points..."

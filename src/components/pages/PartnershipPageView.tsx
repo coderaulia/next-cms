@@ -47,7 +47,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       heading: 'Referral Alpha',
       body: 'Earn commissions by connecting clients with our engineering services.',
       ctaLabel: 'Referral',
-      ctaHref: '/contact',
+      ctaHref: '/contact?interest=partnership',
       mediaImage: '',
       mediaAlt: 'Client fit / qualified lead / shared trust',
       layout: 'stacked'
@@ -57,7 +57,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       heading: 'Technical Alliance',
       body: 'Embed our lead architects into your project workflow with white-label support.',
       ctaLabel: 'Alliance',
-      ctaHref: '/contact',
+      ctaHref: '/contact?interest=partnership',
       mediaImage: '',
       mediaAlt: 'Delivery bench / architecture support / escalation',
       layout: 'split'
@@ -67,7 +67,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
       heading: 'Service Expansion',
       body: 'Offer cloud infra and mobile app delivery under your own brand.',
       ctaLabel: 'Expansion',
-      ctaHref: '/contact',
+      ctaHref: '/contact?interest=partnership',
       mediaImage: '',
       mediaAlt: 'New capability / deeper retention / shared growth',
       layout: 'stacked'
@@ -177,7 +177,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
     heading: 'Ready to Build Partner Value?|Join our ecosystem network.',
     body: 'Tell us your capabilities and we will map the best collaboration model for your team.',
     ctaLabel: 'Start Partnership Discussion',
-    ctaHref: '/contact',
+    ctaHref: '/contact?interest=partnership',
     mediaImage: '',
     mediaAlt: '',
     layout: 'stacked'
@@ -185,6 +185,8 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
 
   const { primary: heroPrimary, accent: heroAccent } = splitAccent(hero.heading, 'Scale with Vanaila.');
   const { primary: ctaPrimary, accent: ctaAccent } = splitAccent(cta.heading, 'Join our ecosystem network.');
+  const partnershipContactHref = '/contact?interest=partnership';
+  const finalCtaHref = !cta.ctaHref || cta.ctaHref === '/contact' ? partnershipContactHref : cta.ctaHref;
 
   return (
     <main className="v-svc">
@@ -232,7 +234,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
               <span>-&gt;</span>
             </Link>
             <Link
-              href="/contact"
+              href="/contact?interest=partnership"
               className="v-svc-btn-ghost"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
@@ -344,7 +346,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
           <p>{cta.body}</p>
           <div className="v-svc-cta-actions">
             <Link
-              href={cta.ctaHref || '/contact'}
+              href={finalCtaHref}
               className="v-svc-btn-primary v-svc-btn-primary-lg"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

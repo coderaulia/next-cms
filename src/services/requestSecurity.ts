@@ -11,6 +11,8 @@ type RateLimitEntry = {
   resetAt: number;
 };
 
+type LimitedJsonResult = { ok: true; value: unknown } | { ok: false; response: NextResponse };
+
 declare global {
   var __cmsRateLimits: Map<string, RateLimitEntry> | undefined;
 }
@@ -249,6 +251,51 @@ export async function assertRateLimit(request: Request, scope: string, limit: nu
   return assertRateLimitInMemory(request, scope, limit, windowMs);
 }
 
+export async function readJsonWithLimit(request: Request, maxBytes: number): Promise<LimitedJsonResult> {
+  const contentLength = request.headers.get('content-length');
+  if (contentLength) {
+    const parsedLength = Number.parseInt(contentLength, 10);
+    if (Number.isFinite(parsedLength) && parsedLength > maxBytes) {
+      return {
+        ok: false,
+        response: NextResponse.json({ error: 'Request body too large.' }, { status: 413 })
+      };
+    }
+  }
+
+  const reader = request.body?.getReader();
+  if (!reader) {
+    return { ok: true, value: null };
+  }
+
+  const decoder = new TextDecoder();
+  let receivedBytes = 0;
+  let body = '';
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    receivedBytes += value.byteLength;
+    if (receivedBytes > maxBytes) {
+      return {
+        ok: false,
+        response: NextResponse.json({ error: 'Request body too large.' }, { status: 413 })
+      };
+    }
+
+    body += decoder.decode(value, { stream: true });
+  }
+
+  body += decoder.decode();
+
+  try {
+    return { ok: true, value: JSON.parse(body) };
+  } catch {
+    return { ok: true, value: null };
+  }
+}
+
 export function serializeJsonForScript(data: unknown) {
   return JSON.stringify(data)
     .replace(/</g, '\\u003c')
@@ -257,5 +304,4 @@ export function serializeJsonForScript(data: unknown) {
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029');
 }
-
 

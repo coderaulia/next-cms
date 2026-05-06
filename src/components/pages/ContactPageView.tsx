@@ -11,7 +11,10 @@ import type { LandingPage, SiteSettings } from '@/features/cms/types';
 type ContactPageViewProps = {
   page: LandingPage;
   settings?: Pick<SiteSettings, 'contact'>;
+  initialInterest?: string;
 };
+
+const PARTNERSHIP_INTEREST = 'Partnership / Referral';
 
 const SERVICES = [
   'Website Development',
@@ -20,9 +23,10 @@ const SERVICES = [
   'High-Conversion Landing Page',
   'Online Shop / E-Commerce',
   'Professional Business Email',
+  PARTNERSHIP_INTEREST,
 ] as const;
 
-export function ContactPageView({ page: _page, settings }: ContactPageViewProps) {
+export function ContactPageView({ settings, initialInterest }: ContactPageViewProps) {
   const { setMode } = useCursorMode();
   const c = settings?.contact;
 
@@ -33,7 +37,9 @@ export function ContactPageView({ page: _page, settings }: ContactPageViewProps)
   const companyName = c?.companyName || 'PT Vanaila Digital Vision';
   const addressLine1 = c?.addressLine1 || 'Bogor, Indonesia';
 
-  const [interests, setInterests] = useState<string[]>([]);
+  const [interests, setInterests] = useState<string[]>(() =>
+    initialInterest === PARTNERSHIP_INTEREST ? [PARTNERSHIP_INTEREST] : []
+  );
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
   const [emailField, setEmailField] = useState('');
@@ -48,25 +54,30 @@ export function ContactPageView({ page: _page, settings }: ContactPageViewProps)
     preventDefault();
     setStatus('saving');
     setErrorMsg('');
-    const res = await csrfFetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        company,
-        email: emailField,
-        serviceCategory: interests.join(', '),
-        projectOverview: overview,
-      }),
-    });
-    if (!res.ok) {
-      const payload = (await res.json().catch(() => null)) as { error?: string } | null;
+    try {
+      const res = await csrfFetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          company,
+          email: emailField,
+          serviceCategory: interests.join(', '),
+          projectOverview: overview,
+        }),
+      });
+      if (!res.ok) {
+        const payload = (await res.json().catch(() => null)) as { error?: string } | null;
+        setStatus('error');
+        setErrorMsg(payload?.error || 'Failed to submit. Please try again.');
+        return;
+      }
+      setStatus('success');
+      void trackClientAnalyticsEvent('contact_submit', interests.join(', ') || 'Contact brief');
+    } catch {
       setStatus('error');
-      setErrorMsg(payload?.error || 'Failed to submit. Please try again.');
-      return;
+      setErrorMsg('Failed to submit. Please try again.');
     }
-    setStatus('success');
-    void trackClientAnalyticsEvent('contact_submit', interests.join(', ') || 'Contact brief');
   };
 
   return (
@@ -159,6 +170,7 @@ export function ContactPageView({ page: _page, settings }: ContactPageViewProps)
                     type="text"
                     placeholder="Full name"
                     required
+                    maxLength={120}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -168,6 +180,7 @@ export function ContactPageView({ page: _page, settings }: ContactPageViewProps)
                   <input
                     type="text"
                     placeholder="Company / organization"
+                    maxLength={160}
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                   />
@@ -182,6 +195,7 @@ export function ContactPageView({ page: _page, settings }: ContactPageViewProps)
                   type="email"
                   placeholder="you@company.com"
                   required
+                  maxLength={254}
                   value={emailField}
                   onChange={(e) => setEmailField(e.target.value)}
                 />
@@ -219,6 +233,7 @@ export function ContactPageView({ page: _page, settings }: ContactPageViewProps)
                   rows={6}
                   placeholder="A few honest paragraphs beat a 30-page RFP. Tell us the goal, the obstacle, and the timeline."
                   required
+                  maxLength={5000}
                   value={overview}
                   onChange={(e) => setOverview(e.target.value)}
                 />

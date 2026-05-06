@@ -1,17 +1,15 @@
 'use client';
 
-import type { CSSProperties } from 'react';
-
-import { domAnimation, LazyMotion, m, useReducedMotion } from 'framer-motion';
+import { createElement, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { revealTransitions, revealVariants, revealViewport, type RevealPreset } from './presets';
+import { revealViewport, type RevealPreset } from './presets';
 
 type RevealTag = 'div' | 'section' | 'article' | 'li' | 'span';
 
 type RevealProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   preset?: RevealPreset;
   delay?: number;
@@ -22,12 +20,10 @@ type RevealProps = {
   style?: CSSProperties;
 };
 
-const motionMap = {
-  div: m.div,
-  section: m.section,
-  article: m.article,
-  li: m.li,
-  span: m.span
+const presetClassNames: Record<RevealPreset, string> = {
+  fadeUp: 'reveal-motion-fade-up',
+  fadeIn: 'reveal-motion-fade-in',
+  scaleInSoft: 'reveal-motion-scale-in-soft'
 };
 
 export function Reveal({
@@ -41,33 +37,43 @@ export function Reveal({
   id,
   style
 }: RevealProps) {
-  const reducedMotion = useReducedMotion();
+  const nodeRef = useRef<HTMLElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  if (reducedMotion) {
-    const StaticTag = as;
-    return (
-      <StaticTag className={className} id={id} style={style}>
-        {children}
-      </StaticTag>
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return undefined;
+
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const nextVisible = Boolean(entry?.isIntersecting);
+        setIsVisible(nextVisible);
+        if (nextVisible && once) {
+          observer.disconnect();
+        }
+      },
+      { threshold: amount }
     );
-  }
 
-  const MotionTag = motionMap[as];
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [amount, once]);
 
-  return (
-    <LazyMotion features={domAnimation}>
-      <MotionTag
-        className={cn(className)}
-        id={id}
-        style={style}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once, amount }}
-        variants={revealVariants[preset]}
-        transition={{ ...revealTransitions[preset], delay }}
-      >
-        {children}
-      </MotionTag>
-    </LazyMotion>
+  return createElement(
+    as,
+    {
+      className: cn('reveal-motion', presetClassNames[preset], isVisible && 'is-visible', className),
+      id,
+      ref: (node: HTMLElement | null) => {
+        nodeRef.current = node;
+      },
+      style: { ...style, '--reveal-delay': `${delay}s` } as CSSProperties
+    },
+    children
   );
 }

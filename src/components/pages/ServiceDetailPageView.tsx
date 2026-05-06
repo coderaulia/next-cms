@@ -385,7 +385,11 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
                 onMouseLeave={() => setMode('default')}
               >
                 <div className="v-blog-card-image">
-                  {project.coverImage ? <img src={project.coverImage} alt={project.title} /> : <span>{project.serviceType || 'Project'}</span>}
+                  {project.coverImage ? (
+                    <img src={project.coverImage} alt={project.title} decoding="async" loading="lazy" />
+                  ) : (
+                    <span>{project.serviceType || 'Project'}</span>
+                  )}
                 </div>
                 <div className="v-blog-card-body">
                   <span className="v-blog-card-kicker">{project.clientName || project.serviceType || 'Project'}</span>
