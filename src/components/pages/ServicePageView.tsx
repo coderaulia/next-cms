@@ -114,19 +114,6 @@ export function ServicePageView({ page }: ServicePageViewProps) {
     layout: 'stacked',
   });
 
-  const svcSections = SERVICE_DEFAULTS.map((svc, i) =>
-    sectionWithFallback(page, 2 + i, {
-      id: `service-card-${i + 1}`,
-      heading: svc.title,
-      body: svc.lede,
-      ctaLabel: svc.sub,
-      ctaHref: '/contact',
-      mediaImage: '',
-      mediaAlt: svc.tags.join(','),
-      layout: 'stacked',
-    })
-  );
-
   return (
     <main className="v-svc">
       {/* HERO */}
@@ -201,12 +188,8 @@ export function ServicePageView({ page }: ServicePageViewProps) {
       </section>
 
       {/* SERVICE BLOCKS */}
-      {SERVICE_DEFAULTS.map((svc, i) => {
-        const section = svcSections[i];
-        const tags = (section.mediaAlt || svc.tags.join(','))
-          .split(',')
-          .map((t) => t.trim())
-          .filter(Boolean);
+      {SERVICE_DEFAULTS.map((svc) => {
+        const tags = svc.tags;
 
         return (
           <section
@@ -221,11 +204,11 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             </div>
 
             <div className="v-svc-block-head">
-              <h2>{section.heading || svc.title}</h2>
-              <span className="v-svc-block-sub">{section.ctaLabel || svc.sub}</span>
+              <h2>{svc.title}</h2>
+              <span className="v-svc-block-sub">{svc.sub}</span>
             </div>
 
-            <p className="v-svc-lede">{section.body || svc.lede}</p>
+            <p className="v-svc-lede">{svc.lede}</p>
 
             <div className="v-svc-deliverables">
               {svc.blocks.map((block, bi) => (
