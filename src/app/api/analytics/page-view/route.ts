@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 
 import { trackAnalyticsPageView } from '@/features/cms/analyticsStore';
+import { assertRateLimit } from '@/services/requestSecurity';
+
+const MAX = { id: 128, path: 512, referrer: 1024, utm: 256 };
+
+function cap(value: unknown, max: number): string {
+  return String(value ?? '').trim().slice(0, max);
+}
 
 function sanitizePath(value: unknown) {
-  return typeof value === 'string' && value.startsWith('/') ? value : '/';
+  const s = cap(value, MAX.path);
+  return s.startsWith('/') ? s : '/';
 }
 
 function entityTypeForPath(path: string) {
@@ -13,6 +21,9 @@ function entityTypeForPath(path: string) {
 }
 
 export async function POST(request: Request) {
+  const rateLimitFailure = await assertRateLimit(request, 'analytics-pv', 60, 60_000);
+  if (rateLimitFailure) return rateLimitFailure;
+
   const body = (await request.json().catch(() => null)) as
     | {
         path?: string;
@@ -26,8 +37,8 @@ export async function POST(request: Request) {
     | null;
 
   const path = sanitizePath(body?.path);
-  const visitorId = body?.visitorId?.trim();
-  const sessionId = body?.sessionId?.trim();
+  const visitorId = cap(body?.visitorId, MAX.id);
+  const sessionId = cap(body?.sessionId, MAX.id);
 
   if (!visitorId || !sessionId) {
     return NextResponse.json({ error: 'Missing visitor identifiers.' }, { status: 400 });
@@ -37,10 +48,10 @@ export async function POST(request: Request) {
     path,
     entityType: entityTypeForPath(path),
     entityId: path,
-    referrer: body?.referrer ?? '',
-    utmSource: body?.utmSource ?? '',
-    utmMedium: body?.utmMedium ?? '',
-    utmCampaign: body?.utmCampaign ?? '',
+    referrer: cap(body?.referrer, MAX.referrer),
+    utmSource: cap(body?.utmSource, MAX.utm),
+    utmMedium: cap(body?.utmMedium, MAX.utm),
+    utmCampaign: cap(body?.utmCampaign, MAX.utm),
     visitorId,
     sessionId,
     userAgent: request.headers.get('user-agent') ?? 'unknown'

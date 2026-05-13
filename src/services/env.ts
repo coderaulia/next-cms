@@ -87,5 +87,14 @@ export const env = {
   /** Set CMS_ENABLE_DEV_AUTH=true to allow x-admin-token header auth in non-production environments. */
   get enableDevAuth() {
     return clean(process.env.CMS_ENABLE_DEV_AUTH).toLowerCase() === 'true';
+  },
+  /**
+   * Number of trusted reverse proxies in front of the app (e.g. 1 for Vercel/Cloudflare).
+   * Set to 0 when the app receives connections directly (no proxy).
+   * Used to extract the real client IP from X-Forwarded-For without trusting attacker-injected entries.
+   */
+  get trustedProxyCount() {
+    const val = parseInt(clean(process.env.TRUSTED_PROXY_COUNT) || '0', 10);
+    return Number.isFinite(val) && val >= 0 ? val : 0;
   }
 };
