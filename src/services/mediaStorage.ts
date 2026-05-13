@@ -21,9 +21,23 @@ type SaveUploadedMediaOptions = {
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 const MAX_SAFE_FILE_NAME_LENGTH = 64;
-
-const ALLOWED_MIME_PREFIXES = ['image/', 'video/'];
 const FALLBACK_EXTENSION = '.png';
+
+// SVG intentionally excluded — SVG files can contain inline <script> tags (stored XSS).
+type MagicSignature = { offset: number; bytes: readonly number[] };
+
+const MIME_MAGIC: Record<string, MagicSignature[]> = {
+  'image/jpeg': [{ offset: 0, bytes: [0xff, 0xd8, 0xff] }],
+  'image/jpg':  [{ offset: 0, bytes: [0xff, 0xd8, 0xff] }],
+  'image/png':  [{ offset: 0, bytes: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a] }],
+  'image/gif':  [{ offset: 0, bytes: [0x47, 0x49, 0x46, 0x38] }],
+  'image/webp': [{ offset: 0, bytes: [0x52, 0x49, 0x46, 0x46] }],
+  'image/heic': [], // HEIC/HEIF uses a variable-length box format; skip magic check
+  'video/mp4':  [{ offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] }], // 'ftyp' box at byte 4
+  'video/webm': [{ offset: 0, bytes: [0x1a, 0x45, 0xdf, 0xa3] }],
+};
+
+const ALLOWED_MIME_TYPES = new Set(Object.keys(MIME_MAGIC));
 let supabaseStorageClient: ReturnType<typeof createClient> | null = null;
 let r2Client: S3Client | null = null;
 
@@ -50,7 +64,6 @@ function getExtFromMimeType(mimeType: string, fallbackName: string) {
     'image/png': '.png',
     'image/webp': '.webp',
     'image/gif': '.gif',
-    'image/svg+xml': '.svg',
     'image/heic': '.heic',
     'video/mp4': '.mp4',
     'video/webm': '.webm'
@@ -59,10 +72,18 @@ function getExtFromMimeType(mimeType: string, fallbackName: string) {
   return map[mimeType] ?? FALLBACK_EXTENSION;
 }
 
-function isAllowedFile(file: File) {
-  const mimeType = (file.type || '').toLowerCase();
-  if (!mimeType) return false;
-  return ALLOWED_MIME_PREFIXES.some((prefix) => mimeType.startsWith(prefix));
+function isAllowedMimeType(file: File) {
+  return ALLOWED_MIME_TYPES.has((file.type || '').toLowerCase());
+}
+
+function validateMagicBytes(buffer: Buffer, mimeType: string): boolean {
+  const sigs = MIME_MAGIC[mimeType.toLowerCase()];
+  if (sigs === undefined) return false;
+  if (sigs.length === 0) return true; // no magic signature defined (e.g. HEIC)
+  return sigs.some(({ offset, bytes }) => {
+    if (buffer.length < offset + bytes.length) return false;
+    return bytes.every((b, i) => buffer[offset + i] === b);
+  });
 }
 
 function normalizeStorageKey(value: string) {
@@ -154,12 +175,16 @@ export async function saveUploadedMedia(file: File, options: SaveUploadedMediaOp
     throw new Error('Invalid file size');
   }
 
-  if (!isAllowedFile(file)) {
+  if (!isAllowedMimeType(file)) {
     throw new Error('Unsupported file type');
   }
 
   const storageKey = normalizeStorageKey(options.storageKey || generateStorageKey(file));
   const buffer = Buffer.from(await file.arrayBuffer());
+
+  if (!validateMagicBytes(buffer, file.type)) {
+    throw new Error('File content does not match declared type');
+  }
 
   // R2 takes priority, then Supabase, then local
   if (isR2Enabled()) {
