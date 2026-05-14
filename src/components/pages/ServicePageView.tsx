@@ -22,6 +22,7 @@ type ServiceDef = {
   lede: string;
   blocks: { k: string; v: string }[];
   tags: string[];
+  href?: string;
 };
 
 const SERVICE_DEFAULTS: ServiceDef[] = [
@@ -35,6 +36,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
       { k: 'Custom WordPress Solutions', v: 'For teams that need an intuitive CMS, we build secure, custom-themed WordPress environments — content updates without technical friction.' },
     ],
     tags: ['React', 'Next.js', 'WordPress', 'Headless CMS'],
+    href: '/website-development',
   },
   {
     n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP',
@@ -47,6 +49,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
       { k: 'Ecosystem Integration', v: 'We connect your app with the CRMs, databases, and automation workflows you already rely on.' },
     ],
     tags: ['Python', 'React', 'PostgreSQL', 'REST', 'CRM'],
+    href: '/custom-business-tools',
   },
   {
     n: '03', accent: '#C8E64B', tone: 'blue', tag: 'MOBILE',
@@ -58,6 +61,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
       { k: 'Enterprise Features', v: 'Push notifications, location services, and offline data sync — your app keeps working anywhere your users are.' },
     ],
     tags: ['React Native', 'iOS', 'Android', 'Push', 'Offline-first'],
+    href: '/mobile-business-app',
   },
   {
     n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH',
@@ -80,6 +84,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
       { k: 'Operational Stability', v: 'Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking.' },
     ],
     tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'],
+    href: '/secure-online-shops',
   },
   {
     n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE',
@@ -91,6 +96,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
       { k: 'Professional Mail Services', v: 'Reliable business email on your own domain, configured for high deliverability and security from day one.' },
     ],
     tags: ['Google Workspace', 'M365', 'DNS', 'Deliverability'],
+    href: '/official-business-email',
   },
 ];
 
@@ -246,14 +252,26 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
-              <Link
-                href="/contact"
-                className="v-svc-discuss-link"
-                onMouseEnter={() => setMode('link')}
-                onMouseLeave={() => setMode('default')}
-              >
-                Discuss this solution <span>→</span>
-              </Link>
+              <div className="v-svc-block-links">
+                {svc.href && (
+                  <Link
+                    href={svc.href}
+                    className="v-svc-discuss-link"
+                    onMouseEnter={() => setMode('link')}
+                    onMouseLeave={() => setMode('default')}
+                  >
+                    Learn more <span>→</span>
+                  </Link>
+                )}
+                <Link
+                  href="/contact"
+                  className="v-svc-discuss-link"
+                  onMouseEnter={() => setMode('link')}
+                  onMouseLeave={() => setMode('default')}
+                >
+                  Discuss this solution <span>→</span>
+                </Link>
+              </div>
             </div>
           </section>
         );
