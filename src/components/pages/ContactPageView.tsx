@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 
 import { useCursorMode } from '@/components/CustomCursor';
 import { trackClientAnalyticsEvent } from '@/lib/analyticsClient';
@@ -50,8 +50,8 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
   const toggle = (s: string) =>
     setInterests((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
 
-  const handleSubmit = async ({ preventDefault }: { preventDefault(): void }) => {
-    preventDefault();
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setStatus('saving');
     setErrorMsg('');
     try {
@@ -368,7 +368,7 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
           <div className="v-contact-global-cell">
             <span className="v-contact-global-label">Legal Entity</span>
             <h4>{companyName}</h4>
-            <p>Registered in Indonesia. Serving SMEs and innovators worldwide.</p>
+            <p>Registered in Indonesia as PT Vanaila Digital Vision. Serving SMEs and innovators worldwide.</p>
           </div>
           <div className="v-contact-global-cell">
             <span className="v-contact-global-label">Headquarters</span>

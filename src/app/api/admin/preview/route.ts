@@ -2,6 +2,7 @@ import { draftMode } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission } from '@/features/cms/adminAuth';
+import { env } from '@/services/env';
 
 function sanitizePath(value: string | null) {
   const candidate = (value ?? '').trim();
@@ -27,5 +28,6 @@ export async function GET(request: Request) {
     draft.enable();
   }
 
-  return NextResponse.redirect(new URL(redirectTo, request.url));
+  const baseUrl = env.siteUrl;
+  return NextResponse.redirect(new URL(redirectTo, baseUrl));
 }
