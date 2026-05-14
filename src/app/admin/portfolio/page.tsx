@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
@@ -26,11 +26,206 @@ function parsePositiveInt(value: string | null, fallback: number) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-type PortfolioListProps = {
+/* ─── Reorder Panel ─── */
+
+type ReorderPanelProps = {
   user: AdminSessionUser;
+  onClose: () => void;
+  onSaved: () => void;
 };
 
-function PortfolioList({ user }: PortfolioListProps) {
+function ReorderPanel({ user, onClose, onSaved }: ReorderPanelProps) {
+  const [projects, setProjects] = useState<PortfolioProject[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [dirty, setDirty] = useState(false);
+  const dragItem = useRef<number | null>(null);
+  const dragOverItem = useRef<number | null>(null);
+
+  const canEdit = user.permissions.includes('content:edit');
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({ includeDrafts: '1', pageSize: '200' });
+        const response = await fetch(`/api/admin/portfolio?${params.toString()}`);
+        if (!response.ok) {
+          setError('Failed to load projects for reordering.');
+          return;
+        }
+        const payload = (await response.json()) as PortfolioListPayload;
+        setProjects(payload.projects);
+      } finally {
+        setLoading(false);
+      }
+    }
+    void load();
+  }, []);
+
+  const handleDragStart = (index: number) => {
+    dragItem.current = index;
+  };
+
+  const handleDragEnter = (index: number) => {
+    dragOverItem.current = index;
+  };
+
+  const handleDragEnd = () => {
+    if (dragItem.current === null || dragOverItem.current === null) return;
+    if (dragItem.current === dragOverItem.current) {
+      dragItem.current = null;
+      dragOverItem.current = null;
+      return;
+    }
+
+    const reordered = [...projects];
+    const [removed] = reordered.splice(dragItem.current, 1);
+    reordered.splice(dragOverItem.current, 0, removed);
+    setProjects(reordered);
+    setDirty(true);
+    dragItem.current = null;
+    dragOverItem.current = null;
+  };
+
+  const moveItem = (fromIndex: number, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= projects.length) return;
+    const reordered = [...projects];
+    const [removed] = reordered.splice(fromIndex, 1);
+    reordered.splice(toIndex, 0, removed);
+    setProjects(reordered);
+    setDirty(true);
+  };
+
+  const handleSave = async () => {
+    if (!dirty || !canEdit) return;
+    setSaving(true);
+    setError('');
+    setNotice('');
+
+    try {
+      const response = await csrfFetch('/api/admin/portfolio/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedIds: projects.map((p) => p.id) })
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        setError(payload?.error || 'Failed to save order.');
+        return;
+      }
+
+      setDirty(false);
+      setNotice('Order saved successfully.');
+      onSaved();
+    } catch {
+      setError('Failed to save order.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <p>Loading projects...</p>;
+
+  return (
+    <div className="admin-form-wrap">
+      <section className="admin-card">
+        <div className="admin-inline-header">
+          <div>
+            <h3>Reorder Portfolio Projects</h3>
+            <p className="admin-subtle">
+              Drag and drop to set the display order. Featured items always appear first on the landing page regardless of sort order.
+            </p>
+          </div>
+          <div className="admin-actions">
+            <button type="button" onClick={onClose}>
+              ← Back to list
+            </button>
+            <button
+              type="button"
+              disabled={!dirty || saving || !canEdit}
+              onClick={() => void handleSave()}
+              className="v2-btn v2-btn-primary"
+            >
+              {saving ? 'Saving...' : 'Save order'}
+            </button>
+          </div>
+        </div>
+        {error ? <p className="error">{error}</p> : null}
+        {notice ? <p className="admin-subtle" style={{ color: '#16a34a' }}>{notice}</p> : null}
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-reorder-list" role="list" aria-label="Reorder portfolio projects">
+          {projects.map((project, index) => (
+            <div
+              key={project.id}
+              role="listitem"
+              draggable={canEdit}
+              onDragStart={() => handleDragStart(index)}
+              onDragEnter={() => handleDragEnter(index)}
+              onDragEnd={handleDragEnd}
+              onDragOver={(e) => e.preventDefault()}
+              className="admin-reorder-item"
+            >
+              <span className="admin-reorder-handle" aria-hidden="true">⠿</span>
+              <span className="admin-reorder-position">{index + 1}</span>
+              <div className="admin-reorder-info">
+                <strong>{project.title}</strong>
+                <span className="admin-subtle">
+                  {project.clientName || 'No client'} · {project.serviceType || 'No service'}
+                </span>
+              </div>
+              <div className="admin-reorder-badges">
+                {project.featured ? (
+                  <span className="admin-chip admin-chip-success">featured</span>
+                ) : null}
+                <span className={`admin-chip ${project.status === 'published' ? 'admin-chip-success' : 'admin-chip-muted'}`}>
+                  {project.status}
+                </span>
+              </div>
+              <div className="admin-reorder-arrows">
+                <button
+                  type="button"
+                  disabled={index === 0 || !canEdit}
+                  onClick={() => moveItem(index, index - 1)}
+                  aria-label={`Move ${project.title} up`}
+                  title="Move up"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  disabled={index === projects.length - 1 || !canEdit}
+                  onClick={() => moveItem(index, index + 1)}
+                  aria-label={`Move ${project.title} down`}
+                  title="Move down"
+                >
+                  ↓
+                </button>
+              </div>
+            </div>
+          ))}
+          {projects.length === 0 ? (
+            <p className="admin-subtle">No portfolio projects to reorder.</p>
+          ) : null}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ─── Portfolio List ─── */
+
+type PortfolioListProps = {
+  user: AdminSessionUser;
+  onReorder: () => void;
+};
+
+function PortfolioList({ user, onReorder }: PortfolioListProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -283,6 +478,11 @@ function PortfolioList({ user }: PortfolioListProps) {
         <div className="admin-inline-header">
           <p className="admin-subtle">{selectedIds.length} selected</p>
           <div className="admin-actions">
+            {canEdit ? (
+              <button type="button" onClick={onReorder}>
+                ↕ Reorder
+              </button>
+            ) : null}
             <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('published')}>
               Publish selected
             </button>
@@ -419,6 +619,8 @@ function PortfolioList({ user }: PortfolioListProps) {
 }
 
 export default function AdminPortfolioPage() {
+  const [mode, setMode] = useState<'list' | 'reorder'>('list');
+
   return (
     <AdminShell
       title="Portfolio"
@@ -431,7 +633,17 @@ export default function AdminPortfolioPage() {
         ) : null
       }
     >
-      {(user) => <PortfolioList user={user} />}
+      {(user) =>
+        mode === 'reorder' ? (
+          <ReorderPanel
+            user={user}
+            onClose={() => setMode('list')}
+            onSaved={() => setMode('list')}
+          />
+        ) : (
+          <PortfolioList user={user} onReorder={() => setMode('reorder')} />
+        )
+      }
     </AdminShell>
   );
 }
