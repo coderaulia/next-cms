@@ -37,22 +37,14 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
 
   return (
     <footer
+      className="v-site-footer"
       style={{
         background: '#0A0E1A',
         color: '#F4F4F0',
-        padding: '80px 48px 32px',
         fontFamily: 'var(--font-tight, sans-serif)',
       }}
     >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1.5fr',
-          gap: 80,
-          paddingBottom: 60,
-          borderBottom: '1px solid rgba(244,244,240,0.14)',
-        }}
-      >
+      <div className="v-footer-grid">
         <div>
           {footerLogo ? (
             <img
@@ -81,7 +73,7 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+        <div className="v-footer-links-grid">
           {[
             { title: 'Company', items: footerNavigator as NavLink[] },
             { title: 'Solutions', items: footerServices as NavLink[] },
@@ -148,19 +140,9 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          paddingTop: 32,
-          fontFamily: 'var(--font-mono, monospace)',
-          fontSize: 11,
-          letterSpacing: '0.08em',
-          color: 'rgba(244,244,240,0.5)',
-        }}
-      >
+      <div className="v-footer-bottom">
         <span>{copyright}</span>
-        <div style={{ display: 'flex', gap: 32 }}>
+        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
           {settings.branding.footerBadgePrimary && <span>{settings.branding.footerBadgePrimary}</span>}
           {settings.branding.footerBadgeSecondary && (
             <span style={{ opacity: 0.6 }}>{settings.branding.footerBadgeSecondary}</span>
