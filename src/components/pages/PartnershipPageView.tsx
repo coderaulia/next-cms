@@ -45,11 +45,11 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
     sectionWithFallback(page, 2, {
       id: 'program-1',
       heading: 'Referral Alpha',
-      body: 'Earn commissions by connecting clients with our engineering services.',
+      body: 'Earn 30% commission from net project profit for every qualified client you refer. No cap, no complexity — just introduce, and we handle the rest.',
       ctaLabel: 'Referral',
       ctaHref: '/contact?interest=partnership',
       mediaImage: '',
-      mediaAlt: 'Client fit / qualified lead / shared trust',
+      mediaAlt: 'Qualified lead / 30% net profit / recurring trust',
       layout: 'stacked'
     }),
     sectionWithFallback(page, 3, {
@@ -65,11 +65,11 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
     sectionWithFallback(page, 4, {
       id: 'program-3',
       heading: 'Service Expansion',
-      body: 'Offer cloud infra and mobile app delivery under your own brand.',
+      body: 'We integrate your software, cloud platform, or managed service directly into our client projects — giving your product real-world adoption and recurring revenue.',
       ctaLabel: 'Expansion',
       ctaHref: '/contact?interest=partnership',
       mediaImage: '',
-      mediaAlt: 'New capability / deeper retention / shared growth',
+      mediaAlt: 'Product adoption / embedded integration / recurring revenue',
       layout: 'stacked'
     })
   ];
@@ -163,7 +163,7 @@ export function PartnershipPageView({ page }: PartnershipPageViewProps) {
     sectionWithFallback(page, 13, {
       id: 'perk-3',
       heading: 'Co-Marketing',
-      body: 'Join webinars and white papers to boost visibility.',
+      body: 'We actively promote your software and services to our client base — through case studies, project showcases, and joint campaigns that drive adoption.',
       ctaLabel: '03',
       ctaHref: '',
       mediaImage: '',
