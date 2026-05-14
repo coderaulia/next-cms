@@ -72,9 +72,18 @@ function parseCookies(cookieHeader: string | null) {
 }
 
 export function getClientIdentifier(request: Request) {
-  const forwardedFor = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '';
-  const ips = forwardedFor.split(',').map((ip) => ip.trim()).filter(Boolean);
-  return ips.length > 0 ? ips[ips.length - 1] : 'unknown';
+  const count = env.trustedProxyCount;
+  if (count === 0) {
+    // No trusted proxy — X-Forwarded-For is fully attacker-controlled; ignore it
+    return request.headers.get('x-real-ip') || 'unknown';
+  }
+  const chain = (request.headers.get('x-forwarded-for') || '')
+    .split(',')
+    .map((ip) => ip.trim())
+    .filter(Boolean);
+  // With N trusted proxies, each proxy appends the sender's IP. The real client IP sits at
+  // chain[length - count]. Entries to the left may be attacker-injected and are discarded.
+  return chain[chain.length - count] || 'unknown';
 }
 
 export function readCookieValue(request: Request, name: string) {

@@ -40,7 +40,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
   },
   {
     n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP',
-    title: 'Custom Web-App Development',
+    title: 'Custom Business Tools',
     sub: 'Python & React',
     lede: 'Complex, data-driven applications tailored to your internal or customer-facing workflows.',
     blocks: [
@@ -52,16 +52,16 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     href: '/custom-business-tools',
   },
   {
-    n: '03', accent: '#C8E64B', tone: 'blue', tag: 'MOBILE',
-    title: 'Mobile App Development',
-    sub: 'React Native',
-    lede: 'Reach customers on iOS and Android with a single, high-fidelity codebase.',
+    n: '03', accent: '#C8E64B', tone: 'blue', tag: 'COMMERCE',
+    title: 'Secure Online Shops',
+    sub: 'WooCommerce & Custom Stores',
+    lede: 'Complete retail ecosystems connecting your products to your customers — and your back office.',
     blocks: [
-      { k: 'Cross-Platform Efficiency', v: 'React Native delivers native-like performance with the cost-efficiency of one codebase — ship once, run everywhere.' },
-      { k: 'Enterprise Features', v: 'Push notifications, location services, and offline data sync — your app keeps working anywhere your users are.' },
+      { k: 'Payment Gateway Integration', v: 'Seamless Midtrans for the Indonesian market, Stripe for international transactions — checkout that just works.' },
+      { k: 'Operational Stability', v: 'Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking.' },
     ],
-    tags: ['React Native', 'iOS', 'Android', 'Push', 'Offline-first'],
-    href: '/mobile-business-app',
+    tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'],
+    href: '/secure-online-shops',
   },
   {
     n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH',
@@ -75,20 +75,20 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     tags: ['A/B testing', 'Analytics', 'Lead capture', 'SEO'],
   },
   {
-    n: '05', accent: '#FF5B22', tone: 'ink', tag: 'COMMERCE',
-    title: 'Online Shop & E-commerce',
-    sub: 'WooCommerce & Custom Stores',
-    lede: 'Complete retail ecosystems connecting your products to your customers — and your back office.',
+    n: '05', accent: '#FF5B22', tone: 'ink', tag: 'MOBILE',
+    title: 'Mobile Business App',
+    sub: 'React Native',
+    lede: 'Reach customers on iOS and Android with a single, high-fidelity codebase.',
     blocks: [
-      { k: 'Payment Gateway Integration', v: 'Seamless Midtrans for the Indonesian market, Stripe for international transactions — checkout that just works.' },
-      { k: 'Operational Stability', v: 'Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking.' },
+      { k: 'Cross-Platform Efficiency', v: 'React Native delivers native-like performance with the cost-efficiency of one codebase — ship once, run everywhere.' },
+      { k: 'Enterprise Features', v: 'Push notifications, location services, and offline data sync — your app keeps working anywhere your users are.' },
     ],
-    tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'],
-    href: '/secure-online-shops',
+    tags: ['React Native', 'iOS', 'Android'],
+    href: '/mobile-business-app',
   },
   {
     n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE',
-    title: 'Professional Business Infrastructure',
+    title: 'Official Business Email',
     sub: 'Email · Domain · Workspace',
     lede: "Establish digital authority and secure your team's day-to-day communications.",
     blocks: [
@@ -119,19 +119,6 @@ export function ServicePageView({ page }: ServicePageViewProps) {
     mediaAlt: '',
     layout: 'stacked',
   });
-
-  const svcSections = SERVICE_DEFAULTS.map((svc, i) =>
-    sectionWithFallback(page, 2 + i, {
-      id: `service-card-${i + 1}`,
-      heading: svc.title,
-      body: svc.lede,
-      ctaLabel: svc.sub,
-      ctaHref: '/contact',
-      mediaImage: '',
-      mediaAlt: svc.tags.join(','),
-      layout: 'stacked',
-    })
-  );
 
   return (
     <main className="v-svc">
@@ -207,12 +194,8 @@ export function ServicePageView({ page }: ServicePageViewProps) {
       </section>
 
       {/* SERVICE BLOCKS */}
-      {SERVICE_DEFAULTS.map((svc, i) => {
-        const section = svcSections[i];
-        const tags = (section.mediaAlt || svc.tags.join(','))
-          .split(',')
-          .map((t) => t.trim())
-          .filter(Boolean);
+      {SERVICE_DEFAULTS.map((svc) => {
+        const tags = svc.tags;
 
         return (
           <section
@@ -227,11 +210,11 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             </div>
 
             <div className="v-svc-block-head">
-              <h2>{section.heading || svc.title}</h2>
-              <span className="v-svc-block-sub">{section.ctaLabel || svc.sub}</span>
+              <h2>{svc.title}</h2>
+              <span className="v-svc-block-sub">{svc.sub}</span>
             </div>
 
-            <p className="v-svc-lede">{section.body || svc.lede}</p>
+            <p className="v-svc-lede">{svc.lede}</p>
 
             <div className="v-svc-deliverables">
               {svc.blocks.map((block, bi) => (
