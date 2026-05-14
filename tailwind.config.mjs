@@ -32,7 +32,10 @@ const config = {
         'glass-card': '0 16px 42px -12px rgba(15, 23, 42, 0.18)'
       }
     }
-  }
+  },
+  plugins: [
+    require('@tailwindcss/typography')
+  ]
 };
 
 export default config;

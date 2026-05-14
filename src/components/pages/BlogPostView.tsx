@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
 
 import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { BlogPost } from '@/features/cms/types';
@@ -83,8 +84,8 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
 
           <div className="flex-grow max-w-3xl">
             <p className="text-slate-500 text-lg font-light leading-relaxed mb-10">{post.excerpt}</p>
-            <article className="prose">
-              <pre>{post.content}</pre>
+            <article className="prose prose-slate prose-headings:font-display prose-headings:font-black prose-headings:text-deepSlate prose-a:text-electricBlue prose-a:no-underline hover:prose-a:underline max-w-none">
+              <ReactMarkdown>{post.content}</ReactMarkdown>
             </article>
 
             <div className="mt-24 p-10 md:p-12 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row gap-8 items-center md:items-start">
