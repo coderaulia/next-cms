@@ -548,3 +548,23 @@ export async function setPortfolioProjectStatus(
     return next;
   });
 }
+
+export async function reorderPortfolioProjects(
+  orderedIds: string[]
+): Promise<{ updated: number }> {
+  return withWriteLock(async () => {
+    const content = await readContent();
+    let updated = 0;
+
+    for (let i = 0; i < orderedIds.length; i++) {
+      const index = content.portfolioProjects.findIndex((project) => project.id === orderedIds[i]);
+      if (index !== -1) {
+        content.portfolioProjects[index].sortOrder = i + 1;
+        updated++;
+      }
+    }
+
+    await writeFileUnsafe(content);
+    return { updated };
+  });
+}

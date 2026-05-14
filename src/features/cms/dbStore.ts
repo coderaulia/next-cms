@@ -1335,3 +1335,18 @@ export async function setPortfolioProjectStatus(
 
   return next;
 }
+
+export async function reorderPortfolioProjects(
+  orderedIds: string[]
+): Promise<{ updated: number }> {
+  let updated = 0;
+  for (let i = 0; i < orderedIds.length; i++) {
+    const id = orderedIds[i];
+    await getDb()
+      .update(portfolioProjectsTable)
+      .set({ sortOrder: i + 1 })
+      .where(eq(portfolioProjectsTable.id, id));
+    updated++;
+  }
+  return { updated };
+}

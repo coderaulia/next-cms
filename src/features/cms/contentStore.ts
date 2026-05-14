@@ -153,6 +153,13 @@ export async function deletePortfolioProject(id: string): Promise<boolean> {
   return contentStore.deletePortfolioProject(id);
 }
 
+export async function reorderPortfolioProjects(
+  orderedIds: string[]
+): Promise<{ updated: number }> {
+  const { contentStore } = await loadCmsStoreModules();
+  return contentStore.reorderPortfolioProjects(orderedIds);
+}
+
 export async function setPortfolioProjectStatus(
   id: string,
   status: 'draft' | 'published'
