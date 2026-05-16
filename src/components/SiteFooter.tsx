@@ -142,11 +142,32 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
 
       <div className="v-footer-bottom">
         <span>{copyright}</span>
-        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>
           {settings.branding.footerBadgePrimary && <span>{settings.branding.footerBadgePrimary}</span>}
           {settings.branding.footerBadgeSecondary && (
             <span style={{ opacity: 0.6 }}>{settings.branding.footerBadgeSecondary}</span>
           )}
+          <Link
+            href="/privacy-policy"
+            className="no-underline"
+            style={{ fontSize: 12, color: 'rgba(244,244,240,0.45)' }}
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href="/terms"
+            className="no-underline"
+            style={{ fontSize: 12, color: 'rgba(244,244,240,0.45)' }}
+          >
+            Terms of Service
+          </Link>
+          <Link
+            href="/data-collection"
+            className="no-underline"
+            style={{ fontSize: 12, color: 'rgba(244,244,240,0.45)' }}
+          >
+            Data Collection
+          </Link>
         </div>
       </div>
     </footer>
