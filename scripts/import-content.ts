@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import '../src/services/loadLocalEnv';
-import { defaultContent } from '../src/features/cms/defaultContent';
+import { getDefaultContent } from '../src/features/cms/defaultContent';
 import {
   bootstrapFixtures,
   buildFixtureSeedContent,
@@ -41,7 +41,7 @@ async function readSeedContent() {
   const fixture = resolveFixtureName(parseFixtureArg());
   if (fixture) {
     return {
-      content: buildFixtureSeedContent(defaultContent, fixture),
+      content: buildFixtureSeedContent(getDefaultContent(), fixture),
       source: `bootstrap fixture "${fixture}"`
     };
   }
@@ -64,8 +64,8 @@ async function readSeedContent() {
   }
 
   return {
-    content: defaultContent,
-    source: 'src/features/cms/defaultContent.ts'
+    content: getDefaultContent(),
+    source: 'data/default-content.json'
   };
 }
 

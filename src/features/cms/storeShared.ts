@@ -1,4 +1,4 @@
-import { defaultContent } from './defaultContent';
+import { getDefaultContent } from './defaultContent';
 import type {
   BlogPost,
   CmsContent,
@@ -54,7 +54,7 @@ function normalizeLinks(
 }
 
 export function normalizeSettings(input: unknown): SiteSettings {
-  const defaults = structuredClone(defaultContent.settings);
+  const defaults = structuredClone(getDefaultContent().settings);
   const source = isObject(input) ? input : {};
 
   const general = isObject(source.general) ? source.general : {};
@@ -148,24 +148,25 @@ export const normalizeHomeBlocks = (blocks: HomeBlock[] | undefined): HomeBlock[
 };
 
 export function mergeWithDefaults(content: CmsContent): CmsContent {
+  const defaults = getDefaultContent();
   return {
     settings: normalizeSettings(content.settings),
     pages: {
-      ...structuredClone(defaultContent.pages),
+      ...structuredClone(defaults.pages),
       ...content.pages
     },
     blogPosts: Array.isArray(content.blogPosts)
       ? content.blogPosts
-      : structuredClone(defaultContent.blogPosts),
+      : structuredClone(defaults.blogPosts),
     portfolioProjects: Array.isArray(content.portfolioProjects)
       ? content.portfolioProjects
-      : structuredClone(defaultContent.portfolioProjects),
+      : structuredClone(defaults.portfolioProjects),
     categories: Array.isArray(content.categories)
       ? content.categories
-      : structuredClone(defaultContent.categories),
+      : structuredClone(defaults.categories),
     mediaAssets: Array.isArray(content.mediaAssets)
       ? content.mediaAssets
-      : structuredClone(defaultContent.mediaAssets)
+      : structuredClone(defaults.mediaAssets)
   };
 }
 

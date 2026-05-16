@@ -3,7 +3,7 @@ node_modules/
 
 .vscode
 .claude
-.kiro
+.kiro/
 
 # next
 .next/

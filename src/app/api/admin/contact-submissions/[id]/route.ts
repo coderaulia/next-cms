@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { assertAdminRequest, logAdminAuditEvent } from '@/features/cms/adminAuth';
+import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { updateContactSubmissionStatus } from '@/features/cms/contactSubmissionsStore';
 import { validateContactSubmissionStatus } from '@/features/cms/validators';
 
@@ -8,9 +8,9 @@ export async function PATCH(
   request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  const auth = await assertAdminRequest(request);
-  if (auth instanceof NextResponse) return auth;
-  const session = auth;
+  const auth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in auth) return auth.error;
+  const session = auth.session;
 
   const body = await request.json().catch(() => null);
   const status = validateContactSubmissionStatus(body?.status);

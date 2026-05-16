@@ -8,7 +8,6 @@ import {
 } from '@/features/cms/importExport';
 import {
   assertAdminPermission,
-  assertAdminRequest,
   logAdminAuditEvent
 } from '@/features/cms/adminAuth';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
@@ -63,9 +62,6 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const auth = await assertAdminRequest(request);
-  if (auth instanceof NextResponse) return auth;
-
   const body = (await request.json().catch(() => null)) as {
     collection?: string;
     mode?: CmsImportMode;

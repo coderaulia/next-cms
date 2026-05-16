@@ -1,4 +1,4 @@
-import { defaultContent } from './defaultContent';
+import { getDefaultContent } from './defaultContent';
 import { readContent, writeContent } from './fileStore';
 import {
   clearDefaultCategorySetting,
@@ -89,7 +89,7 @@ export async function deleteCategory(id: string): Promise<boolean> {
 
 export async function getMediaAssets(): Promise<MediaAsset[]> {
   const content = await readContent();
-  const mediaAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : defaultContent.mediaAssets;
+  const mediaAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
   return sortMediaAssets(mediaAssets);
 }
 
@@ -108,7 +108,7 @@ export async function createMediaAsset(payload: MediaAsset): Promise<MediaAsset>
 
 export async function updateMediaAsset(id: string, payload: MediaAsset): Promise<MediaAsset | null> {
   const content = await readContent();
-  const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : defaultContent.mediaAssets;
+  const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
   const existing = currentAssets.find((asset) => asset.id === id);
   if (!existing) return null;
 
@@ -126,7 +126,7 @@ export async function updateMediaAsset(id: string, payload: MediaAsset): Promise
 
 export async function deleteMediaAsset(id: string): Promise<boolean> {
   const content = await readContent();
-  const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : defaultContent.mediaAssets;
+  const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
   const nextAssets = currentAssets.filter((asset) => asset.id !== id);
   if (nextAssets.length === currentAssets.length) return false;
   content.mediaAssets = nextAssets;

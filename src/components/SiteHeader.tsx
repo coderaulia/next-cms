@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { siteProfile } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
@@ -24,6 +24,11 @@ type SiteHeaderProps = {
 export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
   const { setMode } = useCursorMode();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const brandRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLAnchorElement>(null);
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
   const brandLogo = settings.branding.headerLogo || settings.organizationLogo;
 
@@ -38,7 +43,35 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
 
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
 
-  // Close mobile menu on route change (link click)
+  // Detect whether inline nav fits in the available header space
+  useEffect(() => {
+    const header = headerRef.current;
+    const nav = navRef.current;
+    const brand = brandRef.current;
+    const cta = ctaRef.current;
+    if (!header || !nav || !brand) return;
+
+    const checkOverflow = () => {
+      const headerWidth = header.clientWidth;
+      const padding = 96; // 48px each side
+      const brandWidth = brand.scrollWidth;
+      const ctaWidth = cta ? cta.scrollWidth + 24 : 0; // 24px gap
+      const navWidth = nav.scrollWidth;
+      const gap = 72; // gaps between brand, nav, cta
+
+      const needed = brandWidth + navWidth + ctaWidth + gap + padding;
+      setCollapsed(needed > headerWidth);
+    };
+
+    checkOverflow();
+
+    const observer = new ResizeObserver(checkOverflow);
+    observer.observe(header);
+
+    return () => observer.disconnect();
+  }, [links]);
+
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -53,6 +86,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
   return (
     <>
       <header
+        ref={headerRef}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -70,7 +104,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
         className="v-site-header"
       >
         {/* Logo + sub-mark */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div ref={brandRef} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <Link
             href="/"
             className="no-underline"
@@ -101,23 +135,35 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
               </span>
             )}
           </Link>
-          <span
-            className="hidden md:inline"
-            style={{
-              fontFamily: 'var(--font-mono, monospace)',
-              fontSize: 10,
-              letterSpacing: '0.1em',
-              color: 'rgba(10,14,26,0.55)',
-              paddingLeft: 14,
-              borderLeft: '1px solid rgba(10,14,26,0.12)',
-            }}
-          >
-            {siteProfile.brand.wordmark.replace('.', '').toUpperCase()} · SINCE 2018
-          </span>
+          {!collapsed && (
+            <span
+              style={{
+                fontFamily: 'var(--font-mono, monospace)',
+                fontSize: 10,
+                letterSpacing: '0.1em',
+                color: 'rgba(10,14,26,0.55)',
+                paddingLeft: 14,
+                borderLeft: '1px solid rgba(10,14,26,0.12)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {siteProfile.brand.wordmark.replace('.', '').toUpperCase()} · SINCE 2018
+            </span>
+          )}
         </div>
 
-        {/* Nav links (desktop) */}
-        <nav className="hidden md:flex" style={{ gap: 36 }}>
+        {/* Nav links (inline — hidden when collapsed) */}
+        <nav
+          ref={navRef}
+          style={{
+            display: 'flex',
+            gap: 36,
+            whiteSpace: 'nowrap',
+            visibility: collapsed ? 'hidden' : 'visible',
+            position: collapsed ? 'absolute' : 'static',
+            pointerEvents: collapsed ? 'none' : 'auto',
+          }}
+        >
           {links.map((link) => (
             <Link
               key={`${link.href}-${link.label}`}
@@ -138,93 +184,98 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
           ))}
         </nav>
 
-        {/* CTA pill (desktop) */}
-        <Link
-          href={settings.navigation.headerCtaHref || '/contact'}
-          className="no-underline hidden md:inline-flex items-center"
-          style={{
-            background: '#0A0E1A',
-            color: '#F4F4F0',
-            padding: '10px 18px',
-            borderRadius: 999,
-            fontSize: 13,
-            gap: 10,
-            transition: 'background 0.2s',
-          }}
-          data-analytics-event="cta_click"
-          data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = '#0033FF';
-            setMode('link');
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = '#0A0E1A';
-            setMode('default');
-          }}
-        >
-          {settings.navigation.headerCtaLabel || 'Free consultation'}
-          <span>→</span>
-        </Link>
+        {/* CTA pill (inline — hidden when collapsed) */}
+        {!collapsed && (
+          <Link
+            ref={ctaRef}
+            href={settings.navigation.headerCtaHref || '/contact'}
+            className="no-underline inline-flex items-center"
+            style={{
+              background: '#0A0E1A',
+              color: '#F4F4F0',
+              padding: '10px 18px',
+              borderRadius: 999,
+              fontSize: 13,
+              gap: 10,
+              transition: 'background 0.2s',
+              whiteSpace: 'nowrap',
+            }}
+            data-analytics-event="cta_click"
+            data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = '#0033FF';
+              setMode('link');
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = '#0A0E1A';
+              setMode('default');
+            }}
+          >
+            {settings.navigation.headerCtaLabel || 'Free consultation'}
+            <span>→</span>
+          </Link>
+        )}
 
-        {/* Hamburger button (mobile) */}
-        <button
-          type="button"
-          className="md:hidden"
-          onClick={() => setMobileMenuOpen((prev) => !prev)}
-          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileMenuOpen}
-          style={{
-            background: 'none',
-            border: 'none',
-            padding: 8,
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 40,
-            height: 40,
-          }}
-        >
-          <span
+        {/* Hamburger button (shown only when collapsed) */}
+        {collapsed && (
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
             style={{
-              display: 'block',
-              width: 22,
-              height: 2,
-              background: '#0A0E1A',
-              borderRadius: 2,
-              transition: 'transform 0.3s, opacity 0.3s',
-              transform: mobileMenuOpen ? 'rotate(45deg) translate(2.5px, 2.5px)' : 'none',
+              background: 'none',
+              border: 'none',
+              padding: 8,
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 40,
+              height: 40,
             }}
-          />
-          <span
-            style={{
-              display: 'block',
-              width: 22,
-              height: 2,
-              background: '#0A0E1A',
-              borderRadius: 2,
-              transition: 'opacity 0.3s',
-              opacity: mobileMenuOpen ? 0 : 1,
-            }}
-          />
-          <span
-            style={{
-              display: 'block',
-              width: 22,
-              height: 2,
-              background: '#0A0E1A',
-              borderRadius: 2,
-              transition: 'transform 0.3s, opacity 0.3s',
-              transform: mobileMenuOpen ? 'rotate(-45deg) translate(2.5px, -2.5px)' : 'none',
-            }}
-          />
-        </button>
+          >
+            <span
+              style={{
+                display: 'block',
+                width: 22,
+                height: 2,
+                background: '#0A0E1A',
+                borderRadius: 2,
+                transition: 'transform 0.3s, opacity 0.3s',
+                transform: mobileMenuOpen ? 'rotate(45deg) translate(2.5px, 2.5px)' : 'none',
+              }}
+            />
+            <span
+              style={{
+                display: 'block',
+                width: 22,
+                height: 2,
+                background: '#0A0E1A',
+                borderRadius: 2,
+                transition: 'opacity 0.3s',
+                opacity: mobileMenuOpen ? 0 : 1,
+              }}
+            />
+            <span
+              style={{
+                display: 'block',
+                width: 22,
+                height: 2,
+                background: '#0A0E1A',
+                borderRadius: 2,
+                transition: 'transform 0.3s, opacity 0.3s',
+                transform: mobileMenuOpen ? 'rotate(-45deg) translate(2.5px, -2.5px)' : 'none',
+              }}
+            />
+          </button>
+        )}
       </header>
 
-      {/* Mobile menu overlay */}
-      {mobileMenuOpen && (
+      {/* Collapsed menu overlay */}
+      {collapsed && mobileMenuOpen && (
         <div
           style={{
             position: 'fixed',
@@ -241,7 +292,6 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
             fontFamily: 'var(--font-tight, sans-serif)',
             paddingTop: 80,
           }}
-          className="md:hidden"
         >
           <nav
             style={{

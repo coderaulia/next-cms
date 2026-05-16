@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { defaultContent } from '@/features/cms/defaultContent';
+import { getDefaultContent } from '@/features/cms/defaultContent';
 import { exportCmsJson, importCmsJson } from '@/features/cms/importExport';
 import type { CmsContent } from '@/features/cms/types';
 
@@ -20,7 +20,7 @@ vi.mock('@/features/cms/contentRevisions', () => ({
 let currentContent: CmsContent;
 
 beforeEach(() => {
-  currentContent = structuredClone(defaultContent);
+  currentContent = structuredClone(getDefaultContent());
   readRawCmsContentMock.mockReset();
   writeRawCmsContentMock.mockReset();
   captureContentRevisionMock.mockReset();
@@ -63,7 +63,7 @@ describe('import/export helpers', () => {
     expect(result.importedCount).toBe(1);
     expect(currentContent.pages.about.title).toBe('Updated About Title');
     expect(currentContent.pages.about.navLabel).toBe('About Us');
-    expect(currentContent.pages.home.title).toBe(defaultContent.pages.home.title);
+    expect(currentContent.pages.home.title).toBe(getDefaultContent().pages.home.title);
     expect(writeRawCmsContentMock).toHaveBeenCalledTimes(1);
     expect(captureContentRevisionMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -73,7 +73,7 @@ describe('import/export helpers', () => {
         payload: expect.objectContaining({
           pages: expect.objectContaining({
             about: expect.objectContaining({
-              title: defaultContent.pages.about.title
+              title: getDefaultContent().pages.about.title
             })
           })
         })

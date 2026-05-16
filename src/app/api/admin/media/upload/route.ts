@@ -29,6 +29,18 @@ export async function POST(request: Request) {
   if ('error' in auth) return auth.error;
   const session = auth.session;
 
+  // Early rejection based on Content-Length header before parsing the body
+  const contentLength = request.headers.get('content-length');
+  if (contentLength) {
+    const declaredSize = Number.parseInt(contentLength, 10);
+    if (Number.isFinite(declaredSize) && declaredSize > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: 'File too large. Maximum upload size is 10 MB.' },
+        { status: 413 }
+      );
+    }
+  }
+
   try {
     const form = await request.formData();
     const rawFile = form.get('file');
@@ -37,6 +49,14 @@ export async function POST(request: Request) {
 
     if (!(rawFile instanceof File)) {
       return NextResponse.json({ error: 'No media file provided.' }, { status: 400 });
+    }
+
+    // Reject oversized files before buffering the full content
+    if (rawFile.size > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: 'File too large. Maximum upload size is 10 MB.' },
+        { status: 413 }
+      );
     }
 
     if (isImageMimeType(rawFile.type || 'image/png') && !altText) {

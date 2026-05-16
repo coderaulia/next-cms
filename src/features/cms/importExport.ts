@@ -1,4 +1,4 @@
-import { defaultContent } from './defaultContent';
+import { getDefaultContent } from './defaultContent';
 import { captureContentRevision } from './contentRevisions';
 import { readRawCmsContent, writeRawCmsContent } from './storeAdapter';
 import type {
@@ -317,7 +317,7 @@ export async function importCmsJson(
   mode: CmsImportMode
 ): Promise<CmsImportResult> {
   const current = await readRawCmsContent();
-  const replaceBase = cloneContent(defaultContent);
+  const replaceBase = cloneContent(getDefaultContent());
   let next = cloneContent(current);
   let importedCount = 0;
 

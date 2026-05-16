@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
+import { logoutAllAdminSessions } from '@/features/cms/adminClientAuth';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 type SessionInfo = {
@@ -78,6 +79,7 @@ function SessionsManager({ user }: SessionsManagerProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [revokingId, setRevokingId] = useState<string | null>(null);
+  const [signingOutAll, setSigningOutAll] = useState(false);
   const [notice, setNotice] = useState('');
 
   const canManageTeam = user.permissions.includes('team:manage');
@@ -130,6 +132,22 @@ function SessionsManager({ user }: SessionsManagerProps) {
     await loadSessions();
   };
 
+  const handleSignOutAllDevices = async () => {
+    if (!confirm('Sign out all devices for your account? You will need to sign in again.')) return;
+
+    setSigningOutAll(true);
+    setError('');
+    setNotice('');
+
+    try {
+      await logoutAllAdminSessions();
+      window.location.href = '/admin/login';
+    } catch {
+      setSigningOutAll(false);
+      setError('Failed to sign out all devices.');
+    }
+  };
+
   if (!canManageTeam) {
     return (
       <section className="admin-card">
@@ -153,6 +171,11 @@ function SessionsManager({ user }: SessionsManagerProps) {
         <p className="admin-subtle">
           Sessions expire automatically after 7 days. Revoke sessions to force logout on specific devices.
         </p>
+        <div className="admin-actions">
+          <button type="button" className="admin-danger-btn" disabled={signingOutAll} onClick={handleSignOutAllDevices}>
+            {signingOutAll ? 'Signing out...' : 'Sign out all devices'}
+          </button>
+        </div>
         {notice ? <p className="admin-success">{notice}</p> : null}
         {error ? <p className="error">{error}</p> : null}
       </section>

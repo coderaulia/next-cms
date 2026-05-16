@@ -2,7 +2,7 @@ import { access, copyFile, mkdir, readFile, readdir, stat, writeFile } from 'nod
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { defaultContent } from '../src/features/cms/defaultContent';
+import { getDefaultContent } from '../src/features/cms/defaultContent';
 import {
   bootstrapFixtures,
   bootstrapModules,
@@ -204,7 +204,7 @@ async function loadSourceContent() {
     return readJsonFile<CmsContent>(contentPath);
   }
 
-  return structuredClone(defaultContent);
+  return structuredClone(getDefaultContent());
 }
 
 async function main() {

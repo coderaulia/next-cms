@@ -1,20 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
 import { queryBlogPosts } from '@/features/cms/contentStore';
-import { defaultContent } from '@/features/cms/defaultContent';
+import { getDefaultContent } from '@/features/cms/defaultContent';
 
 describe('content store defaults', () => {
   it('seeds homepage with typed blocks', () => {
-    const home = defaultContent.pages.home;
+    const home = getDefaultContent().pages.home;
     expect(home.homeBlocks?.length).toBeGreaterThan(0);
     expect(home.homeBlocks?.some((block) => block.type === 'hero')).toBe(true);
     expect(home.homeBlocks?.some((block) => block.type === 'primary_cta')).toBe(true);
   });
 
   it('keeps legacy sections for non-home pages', () => {
-    expect(defaultContent.pages.about.sections.length).toBeGreaterThan(0);
-    expect(defaultContent.pages.service.sections.length).toBeGreaterThan(0);
-    expect(defaultContent.pages.contact.sections.length).toBeGreaterThan(0);
+    const defaults = getDefaultContent();
+    expect(defaults.pages.about.sections.length).toBeGreaterThan(0);
+    expect(defaults.pages.service.sections.length).toBeGreaterThan(0);
+    expect(defaults.pages.contact.sections.length).toBeGreaterThan(0);
   });
 });
 

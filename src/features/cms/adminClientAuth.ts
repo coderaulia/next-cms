@@ -76,3 +76,10 @@ export async function logoutAdmin() {
   });
   cachedSessionUser = null;
 }
+
+export async function logoutAllAdminSessions() {
+  await csrfFetch('/api/admin/auth/logout-all', {
+    method: 'POST'
+  });
+  cachedSessionUser = null;
+}

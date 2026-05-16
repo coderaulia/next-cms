@@ -9,9 +9,13 @@
 - Same-origin enforcement for public contact submissions
 - Database-backed rate limiting when `DATABASE_URL` is available, with in-memory fallback if the database is unavailable
 - Admin login lockout protection
+- Trusted-proxy-aware client IP extraction for rate limits and audit logs
+- Optional application-level password pepper with transparent hash upgrade on login
+- Full account session invalidation through "Sign out all devices"
 - Server-side audit logging for admin mutations
 - Role-based permissions for `super_admin`, `admin`, `editor`, and `analyst`
 - Site-wide security headers via `middleware.ts`
+- Upload MIME allowlist plus server-side magic-byte checks; SVG uploads are rejected
 - `no-store` cache policy on sensitive admin/contact responses
 - JSON-LD serialization hardened to escape script-breaking characters
 - CMS URL validation strips unsafe `javascript:`-style URLs from CTA, canonical, image, and base URLs

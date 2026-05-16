@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { trackAnalyticsEvent } from '@/features/cms/analyticsStore';
-import { assertRateLimit } from '@/services/requestSecurity';
+import { assertRateLimit, assertTrustedMutationRequest } from '@/services/requestSecurity';
 
 const MAX = { id: 128, path: 512, label: 256, referrer: 1024, utm: 256 };
 
@@ -15,6 +15,9 @@ function sanitizePath(value: unknown) {
 }
 
 export async function POST(request: Request) {
+  const originFailure = assertTrustedMutationRequest(request);
+  if (originFailure) return originFailure;
+
   const rateLimitFailure = await assertRateLimit(request, 'analytics-event', 60, 60_000);
   if (rateLimitFailure) return rateLimitFailure;
 

@@ -13,7 +13,7 @@ import {
   siteSettingsTable
 } from '@/db/schema';
 
-import { defaultContent } from './defaultContent';
+import { getDefaultContent } from './defaultContent';
 import {
   deleteBlogPostCategoryLinks,
   deletePortfolioProjectTagLinks,
@@ -553,6 +553,7 @@ async function ensureDbBootstrap() {
 
   bootstrapPromise = (async () => {
     const db = getDb();
+    const defaults = getDefaultContent();
 
     const existingSettings = await db.select({ id: siteSettingsTable.id }).from(siteSettingsTable).limit(1);
     if (existingSettings.length === 0) {
@@ -560,7 +561,7 @@ async function ensureDbBootstrap() {
         .insert(siteSettingsTable)
         .values({
           id: 'default',
-          payload: defaultContent.settings,
+          payload: defaults.settings,
           updatedAt: nowIso()
         })
         .onConflictDoNothing();
@@ -569,16 +570,16 @@ async function ensureDbBootstrap() {
     const existingPages = await db.select({ id: pagesTable.id }).from(pagesTable).limit(1);
     if (existingPages.length === 0) {
       await withLegacyScheduleFallback(
-        () => db.insert(pagesTable).values(Object.values(defaultContent.pages).map(pageToRow)).onConflictDoNothing(),
-        () => db.insert(pagesTable).values(Object.values(defaultContent.pages).map(pageToLegacyRow)).onConflictDoNothing()
+        () => db.insert(pagesTable).values(Object.values(defaults.pages).map(pageToRow)).onConflictDoNothing(),
+        () => db.insert(pagesTable).values(Object.values(defaults.pages).map(pageToLegacyRow)).onConflictDoNothing()
       );
     }
 
     const existingPosts = await db.select({ id: blogPostsTable.id }).from(blogPostsTable).limit(1);
     if (existingPosts.length === 0) {
       await withLegacyScheduleFallback(
-        () => db.insert(blogPostsTable).values(defaultContent.blogPosts.map(postToRow)).onConflictDoNothing(),
-        () => db.insert(blogPostsTable).values(defaultContent.blogPosts.map(postToLegacyRow)).onConflictDoNothing()
+        () => db.insert(blogPostsTable).values(defaults.blogPosts.map(postToRow)).onConflictDoNothing(),
+        () => db.insert(blogPostsTable).values(defaults.blogPosts.map(postToLegacyRow)).onConflictDoNothing()
       );
     }
 
@@ -595,20 +596,20 @@ async function ensureDbBootstrap() {
                 const includeRelations = await supportsPortfolioRelationsColumn();
                 await db
                   .insert(portfolioProjectsTable)
-                  .values(defaultContent.portfolioProjects.map((project) => portfolioWriteRow(project, includeRelations)))
+                  .values(defaults.portfolioProjects.map((project) => portfolioWriteRow(project, includeRelations)))
                   .onConflictDoNothing();
               },
               async () => {
                 await db
                   .insert(portfolioProjectsTable)
-                  .values(defaultContent.portfolioProjects.map((project) => portfolioWriteRow(project, false)))
+                  .values(defaults.portfolioProjects.map((project) => portfolioWriteRow(project, false)))
                   .onConflictDoNothing();
               }
             ),
           async () => {
             await db
               .insert(portfolioProjectsTable)
-              .values(defaultContent.portfolioProjects.map((project) => portfolioWriteRow(project, false)))
+              .values(defaults.portfolioProjects.map((project) => portfolioWriteRow(project, false)))
               .onConflictDoNothing();
           }
         );
@@ -617,12 +618,12 @@ async function ensureDbBootstrap() {
 
     const existingCategories = await db.select({ id: categoriesTable.id }).from(categoriesTable).limit(1);
     if (existingCategories.length === 0) {
-      await db.insert(categoriesTable).values(defaultContent.categories).onConflictDoNothing();
+      await db.insert(categoriesTable).values(defaults.categories).onConflictDoNothing();
     }
 
     const existingMedia = await db.select({ id: mediaAssetsTable.id }).from(mediaAssetsTable).limit(1);
     if (existingMedia.length === 0) {
-      await db.insert(mediaAssetsTable).values(defaultContent.mediaAssets).onConflictDoNothing();
+      await db.insert(mediaAssetsTable).values(defaults.mediaAssets).onConflictDoNothing();
     }
 
     const seededPosts = await withLegacyScheduleFallback(
@@ -760,7 +761,7 @@ export async function replaceAllCmsContent(content: CmsContent) {
 export async function getSettings() {
   await ensureDbBootstrap();
   const row = await getDb().select().from(siteSettingsTable).where(eq(siteSettingsTable.id, 'default')).limit(1);
-  return normalizeSettings(row[0]?.payload ?? defaultContent.settings);
+  return normalizeSettings(row[0]?.payload ?? getDefaultContent().settings);
 }
 
 export async function updateSettings(settings: SiteSettings): Promise<SiteSettings> {
@@ -786,7 +787,7 @@ export async function updateSettings(settings: SiteSettings): Promise<SiteSettin
 
 export async function getPages() {
   const pages = await loadAllPages();
-  const next = { ...structuredClone(defaultContent.pages) };
+  const next = { ...structuredClone(getDefaultContent().pages) };
   for (const page of pages) {
     next[page.id] = page;
   }

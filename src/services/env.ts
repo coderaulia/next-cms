@@ -26,6 +26,9 @@ export const env = {
   get adminPassword() {
     return clean(process.env.CMS_ADMIN_PASSWORD) || clean(process.env.CMS_ADMIN_TOKEN);
   },
+  get passwordPepper() {
+    return clean(process.env.PASSWORD_PEPPER);
+  },
   get adminName() {
     return clean(process.env.CMS_ADMIN_NAME) || 'Administrator';
   },

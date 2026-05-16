@@ -1,15 +1,18 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   assertCsrfToken,
   assertRateLimit,
   assertTrustedMutationRequest,
+  getClientIdentifier,
   readJsonWithLimit,
   serializeJsonForScript
 } from '@/services/requestSecurity';
 
 afterEach(() => {
   globalThis.__cmsRateLimits?.clear();
+  vi.unstubAllEnvs();
+  vi.resetModules();
 });
 
 describe('request security', () => {
@@ -74,6 +77,29 @@ describe('request security', () => {
     expect(await assertRateLimit(request, 'contact', 2, 60_000)).toBeNull();
     expect(await assertRateLimit(request, 'contact', 2, 60_000)).toBeNull();
     expect((await assertRateLimit(request, 'contact', 2, 60_000))?.status).toBe(429);
+  });
+
+  it('ignores all forwarding headers by default and reads the trusted proxy position when configured', async () => {
+    const directRequest = new Request('https://example.com/api/contact', {
+      headers: {
+        'x-forwarded-for': '198.51.100.8',
+        'x-real-ip': '203.0.113.7'
+      }
+    });
+
+    // With no trusted proxy configured, all forwarding headers are untrusted
+    expect(getClientIdentifier(directRequest)).toBe('direct-client');
+
+    vi.stubEnv('TRUSTED_PROXY_COUNT', '1');
+    vi.resetModules();
+    const { getClientIdentifier: getTrustedClientIdentifier } = await import('@/services/requestSecurity');
+    const proxiedRequest = new Request('https://example.com/api/contact', {
+      headers: {
+        'x-forwarded-for': '198.51.100.8, 203.0.113.9'
+      }
+    });
+
+    expect(getTrustedClientIdentifier(proxiedRequest)).toBe('203.0.113.9');
   });
 
   it('rejects oversized JSON request bodies before parsing', async () => {

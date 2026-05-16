@@ -29,6 +29,7 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 CMS_ADMIN_EMAIL=admin@example.com
 CMS_ADMIN_PASSWORD=strong-password
 CMS_ADMIN_NAME=Administrator
+PASSWORD_PEPPER=long-random-secret
 DATABASE_URL=postgres-runtime-url
 ```
 
@@ -38,6 +39,7 @@ Recommended production variables:
 DATABASE_URL_MIGRATION=postgres-migration-url
 CMS_DB_POOL_MAX=2
 CMS_STORAGE_QUOTA_MB=10000
+TRUSTED_PROXY_COUNT=1
 ```
 
 For media storage, configure either R2 or Supabase. R2 is preferred when bandwidth cost matters.
@@ -139,6 +141,7 @@ npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio"
 - [Supabase + Hostinger setup](./docs/supabase-hostinger-setup.md)
 - [Security hardening notes](./docs/security-hardening.md)
 - [Source audit and gzip plan](./docs/src-audit-gzip-plan.md)
+- [Codebase audit](./codebase_audit.md)
 
 ## Operational Notes
 

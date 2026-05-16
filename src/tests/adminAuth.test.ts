@@ -114,5 +114,13 @@ describe('admin auth', () => {
     expect(restored?.user.email).toBe('admin@example.com');
     expect(restored?.user.role).toBe('super_admin');
   });
-});
 
+  it('uses password pepper for new hashes', async () => {
+    vi.stubEnv('PASSWORD_PEPPER', 'test-pepper-with-enough-length-for-hmac');
+    vi.resetModules();
+    const { hashAdminPassword } = await import('@/features/cms/adminAuth');
+
+    const peppered = await hashAdminPassword('super-secret');
+    expect(peppered.startsWith('v2:')).toBe(true);
+  });
+});

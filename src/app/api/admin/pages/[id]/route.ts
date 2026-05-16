@@ -33,14 +33,15 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Invalid page id' }, { status: 400 });
   }
 
+  // Authorize before reading existing content to avoid unnecessary DB work
+  const editAuth = await assertAdminPermission(request, 'content:edit');
+  if ('error' in editAuth) return editAuth.error;
+  const session = editAuth.session;
+
   const existing = await getPageById(id);
   if (!existing) {
     return NextResponse.json({ error: 'Page not found' }, { status: 404 });
   }
-
-  const editAuth = await assertAdminPermission(request, 'content:edit');
-  if ('error' in editAuth) return editAuth.error;
-  const session = editAuth.session;
 
   const payload = validateLandingPage(await request.json().catch(() => null));
   if (!payload || payload.id !== id) {

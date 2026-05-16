@@ -28,6 +28,7 @@ export type AdminPermission =
   | 'dashboard:view'
   | 'analytics:view'
   | 'audit:view'
+  | 'content:read'
   | 'content:edit'
   | 'content:publish'
   | 'content:delete'

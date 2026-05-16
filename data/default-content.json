@@ -1,0 +1,2935 @@
+{
+  "settings": {
+    "general": {
+      "siteName": "Example Studio.",
+      "siteTagline": "Engineering-focused digital agency for ambitious brands.",
+      "baseUrl": "http://localhost:3000",
+      "adminEmail": "hello@example.com",
+      "timezone": "Asia/Jakarta",
+      "language": "en-US",
+      "dateFormat": "MMMM d, yyyy",
+      "timeFormat": "HH:mm",
+      "weekStartsOn": 1
+    },
+    "navigation": {
+      "headerLinks": [
+        {
+          "id": "nav-home",
+          "label": "Home",
+          "href": "/",
+          "enabled": true
+        },
+        {
+          "id": "nav-about",
+          "label": "About",
+          "href": "/about",
+          "enabled": true
+        },
+        {
+          "id": "nav-services",
+          "label": "Services",
+          "href": "/service",
+          "enabled": true
+        },
+        {
+          "id": "nav-hris",
+          "label": "HRIS",
+          "href": "/hris",
+          "enabled": true
+        },
+        {
+          "id": "nav-insights",
+          "label": "Insights",
+          "href": "/blog",
+          "enabled": true
+        },
+        {
+          "id": "nav-partnership",
+          "label": "Partnership",
+          "href": "/partnership",
+          "enabled": true
+        },
+        {
+          "id": "nav-portfolio",
+          "label": "Portfolio",
+          "href": "/portfolio",
+          "enabled": true
+        }
+      ],
+      "headerCtaLabel": "Book Consultation",
+      "headerCtaHref": "/contact",
+      "footerNavigatorLinks": [
+        {
+          "id": "footer-nav-home",
+          "label": "Home",
+          "href": "/",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-about",
+          "label": "About Us",
+          "href": "/about",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-services",
+          "label": "Services",
+          "href": "/service",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-hris",
+          "label": "Vanaila HRIS",
+          "href": "/hris",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-insights",
+          "label": "Insights",
+          "href": "/blog",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-partnership",
+          "label": "Partnership",
+          "href": "/partnership",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-contact",
+          "label": "Contact",
+          "href": "/contact",
+          "enabled": true
+        },
+        {
+          "id": "footer-nav-portfolio",
+          "label": "Portfolio",
+          "href": "/portfolio",
+          "enabled": true
+        }
+      ],
+      "footerServiceLinks": [
+        {
+          "id": "footer-service-hris",
+          "label": "Vanaila HRIS",
+          "href": "/hris",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-web",
+          "label": "Website Development",
+          "href": "/website-development",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-shop",
+          "label": "Secure Online Shops",
+          "href": "/secure-online-shops",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-mobile",
+          "label": "Mobile Business App",
+          "href": "/mobile-business-app",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-email",
+          "label": "Official Business Email",
+          "href": "/official-business-email",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-tools",
+          "label": "Custom Business Tools",
+          "href": "/custom-business-tools",
+          "enabled": true
+        }
+      ]
+    },
+    "contact": {
+      "companyName": "Example Studio LLC",
+      "addressLine1": "123 Example Avenue",
+      "addressLine2": "Remote-first team, Global delivery",
+      "globalReachLabel": "Global Reach",
+      "globalReachText": "Supporting partners across SEA, Europe, and North America.",
+      "emailLabel": "Email Us",
+      "emailValue": "hello@example.com",
+      "emailHref": "mailto:hello@example.com",
+      "whatsappLabel": "WhatsApp Business",
+      "whatsappValue": "+62 800 0000 0000",
+      "whatsappHref": "https://wa.me/620000000000",
+      "instagramLabel": "Instagram",
+      "instagramValue": "@example.studio",
+      "instagramHref": "https://instagram.com/example.studio"
+    },
+    "social": {
+      "chatHref": "/contact",
+      "instagramHref": "https://instagram.com/example.studio",
+      "websiteHref": "https://example.com",
+      "emailHref": "mailto:hello@example.com"
+    },
+    "branding": {
+      "headerLogo": "",
+      "footerLogo": "",
+      "siteIcon": "",
+      "footerTagline": "Engineering-focused digital agency delivering high-performance infrastructure.",
+      "footerBadgePrimary": "Glassmorphism Edition",
+      "footerBadgeSecondary": "Premium Engineering",
+      "copyrightText": "© 2026 Example Studio."
+    },
+    "writing": {
+      "defaultPostCategory": "general",
+      "defaultPostFormat": "standard",
+      "defaultPostStatus": "draft",
+      "defaultPostAuthor": "Admin",
+      "convertEmoticons": true,
+      "requireReviewBeforePublish": false,
+      "pingServices": [
+        "https://rpc.pingomatic.com/"
+      ]
+    },
+    "reading": {
+      "homepageDisplay": "static_page",
+      "homepagePageId": "home",
+      "postsPageId": "",
+      "postsPerPage": 10,
+      "feedItems": 10,
+      "feedSummary": "excerpt",
+      "discourageSearchEngines": false
+    },
+    "discussion": {
+      "commentsEnabled": false,
+      "commentRegistrationRequired": false,
+      "closeCommentsAfterDays": 30,
+      "threadedCommentsEnabled": true,
+      "threadDepth": 3,
+      "requireCommentApproval": true,
+      "notifyOnComment": true
+    },
+    "media": {
+      "uploadOrganizeByMonth": true,
+      "thumbnailWidth": 300,
+      "thumbnailHeight": 300,
+      "mediumMaxWidth": 768,
+      "mediumMaxHeight": 768,
+      "largeMaxWidth": 1600,
+      "largeMaxHeight": 1600
+    },
+    "permalinks": {
+      "postPermalinkStructure": "/blog/%postname%",
+      "categoryBase": "category",
+      "tagBase": "tag"
+    },
+    "seo": {
+      "titleTemplate": "%page_title% | %site_name%",
+      "defaultMetaDescription": "Engineering-led digital systems for growth-focused businesses.",
+      "defaultOgImage": "https://placehold.co/1200x630/png",
+      "defaultNoIndex": false
+    },
+    "sitemap": {
+      "enabled": true,
+      "includePages": true,
+      "includePosts": true,
+      "includePortfolio": true,
+      "includeLastModified": true
+    },
+    "siteName": "Example Studio.",
+    "baseUrl": "http://localhost:3000",
+    "organizationName": "Example Studio",
+    "organizationLogo": "",
+    "defaultOgImage": "https://placehold.co/1200x630/png"
+  },
+  "pages": {
+    "home": {
+      "id": "home",
+      "title": "Faster Tech. Smarter Work. Scaled Results.",
+      "navLabel": "Home",
+      "published": true,
+      "seo": {
+        "metaTitle": "Example Studio | Web Development, Custom Software, and Business Automation",
+        "metaDescription": "Example Studio helps businesses scale with high-performance websites, custom software, ecommerce systems, and mobile apps.",
+        "slug": "",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "web development agency",
+          "custom software development",
+          "business automation",
+          "mobile app development",
+          "ecommerce development",
+          "digital agency indonesia"
+        ]
+      },
+      "sections": [],
+      "updatedAt": "2026-05-16T05:25:39.094Z",
+      "homeBlocks": [
+        {
+          "id": "home-hero",
+          "type": "hero",
+          "enabled": true,
+          "theme": "light",
+          "badge": "Premium Digital Consultancy",
+          "titlePrimary": "Faster Tech. Smarter Work.",
+          "titleAccent": "Scaled Results.",
+          "description": "Example Studio builds the high-performance digital tools your business deserves. We specialize in lightning-fast websites and custom software that automates your unique workflows, giving you the elite-level tech you need at SME-friendly rates.",
+          "primaryCtaLabel": "Get a free strategy call",
+          "primaryCtaHref": "/contact",
+          "primaryCtaStyle": "primary",
+          "secondaryCtaLabel": "Explore our work",
+          "secondaryCtaHref": "/service",
+          "secondaryCtaStyle": "secondary"
+        },
+        {
+          "id": "home-values",
+          "type": "value_triplet",
+          "enabled": true,
+          "theme": "light",
+          "items": [
+            {
+              "id": "value-speed",
+              "icon": "bolt",
+              "title": "Speed",
+              "text": "Lightning-fast performance that keeps your customers engaged and improves your search rankings."
+            },
+            {
+              "id": "value-simplicity",
+              "icon": "check_circle",
+              "title": "Simplicity",
+              "text": "Complex technical problems solved with elegant, easy-to-use interfaces that your team will love."
+            },
+            {
+              "id": "value-value",
+              "icon": "savings",
+              "title": "Value",
+              "text": "Professional-grade solutions optimized for smart investment, without enterprise pricing."
+            }
+          ]
+        },
+        {
+          "id": "home-solutions",
+          "type": "solutions_grid",
+          "enabled": true,
+          "theme": "mist",
+          "heading": "Our Solutions",
+          "subheading": "Engineered solutions for modern business infrastructure. We build for performance, scale, and uncompromising quality.",
+          "items": [
+            {
+              "id": "solution-01",
+              "number": "01",
+              "title": "Professional Business Website",
+              "text": "Clean, fast-loading digital authority. We architect modern websites built to convert and scale.",
+              "ctaLabel": "Brand authority",
+              "ctaHref": "/website-development"
+            },
+            {
+              "id": "solution-02",
+              "number": "02",
+              "title": "Custom Business Tools",
+              "text": "Bespoke automation systems engineered to streamline internal workflows and reduce operational friction.",
+              "ctaLabel": "Automation",
+              "ctaHref": "/custom-business-tools"
+            },
+            {
+              "id": "solution-03",
+              "number": "03",
+              "title": "Secure Online Shops",
+              "text": "Robust commerce systems built for secure payments and performance-driven growth.",
+              "ctaLabel": "Revenue growth",
+              "ctaHref": "/secure-online-shops"
+            },
+            {
+              "id": "solution-04",
+              "number": "04",
+              "title": "Mobile Business App",
+              "text": "Professional iOS and Android experiences with responsive architecture and native-feel interaction.",
+              "ctaLabel": "Custom access",
+              "ctaHref": "/mobile-business-app"
+            },
+            {
+              "id": "solution-05",
+              "number": "05",
+              "title": "Official Business Email",
+              "text": "Complete domain and email setup engineered for deliverability and professional trust.",
+              "ctaLabel": "Professionalization",
+              "ctaHref": "/official-business-email"
+            }
+          ]
+        },
+        {
+          "id": "home-why",
+          "type": "why_split",
+          "enabled": true,
+          "theme": "blue-soft",
+          "heading": "Why Example Studio?",
+          "description": "We don't just build software; we build the engine for your future growth. Here's what sets our consultancy apart.",
+          "bullets": [
+            {
+              "id": "why-1",
+              "title": "Innovation Focused on ROI",
+              "text": "We prioritize features that drive revenue and efficiency, ensuring your investment pays for itself."
+            },
+            {
+              "id": "why-2",
+              "title": "8 Years of Hands-On Expertise",
+              "text": "Benefit from years of refined processes and technical mastery in digital delivery."
+            },
+            {
+              "id": "why-3",
+              "title": "Your External Technical Partner",
+              "text": "We act as your dedicated CTO extension, so you can focus on running your business."
+            },
+            {
+              "id": "why-4",
+              "title": "Bespoke Strategy for Every Project",
+              "text": "No cookie-cutter templates. We design every strategy specifically for your unique goals."
+            },
+            {
+              "id": "why-5",
+              "title": "Premium Quality, Best-Price Guarantee",
+              "text": "Top-tier coding standards and design at a price point that makes sense for growing businesses."
+            }
+          ],
+          "mediaImage": "",
+          "mediaAlt": "Vanaila digital engineering visual"
+        },
+        {
+          "id": "home-logos",
+          "type": "logo_cloud",
+          "enabled": true,
+          "theme": "light",
+          "heading": "Trusted by Innovators",
+          "logos": [
+            {
+              "id": "logo-1",
+              "name": "TechWave"
+            },
+            {
+              "id": "logo-2",
+              "name": "GlobalCom"
+            },
+            {
+              "id": "logo-3",
+              "name": "ApexRetail"
+            },
+            {
+              "id": "logo-4",
+              "name": "InnovaHealth"
+            },
+            {
+              "id": "logo-5",
+              "name": "Quantum"
+            }
+          ],
+          "primaryCtaLabel": "View our portfolio",
+          "primaryCtaHref": "/blog",
+          "secondaryCtaLabel": "Let's talk growth",
+          "secondaryCtaHref": "/contact"
+        },
+        {
+          "id": "home-cta",
+          "type": "primary_cta",
+          "enabled": true,
+          "theme": "blue-soft",
+          "heading": "Ready to Grow?",
+          "accentText": "Join the organizations that trust Example Studio.",
+          "description": "Let's build something that works as hard as you do.",
+          "ctaLabel": "Claim free consultation call",
+          "ctaHref": "/contact",
+          "ctaStyle": "primary"
+        }
+      ]
+    },
+    "about": {
+      "id": "about",
+      "title": "About Our Team",
+      "navLabel": "About",
+      "published": true,
+      "seo": {
+        "metaTitle": "About Example Studio | Engineering-First Digital Partner",
+        "metaDescription": "Learn about Example Studio, an engineering-first team building scalable websites, software products, and growth systems.",
+        "slug": "about",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "about vanaila digital",
+          "digital engineering team",
+          "website development partner",
+          "custom software team"
+        ]
+      },
+      "sections": [
+        {
+          "id": "about-story",
+          "heading": "A practical team focused on execution",
+          "body": "We combine content, engineering, and SEO to deliver compounding results for service businesses.",
+          "ctaLabel": "Read our blog",
+          "ctaHref": "/blog",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "A practical team focused on execution",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "service": {
+      "id": "service",
+      "title": "Services",
+      "navLabel": "Services",
+      "published": true,
+      "seo": {
+        "metaTitle": "Digital Services | Website, Custom Software, Ecommerce, Mobile Apps",
+        "metaDescription": "Explore Example Studio services including website development, custom tools, ecommerce, mobile apps, and business email setup.",
+        "slug": "service",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "digital services",
+          "website development services",
+          "custom software services",
+          "ecommerce development",
+          "mobile app services"
+        ]
+      },
+      "sections": [
+        {
+          "id": "service-offers",
+          "heading": "Services built for measurable growth",
+          "body": "We provide page strategy, CMS implementation, technical SEO, and analytics reporting.",
+          "ctaLabel": "Start a project",
+          "ctaHref": "/contact",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "Services built for measurable growth",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "product-hris": {
+      "id": "product-hris",
+      "title": "Vanaila HRIS",
+      "navLabel": "HRIS",
+      "published": true,
+      "seo": {
+        "metaTitle": "Vanaila HRIS | Performance Management Software for Indonesian Teams",
+        "metaDescription": "Manage appraisals, KPI reviews, probation workflows, PIP tracking, and HR document generation in one role-aware HRIS platform.",
+        "slug": "hris",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "hris indonesia",
+          "performance management software",
+          "kpi management system",
+          "probation tracking software",
+          "hr appraisal system"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Stop Managing Performance.|Start Developing People.",
+          "body": "One platform to run your entire performance lifecycle, from probation to appraisals, KPIs to improvement plans, built for Indonesian organisations that are serious about growing their people.",
+          "ctaLabel": "Performance management, built in",
+          "ctaHref": "/contact",
+          "mediaImage": "/portfolio/hris/employees.jpeg",
+          "mediaAlt": "Vanaila HRIS employee and role management workspace",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-intro",
+          "heading": "Sound familiar?",
+          "body": "There's a better way to run performance management, and it does not require a 6-month implementation.",
+          "ctaLabel": "Operational friction",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-1",
+          "heading": "HR still chases managers for appraisal forms via WhatsApp",
+          "body": "Manual follow-ups delay reviews and make accountability impossible to track.",
+          "ctaLabel": "chat",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-2",
+          "heading": "KPI targets live in spreadsheets no one updates",
+          "body": "Performance targets drift because the system of record is fragmented from the people expected to use it.",
+          "ctaLabel": "schema",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-3",
+          "heading": "Probation deadlines slip through the cracks",
+          "body": "Teams discover critical milestones too late, after extension letters and review notes should already be ready.",
+          "ctaLabel": "calendar_month",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-4",
+          "heading": "Performance data is scattered and hard to report",
+          "body": "Directors need clear signals, but HR spends review season stitching numbers together by hand.",
+          "ctaLabel": "analytics",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pain-5",
+          "heading": "Nobody knows who's due for a review this month",
+          "body": "The lack of visibility creates surprises, inconsistent follow-through, and unnecessary compliance risk.",
+          "ctaLabel": "schedule",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "product-intro",
+          "heading": "Meet Vanaila HRIS,|performance built in, not bolted on",
+          "body": "Vanaila is a browser-based HR suite designed for the full employee performance lifecycle. No desktop installs. No complex setup. Role-aware from day one, so managers see their teams, HR sees everything, and employees only see what is theirs.",
+          "ctaLabel": "Browser-based HR suite",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/kpi-management.jpeg",
+          "mediaAlt": "Vanaila HRIS KPI management workspace",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-intro",
+          "heading": "Everything your HR team needs to run a fair, consistent, and documented appraisal process",
+          "body": "One system to define standards, run reviews, generate documents, and report with confidence.",
+          "ctaLabel": "Core product modules",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-1",
+          "heading": "Competency assessments",
+          "body": "Define the competency frameworks that matter for your organisation. Score employees consistently against configurable criteria, not guesswork, not gut feeling. Every assessment is recorded, traceable, and reportable.",
+          "ctaLabel": "fact_check",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/add-assessment.jpeg",
+          "mediaAlt": "Vanaila HRIS competency assessment input",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-2",
+          "heading": "KPI governance",
+          "body": "Set targets. Track progress. Run approvals. KPI definitions flow from HR down to managers and employees with a built-in workflow, so everyone knows what is expected and results are documented when review season arrives.",
+          "ctaLabel": "trending_up",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/kpi-division.jpeg",
+          "mediaAlt": "Vanaila HRIS division KPI governance view",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-3",
+          "heading": "Probation and PIP workflows",
+          "body": "Never miss a probation deadline again. Vanaila tracks every new hire probation period, flags upcoming milestones, and keeps a full audit trail of performance improvement plans.",
+          "ctaLabel": "calendar_month",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/probation-pip.jpeg",
+          "mediaAlt": "Vanaila HRIS probation and PIP workflow screen",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-4",
+          "heading": "HR documents generated in seconds",
+          "body": "From warning letters to employment contracts, generate legally formatted HR documents directly from the platform. Templates are editable, signer-ready, and export as clean A4 PDFs.",
+          "ctaLabel": "description",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/hr-document.jpeg",
+          "mediaAlt": "Vanaila HRIS HR document generator",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-5",
+          "heading": "Dashboard and reporting",
+          "body": "Aggregated performance views for directors and HR leadership. Export KPI and probation reports without digging through spreadsheets. Real data, on demand.",
+          "ctaLabel": "analytics",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/kpi-records.jpeg",
+          "mediaAlt": "Vanaila HRIS KPI records and reporting dashboard",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "feature-6",
+          "heading": "Role-aware access, always",
+          "body": "Employees. Managers. HR. Directors. Every user sees exactly what they should, nothing more, nothing less. Built-in role separation means no accidental data exposure and no permission headaches.",
+          "ctaLabel": "verified_user",
+          "ctaHref": "",
+          "mediaImage": "/portfolio/hris/employees.jpeg",
+          "mediaAlt": "Vanaila HRIS employee access and role separation view",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "trust",
+          "heading": "Built for how Indonesian HR teams actually work",
+          "body": "We did not build a generic HRIS and translate it. Vanaila was designed with Indonesian HR workflows in mind, including Bahasa Indonesia document templates, local probation and PIP practices, and the audit documentation your disnaker compliance process actually requires.",
+          "ctaLabel": "Local-first workflows",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-intro",
+          "heading": "Up and running without an IT project",
+          "body": "Launch in clear operational steps instead of a heavyweight implementation cycle.",
+          "ctaLabel": "Fast rollout",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-1",
+          "heading": "Set up your organisation",
+          "body": "Add employees, assign roles, and configure your competency and KPI frameworks so every review starts from the same baseline.",
+          "ctaLabel": "settings_suggest",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-2",
+          "heading": "Run your cycles",
+          "body": "Track probation, mid-year and annual appraisals, KPI reviews, and PIP monitoring in one role-aware workflow.",
+          "ctaLabel": "sync_alt",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "how-3",
+          "heading": "Generate and export",
+          "body": "Produce official HR documents, export reports, and keep a full history of every decision when leadership or compliance asks for it.",
+          "ctaLabel": "description",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "pricing",
+          "heading": "Performance management should not cost a fortune|to implement",
+          "body": "Vanaila is priced for growing Indonesian companies, not enterprise multinationals. No per-module licensing. No surprise implementation fees.",
+          "ctaLabel": "Lihat Paket Harga",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Hubungi Kami untuk Demo",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Your next appraisal cycle|does not have to be a fire drill",
+          "body": "Give your HR team the structure, the tools, and the records they need to run performance management with confidence.",
+          "ctaLabel": "Mulai Sekarang - Gratis",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "service-website-development": {
+      "id": "service-website-development",
+      "title": "Website Development",
+      "navLabel": "Website Development",
+      "published": true,
+      "seo": {
+        "metaTitle": "Website Development Services | Fast, SEO-Ready Business Websites",
+        "metaDescription": "Get a fast, responsive, SEO-ready business website built for conversions and long-term growth.",
+        "slug": "website-development",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "website development services",
+          "seo website development",
+          "business website design",
+          "fast loading website"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Website Development|Engineering Your Digital Growth",
+          "body": "Transform your online presence into a performance-driven asset. We build infrastructure that scales with your ambition.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "Startup",
+          "body": "5 Premium Pages\nMobile-First Responsive Design\nCore Web Vitals Optimized\nStandard CMS Integration",
+          "ctaLabel": "Base Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 3.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Select Package"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Professional",
+          "body": "Up to 12 Advanced Pages\nCustom UX/UI Research\nTechnical SEO Architecture\nConversion Rate Optimization\nAPI Integration",
+          "ctaLabel": "Growth Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 7.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Get Started Now"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Enterprise",
+          "body": "Unlimited Build & Pages\nCustom Backend Engineering\nEnterprise-Grade Security\nDedicated DevOps Support",
+          "ctaLabel": "Scale Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Infrastructure Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Contact Architecture Team"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Why Choose Vanaila?",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "24-Hour SLA",
+          "body": "Critical technical support and updates with guaranteed response windows.",
+          "ctaLabel": "schedule",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "8+ Years Pedigree",
+          "body": "A decade of engineering experience building digital assets.",
+          "ctaLabel": "history_edu",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Best Price Guarantee",
+          "body": "Premium engineering at competitive rates.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "Ecosystem Ready",
+          "body": "Modular builds designed for your existing stack.",
+          "ctaLabel": "hub",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Discovery",
+          "body": "Requirements and business audit",
+          "ctaLabel": "search",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Architecture",
+          "body": "Technical design and sitemap",
+          "ctaLabel": "architecture",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Development",
+          "body": "Clean engineering and UI build",
+          "ctaLabel": "code",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "QA & Testing",
+          "body": "Stress test and UX validation",
+          "ctaLabel": "fact_check",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Deployment",
+          "body": "Go-live and cloud configuration",
+          "ctaLabel": "rocket_launch",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to Build Your|Digital Future?",
+          "body": "Whether you are a scaling startup or an established enterprise, technical clarity will guide your next breakthrough.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.094Z"
+    },
+    "service-custom-business-tools": {
+      "id": "service-custom-business-tools",
+      "title": "Custom Business Tools",
+      "navLabel": "Custom Business Tools",
+      "published": true,
+      "seo": {
+        "metaTitle": "Custom Business Tools | Workflow Automation and Internal Systems",
+        "metaDescription": "Build custom dashboards, internal tools, and workflow automation systems tailored to your business operations.",
+        "slug": "custom-business-tools",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "custom business tools",
+          "workflow automation",
+          "internal dashboard development",
+          "business process automation"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Custom Business Tools|Automate Your Unique Workflows",
+          "body": "We build bespoke internal tools and automation systems that become the technical backbone of your operations.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "Process Boost",
+          "body": "Workflow Automation\nInternal Dashboard\nAPI Integration\nStandard Maintenance Support",
+          "ctaLabel": "Automation Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 5.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Select Package"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Operational Core",
+          "body": "Comprehensive Ops Portal\nRole-Based Access Control\nComplex Database Architecture\nCustom Reporting",
+          "ctaLabel": "Infrastructure Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 12.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Build My System"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Enterprise Hub",
+          "body": "Legacy Modernization\nSecure Data Pipelines\nCustom AI Integration\nPriority Support",
+          "ctaLabel": "Ecosystem Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Architecture Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Architect Our Solution"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Engineered for Efficiency",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "Rapid ROI",
+          "body": "Tools pay for themselves by reducing manual time.",
+          "ctaLabel": "bolt",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "Bank-Grade Security",
+          "body": "Strict encryption and audit protocols.",
+          "ctaLabel": "security",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Custom Tailored",
+          "body": "No generic templates. Built for your logic.",
+          "ctaLabel": "settings_suggest",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "Ecosystem Integration",
+          "body": "Sync with Slack, GWS, and your CRM stack.",
+          "ctaLabel": "sync_alt",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Workflow Audit",
+          "body": "Identify manual bottlenecks",
+          "ctaLabel": "troubleshoot",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Database Design",
+          "body": "Data integrity architecture",
+          "ctaLabel": "schema",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Core Engineering",
+          "body": "Bespoke logic and backend",
+          "ctaLabel": "terminal",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Stress Testing",
+          "body": "QA in real-world scenarios",
+          "ctaLabel": "bug_report",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Deployment",
+          "body": "Secure migration and training",
+          "ctaLabel": "dns",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to automate your|operational friction?",
+          "body": "Turn technical complexity into a competitive advantage.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "service-secure-online-shops": {
+      "id": "service-secure-online-shops",
+      "title": "Secure Online Shops",
+      "navLabel": "Secure Online Shops",
+      "published": true,
+      "seo": {
+        "metaTitle": "Secure Online Shop Development | Ecommerce Website Solutions",
+        "metaDescription": "Launch a secure ecommerce website with reliable payments, inventory sync, and performance-focused architecture.",
+        "slug": "secure-online-shops",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "secure online shop",
+          "ecommerce website development",
+          "woocommerce development",
+          "online store security"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Secure Online Shops|Your 24/7 Global Sales Machine",
+          "body": "We build robust systems designed for conversion and scalability. Secure, fast, and engineered to grow your brand.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "The Startup Shop",
+          "body": "WooCommerce Setup\nUp to 50 Products\nWhatsApp Integration\nPerformance Optimization",
+          "ctaLabel": "Beginner Started",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 6.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Select Plan"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "The Growth Merchant",
+          "body": "Headless Ecommerce\nAutomated Payments\nInventory Sync\nSecurity Layer\nAdvanced Analytics",
+          "ctaLabel": "Modern Architecture",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 18.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Scale My Store"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "The Enterprise Retailer",
+          "body": "Custom Frontends\nNative Mobile Apps\nLoyalty Systems\nB2B Portals",
+          "ctaLabel": "Bespoke Ecosystem",
+          "ctaHref": "/contact",
+          "mediaImage": "Architecture Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Consult Enterprise"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Built for Reliability & Speed",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "8+ Years Reliability",
+          "body": "High-uptime sales platforms for diverse industries.",
+          "ctaLabel": "verified_user",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "Ecosystem Experts",
+          "body": "Seamless local payment and logistics integration.",
+          "ctaLabel": "storefront",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Best Price Guarantee",
+          "body": "Maximum performance per cost ratio.",
+          "ctaLabel": "payments",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "The 24-Hour SLA",
+          "body": "Rapid response for critical ecommerce incidents.",
+          "ctaLabel": "support_agent",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Strategy & Audit",
+          "body": "Inventory and goal mapping",
+          "ctaLabel": "strategy",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Infrastructure",
+          "body": "Server and stack selection",
+          "ctaLabel": "storage",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "UX & Design",
+          "body": "High-conversion interfaces",
+          "ctaLabel": "brush",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Integration",
+          "body": "Payments and logistics sync",
+          "ctaLabel": "sync",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Launch & Support",
+          "body": "Go-live and maintenance",
+          "ctaLabel": "rocket",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to dominate the|digital market?",
+          "body": "Build a shop that sells while you sleep with reliable ecommerce infrastructure.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "service-mobile-business-app": {
+      "id": "service-mobile-business-app",
+      "title": "Mobile Business App",
+      "navLabel": "Mobile Business App",
+      "published": true,
+      "seo": {
+        "metaTitle": "Mobile Business App Development | iOS and Android Solutions",
+        "metaDescription": "Develop mobile business apps for iOS and Android with scalable backend integration and smooth user experience.",
+        "slug": "mobile-business-app",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "mobile app development",
+          "ios android app",
+          "react native development",
+          "business mobile app"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Mobile Business App|Native Power, Cross-Platform Speed",
+          "body": "Reach users where they spend time with native-performing iOS and Android applications from a unified codebase.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "App Launchpad",
+          "body": "React Native Framework\niOS & Android\nCore Business Features\nStore Deployment",
+          "ctaLabel": "MVP Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 15.0M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Select Kickstart"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Advanced Native",
+          "body": "Custom UI/UX\nPush Notifications\nOffline Sync\nBiometric Auth\nStore Approval Support",
+          "ctaLabel": "Engagement Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 35.0M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Build Premium App"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Enterprise Native",
+          "body": "Complex Backend Integration\nPayment SDKs\nCustom Analytics\nMulti-Region Hosting",
+          "ctaLabel": "Ecosystem Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Infrastructure Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Consult Architect"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Why Go Mobile with Us?",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "Single Base, Dual Power",
+          "body": "One codebase for both iOS and Android.",
+          "ctaLabel": "speed",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "High-Fidelity UX",
+          "body": "Native-feel navigation and smooth interactions.",
+          "ctaLabel": "vibration",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Cloud-Synced",
+          "body": "Real-time sync between web and mobile.",
+          "ctaLabel": "cloud_done",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "App Store Ready",
+          "body": "We handle submission and optimization flows.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "UX Wireframing",
+          "body": "User journey and interaction design",
+          "ctaLabel": "draw",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Native Dev",
+          "body": "Cross-platform programming",
+          "ctaLabel": "phone_android",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Backend Bridge",
+          "body": "API and infrastructure sync",
+          "ctaLabel": "api",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Alpha/Beta Test",
+          "body": "Feedback-driven quality loops",
+          "ctaLabel": "touch_app",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Store Launch",
+          "body": "Deployment to app stores",
+          "ctaLabel": "publish",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to put your brand|in their pocket?",
+          "body": "Discuss your mobile strategy and start building high-performance apps today.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "service-official-business-email": {
+      "id": "service-official-business-email",
+      "title": "Official Business Email",
+      "navLabel": "Official Business Email",
+      "published": true,
+      "seo": {
+        "metaTitle": "Official Business Email Setup | Secure Domain Email Infrastructure",
+        "metaDescription": "Set up secure domain-based business email with SPF, DKIM, and DMARC for stronger trust and deliverability.",
+        "slug": "official-business-email",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "business email setup",
+          "domain email setup",
+          "google workspace setup",
+          "spf dkim dmarc"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Official Business Email|Establish Instant Trust & Authority",
+          "body": "We architect professional Google Workspace and custom domain email infrastructure for secure business communication.",
+          "ctaLabel": "Engineering Excellence Since 2018",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "plan-1",
+          "heading": "Pro Identity",
+          "body": "GWS Setup\nDNS Configuration\nEmail Migration Support\nSpam Protection",
+          "ctaLabel": "Starter Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 1.5M",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Get Started"
+          }
+        },
+        {
+          "id": "plan-2",
+          "heading": "Corporate Comm",
+          "body": "Unlimited User Guide\nAdvanced Security Protocols\nSignature Design\nShared Calendars\nDeliverability Monitoring",
+          "ctaLabel": "Authority Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Starting From",
+          "mediaAlt": "IDR 4.5M",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Professionalize Now"
+          }
+        },
+        {
+          "id": "plan-3",
+          "heading": "Secure Infrastructure",
+          "body": "Full DLP Setup\nArchival & eDiscovery\nPhishing Simulation\nManaged Security",
+          "ctaLabel": "Enterprise Tier",
+          "ctaHref": "/contact",
+          "mediaImage": "Security Focus",
+          "mediaAlt": "Custom Pricing",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "Secure My Domain"
+          }
+        },
+        {
+          "id": "why-intro",
+          "heading": "Professionalism by Design",
+          "body": "Differentiation",
+          "ctaLabel": "Differentiation",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-1",
+          "heading": "100% Trust Factor",
+          "body": "Domain-based identity improves response rates.",
+          "ctaLabel": "verified",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-2",
+          "heading": "Inbox Defense",
+          "body": "SPF, DKIM, and DMARC for anti-spam deliverability.",
+          "ctaLabel": "security",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-3",
+          "heading": "Seamless GWS",
+          "body": "Industry-standard collaboration and security tooling.",
+          "ctaLabel": "laptop_mac",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "why-4",
+          "heading": "Device Sync",
+          "body": "Perfect sync across desktop and mobile clients.",
+          "ctaLabel": "sync",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-intro",
+          "heading": "Development Lifecycle",
+          "body": "Methodology",
+          "ctaLabel": "Methodology",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-1",
+          "heading": "Domain Audit",
+          "body": "DNS health and status checks",
+          "ctaLabel": "domain",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-2",
+          "heading": "Identity Setup",
+          "body": "GWS and user provisioning",
+          "ctaLabel": "badge",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-3",
+          "heading": "Security Protocols",
+          "body": "DKIM, SPF, and DMARC config",
+          "ctaLabel": "key",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-4",
+          "heading": "Migration",
+          "body": "Transition existing mailbox data",
+          "ctaLabel": "move_to_inbox",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "lifecycle-5",
+          "heading": "Verification",
+          "body": "Deliverability testing and QA",
+          "ctaLabel": "alternate_email",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to professionalize|your communication?",
+          "body": "Set up secure, high-authority email infrastructure and communicate with confidence.",
+          "ctaLabel": "Book a Strategy Call",
+          "ctaHref": "/contact",
+          "mediaImage": "/contact",
+          "mediaAlt": "Get a Free Technical Audit",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "partnership": {
+      "id": "partnership",
+      "title": "Partnership Program",
+      "navLabel": "Partnership",
+      "published": true,
+      "seo": {
+        "metaTitle": "Partnership Program | Agency and Technical Alliance with Example Studio",
+        "metaDescription": "Partner with Example Studio through referral and technical alliance programs to deliver high-performance solutions.",
+        "slug": "partnership",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "digital agency partnership",
+          "technical alliance program",
+          "referral partnership",
+          "white label development"
+        ]
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "heading": "Build the Future|Scale with Vanaila.",
+          "body": "Join our network of elite technical agencies and referral partners. Let us deliver extraordinary digital infrastructure together.",
+          "ctaLabel": "Ecosystem Partnership",
+          "ctaHref": "/partnership",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-intro",
+          "heading": "Partnership Tracks",
+          "body": "Choose the model that fits your team and growth strategy.",
+          "ctaLabel": "Program",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-1",
+          "heading": "Referral Alpha",
+          "body": "Earn commissions by connecting clients with our engineering services.",
+          "ctaLabel": "handshake",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-2",
+          "heading": "Technical Alliance",
+          "body": "Embed our lead architects into your project workflow with white-label support.",
+          "ctaLabel": "hub",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "program-3",
+          "heading": "Service Expansion",
+          "body": "Offer cloud infra and mobile app delivery under your own brand.",
+          "ctaLabel": "rocket_launch",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standards-intro",
+          "heading": "Our Selection Standard",
+          "body": "We partner with teams that share our standards for engineering quality.",
+          "ctaLabel": "Standards",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-1",
+          "heading": "Excellence",
+          "body": "Proven high-performance delivery track record.",
+          "ctaLabel": "01",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-2",
+          "heading": "Integrity",
+          "body": "Transparent communication and milestone discipline.",
+          "ctaLabel": "02",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-3",
+          "heading": "Innovation",
+          "body": "Commitment to modern stacks and cloud-native delivery.",
+          "ctaLabel": "03",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "standard-4",
+          "heading": "Growth",
+          "body": "Long-term vision for mutual ecosystem expansion.",
+          "ctaLabel": "04",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perks-intro",
+          "heading": "Ecosystem Perks",
+          "body": "Beyond collaboration, we provide resources for partners to thrive.",
+          "ctaLabel": "Perks",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perk-1",
+          "heading": "Architecture Audits",
+          "body": "Free consultation for complex cloud infrastructure designs.",
+          "ctaLabel": "architecture",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perk-2",
+          "heading": "Priority Support",
+          "body": "Direct line to senior architects for emergency escalations.",
+          "ctaLabel": "monitoring",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "perk-3",
+          "heading": "Co-Marketing",
+          "body": "Join webinars and white papers to boost visibility.",
+          "ctaLabel": "local_atm",
+          "ctaHref": "",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        },
+        {
+          "id": "cta",
+          "heading": "Ready to Build Partner Value?|Join our ecosystem network.",
+          "body": "Tell us your capabilities and we will map the best collaboration model for your team.",
+          "ctaLabel": "Start Partnership Discussion",
+          "ctaHref": "/contact",
+          "mediaImage": "",
+          "mediaAlt": "",
+          "layout": "stacked",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    },
+    "contact": {
+      "id": "contact",
+      "title": "Contact",
+      "navLabel": "Contact",
+      "published": true,
+      "seo": {
+        "metaTitle": "Contact Example Studio | Book a Strategy Call",
+        "metaDescription": "Contact Example Studio to discuss your website, software, or automation goals and get a practical implementation plan.",
+        "slug": "contact",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "contact vanaila digital",
+          "book strategy call",
+          "web development consultation",
+          "software consultation"
+        ]
+      },
+      "sections": [
+        {
+          "id": "contact-form",
+          "heading": "Let us know your goals",
+          "body": "Share your current website, timeline, and business target. We will respond with a practical plan.",
+          "ctaLabel": "Send inquiry",
+          "ctaHref": "mailto:hello@example.com",
+          "mediaImage": "https://placehold.co/960x640/png",
+          "mediaAlt": "Let us know your goals",
+          "layout": "split",
+          "theme": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "accent": "#0f766e"
+          }
+        }
+      ],
+      "updatedAt": "2026-05-16T05:25:39.095Z"
+    }
+  },
+  "blogPosts": [
+    {
+      "id": "post-1",
+      "title": "How to Structure a High-Converting Service Landing Page",
+      "excerpt": "A practical structure for hero sections, proof blocks, and conversion paths that increase lead quality.",
+      "content": "# Why structure matters\n\nHigh-converting pages are clear, specific, and fast.\n\n## Recommended flow\n\n1. Hero with clear value proposition\n2. Social proof\n3. Service detail with outcomes\n4. CTA with low friction\n\nKeep sections simple and measurable.",
+      "author": "Editorial Team",
+      "categoryId": "category-engineering",
+      "tags": [
+        "engineering",
+        "performance",
+        "seo"
+      ],
+      "coverImage": "https://placehold.co/1200x630/png",
+      "status": "published",
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "How to Structure a High-Converting Service Landing Page",
+        "metaDescription": "Use this framework to build service pages that improve conversion and organic visibility.",
+        "slug": "high-converting-service-landing-page",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "service landing page",
+          "conversion optimization",
+          "technical seo"
+        ]
+      }
+    },
+    {
+      "id": "post-2",
+      "title": "Editorial Workflow Checklist for Marketing Teams",
+      "excerpt": "Set up a draft-to-publish workflow in your CMS so non-technical teams can ship content confidently.",
+      "content": "# Editorial workflow\n\nUse statuses, approvals, and clear owners.\n\nDraft quickly, review carefully, then publish with SEO checks.",
+      "author": "Editorial Team",
+      "categoryId": "category-workflow",
+      "tags": [
+        "workflow",
+        "cms"
+      ],
+      "coverImage": "https://placehold.co/1200x630/png",
+      "status": "draft",
+      "publishedAt": null,
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Editorial Workflow Checklist for Marketing Teams",
+        "metaDescription": "A clear CMS workflow that supports consistent publishing quality.",
+        "slug": "editorial-workflow-checklist",
+        "canonical": "",
+        "socialImage": "https://placehold.co/1200x630/png",
+        "noIndex": false,
+        "keywords": [
+          "editorial workflow",
+          "cms publishing",
+          "content operations"
+        ]
+      }
+    }
+  ],
+  "portfolioProjects": [
+    {
+      "id": "portfolio-assessment-app",
+      "title": "Assessment App",
+      "summary": "Custom web application built for psychologists to collect structured socio-cultural research data. The product was later discontinued in 2022 after the research cycle ended.",
+      "challenge": "The research team needed a secure and easy way to distribute assessments, capture participant responses, and reduce manual spreadsheet handling during the data-collection phase.",
+      "solution": "We designed a custom web app with guided participant flows, form-based intake screens, and a lightweight admin workflow that made field data collection easier for non-technical researchers.",
+      "outcome": "The team gained a cleaner collection workflow for research operations. The platform is now inactive because the program concluded in 2022, but it remains a strong example of a purpose-built internal application.",
+      "clientName": "Assessment App",
+      "serviceType": "Custom Web App",
+      "industry": "Psychology Research",
+      "projectUrl": "/custom-business-tools",
+      "relatedServicePageIds": [
+        "service-custom-business-tools"
+      ],
+      "coverImage": "/portfolio/assessment-app.jpg",
+      "gallery": [
+        "/portfolio/assessment-app.jpg"
+      ],
+      "tags": [
+        "Custom App",
+        "Research",
+        "Psychology"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 2,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Assessment App Case Study | Research Data Collection Web App",
+        "metaDescription": "Case study of a custom assessment web app built to help psychologists collect structured research data more efficiently.",
+        "slug": "assessment-app",
+        "canonical": "",
+        "socialImage": "/portfolio/assessment-app.jpg",
+        "noIndex": false,
+        "keywords": [
+          "assessment web app",
+          "research data collection",
+          "psychology app",
+          "custom web app"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-biliamind",
+      "title": "Biliamind",
+      "summary": "Learning management website designed to publish mentor-led courses, course listings, and educational landing pages in a clean commercial format.",
+      "challenge": "The brand needed a structured web presence that could present courses clearly, support conversion-oriented messaging, and make the learning offer easier to browse.",
+      "solution": "We built a polished LMS-style website layout with content hierarchy for courses, mentors, and learning benefits, keeping the interface approachable for first-time visitors.",
+      "outcome": "Biliamind gained a clearer online storefront for digital learning offers and a stronger foundation for content-driven growth.",
+      "clientName": "Biliamind",
+      "serviceType": "Website Development",
+      "industry": "Education",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/biliamind-cover.svg",
+      "gallery": [
+        "/portfolio/biliamind-cover.svg"
+      ],
+      "tags": [
+        "LMS",
+        "Education",
+        "Website"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 3,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Biliamind Case Study | LMS Website Development",
+        "metaDescription": "LMS website case study for Biliamind, focused on course presentation, educational content structure, and lead generation.",
+        "slug": "biliamind",
+        "canonical": "",
+        "socialImage": "/portfolio/biliamind-cover.svg",
+        "noIndex": false,
+        "keywords": [
+          "lms website",
+          "education website",
+          "course platform",
+          "website development"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-greenretech",
+      "title": "Greenretech",
+      "summary": "WooCommerce website created to sell wood pellet products to international buyers with a cleaner product showcase and export-oriented positioning.",
+      "challenge": "The business needed a professional ecommerce presence that could communicate product credibility, showcase catalog information, and support international buying interest.",
+      "solution": "We built a WooCommerce-based storefront with product sections, trust messaging, and a global-friendly presentation tailored to industrial export customers.",
+      "outcome": "Greenretech gained a more credible ecommerce channel for premium wood pellet sales and a stronger digital presentation for international inquiries.",
+      "clientName": "Greenretech",
+      "serviceType": "Secure Online Shops",
+      "industry": "Energy Export",
+      "projectUrl": "/secure-online-shops",
+      "relatedServicePageIds": [
+        "service-secure-online-shops"
+      ],
+      "coverImage": "/portfolio/Greenretech.jpg",
+      "gallery": [
+        "/portfolio/Greenretech.jpg"
+      ],
+      "tags": [
+        "WooCommerce",
+        "Ecommerce",
+        "Export"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 4,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Greenretech Case Study | WooCommerce Export Website",
+        "metaDescription": "WooCommerce case study for Greenretech, built to sell wood pellet products for international customers with a professional ecommerce experience.",
+        "slug": "greenretech",
+        "canonical": "",
+        "socialImage": "/portfolio/Greenretech.jpg",
+        "noIndex": false,
+        "keywords": [
+          "woocommerce website",
+          "export ecommerce",
+          "wood pellet website",
+          "online shop"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-hr-performance",
+      "title": "HR Performance",
+      "summary": "Custom HR performance suite for KPI management, analytics dashboards, employee performance tracking, and training need analysis.",
+      "challenge": "The organization needed a centralized internal system to manage KPI measurement, reporting visibility, and competency tracking across teams.",
+      "solution": "We developed a custom web application with performance dashboards, KPI management modules, records, and role-based operational views for HR workflows.",
+      "outcome": "HR teams received a dedicated internal platform to monitor performance and training priorities with clearer reporting and operational consistency.",
+      "clientName": "HR Performance",
+      "serviceType": "Custom Web App",
+      "industry": "Human Resources",
+      "projectUrl": "/custom-business-tools",
+      "relatedServicePageIds": [
+        "service-custom-business-tools"
+      ],
+      "coverImage": "/portfolio/hr-performance-cover.svg",
+      "gallery": [
+        "/portfolio/hr-performance-cover.svg"
+      ],
+      "tags": [
+        "HR System",
+        "Analytics",
+        "Custom App"
+      ],
+      "featured": true,
+      "status": "published",
+      "sortOrder": 1,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "HR Performance Case Study | KPI and HR Analytics System",
+        "metaDescription": "Custom HR system case study covering KPI management, analytics dashboards, employee performance monitoring, and training need analysis.",
+        "slug": "hr-performance",
+        "canonical": "",
+        "socialImage": "/portfolio/hr-performance-cover.svg",
+        "noIndex": false,
+        "keywords": [
+          "hr system",
+          "kpi dashboard",
+          "performance management",
+          "custom web app"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-langgeng-sejahtera",
+      "title": "Langgeng Sejahtera",
+      "summary": "Company profile website for a furniture manufacturing business, designed to present operations, capabilities, and brand credibility online.",
+      "challenge": "The company needed a more professional digital presence to explain its manufacturing background and support trust with prospective business partners.",
+      "solution": "We produced a structured company profile website with a stronger visual hierarchy, corporate storytelling, and clear access points for business inquiries.",
+      "outcome": "Langgeng Sejahtera gained a more polished company profile site that better communicates its manufacturing identity and business positioning.",
+      "clientName": "Langgeng Sejahtera",
+      "serviceType": "Website Development",
+      "industry": "Furniture Manufacturing",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/langgeng-sejahtera-cover.svg",
+      "gallery": [
+        "/portfolio/langgeng-sejahtera-cover.svg"
+      ],
+      "tags": [
+        "Company Profile",
+        "Manufacturing",
+        "Website"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 5,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Langgeng Sejahtera Case Study | Company Profile Website",
+        "metaDescription": "Company profile website case study for Langgeng Sejahtera, focused on corporate credibility, business storytelling, and lead-ready presentation.",
+        "slug": "langgeng-sejahtera",
+        "canonical": "",
+        "socialImage": "/portfolio/langgeng-sejahtera-cover.svg",
+        "noIndex": false,
+        "keywords": [
+          "company profile website",
+          "manufacturing website",
+          "corporate website",
+          "website development"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-maza-adventure",
+      "title": "Maza Adventure",
+      "summary": "Company profile website for an event and tour organizer, featuring outdoor programs, travel packages, and a more energetic visual direction.",
+      "challenge": "The brand needed a modern web presence that could showcase experiences, build trust quickly, and make the core programs easier to understand online.",
+      "solution": "We built a tourism-focused company profile website with hero storytelling, program highlights, and clearer pathways for potential customers to explore activities.",
+      "outcome": "Maza Adventure gained a stronger promotional website that presents its event and tour services with more confidence and clearer conversion paths.",
+      "clientName": "Maza Adventure",
+      "serviceType": "Website Development",
+      "industry": "Tourism & Events",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/maza.jpg",
+      "gallery": [
+        "/portfolio/maza.jpg"
+      ],
+      "tags": [
+        "Tourism",
+        "Events",
+        "Website"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 6,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Maza Adventure Case Study | Tour Organizer Website",
+        "metaDescription": "Website case study for Maza Adventure, built to present event and tour programs with clearer storytelling and conversion-focused structure.",
+        "slug": "maza-adventure",
+        "canonical": "",
+        "socialImage": "/portfolio/maza.jpg",
+        "noIndex": false,
+        "keywords": [
+          "tour website",
+          "event organizer website",
+          "travel company profile",
+          "website development"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-rumah-psikologi",
+      "title": "Rumah Psikologi",
+      "summary": "Company profile website for a psychology practice, designed to communicate services, consultation pathways, and a calm approachable brand identity.",
+      "challenge": "The practice needed a friendlier and more trustworthy website to introduce its services and help visitors understand how to start a consultation.",
+      "solution": "We created a soft visual system and a structured company profile website that highlights the practice, service offerings, and primary consultation actions.",
+      "outcome": "Rumah Psikologi gained a clearer digital front door for prospective clients and a more approachable service presentation.",
+      "clientName": "Rumah Psikologi",
+      "serviceType": "Website Development",
+      "industry": "Psychology Practice",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/rumah-psikologi.jpg",
+      "gallery": [
+        "/portfolio/rumah-psikologi.jpg"
+      ],
+      "tags": [
+        "Psychology",
+        "Company Profile",
+        "Website"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 7,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Rumah Psikologi Case Study | Psychology Practice Website",
+        "metaDescription": "Psychology company profile website case study focused on service clarity, trust-building, and consultation readiness.",
+        "slug": "rumah-psikologi",
+        "canonical": "",
+        "socialImage": "/portfolio/rumah-psikologi.jpg",
+        "noIndex": false,
+        "keywords": [
+          "psychology website",
+          "company profile website",
+          "consultation website",
+          "website development"
+        ]
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "category-general",
+      "name": "General",
+      "slug": "general",
+      "description": "Default publishing category for uncategorized content.",
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "category-engineering",
+      "name": "Engineering",
+      "slug": "engineering",
+      "description": "Technical engineering insights and implementation notes.",
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "category-performance",
+      "name": "Performance",
+      "slug": "performance",
+      "description": "Web performance, speed, and optimization topics.",
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "category-seo",
+      "name": "SEO",
+      "slug": "seo",
+      "description": "Technical SEO and discoverability guidance.",
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "category-workflow",
+      "name": "Workflow",
+      "slug": "workflow",
+      "description": "Operational workflows, editorial process, and CMS governance.",
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "category-cms",
+      "name": "CMS",
+      "slug": "cms",
+      "description": "Content management implementation and admin UX topics.",
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    }
+  ],
+  "mediaAssets": [
+    {
+      "id": "media-default-og",
+      "title": "Default Open Graph",
+      "url": "https://placehold.co/1200x630/png",
+      "altText": "Default social sharing image",
+      "mimeType": "image/png",
+      "width": 1200,
+      "height": 630,
+      "sizeBytes": null,
+      "storageProvider": "external-url",
+      "storageKey": null,
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "media-brand-mark",
+      "title": "Vanaila Brand Mark",
+      "url": "https://placehold.co/240x80/png",
+      "altText": "Example Studio brand mark",
+      "mimeType": "image/png",
+      "width": 1200,
+      "height": 630,
+      "sizeBytes": null,
+      "storageProvider": "external-url",
+      "storageKey": null,
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    },
+    {
+      "id": "media-blog-cover",
+      "title": "Blog Cover Placeholder",
+      "url": "https://placehold.co/1200x630/png",
+      "altText": "Generic blog cover placeholder",
+      "mimeType": "image/png",
+      "width": 1200,
+      "height": 630,
+      "sizeBytes": null,
+      "storageProvider": "external-url",
+      "storageKey": null,
+      "createdAt": "2026-05-16T05:25:39.096Z",
+      "updatedAt": "2026-05-16T05:25:39.096Z"
+    }
+  ]
+}

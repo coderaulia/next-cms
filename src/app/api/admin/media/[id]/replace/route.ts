@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { getMediaAssetById, getMediaAssets, updateMediaAsset } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
-import { saveUploadedMedia } from '@/services/mediaStorage';
+import { deleteUploadedMedia, saveUploadedMedia } from '@/services/mediaStorage';
 import { env } from '@/services/env';
 
 type RouteContext = {
@@ -29,6 +29,18 @@ export async function POST(request: Request, { params }: RouteContext) {
   if ('error' in auth) return auth.error;
   const session = auth.session;
 
+  // Early rejection based on Content-Length header before parsing the body
+  const contentLength = request.headers.get('content-length');
+  if (contentLength) {
+    const declaredSize = Number.parseInt(contentLength, 10);
+    if (Number.isFinite(declaredSize) && declaredSize > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: 'File too large. Maximum upload size is 10 MB.' },
+        { status: 413 }
+      );
+    }
+  }
+
   const { id } = await params;
   const existing = await getMediaAssetById(id);
   if (!existing) {
@@ -47,6 +59,14 @@ export async function POST(request: Request, { params }: RouteContext) {
   const altText = parseText(form.get('altText'));
   if (!(rawFile instanceof File)) {
     return NextResponse.json({ error: 'No media file provided.' }, { status: 400 });
+  }
+
+  // Reject oversized files before buffering the full content
+  if (rawFile.size > 10 * 1024 * 1024) {
+    return NextResponse.json(
+      { error: 'File too large. Maximum upload size is 10 MB.' },
+      { status: 413 }
+    );
   }
 
   if (isImageMimeType(rawFile.type || existing.mimeType) && !(altText || existing.altText)) {
@@ -80,11 +100,15 @@ export async function POST(request: Request, { params }: RouteContext) {
     );
   }
 
+  // Write to a temporary key first, then update CMS metadata, then promote.
+  // This prevents storage/metadata desync if the CMS update fails.
+  const tempStorageKey = `${existing.storageKey}.__replacing__`;
   const stored = await saveUploadedMedia(new File([buffer], rawFile.name, { type: rawFile.type }), {
-    storageKey: existing.storageKey,
+    storageKey: tempStorageKey,
     upsert: true
   });
 
+  // Now attempt the CMS metadata update
   const mediaAsset = await updateMediaAsset(id, {
     ...existing,
     url: stored.url,
@@ -93,11 +117,29 @@ export async function POST(request: Request, { params }: RouteContext) {
     sizeBytes: stored.sizeBytes,
     checksumSha256,
     storageProvider: stored.storageProvider,
-    storageKey: stored.storageKey
+    storageKey: existing.storageKey
   });
 
   if (!mediaAsset) {
+    // CMS update failed — clean up the temporary file and abort
+    await deleteUploadedMedia(tempStorageKey, stored.storageProvider).catch(() => {});
     return NextResponse.json({ error: 'Media asset not found.' }, { status: 404 });
+  }
+
+  // CMS update succeeded — promote the temp file to the real key and clean up
+  try {
+    await saveUploadedMedia(new File([buffer], rawFile.name, { type: rawFile.type }), {
+      storageKey: existing.storageKey,
+      upsert: true
+    });
+    await deleteUploadedMedia(tempStorageKey, stored.storageProvider).catch(() => {});
+  } catch (promoteError) {
+    // If promotion fails, the temp file exists but the old file is still intact.
+    // The CMS metadata now points to the old storageKey which still has old bytes.
+    // Revert the CMS update to keep things consistent.
+    await updateMediaAsset(id, existing).catch(() => {});
+    await deleteUploadedMedia(tempStorageKey, stored.storageProvider).catch(() => {});
+    throw promoteError;
   }
 
   try {

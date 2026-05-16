@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { defaultContent } from '@/features/cms/defaultContent';
+import { getDefaultContent } from '@/features/cms/defaultContent';
 import {
   bootstrapFixtures,
   buildFixtureSeedContent,
@@ -34,7 +34,7 @@ describe('client starter bootstrap', () => {
       pages: ['contact']
     });
 
-    const starter = buildStarterContent(defaultContent, config);
+    const starter = buildStarterContent(getDefaultContent(), config);
 
     expect(starter.settings.siteName).toBe('Acme Studio');
     expect(starter.blogPosts).toHaveLength(0);
@@ -107,14 +107,14 @@ describe('client starter bootstrap', () => {
 
   it('builds distinct starter fixtures for multiple client shapes', () => {
     for (const fixture of bootstrapFixtures) {
-      const starter = buildFixtureSeedContent(defaultContent, fixture);
+      const starter = buildFixtureSeedContent(getDefaultContent(), fixture);
 
       expect(starter.pages.home).toBeDefined();
       expect(starter.settings.general.siteName.length).toBeGreaterThan(0);
       expect(starter.settings.navigation.headerLinks[0]?.href).toBe('/');
     }
 
-    const caseStudyStarter = buildFixtureSeedContent(defaultContent, 'portfolio-case-studies');
+    const caseStudyStarter = buildFixtureSeedContent(getDefaultContent(), 'portfolio-case-studies');
     expect(caseStudyStarter.settings.navigation.headerLinks.some((link) => link.label === 'Case Studies')).toBe(true);
     expect(caseStudyStarter.portfolioProjects.length).toBeGreaterThan(0);
     expect(caseStudyStarter.blogPosts).toHaveLength(0);
