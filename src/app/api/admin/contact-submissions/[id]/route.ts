@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { assertAdminPermission, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { updateContactSubmissionStatus } from '@/features/cms/contactSubmissionsStore';
-import { validateContactSubmissionStatus } from '@/features/cms/validators';
+import { validateContactSubmissionStatus, validationFailed } from '@/features/cms/validators';
 
 export async function PATCH(
   request: Request,
@@ -15,6 +15,7 @@ export async function PATCH(
   const body = await request.json().catch(() => null);
   const status = validateContactSubmissionStatus(body?.status);
   if (!status) {
+    validationFailed('/api/admin/contact-submissions/[id]', body);
     return NextResponse.json({ error: 'Invalid status.' }, { status: 400 });
   }
 

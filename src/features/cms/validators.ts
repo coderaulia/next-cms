@@ -30,6 +30,18 @@ const PAGE_IDS: PageId[] = [
   'service-mobile-business-app',
   'service-official-business-email'
 ];
+
+export function validationFailed(route: string, payload: unknown) {
+  let preview = '[unserializable payload]';
+
+  try {
+    preview = JSON.stringify(payload).slice(0, 300);
+  } catch {
+    // keep validation logging best-effort
+  }
+
+  console.warn(`[validation] ${route} rejected payload:`, preview);
+}
 const HOME_THEMES: HomeThemeToken[] = ['light', 'blue-soft', 'mist'];
 const CTA_STYLES: CtaStyleToken[] = ['primary', 'secondary', 'ghost'];
 const CONTACT_SUBMISSION_STATUSES: ContactSubmissionStatus[] = ['new', 'in_review', 'closed'];

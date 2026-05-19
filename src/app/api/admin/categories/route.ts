@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { assertAdminPermission, assertAdminRequest, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createCategory, getCategories } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
-import { validateCategory } from '@/features/cms/validators';
+import { validateCategory, validationFailed } from '@/features/cms/validators';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
@@ -21,8 +21,10 @@ export async function POST(request: Request) {
 
   const session = auth.session;
 
-  const payload = validateCategory(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validateCategory(body);
   if (!payload) {
+    validationFailed('/api/admin/categories', body);
     return NextResponse.json({ error: 'Invalid category payload' }, { status: 400 });
   }
 

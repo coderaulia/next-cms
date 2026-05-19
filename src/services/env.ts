@@ -13,6 +13,10 @@ const parseContactWebhookMethod = (value: string | undefined): 'POST' | 'PUT' | 
   return normalized === 'PUT' || normalized === 'PATCH' ? normalized : 'POST';
 };
 
+if (process.env.NODE_ENV === 'production' && !clean(process.env.PASSWORD_PEPPER)) {
+  console.warn('[security] PASSWORD_PEPPER is not set. Scrypt hashing is weaker without it. Set this in production.');
+}
+
 export const env = {
   get siteUrl() {
     return clean(process.env.NEXT_PUBLIC_SITE_URL) || fallbackBaseUrl;

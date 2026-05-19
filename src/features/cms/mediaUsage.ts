@@ -1,5 +1,5 @@
 import * as contentStore from './contentStore';
-import type { HomeBlock, LandingPage, MediaAsset } from './types';
+import type { MediaAsset } from './types';
 
 export type MediaUsageEntry = {
   entityType: 'settings' | 'page' | 'blog_post' | 'portfolio_project';
@@ -9,18 +9,20 @@ export type MediaUsageEntry = {
   href: string;
 };
 
-function collectBlockUsage(page: LandingPage, assetUrl: string, block: HomeBlock) {
-  if (block.type === 'why_split' && block.mediaImage === assetUrl) {
-    return {
-      entityType: 'page' as const,
-      entityId: page.id,
-      label: page.title,
-      field: `Home block: ${block.heading || block.id}`,
-      href: `/admin/pages/${page.id}`
-    };
+function valueContainsMediaUrl(value: unknown, assetUrl: string): boolean {
+  if (typeof value === 'string') {
+    return value === assetUrl;
   }
 
-  return null;
+  if (Array.isArray(value)) {
+    return value.some((entry) => valueContainsMediaUrl(entry, assetUrl));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.values(value).some((entry) => valueContainsMediaUrl(entry, assetUrl));
+  }
+
+  return false;
 }
 
 export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageEntry[]> {
@@ -35,10 +37,18 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
   ]);
 
   const usages: MediaUsageEntry[] = [];
+  const usageKeys = new Set<string>();
   const pages = Object.values(pagesMap);
 
+  const addUsage = (entry: MediaUsageEntry) => {
+    const key = `${entry.entityType}:${entry.entityId}:${entry.field}`;
+    if (usageKeys.has(key)) return;
+    usageKeys.add(key);
+    usages.push(entry);
+  };
+
   if (settings.branding.headerLogo === assetUrl) {
-    usages.push({
+    addUsage({
       entityType: 'settings',
       entityId: 'default',
       label: 'Site settings',
@@ -48,7 +58,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
   }
 
   if (settings.seo.defaultOgImage === assetUrl) {
-    usages.push({
+    addUsage({
       entityType: 'settings',
       entityId: 'default',
       label: 'Site settings',
@@ -59,8 +69,8 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
 
   for (const page of pages) {
     for (const section of page.sections) {
-      if (section.mediaImage !== assetUrl) continue;
-      usages.push({
+      if (!valueContainsMediaUrl(section, assetUrl)) continue;
+      addUsage({
         entityType: 'page',
         entityId: page.id,
         label: page.title,
@@ -70,16 +80,20 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
     }
 
     for (const block of page.homeBlocks ?? []) {
-      const usage = collectBlockUsage(page, assetUrl, block);
-      if (usage) {
-        usages.push(usage);
-      }
+      if (!valueContainsMediaUrl(block, assetUrl)) continue;
+      addUsage({
+        entityType: 'page',
+        entityId: page.id,
+        label: page.title,
+        field: `Home block: ${'heading' in block ? block.heading || block.id : block.id}`,
+        href: `/admin/pages/${page.id}`
+      });
     }
   }
 
   for (const post of posts) {
     if (post.coverImage === assetUrl) {
-      usages.push({
+      addUsage({
         entityType: 'blog_post',
         entityId: post.id,
         label: post.title,
@@ -89,7 +103,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
     }
 
     if (post.seo.socialImage === assetUrl) {
-      usages.push({
+      addUsage({
         entityType: 'blog_post',
         entityId: post.id,
         label: post.title,
@@ -101,7 +115,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
 
   for (const project of projects) {
     if (project.coverImage === assetUrl) {
-      usages.push({
+      addUsage({
         entityType: 'portfolio_project',
         entityId: project.id,
         label: project.title,
@@ -111,7 +125,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
     }
 
     if (project.seo.socialImage === assetUrl) {
-      usages.push({
+      addUsage({
         entityType: 'portfolio_project',
         entityId: project.id,
         label: project.title,
@@ -122,7 +136,7 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
 
     project.gallery.forEach((item, index) => {
       if (item !== assetUrl) return;
-      usages.push({
+      addUsage({
         entityType: 'portfolio_project',
         entityId: project.id,
         label: project.title,
@@ -133,4 +147,24 @@ export async function getMediaUsage(mediaAsset: MediaAsset): Promise<MediaUsageE
   }
 
   return usages;
+}
+
+export async function findMediaReferences(mediaUrl: string): Promise<string[]> {
+  const mediaAsset: MediaAsset = {
+    id: 'lookup',
+    title: mediaUrl,
+    url: mediaUrl,
+    altText: '',
+    mimeType: '',
+    width: null,
+    height: null,
+    sizeBytes: null,
+    storageProvider: 'local',
+    storageKey: null,
+    createdAt: '',
+    updatedAt: ''
+  };
+
+  const usage = await getMediaUsage(mediaAsset);
+  return usage.map((entry) => `${entry.label} - ${entry.field}`);
 }

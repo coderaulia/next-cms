@@ -4,7 +4,7 @@ import { assertAdminPermission, assertAdminRequest, logAdminAuditEvent } from '@
 import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { getSettings, updateSettings } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
-import { validateSiteSettings } from '@/features/cms/validators';
+import { validateSiteSettings, validationFailed } from '@/features/cms/validators';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
@@ -22,8 +22,10 @@ export async function PUT(request: Request) {
 
   const session = auth.session;
 
-  const payload = validateSiteSettings(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validateSiteSettings(body);
   if (!payload) {
+    validationFailed('/api/admin/settings', body);
     return NextResponse.json({ error: 'Invalid settings payload' }, { status: 400 });
   }
 

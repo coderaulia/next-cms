@@ -4,7 +4,7 @@ import { assertAdminPermission, assertAdminRequest, logAdminAuditEvent } from '@
 import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { getPageById, upsertPage } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
-import { isValidPageId, validateLandingPage } from '@/features/cms/validators';
+import { isValidPageId, validateLandingPage, validationFailed } from '@/features/cms/validators';
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -43,8 +43,10 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Page not found' }, { status: 404 });
   }
 
-  const payload = validateLandingPage(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validateLandingPage(body);
   if (!payload || payload.id !== id) {
+    validationFailed('/api/admin/pages/[id]', body);
     return NextResponse.json({ error: 'Invalid page payload' }, { status: 400 });
   }
 

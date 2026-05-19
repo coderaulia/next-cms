@@ -56,8 +56,7 @@ CMS_DB_POOL_MAX=2
 
 ```bash
 npm install
-npm run check
-npm run build
+npm run check:deploy
 npm run start
 ```
 
@@ -66,6 +65,7 @@ Current expected validation:
 - TypeScript passes
 - Vitest passes
 - Next production build succeeds
+- Build size audit completes
 
 ## Database + Media Cutover
 

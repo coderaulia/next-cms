@@ -5,7 +5,7 @@ import { deleteMediaAsset, getMediaAssetById, updateMediaAsset } from '@/feature
 import { getMediaUsage } from '@/features/cms/mediaUsage';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
 import { deleteUploadedMedia } from '@/services/mediaStorage';
-import { validateMediaAsset } from '@/features/cms/validators';
+import { validateMediaAsset, validationFailed } from '@/features/cms/validators';
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -37,8 +37,10 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: 'Media asset not found' }, { status: 404 });
   }
 
-  const payload = validateMediaAsset(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validateMediaAsset(body);
   if (!payload || payload.id !== id) {
+    validationFailed('/api/admin/media/[id]', body);
     return NextResponse.json({ error: 'Invalid media asset payload' }, { status: 400 });
   }
 

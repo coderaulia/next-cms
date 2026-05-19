@@ -15,6 +15,7 @@
     "typecheck": "tsc --noEmit --incremental false",
     "test": "vitest run",
     "check": "npm run lint && npm run typecheck && npm run test",
+    "check:deploy": "npm run check && npm run build && npm run audit:size",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -43,7 +44,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

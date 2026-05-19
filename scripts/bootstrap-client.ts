@@ -2,6 +2,8 @@ import { access, copyFile, mkdir, readFile, readdir, stat, writeFile } from 'nod
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { z } from 'zod';
+
 import { getDefaultContent } from '../src/features/cms/defaultContent';
 import {
   bootstrapFixtures,
@@ -28,6 +30,31 @@ type CliFlags = Record<string, string | boolean>;
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const sourceRoot = resolve(scriptDir, '..');
 const ignoredNames = new Set(['.git', '.next', 'node_modules', 'coverage', 'dist']);
+const bootstrapConfigSchema = z
+  .object({
+    outputDir: z.string().min(1).optional(),
+    siteName: z.string().min(1).optional(),
+    siteUrl: z.string().min(1).optional(),
+    adminEmail: z.string().min(1).optional(),
+    adminName: z.string().min(1).optional(),
+    brandMark: z.string().min(1).optional(),
+    brandWordmark: z.string().min(1).optional(),
+    variant: z.enum(bootstrapVariants).optional(),
+    fixture: z.enum(bootstrapFixtures).optional(),
+    modules: z.array(z.enum(bootstrapModules)).optional(),
+    pages: z.array(z.enum(bootstrapPages)).optional(),
+    colors: z
+      .object({
+        dark: z.string().min(1).optional(),
+        primary: z.string().min(1).optional(),
+        secondary: z.string().min(1).optional(),
+        accent: z.string().min(1).optional(),
+        text: z.string().min(1).optional()
+      })
+      .strict()
+      .optional()
+  })
+  .strict();
 
 function printHelp() {
   console.log(`Create a new client starter from this repo.
@@ -123,8 +150,31 @@ async function readJsonFile<T>(path: string) {
   return JSON.parse(await readFile(path, 'utf8')) as T;
 }
 
+function formatConfigErrors(error: z.ZodError) {
+  return error.issues
+    .map((issue) => {
+      const path = issue.path.length > 0 ? issue.path.join('.') : 'config';
+      return `- ${path}: ${issue.message}`;
+    })
+    .join('\n');
+}
+
 async function loadConfigFile(configPath: string) {
-  return readJsonFile<BootstrapConfigInput>(configPath);
+  let parsed: unknown;
+
+  try {
+    parsed = JSON.parse(await readFile(configPath, 'utf8'));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid config JSON at ${configPath}: ${message}`);
+  }
+
+  const result = bootstrapConfigSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error(`Invalid bootstrap config at ${configPath}:\n${formatConfigErrors(result.error)}`);
+  }
+
+  return result.data satisfies BootstrapConfigInput;
 }
 
 async function pathExists(path: string) {

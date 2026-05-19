@@ -4,7 +4,7 @@ import { assertAdminPermission, assertAdminRequest, logAdminAuditEvent } from '@
 import { captureContentRevision } from '@/features/cms/contentRevisions';
 import { deleteBlogPost, getBlogPostById, updateBlogPost } from '@/features/cms/contentStore';
 import { revalidateBlogCache } from '@/features/cms/publicCache';
-import { validateBlogPost } from '@/features/cms/validators';
+import { validateBlogPost, validationFailed } from '@/features/cms/validators';
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -28,8 +28,10 @@ export async function PUT(request: Request, { params }: RouteContext) {
   const session = auth.session;
 
   const { id } = await params;
-  const payload = validateBlogPost(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validateBlogPost(body);
   if (!payload || payload.id !== id) {
+    validationFailed('/api/admin/blog/[id]', body);
     return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
   }
   const post = await updateBlogPost(id, payload);

@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type {
@@ -28,6 +28,9 @@ import { getDefaultContent } from './defaultContent';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'content.json');
+const LOCK_FILE = path.join(DATA_DIR, '.content.lock');
+const LOCK_TTL_MS = 10_000;
+const LOCK_RETRY_MS = 25;
 
 // In-process cache to avoid reading the entire file on every operation
 let cachedContent: CmsContent | null = null;
@@ -38,15 +41,68 @@ const CACHE_TTL = 5000; // 5 seconds TTL for cache
 // concurrent read-modify-write races that silently clobber data (last-writer-wins).
 let writeLock: Promise<void> = Promise.resolve();
 
+function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function isNodeFileError(error: unknown): error is NodeJS.ErrnoException {
+  return error instanceof Error && 'code' in error;
+}
+
+async function removeStaleLock(now: number) {
+  try {
+    const lockStat = await stat(LOCK_FILE);
+    const rawTimestamp = await readFile(LOCK_FILE, 'utf-8').catch(() => '');
+    const lockTimestamp = Number.parseInt(rawTimestamp.trim(), 10);
+    const lockTime = Number.isFinite(lockTimestamp) ? lockTimestamp : lockStat.mtimeMs;
+    if (now - lockTime <= LOCK_TTL_MS) return false;
+
+    console.warn('[file-store] Removing stale content write lock.');
+    await rm(LOCK_FILE, { force: true });
+    return true;
+  } catch (error) {
+    if (isNodeFileError(error) && error.code === 'ENOENT') return true;
+    throw error;
+  }
+}
+
+async function acquireFileLock() {
+  await mkdir(DATA_DIR, { recursive: true });
+
+  while (true) {
+    const now = Date.now();
+    try {
+      await writeFile(LOCK_FILE, String(now), { encoding: 'utf-8', flag: 'wx' });
+      return async () => {
+        await rm(LOCK_FILE, { force: true });
+      };
+    } catch (error) {
+      if (!isNodeFileError(error) || error.code !== 'EEXIST') {
+        throw error;
+      }
+    }
+
+    await removeStaleLock(now);
+    await sleep(LOCK_RETRY_MS);
+  }
+}
+
 async function withWriteLock<T>(fn: () => Promise<T>): Promise<T> {
   const prev = writeLock;
   let resolveLock!: () => void;
   writeLock = new Promise<void>((resolve) => { resolveLock = resolve; });
   await prev;
+  const releaseFileLock = await acquireFileLock();
   try {
     return await fn();
   } finally {
-    resolveLock();
+    try {
+      await releaseFileLock();
+    } finally {
+      resolveLock();
+    }
   }
 }
 

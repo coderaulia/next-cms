@@ -21,19 +21,7 @@ function isNextProductionBuild() {
 }
 
 function resolvePoolMax() {
-  if (env.databasePoolMax) {
-    return env.databasePoolMax;
-  }
-
-  if (isNextProductionBuild()) {
-    return 2;
-  }
-
-  if (process.env.NODE_ENV === 'production') {
-    return 5;
-  }
-
-  return 4;
+  return env.databasePoolMax ?? (isNextProductionBuild() ? 2 : process.env.NODE_ENV === 'production' ? 5 : 4);
 }
 
 function getPool() {

@@ -8,7 +8,7 @@ import {
   updatePortfolioProject
 } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
-import { validatePortfolioProject } from '@/features/cms/validators';
+import { validatePortfolioProject, validationFailed } from '@/features/cms/validators';
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -34,8 +34,10 @@ export async function PUT(request: Request, { params }: RouteContext) {
   const session = auth.session;
 
   const { id } = await params;
-  const payload = validatePortfolioProject(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validatePortfolioProject(body);
   if (!payload || payload.id !== id) {
+    validationFailed('/api/admin/portfolio/[id]', body);
     return NextResponse.json({ error: 'Invalid portfolio payload' }, { status: 400 });
   }
 

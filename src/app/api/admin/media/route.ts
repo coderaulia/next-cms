@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { assertAdminPermission, assertAdminRequest, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createMediaAsset, getMediaAssets } from '@/features/cms/contentStore';
 import { revalidatePublicCmsCache } from '@/features/cms/publicCache';
-import { validateMediaAsset } from '@/features/cms/validators';
+import { validateMediaAsset, validationFailed } from '@/features/cms/validators';
 
 export async function GET(request: Request) {
   const auth = await assertAdminRequest(request);
@@ -20,8 +20,10 @@ export async function POST(request: Request) {
   if ('error' in auth) return auth.error;
   const session = auth.session;
 
-  const payload = validateMediaAsset(await request.json().catch(() => null));
+  const body = await request.json().catch(() => null);
+  const payload = validateMediaAsset(body);
   if (!payload) {
+    validationFailed('/api/admin/media', body);
     return NextResponse.json({ error: 'Invalid media asset payload' }, { status: 400 });
   }
 

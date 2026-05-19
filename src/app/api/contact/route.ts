@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   const csrfFailure = assertCsrfToken(request);
   if (csrfFailure) return csrfFailure;
 
-  const rateLimitFailure = await assertRateLimit(request, 'contact-form', 10, 60_000);
+  const rateLimitFailure = await assertRateLimit(request, 'contact-form', 5, 600_000);
   if (rateLimitFailure) return rateLimitFailure;
 
   if (!env.databaseUrl) {
