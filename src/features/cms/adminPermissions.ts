@@ -12,7 +12,8 @@ const permissionsByRole: Record<AdminRole, AdminPermission[]> = {
     'settings:edit',
     'media:edit',
     'taxonomy:edit',
-    'team:manage'
+    'team:manage',
+    'data:manage'
   ],
   admin: [
     'dashboard:view',
@@ -24,7 +25,8 @@ const permissionsByRole: Record<AdminRole, AdminPermission[]> = {
     'content:delete',
     'settings:edit',
     'media:edit',
-    'taxonomy:edit'
+    'taxonomy:edit',
+    'data:manage'
   ],
   editor: ['dashboard:view', 'content:read', 'content:edit', 'media:edit'],
   analyst: ['dashboard:view', 'analytics:view', 'audit:view']

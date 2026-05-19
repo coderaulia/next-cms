@@ -10,6 +10,7 @@ import { formatAdminRoleLabel } from '@/features/cms/adminPermissions';
 import type { AdminPermission } from '@/features/cms/types';
 
 const siteManagementLinks: Array<{ href: string; label: string; permission?: AdminPermission }> = [
+  { href: '/admin/data', label: 'Data & Backup', permission: 'data:manage' },
   { href: '/admin/settings', label: 'Settings', permission: 'settings:edit' },
   { href: '/admin/contact-submissions', label: 'Contact Leads' },
   { href: '/admin/categories', label: 'Categories', permission: 'taxonomy:edit' },

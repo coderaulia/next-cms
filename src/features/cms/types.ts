@@ -35,7 +35,8 @@ export type AdminPermission =
   | 'settings:edit'
   | 'media:edit'
   | 'taxonomy:edit'
-  | 'team:manage';
+  | 'team:manage'
+  | 'data:manage';
 
 export type HomeThemeToken = 'light' | 'blue-soft' | 'mist';
 
