@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes, randomUUID, scrypt as nodeScrypt, timingSafeEqual } from 'node:crypto';
+import { createHash, randomBytes, randomUUID, scrypt as nodeScrypt, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 
 import { and, desc, eq, gt, sql } from 'drizzle-orm';
@@ -25,8 +25,6 @@ const ADMIN_SESSION_COOKIE = 'cms_admin_session';
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
 const DEFAULT_ADMIN_EMAIL = 'admin@example.local';
 const DEFAULT_ADMIN_NAME = 'Administrator';
-const PASSWORD_HASH_VERSION = 'v2';
-const FALLBACK_SESSION_LIMIT = 500;
 
 type AdminUserRow = typeof adminUsersTable.$inferSelect;
 
@@ -74,7 +72,6 @@ export type AdminAuditLogEntry = {
 declare global {
   var __cmsAdminLoginLockouts: Map<string, LoginLockEntry> | undefined;
   var __cmsAdminFallbackSessions: Map<string, AdminSession> | undefined;
-  var __cmsAdminFallbackSessionWarningShown: boolean | undefined;
 }
 
 function normalize(value: string | null | undefined) {
@@ -108,14 +105,6 @@ function getFallbackSessionStore() {
   }
 
   return globalThis.__cmsAdminFallbackSessions;
-}
-
-function warnFallbackSessionStore() {
-  if (globalThis.__cmsAdminFallbackSessionWarningShown) return;
-  globalThis.__cmsAdminFallbackSessionWarningShown = true;
-  console.error(
-    '[auth] WARN: DB unavailable; using volatile in-memory admin sessions. Sessions will not persist across restarts.'
-  );
 }
 
 function normalizeLoginIdentifier(email: string) {
@@ -161,39 +150,35 @@ function hashSessionToken(token: string) {
   return hashValue(token);
 }
 
+function getPepperKey(): Buffer | null {
+  const hex = env.passwordPepper;
+  if (!hex) return null;
+  const buf = Buffer.from(hex, 'hex');
+  return buf.length > 0 ? buf : null;
+}
+
+function applyPepper(derived: Buffer, pepper: Buffer): Buffer {
+  return Buffer.from(derived.map((b, i) => b ^ pepper[i % pepper.length]));
+}
+
 export async function hashAdminPassword(password: string) {
   const salt = randomBytes(16).toString('hex');
   const derived = (await scrypt(password, salt, 64)) as Buffer;
-  const pepper = normalize(env.passwordPepper);
-  if (!pepper) {
-    return `${salt}:${derived.toString('hex')}`;
-  }
-
-  const peppered = createHmac('sha256', pepper).update(derived).digest('hex');
-  return `${PASSWORD_HASH_VERSION}:${salt}:${peppered}`;
+  const pepper = getPepperKey();
+  const final = pepper ? applyPepper(derived, pepper) : derived;
+  return `${salt}:${final.toString('hex')}`;
 }
 
-async function verifyPassword(password: string, passwordHash: string): Promise<{ valid: boolean; needsRehash: boolean }> {
-  const parts = passwordHash.split(':');
-  const isPepperedHash = parts[0] === PASSWORD_HASH_VERSION;
-  const salt = isPepperedHash ? parts[1] : parts[0];
-  const storedHash = isPepperedHash ? parts[2] : parts[1];
-  if (!salt || !storedHash) return { valid: false, needsRehash: false };
+async function verifyPassword(password: string, passwordHash: string) {
+  const [salt, storedHash] = passwordHash.split(':');
+  if (!salt || !storedHash) return false;
 
   const derived = (await scrypt(password, salt, 64)) as Buffer;
-  const pepper = normalize(env.passwordPepper);
-  if (isPepperedHash) {
-    if (!pepper) return { valid: false, needsRehash: false };
-    const peppered = createHmac('sha256', pepper).update(derived).digest();
-    const expected = Buffer.from(storedHash, 'hex');
-    if (peppered.length !== expected.length) return { valid: false, needsRehash: false };
-    return { valid: timingSafeEqual(peppered, expected), needsRehash: false };
-  }
-
+  const pepper = getPepperKey();
+  const final = pepper ? applyPepper(derived, pepper) : derived;
   const expected = Buffer.from(storedHash, 'hex');
-  if (derived.length !== expected.length) return { valid: false, needsRehash: false };
-  const valid = timingSafeEqual(derived, expected);
-  return { valid, needsRehash: valid && Boolean(pepper) };
+  if (final.length !== expected.length) return false;
+  return timingSafeEqual(final, expected);
 }
 
 function getSessionCookieOptions(expiresAt?: string) {
@@ -279,15 +264,18 @@ async function createSession(userId: string) {
   return { rawToken, expiresAt };
 }
 
-function createFallbackSession(user: AdminSessionUser) {
-  warnFallbackSessionStore();
-  const store = getFallbackSessionStore();
-  while (store.size >= FALLBACK_SESSION_LIMIT) {
-    const oldest = store.keys().next().value as string | undefined;
-    if (!oldest) break;
-    store.delete(oldest);
-  }
+const FALLBACK_SESSION_CAP = 500;
 
+function createFallbackSession(user: AdminSessionUser) {
+  const store = getFallbackSessionStore();
+  // Warn on first use — this store is volatile and not shared across instances
+  if (store.size === 0) {
+    console.error('[auth] WARN: DB unavailable — using volatile in-memory session store. Sessions will not persist across restarts.');
+  }
+  if (store.size >= FALLBACK_SESSION_CAP) {
+    const oldest = store.keys().next().value;
+    if (oldest) store.delete(oldest);
+  }
   const rawToken = randomBytes(32).toString('hex');
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
   store.set(rawToken, { user, expiresAt });
@@ -684,19 +672,17 @@ export async function loginAdminUser(email: string, password: string): Promise<A
       return null;
     }
 
-    const passwordResult = await verifyPassword(normalizedPassword, user.passwordHash);
-    if (!passwordResult.valid) {
+    const valid = await verifyPassword(normalizedPassword, user.passwordHash);
+    if (!valid) {
       return null;
     }
 
     const session = await createSession(user.id);
     const loginAt = nowIso();
-    const updates: Partial<AdminUserRow> = { lastLoginAt: loginAt, updatedAt: loginAt };
-    if (passwordResult.needsRehash) {
-      updates.passwordHash = await hashAdminPassword(normalizedPassword);
-    }
-
-    await getDb().update(adminUsersTable).set(updates).where(eq(adminUsersTable.id, user.id));
+    await getDb()
+      .update(adminUsersTable)
+      .set({ lastLoginAt: loginAt, updatedAt: loginAt })
+      .where(eq(adminUsersTable.id, user.id));
 
     return {
       user: mapAdminUser({ ...user, lastLoginAt: loginAt, updatedAt: loginAt }),
@@ -742,20 +728,17 @@ export async function logoutAdminUser(request: Request) {
   }
 }
 
-export async function logoutAllAdminSessions(userId: string) {
-  const normalizedUserId = normalize(userId);
-  if (!normalizedUserId) return;
-
-  for (const [token, session] of getFallbackSessionStore()) {
-    if (session.user.id === normalizedUserId) {
-      getFallbackSessionStore().delete(token);
-    }
+export async function logoutAllSessions(userId: string) {
+  // Clear all fallback in-memory sessions for this user
+  const store = getFallbackSessionStore();
+  for (const [token, session] of store.entries()) {
+    if (session.user.id === userId) store.delete(token);
   }
 
   if (!env.databaseUrl) return;
 
   try {
-    await getDb().delete(adminSessionsTable).where(eq(adminSessionsTable.userId, normalizedUserId));
+    await getDb().delete(adminSessionsTable).where(eq(adminSessionsTable.userId, userId));
   } catch (error) {
     if (!isMissingAdminSchemaError(error)) {
       throw error;

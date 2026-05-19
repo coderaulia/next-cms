@@ -55,6 +55,9 @@ export async function notifyContactSubmission(submission: ContactSubmission) {
       status: response.status,
       statusText: response.statusText
     };
+  } catch (error) {
+    console.error('[notifications] webhook delivery failed:', error instanceof Error ? error.message : 'unknown error');
+    return { delivered: false };
   } finally {
     clearTimeout(timeout);
   }

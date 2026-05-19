@@ -103,5 +103,9 @@ export const env = {
   get trustedProxyCount() {
     const val = parseInt(clean(process.env.TRUSTED_PROXY_COUNT) || '0', 10);
     return Number.isFinite(val) && val >= 0 ? val : 0;
+  },
+  /** Hex-encoded pepper XOR'd into scrypt-derived keys. Set a 32+ byte hex string in production. */
+  get passwordPepper() {
+    return clean(process.env.PASSWORD_PEPPER);
   }
 };

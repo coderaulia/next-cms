@@ -74,10 +74,8 @@ function parseCookies(cookieHeader: string | null) {
 export function getClientIdentifier(request: Request) {
   const count = env.trustedProxyCount;
   if (count === 0) {
-    // No trusted proxy configured — all forwarding headers are attacker-controlled.
-    // Fall back to a stable but non-identifying key. Upstream CDN/WAF rate limiting
-    // should be used when the app is directly reachable.
-    return 'direct-client';
+    // No trusted proxy — X-Forwarded-For is fully attacker-controlled; ignore it
+    return request.headers.get('x-real-ip') || 'unknown';
   }
   const chain = (request.headers.get('x-forwarded-for') || '')
     .split(',')
@@ -85,13 +83,7 @@ export function getClientIdentifier(request: Request) {
     .filter(Boolean);
   // With N trusted proxies, each proxy appends the sender's IP. The real client IP sits at
   // chain[length - count]. Entries to the left may be attacker-injected and are discarded.
-  const clientIp = chain[chain.length - count];
-  if (!clientIp) {
-    // The forwarded chain is shorter than expected — the proxy configuration may be wrong.
-    // Use x-real-ip as a last resort since it's set by the trusted proxy in this mode.
-    return request.headers.get('x-real-ip') || 'unknown-proxy-client';
-  }
-  return clientIp;
+  return chain[chain.length - count] || 'unknown';
 }
 
 export function readCookieValue(request: Request, name: string) {
@@ -114,7 +106,7 @@ export function assertTrustedMutationRequest(request: Request) {
   const origin = extractOrigin(request.headers.get('origin'));
   const referer = extractOrigin(request.headers.get('referer'));
 
-  // Some clients send only Origin, while same-origin navigations may send only Referer.
+  // OR: either header alone is sufficient — requiring both would break same-origin requests that omit one
   if ((origin && allowedOrigins.has(origin)) || (referer && allowedOrigins.has(referer))) {
     return null;
   }
@@ -322,3 +314,4 @@ export function serializeJsonForScript(data: unknown) {
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029');
 }
+
