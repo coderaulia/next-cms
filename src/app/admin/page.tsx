@@ -169,11 +169,11 @@ function AnalyticsWidget({ data }: { data: DashboardSummary }) {
       {data.analytics.available ? (
         <ul className="admin-plain-list">
           <li>
-            <strong>{data.analytics.totals.pageViews30d}</strong>
+            <strong>{data.analytics.totals.pageViews}</strong>
             <span>page views in the last 30 days</span>
           </li>
           <li>
-            <strong>{data.analytics.totals.uniqueVisitors30d}</strong>
+            <strong>{data.analytics.totals.uniqueVisitors}</strong>
             <span>unique visitors in the last 30 days</span>
           </li>
           {data.analytics.topPaths.slice(0, 3).map((item) => (

@@ -288,6 +288,10 @@ export const analyticsEventsTable = pgTable(
     visitorId: text('visitor_id').notNull(),
     sessionId: text('session_id').notNull(),
     userAgent: text('user_agent').notNull(),
+    deviceType: text('device_type'),
+    browser: text('browser'),
+    os: text('os'),
+    isInternal: boolean('is_internal').default(false).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull()
   },
   (table) => ({

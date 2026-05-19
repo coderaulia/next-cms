@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { trackAnalyticsPageView } from '@/features/cms/analyticsStore';
+import { getAdminSession } from '@/features/cms/adminAuth';
+import { parseUserAgent, trackAnalyticsPageView } from '@/features/cms/analyticsStore';
 import { assertRateLimit } from '@/services/requestSecurity';
 
 const MAX = { id: 128, path: 512, referrer: 1024, utm: 256 };
@@ -44,6 +45,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing visitor identifiers.' }, { status: 400 });
   }
 
+  const ua = request.headers.get('user-agent') ?? 'unknown';
+  const { deviceType, browser, os } = parseUserAgent(ua);
+
+  let isInternal = false;
+  try {
+    const session = await getAdminSession(request);
+    isInternal = session !== null;
+  } catch {
+    // session check failure is non-fatal — treat as external
+  }
+
   await trackAnalyticsPageView({
     path,
     entityType: entityTypeForPath(path),
@@ -54,7 +66,11 @@ export async function POST(request: Request) {
     utmCampaign: cap(body?.utmCampaign, MAX.utm),
     visitorId,
     sessionId,
-    userAgent: request.headers.get('user-agent') ?? 'unknown'
+    userAgent: ua,
+    deviceType,
+    browser,
+    os,
+    isInternal
   });
 
   return NextResponse.json({ ok: true }, { status: 202 });
