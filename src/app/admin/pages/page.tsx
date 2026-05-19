@@ -5,7 +5,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
-import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { filterAndSortPages, type PagesSortBy, type PagesStatusFilter } from '@/features/cms/adminPagesList';
 import { getLandingPagePublicationLabel } from '@/features/cms/publicationState';
@@ -260,15 +259,6 @@ function PagesList({ user }: PagesListProps) {
         </div>
       </section>
 
-      <JsonImportExportCard
-        collection="pages"
-        title="Bulk import / export"
-        description="Download current landing-page JSON or import a batch update that matches the page schema used by this CMS."
-        onImported={async () => {
-          setSelectedIds([]);
-          await loadPages();
-        }}
-      />
     </div>
   );
 }

@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { AdminPostsTable } from '@/components/admin/AdminPostsTable';
-import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
@@ -270,15 +269,6 @@ function BlogList({ user }: BlogListProps) {
         />
       </section>
 
-      <JsonImportExportCard
-        collection="blogPosts"
-        title="Bulk import / export"
-        description="Download the current post collection or import a JSON batch for draft and published blog content."
-        onImported={async () => {
-          setSelectedIds([]);
-          await loadPosts();
-        }}
-      />
     </div>
   );
 }

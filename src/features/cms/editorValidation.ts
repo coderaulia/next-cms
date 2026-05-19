@@ -49,19 +49,6 @@ function validateSection(issues: EditorValidationIssue[], section: PageSection, 
   pushRequired(issues, `sections.${index}.heading`, section.heading, 'Section heading');
   pushRequired(issues, `sections.${index}.body`, section.body, 'Section body');
 
-  if (!isBlank(section.ctaLabel) && isBlank(section.ctaHref)) {
-    issues.push({
-      path: `sections.${index}.ctaHref`,
-      message: 'CTA URL is required when CTA label is set.'
-    });
-  }
-
-  if (!isBlank(section.mediaImage) && isBlank(section.mediaAlt)) {
-    issues.push({
-      path: `sections.${index}.mediaAlt`,
-      message: 'Alt text is required when a section image is set.'
-    });
-  }
 }
 
 function validateSchedule(
@@ -179,12 +166,6 @@ function validateHomeBlock(issues: EditorValidationIssue[], block: HomeBlock, in
         'Why bullet text'
       );
     });
-    if (!isBlank(block.mediaImage) && isBlank(block.mediaAlt)) {
-      issues.push({
-        path: `homeBlocks.${index}.mediaAlt`,
-        message: 'Alt text is required when the why-split image is set.'
-      });
-    }
     return;
   }
 

@@ -142,11 +142,6 @@ function fromKeywordInput(value: string) {
     .filter(Boolean);
 }
 
-function extractBlockPayload(block: HomeBlock) {
-  return Object.fromEntries(
-    Object.entries(block).filter(([key]) => !['id', 'type', 'enabled', 'theme'].includes(key))
-  );
-}
 
 export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFormProps) {
   const [page, setPage] = useState(initialPage);
@@ -433,7 +428,7 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
       );
     }
 
-    return <p className="admin-subtle">Tip: use JSON payload below to edit list items and advanced fields.</p>;
+    return null;
   };
 
   return (
@@ -653,7 +648,6 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
           {fieldErrors.homeBlocks ? <p className="admin-error-text">{fieldErrors.homeBlocks}</p> : null}
 
           {blocks.map((block, index) => {
-            const payload = JSON.stringify(extractBlockPayload(block), null, 2);
             const blockIssues = validationIssues.filter((issue) => issue.path.startsWith(`homeBlocks.${index}.`));
 
             return (
@@ -691,18 +685,7 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
                   </div>
                 </div>
 
-                <div className="admin-grid-3">
-                  <label>
-                    ID
-                    <input
-                      className={fieldErrors[`homeBlocks.${index}.id`] ? 'admin-input-error' : ''}
-                      value={block.id}
-                      onChange={(event) => updateBlock(index, { id: event.target.value })}
-                    />
-                    {fieldErrors[`homeBlocks.${index}.id`] ? (
-                      <span className="admin-error-text">{fieldErrors[`homeBlocks.${index}.id`]}</span>
-                    ) : null}
-                  </label>
+                <div className="admin-grid-2">
                   <label>
                     Enabled
                     <input type="checkbox" checked={block.enabled} onChange={(event) => updateBlock(index, { enabled: event.target.checked })} />
@@ -718,25 +701,6 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
                 </div>
 
                 {renderHomeQuickFields(block, index)}
-
-                <label>
-                  Block payload (JSON)
-                  <textarea
-                    rows={8}
-                    value={payload}
-                    onChange={(event) => {
-                      try {
-                        const parsed = JSON.parse(event.target.value) as Record<string, unknown>;
-                        const next = [...blocks];
-                        next[index] = { ...block, ...(parsed as object) } as HomeBlock;
-                        setPage({ ...page, homeBlocks: next });
-                        setNotice('');
-                      } catch {
-                        setNotice('Invalid JSON payload in one of the blocks.');
-                      }
-                    }}
-                  />
-                </label>
                 {blockIssues.length > 0 ? <p className="admin-error-text">{blockIssues[0].message}</p> : null}
               </article>
             );
@@ -767,10 +731,6 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
               </div>
 
               <div className="admin-grid-2">
-                <label>
-                  Section ID
-                  <input value={section.id} onChange={(event) => updateSection(index, { id: event.target.value })} />
-                </label>
                 <label>
                   Layout
                   <select value={section.layout} onChange={(event) => updateSection(index, { layout: event.target.value as PageSection['layout'] })}>
