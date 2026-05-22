@@ -4,12 +4,11 @@ import { useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { JsonImportExportCard } from '@/components/admin/JsonImportExportCard';
-import type { CmsImportResult } from '@/features/cms/importExport';
 
 function DataPage() {
   const [notice, setNotice] = useState('');
 
-  const onImported = (label: string) => async (_result: CmsImportResult) => {
+  const onImported = (label: string) => async () => {
     setNotice(`${label} imported successfully.`);
   };
 

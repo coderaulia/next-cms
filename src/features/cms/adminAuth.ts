@@ -151,9 +151,15 @@ function hashSessionToken(token: string) {
 }
 
 function getPepperKey(): Buffer | null {
-  const hex = env.passwordPepper;
-  if (!hex) return null;
-  const buf = Buffer.from(hex, 'hex');
+  const value = env.passwordPepper;
+  if (!value) return null;
+  return createHash('sha256').update(value).digest();
+}
+
+function getLegacyPepperKey(): Buffer | null {
+  const value = env.passwordPepper;
+  if (!/^[a-f0-9]+$/i.test(value) || value.length % 2 !== 0) return null;
+  const buf = Buffer.from(value, 'hex');
   return buf.length > 0 ? buf : null;
 }
 
@@ -166,19 +172,39 @@ export async function hashAdminPassword(password: string) {
   const derived = (await scrypt(password, salt, 64)) as Buffer;
   const pepper = getPepperKey();
   const final = pepper ? applyPepper(derived, pepper) : derived;
-  return `${salt}:${final.toString('hex')}`;
+  return `v2:${salt}:${final.toString('hex')}`;
 }
 
 async function verifyPassword(password: string, passwordHash: string) {
+  if (passwordHash.startsWith('v2:')) {
+    const [, salt, storedHash] = passwordHash.split(':');
+    if (!salt || !storedHash) return false;
+
+    const derived = (await scrypt(password, salt, 64)) as Buffer;
+    const pepper = getPepperKey();
+    const final = pepper ? applyPepper(derived, pepper) : derived;
+    const expected = Buffer.from(storedHash, 'hex');
+    if (final.length !== expected.length) return false;
+    return timingSafeEqual(final, expected);
+  }
+
   const [salt, storedHash] = passwordHash.split(':');
   if (!salt || !storedHash) return false;
 
   const derived = (await scrypt(password, salt, 64)) as Buffer;
-  const pepper = getPepperKey();
-  const final = pepper ? applyPepper(derived, pepper) : derived;
   const expected = Buffer.from(storedHash, 'hex');
-  if (final.length !== expected.length) return false;
-  return timingSafeEqual(final, expected);
+  if (derived.length !== expected.length) return false;
+  if (timingSafeEqual(derived, expected)) return true;
+
+  const pepperCandidates = [getPepperKey(), getLegacyPepperKey()].filter(
+    (candidate): candidate is Buffer => Boolean(candidate)
+  );
+  for (const pepper of pepperCandidates) {
+    const final = applyPepper(derived, pepper);
+    if (final.length === expected.length && timingSafeEqual(final, expected)) return true;
+  }
+
+  return false;
 }
 
 function getSessionCookieOptions(expiresAt?: string) {

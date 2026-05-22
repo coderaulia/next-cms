@@ -10,12 +10,14 @@
 - Database-backed rate limiting when `DATABASE_URL` is available, with in-memory fallback if the database is unavailable
 - Admin login lockout protection
 - Trusted-proxy-aware client IP extraction for rate limits and audit logs
-- Optional application-level password pepper with transparent hash upgrade on login
+- Versioned admin password hashes with optional application-level password pepper
+- Backward-compatible verification for legacy admin password hashes
 - Full account session invalidation through "Sign out all devices"
 - Server-side audit logging for admin mutations
 - Role-based permissions for `super_admin`, `admin`, `editor`, and `analyst`
 - Site-wide security headers via `middleware.ts`
 - Upload MIME allowlist plus server-side magic-byte checks; SVG uploads are rejected
+- File-mode content/category/media mutations use a lock-backed read-modify-write path to reduce local development races
 - `no-store` cache policy on sensitive admin/contact responses
 - JSON-LD serialization hardened to escape script-breaking characters
 - CMS URL validation strips unsafe `javascript:`-style URLs from CTA, canonical, image, and base URLs
@@ -36,6 +38,8 @@
 - Add monitoring and alerting for production failures
 - Add backup/export procedures for CMS content and media references
 - Review production env vars for placeholder values and test credentials
+- Use database mode and managed object storage for all client production deployments
+- Monitor analytics table growth; dashboard summaries are capped to keep admin views responsive
 
 ## Operational Note
 

@@ -123,12 +123,7 @@ async function ensureDataFile(): Promise<void> {
   }
 }
 
-export async function readContent(): Promise<CmsContent> {
-  const now = Date.now();
-  if (cachedContent && (now - cacheTimestamp) < CACHE_TTL) {
-    return structuredClone(cachedContent);
-  }
-
+async function readContentFromDisk(): Promise<CmsContent> {
   await ensureDataFile();
   const raw = await readFile(DATA_FILE, 'utf-8');
   const parsed = safeParse(raw);
@@ -136,8 +131,8 @@ export async function readContent(): Promise<CmsContent> {
     const defaults = getDefaultContent();
     await writeFile(DATA_FILE, JSON.stringify(defaults, null, 2), 'utf-8');
     cachedContent = structuredClone(defaults);
-    cacheTimestamp = now;
-    return cachedContent;
+    cacheTimestamp = Date.now();
+    return structuredClone(defaults);
   }
 
   const merged = mergeWithDefaults(parsed);
@@ -149,9 +144,18 @@ export async function readContent(): Promise<CmsContent> {
     await writeFile(DATA_FILE, JSON.stringify(merged, null, 2), 'utf-8');
   }
 
-  cachedContent = merged;
-  cacheTimestamp = now;
+  cachedContent = structuredClone(merged);
+  cacheTimestamp = Date.now();
   return structuredClone(merged);
+}
+
+export async function readContent(): Promise<CmsContent> {
+  const now = Date.now();
+  if (cachedContent && (now - cacheTimestamp) < CACHE_TTL) {
+    return structuredClone(cachedContent);
+  }
+
+  return readContentFromDisk();
 }
 
 async function writeFileUnsafe(content: CmsContent): Promise<void> {
@@ -163,6 +167,15 @@ async function writeFileUnsafe(content: CmsContent): Promise<void> {
 
 export async function writeContent(content: CmsContent): Promise<void> {
   return withWriteLock(() => writeFileUnsafe(content));
+}
+
+export async function updateContent<T>(mutate: (content: CmsContent) => Promise<T> | T): Promise<T> {
+  return withWriteLock(async () => {
+    const content = await readContentFromDisk();
+    const result = await mutate(content);
+    await writeFileUnsafe(content);
+    return result;
+  });
 }
 
 export async function getSettings() {

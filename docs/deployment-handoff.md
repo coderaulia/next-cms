@@ -9,6 +9,7 @@ Core runtime:
 - `CMS_ADMIN_EMAIL`
 - `CMS_ADMIN_PASSWORD`
 - `CMS_ADMIN_NAME`
+- `PASSWORD_PEPPER`
 - `DATABASE_URL`
 
 Recommended runtime extras:
@@ -57,6 +58,7 @@ CMS_DB_POOL_MAX=2
 ```bash
 npm install
 npm run check:deploy
+npm audit --omit=dev --audit-level=high
 npm run start
 ```
 
@@ -66,6 +68,9 @@ Current expected validation:
 - Vitest passes
 - Next production build succeeds
 - Build size audit completes
+- Production audit has no critical or high findings. Moderate advisories should still be reviewed, but should not block this critical/high gate by themselves.
+
+Current note: the app intentionally uses nonce-based CSP for inline JSON-LD and the chunk recovery script. This keeps XSS defenses stronger, but public pages are rendered dynamically instead of as fully static CDN HTML.
 
 ## Database + Media Cutover
 
@@ -87,6 +92,7 @@ Recommended production setup:
 
 Important:
 - Do not rely on local file writes for long-term production media persistence (ephemeral on containers/Vercel).
+- Do not use local JSON persistence for client production. It is useful for development and demos, but database mode is required for shared editing, durable sessions, audit logs, contact leads, and rate limits.
 - Runtime DB should normally use the pooled URL.
 - The app now includes one-time stale chunk recovery for deploy propagation issues, but clean deploys and consistent CDN caching are still preferred.
 - R2 has no egress fees; preferred for high-traffic or cost-sensitive deployments.
@@ -104,7 +110,8 @@ Important:
 7. Verify revision restore works for settings and at least one content type.
 8. Verify scheduled publish/unpublish behavior if your team uses scheduling.
 9. Verify old `/media/...` and `/portfolio/...` assets have been migrated or rewritten.
-10. Train content team on:
+10. Confirm `npm audit --omit=dev` has no critical or high findings.
+11. Train content team on:
    - page/post/portfolio editing
    - preview and scheduling
    - media upload + replacement

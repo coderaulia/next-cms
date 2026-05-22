@@ -8,6 +8,8 @@ import { env } from '@/services/env';
 
 import { nowIso } from './storeShared';
 
+const MAX_ANALYTICS_SUMMARY_ROWS = 20_000;
+
 export type AnalyticsPageViewInput = {
   path: string;
   entityType: string;
@@ -232,7 +234,8 @@ export async function getAnalyticsSummary(days = 30, excludeInternal = true): Pr
       .select()
       .from(analyticsEventsTable)
       .where(gte(analyticsEventsTable.createdAt, cutoff))
-      .orderBy(desc(analyticsEventsTable.createdAt));
+      .orderBy(desc(analyticsEventsTable.createdAt))
+      .limit(MAX_ANALYTICS_SUMMARY_ROWS);
   } catch (error) {
     if (isMissingAnalyticsSchemaError(error)) {
       return emptySummary(safeDays, excludeInternal);

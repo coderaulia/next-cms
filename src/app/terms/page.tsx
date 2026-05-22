@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 import { LegalPageLayout } from '@/components/pages/LegalPageLayout';
 import { getSiteSettings } from '@/features/cms/publicApi';
@@ -30,9 +31,9 @@ export default async function TermsOfServicePage() {
             <p>
               By accessing or using the Vanaila Digital website (vanaila.com) or submitting a
               project enquiry, you agree to be bound by these Terms of Service and our{' '}
-              <a href="/privacy-policy" style={{ color: '#0033FF' }}>
+              <Link href="/privacy-policy" style={{ color: '#0033FF' }}>
                 Privacy Policy
-              </a>
+              </Link>
               . If you do not agree, please do not use this website. These Terms constitute a legally
               binding agreement between you and {companyName} (&quot;Vanaila Digital&quot;,
               &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;).
@@ -145,9 +146,9 @@ export default async function TermsOfServicePage() {
           content: (
             <p>
               Your use of this website is also governed by our{' '}
-              <a href="/privacy-policy" style={{ color: '#0033FF' }}>
+              <Link href="/privacy-policy" style={{ color: '#0033FF' }}>
                 Privacy Policy
-              </a>
+              </Link>
               , which is incorporated into these Terms by reference. Please review it carefully. By
               using our website, you consent to the practices described in our Privacy Policy.
             </p>

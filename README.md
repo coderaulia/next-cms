@@ -29,7 +29,7 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 CMS_ADMIN_EMAIL=admin@example.com
 CMS_ADMIN_PASSWORD=strong-password
 CMS_ADMIN_NAME=Administrator
-PASSWORD_PEPPER=long-random-secret
+PASSWORD_PEPPER=long-random-secret-32-plus-chars
 DATABASE_URL=postgres-runtime-url
 ```
 
@@ -146,7 +146,9 @@ npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio"
 ## Operational Notes
 
 - Do not rely on local disk for long-term production uploads.
+- Do not use local JSON persistence for client production; it is a development fallback only.
 - Keep database and storage credentials least-privilege where possible.
 - Add upstream WAF/CDN rate limiting for public launch.
 - Back up database content and media references before major imports.
+- Keep framework dependencies current and run `npm audit --omit=dev --audit-level=high` before handoff.
 - SEO performance still depends on content quality, not only technical output.

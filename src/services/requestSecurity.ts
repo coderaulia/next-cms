@@ -75,7 +75,7 @@ export function getClientIdentifier(request: Request) {
   const count = env.trustedProxyCount;
   if (count === 0) {
     // No trusted proxy — X-Forwarded-For is fully attacker-controlled; ignore it
-    return request.headers.get('x-real-ip') || 'unknown';
+    return 'direct-client';
   }
   const chain = (request.headers.get('x-forwarded-for') || '')
     .split(',')
@@ -314,4 +314,3 @@ export function serializeJsonForScript(data: unknown) {
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029');
 }
-

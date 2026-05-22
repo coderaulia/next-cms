@@ -72,6 +72,12 @@ function countWords(value: string) {
     .filter(Boolean).length;
 }
 
+function isSettingsResponse(value: unknown): value is SettingsResponse {
+  if (!value || typeof value !== 'object' || !('settings' in value)) return false;
+  const settings = (value as { settings?: unknown }).settings;
+  return Boolean(settings && typeof settings === 'object' && 'seo' in settings);
+}
+
 export function BlogEditorForm({
   initialPost,
   isNew = false,
@@ -113,7 +119,9 @@ export function BlogEditorForm({
     csrfFetch('/api/admin/settings')
       .then((r) => (r.ok ? r.json() : null))
       .then((payload) => {
-        if (payload) setGlobalOgImage((payload as SettingsResponse).settings.seo.defaultOgImage ?? '');
+        if (isSettingsResponse(payload)) {
+          setGlobalOgImage(payload.settings.seo.defaultOgImage ?? '');
+        }
       })
       .catch(() => {});
   }, []);

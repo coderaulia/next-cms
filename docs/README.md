@@ -10,6 +10,7 @@ This folder holds the detailed operating docs for Vanaila CMS. Keep the root `RE
 - [Client reuse playbook](./client-reuse-playbook.md) - how to turn this repo into a new client starter without losing admin workflows.
 - [Supabase + Hostinger setup](./supabase-hostinger-setup.md) - concrete Supabase Postgres, Supabase Storage, and Hostinger deployment flow.
 - [Security hardening notes](./security-hardening.md) - implemented protections and pre-launch recommendations.
+- [Production audit report](../security_best_practices_report.md) - prioritized security, speed, race-condition, and client-readiness findings.
 - [Source audit and gzip plan](./src-audit-gzip-plan.md) - current large-source-file audit and refactor plan.
 - [Codebase audit](../codebase_audit.md) - current bug and code-flaw findings with verification evidence.
 

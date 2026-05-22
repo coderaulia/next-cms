@@ -1,5 +1,5 @@
 import { getDefaultContent } from './defaultContent';
-import { readContent, writeContent } from './fileStore';
+import { readContent, updateContent, writeContent } from './fileStore';
 import {
   clearDefaultCategorySetting,
   ensureCategoryCoverage,
@@ -40,51 +40,54 @@ export async function getCategoryById(id: string): Promise<Category | null> {
 }
 
 export async function createCategory(payload: Category): Promise<Category> {
-  const { content, categories } = await syncFileCategories();
-  const slug = uniqueCategorySlug(categories, payload.name, payload.slug);
-  const next = normalizeCategoryRecord({ ...payload, slug });
-  content.categories = [...categories, next];
-  await writeContent(content);
-  return next;
+  return updateContent((content) => {
+    const categories = ensureCategoryCoverage(content.categories, content.blogPosts);
+    const slug = uniqueCategorySlug(categories, payload.name, payload.slug);
+    const next = normalizeCategoryRecord({ ...payload, slug });
+    content.categories = [...categories, next];
+    return next;
+  });
 }
 
 export async function updateCategory(id: string, payload: Category): Promise<Category | null> {
-  const { content, categories } = await syncFileCategories();
-  const existing = categories.find((category) => category.id === id);
-  if (!existing) return null;
+  return updateContent((content) => {
+    const categories = ensureCategoryCoverage(content.categories, content.blogPosts);
+    const existing = categories.find((category) => category.id === id);
+    if (!existing) return null;
 
-  const nextSlug = uniqueCategorySlug(categories, payload.name, payload.slug, id);
-  const next = normalizeCategoryRecord({
-    ...existing,
-    ...payload,
-    id,
-    slug: nextSlug,
-    createdAt: existing.createdAt
+    const nextSlug = uniqueCategorySlug(categories, payload.name, payload.slug, id);
+    const next = normalizeCategoryRecord({
+      ...existing,
+      ...payload,
+      id,
+      slug: nextSlug,
+      createdAt: existing.createdAt
+    });
+
+    content.categories = categories.map((category) => (category.id === id ? next : category));
+
+    const previousSlug = normalizeSlug(existing.slug);
+    if (previousSlug !== next.slug) {
+      content.blogPosts = replaceCategorySlugInPosts(content.blogPosts, previousSlug, next.slug);
+      content.settings = updateDefaultCategorySetting(content.settings, previousSlug, next.slug);
+    }
+
+    return next;
   });
-
-  content.categories = categories.map((category) => (category.id === id ? next : category));
-
-  const previousSlug = normalizeSlug(existing.slug);
-  if (previousSlug !== next.slug) {
-    content.blogPosts = replaceCategorySlugInPosts(content.blogPosts, previousSlug, next.slug);
-    content.settings = updateDefaultCategorySetting(content.settings, previousSlug, next.slug);
-  }
-
-  await writeContent(content);
-  return next;
 }
 
 export async function deleteCategory(id: string): Promise<boolean> {
-  const { content, categories } = await syncFileCategories();
-  const existing = categories.find((category) => category.id === id);
-  if (!existing) return false;
+  return updateContent((content) => {
+    const categories = ensureCategoryCoverage(content.categories, content.blogPosts);
+    const existing = categories.find((category) => category.id === id);
+    if (!existing) return false;
 
-  const slug = normalizeSlug(existing.slug);
-  content.categories = categories.filter((category) => category.id !== id);
-  content.blogPosts = removeCategorySlugFromPosts(content.blogPosts, slug);
-  content.settings = clearDefaultCategorySetting(content.settings, slug);
-  await writeContent(content);
-  return true;
+    const slug = normalizeSlug(existing.slug);
+    content.categories = categories.filter((category) => category.id !== id);
+    content.blogPosts = removeCategorySlugFromPosts(content.blogPosts, slug);
+    content.settings = clearDefaultCategorySetting(content.settings, slug);
+    return true;
+  });
 }
 
 export async function getMediaAssets(): Promise<MediaAsset[]> {
@@ -99,37 +102,37 @@ export async function getMediaAssetById(id: string): Promise<MediaAsset | null> 
 }
 
 export async function createMediaAsset(payload: MediaAsset): Promise<MediaAsset> {
-  const content = await readContent();
-  const next = normalizeMediaAssetRecord(payload);
-  content.mediaAssets = [next, ...(Array.isArray(content.mediaAssets) ? content.mediaAssets : [])];
-  await writeContent(content);
-  return next;
+  return updateContent((content) => {
+    const next = normalizeMediaAssetRecord(payload);
+    content.mediaAssets = [next, ...(Array.isArray(content.mediaAssets) ? content.mediaAssets : [])];
+    return next;
+  });
 }
 
 export async function updateMediaAsset(id: string, payload: MediaAsset): Promise<MediaAsset | null> {
-  const content = await readContent();
-  const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
-  const existing = currentAssets.find((asset) => asset.id === id);
-  if (!existing) return null;
+  return updateContent((content) => {
+    const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
+    const existing = currentAssets.find((asset) => asset.id === id);
+    if (!existing) return null;
 
-  const next = normalizeMediaAssetRecord({
-    ...existing,
-    ...payload,
-    id,
-    createdAt: existing.createdAt
+    const next = normalizeMediaAssetRecord({
+      ...existing,
+      ...payload,
+      id,
+      createdAt: existing.createdAt
+    });
+
+    content.mediaAssets = currentAssets.map((asset) => (asset.id === id ? next : asset));
+    return next;
   });
-
-  content.mediaAssets = currentAssets.map((asset) => (asset.id === id ? next : asset));
-  await writeContent(content);
-  return next;
 }
 
 export async function deleteMediaAsset(id: string): Promise<boolean> {
-  const content = await readContent();
-  const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
-  const nextAssets = currentAssets.filter((asset) => asset.id !== id);
-  if (nextAssets.length === currentAssets.length) return false;
-  content.mediaAssets = nextAssets;
-  await writeContent(content);
-  return true;
+  return updateContent((content) => {
+    const currentAssets = Array.isArray(content.mediaAssets) ? content.mediaAssets : getDefaultContent().mediaAssets;
+    const nextAssets = currentAssets.filter((asset) => asset.id !== id);
+    if (nextAssets.length === currentAssets.length) return false;
+    content.mediaAssets = nextAssets;
+    return true;
+  });
 }
