@@ -1,6 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+
+function normalizeSlug(title: string) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 import { useRouter } from 'next/navigation';
 
 import type { LandingPage, PortfolioProject, ServiceDetailPageId } from '@/features/cms/types';
@@ -73,6 +83,7 @@ export function PortfolioEditorForm({
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialProject.updatedAt ?? null);
   const [revisionReloadKey, setRevisionReloadKey] = useState(0);
   const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>(fallbackServiceOptions);
+  const [slugTouched, setSlugTouched] = useState(!isNew);
   const router = useRouter();
 
   useEffect(() => {
@@ -80,7 +91,8 @@ export function PortfolioEditorForm({
     setProject(normalized);
     setBaseline(normalized);
     setLastSavedAt(initialProject.updatedAt ?? null);
-  }, [initialProject]);
+    setSlugTouched(!isNew);
+  }, [initialProject, isNew]);
 
   useEffect(() => {
     let cancelled = false;
@@ -116,6 +128,17 @@ export function PortfolioEditorForm({
   const validationIssues = useMemo(() => validatePortfolioEditor(project), [project]);
   const fieldErrors = useMemo(() => toFieldErrorMap(validationIssues), [validationIssues]);
   const canSave = validationIssues.length === 0;
+
+  const handleTitleChange = (title: string) => {
+    const next: PortfolioProject = { ...project, title };
+    if (!slugTouched) next.seo = { ...project.seo, slug: normalizeSlug(title) };
+    setProject(next);
+  };
+
+  const handleSlugChange = (slug: string) => {
+    setSlugTouched(true);
+    setProject({ ...project, seo: { ...project.seo, slug } });
+  };
 
   const saveProject = useCallback(async () => {
     if (!canSave) {
@@ -310,7 +333,7 @@ export function PortfolioEditorForm({
           <input
             className={fieldErrors.title ? 'admin-input-error' : ''}
             value={project.title}
-            onChange={(event) => setProject({ ...project, title: event.target.value })}
+            onChange={(e) => handleTitleChange(e.target.value)}
           />
           {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
         </label>
@@ -548,17 +571,29 @@ export function PortfolioEditorForm({
         </label>
         <label>
           Slug
-          <input
-            className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
-            value={project.seo.slug}
-            onChange={(event) =>
-              setProject({
-                ...project,
-                seo: { ...project.seo, slug: event.target.value }
-              })
-            }
-          />
+          <div className="slug-field-row">
+            <input
+              className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
+              value={project.seo.slug}
+              onChange={(e) => handleSlugChange(e.target.value)}
+            />
+            {!slugTouched ? (
+              <span className="slug-lock-btn" style={{ cursor: 'default', background: '#eef5ff', borderColor: '#93c5fd', color: '#1d4ed8' }}>
+                Auto
+              </span>
+            ) : isNew ? (
+              <button
+                type="button"
+                className="slug-lock-btn"
+                onClick={() => { setSlugTouched(false); setProject({ ...project, seo: { ...project.seo, slug: normalizeSlug(project.title) } }); }}
+                title="Re-enable auto-generation from title"
+              >
+                Reset to auto
+              </button>
+            ) : null}
+          </div>
           {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
+          <span className="admin-subtle">URL: /portfolio/{project.seo.slug || '…'}</span>
         </label>
         <label>
           Canonical URL
@@ -581,7 +616,13 @@ export function PortfolioEditorForm({
               seo: { ...project.seo, socialImage: value }
             })
           }
-          helperText="Optional image used for portfolio social sharing cards."
+          helperText={
+            project.seo.socialImage
+              ? 'Custom social image set.'
+              : project.coverImage
+                ? 'Not set — will use cover image for social sharing.'
+                : 'Not set — will use site default OG image.'
+          }
           aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
         />
         <label>

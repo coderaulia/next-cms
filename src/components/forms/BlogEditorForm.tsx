@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
-import type { BlogPost, Category } from '@/features/cms/types';
+import type { BlogPost, Category, SiteSettings } from '@/features/cms/types';
+import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { fromDatetimeLocalValue, toDatetimeLocalValue } from '@/features/cms/editorSchedule';
 import { formatSavedAtLabel, toFieldErrorMap, validateBlogEditor } from '@/features/cms/editorValidation';
 import { getBlogPostPublicationLabel } from '@/features/cms/publicationState';
@@ -12,22 +14,35 @@ import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 
+const RichContentEditor = dynamic(
+  () => import('@/components/admin/RichContentEditor').then((m) => m.RichContentEditor),
+  { ssr: false, loading: () => <textarea rows={14} placeholder="Loading editor..." readOnly /> }
+);
+
 type BlogEditorFormProps = {
   initialPost: BlogPost;
   isNew?: boolean;
   canPublish?: boolean;
   canDelete?: boolean;
+  currentUser?: AdminSessionUser;
 };
 
-type CategoriesResponse = {
-  categories: Category[];
-};
-
+type CategoriesResponse = { categories: Category[] };
+type SettingsResponse = { settings: SiteSettings };
 type SaveMode = 'manual' | 'autosave';
-
 type AutoSaveState = 'idle' | 'scheduled' | 'saving' | 'blocked';
 
 const AUTO_SAVE_DELAY_MS = 30_000;
+
+function normalizeSlug(title: string) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 function normalizePreviewHref(post: BlogPost) {
   const slug = post.seo.slug.trim();
@@ -61,11 +76,13 @@ export function BlogEditorForm({
   initialPost,
   isNew = false,
   canPublish = true,
-  canDelete = true
+  canDelete = true,
+  currentUser
 }: BlogEditorFormProps) {
   const [post, setPost] = useState(initialPost);
   const [baseline, setBaseline] = useState(initialPost);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [globalOgImage, setGlobalOgImage] = useState('');
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(initialPost.updatedAt ?? null);
@@ -73,6 +90,8 @@ export function BlogEditorForm({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [revisionReloadKey, setRevisionReloadKey] = useState(0);
+  // Track if slug was manually edited; lock auto-generation for existing posts
+  const [slugTouched, setSlugTouched] = useState(!isNew);
   const router = useRouter();
 
   useEffect(() => {
@@ -82,15 +101,21 @@ export function BlogEditorForm({
     setAutoSaveState('idle');
     setShowDeleteConfirm(false);
     setDeleteConfirmText('');
-  }, [initialPost]);
+    setSlugTouched(!isNew);
+  }, [initialPost, isNew]);
 
   useEffect(() => {
     csrfFetch('/api/admin/categories')
-      .then((response) => (response.ok ? response.json() : null))
+      .then((r) => (r.ok ? r.json() : null))
       .then((payload) => {
-        if (!payload) return;
-        setCategories((payload as CategoriesResponse).categories);
+        if (payload) setCategories((payload as CategoriesResponse).categories);
       });
+    csrfFetch('/api/admin/settings')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((payload) => {
+        if (payload) setGlobalOgImage((payload as SettingsResponse).settings.seo.defaultOgImage ?? '');
+      })
+      .catch(() => {});
   }, []);
 
   const isDirty = useMemo(() => JSON.stringify(post) !== JSON.stringify(baseline), [post, baseline]);
@@ -102,23 +127,32 @@ export function BlogEditorForm({
   const canSave = validationIssues.length === 0;
   const canDeleteConfirm = deleteConfirmText.trim().toUpperCase() === 'DELETE';
 
+  const effectiveSocialImage = post.seo.socialImage || post.coverImage || globalOgImage;
+
+  const handleTitleChange = (title: string) => {
+    const next: BlogPost = { ...post, title };
+    if (!slugTouched) {
+      next.seo = { ...post.seo, slug: normalizeSlug(title) };
+    }
+    setPost(next);
+  };
+
+  const handleSlugChange = (slug: string) => {
+    setSlugTouched(true);
+    setPost({ ...post, seo: { ...post.seo, slug } });
+  };
+
   const toggleTag = (slug: string) => {
     const next = new Set(post.tags);
-    if (next.has(slug)) {
-      next.delete(slug);
-    } else {
-      next.add(slug);
-    }
-
+    if (next.has(slug)) next.delete(slug);
+    else next.add(slug);
     setPost({ ...post, tags: Array.from(next) });
   };
 
   const savePost = useCallback(
     async (mode: SaveMode = 'manual') => {
       if (!canSave) {
-        if (mode === 'manual') {
-          setNotice(`Fix ${validationIssues.length} validation issue(s) before saving.`);
-        }
+        if (mode === 'manual') setNotice(`Fix ${validationIssues.length} validation issue(s) before saving.`);
         setAutoSaveState('blocked');
         return false;
       }
@@ -129,26 +163,19 @@ export function BlogEditorForm({
       }
 
       setSaving(true);
-      if (mode === 'autosave') {
-        setAutoSaveState('saving');
-      }
+      if (mode === 'autosave') setAutoSaveState('saving');
       setNotice('');
 
       const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-cms-save-mode': mode
-        },
+        headers: { 'Content-Type': 'application/json', 'x-cms-save-mode': mode },
         body: JSON.stringify(post)
       });
       setSaving(false);
 
       if (!response.ok) {
         setNotice('Failed to save post');
-        if (mode === 'autosave') {
-          setAutoSaveState('blocked');
-        }
+        if (mode === 'autosave') setAutoSaveState('blocked');
         return false;
       }
 
@@ -157,82 +184,45 @@ export function BlogEditorForm({
       setBaseline(payload.post);
       setLastSavedAt(payload.post.updatedAt);
       setAutoSaveState('idle');
-
       if (mode === 'manual') {
         setNotice('Post saved');
-        setRevisionReloadKey((current) => current + 1);
+        setRevisionReloadKey((c) => c + 1);
       }
-
-      if (isNew) {
-        router.replace(`/admin/blog/${payload.post.id}`);
-      }
-
+      if (isNew) router.replace(`/admin/blog/${payload.post.id}`);
       return true;
     },
     [canSave, isDirty, isNew, post, router, validationIssues.length]
   );
 
   const publish = async () => {
-    if (!canSave) {
-      setNotice('Resolve validation issues before publishing.');
-      return;
-    }
-
-    const response = await csrfFetch(`/api/admin/blog/${post.id}/publish`, {
-      method: 'POST'
-    });
-    if (!response.ok) {
-      setNotice('Failed to publish');
-      return;
-    }
+    if (!canSave) { setNotice('Resolve validation issues before publishing.'); return; }
+    const response = await csrfFetch(`/api/admin/blog/${post.id}/publish`, { method: 'POST' });
+    if (!response.ok) { setNotice('Failed to publish'); return; }
     const payload = (await response.json()) as { post: BlogPost };
-    setPost(payload.post);
-    setBaseline(payload.post);
-    setLastSavedAt(payload.post.updatedAt);
-    setNotice('Post published');
-    setRevisionReloadKey((current) => current + 1);
+    setPost(payload.post); setBaseline(payload.post); setLastSavedAt(payload.post.updatedAt);
+    setNotice('Post published'); setRevisionReloadKey((c) => c + 1);
   };
 
   const unpublish = async () => {
-    const response = await csrfFetch(`/api/admin/blog/${post.id}/unpublish`, {
-      method: 'POST'
-    });
-    if (!response.ok) {
-      setNotice('Failed to unpublish');
-      return;
-    }
+    const response = await csrfFetch(`/api/admin/blog/${post.id}/unpublish`, { method: 'POST' });
+    if (!response.ok) { setNotice('Failed to unpublish'); return; }
     const payload = (await response.json()) as { post: BlogPost };
-    setPost(payload.post);
-    setBaseline(payload.post);
-    setLastSavedAt(payload.post.updatedAt);
-    setNotice('Post moved to draft');
-    setRevisionReloadKey((current) => current + 1);
+    setPost(payload.post); setBaseline(payload.post); setLastSavedAt(payload.post.updatedAt);
+    setNotice('Post moved to draft'); setRevisionReloadKey((c) => c + 1);
   };
 
   const deletePost = async () => {
-    if (!canDeleteConfirm) {
-      setNotice('Type DELETE to confirm permanent deletion.');
-      return;
-    }
-
-    const response = await csrfFetch(`/api/admin/blog/${post.id}`, {
-      method: 'DELETE'
-    });
-    if (!response.ok) {
-      setNotice('Failed to delete');
-      return;
-    }
-    router.replace('/admin/blog');
-    router.refresh();
+    if (!canDeleteConfirm) { setNotice('Type DELETE to confirm permanent deletion.'); return; }
+    const response = await csrfFetch(`/api/admin/blog/${post.id}`, { method: 'DELETE' });
+    if (!response.ok) { setNotice('Failed to delete'); return; }
+    router.replace('/admin/blog'); router.refresh();
   };
 
   useEffect(() => {
     const onBeforeUnload = (event: BeforeUnloadEvent) => {
       if (!isDirty) return;
-      event.preventDefault();
-      event.returnValue = '';
+      event.preventDefault(); event.returnValue = '';
     };
-
     window.addEventListener('beforeunload', onBeforeUnload);
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   }, [isDirty]);
@@ -242,33 +232,17 @@ export function BlogEditorForm({
       const isSaveShortcut = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's';
       if (!isSaveShortcut) return;
       event.preventDefault();
-      if (!saving) {
-        void savePost('manual');
-      }
+      if (!saving) void savePost('manual');
     };
-
     window.addEventListener('keydown', onKeydown);
     return () => window.removeEventListener('keydown', onKeydown);
   }, [savePost, saving]);
 
   useEffect(() => {
-    if (!isDirty) {
-      setAutoSaveState('idle');
-      return;
-    }
-
-    if (!canSave) {
-      setAutoSaveState('blocked');
-      return;
-    }
-
+    if (!isDirty) { setAutoSaveState('idle'); return; }
+    if (!canSave) { setAutoSaveState('blocked'); return; }
     setAutoSaveState('scheduled');
-    const timer = window.setTimeout(() => {
-      if (!saving) {
-        void savePost('autosave');
-      }
-    }, AUTO_SAVE_DELAY_MS);
-
+    const timer = window.setTimeout(() => { if (!saving) void savePost('autosave'); }, AUTO_SAVE_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [canSave, isDirty, savePost, saving]);
 
@@ -301,13 +275,9 @@ export function BlogEditorForm({
             </AdminActionButton>
             {canPublish ? (
               post.status === 'draft' ? (
-                <AdminActionButton icon="publish" variant="primary" onClick={publish} disabled={!canSave}>
-                  Publish now
-                </AdminActionButton>
+                <AdminActionButton icon="publish" variant="primary" onClick={publish} disabled={!canSave}>Publish now</AdminActionButton>
               ) : (
-                <AdminActionButton icon="schedule" variant="secondary" onClick={unpublish}>
-                  Move to draft
-                </AdminActionButton>
+                <AdminActionButton icon="schedule" variant="secondary" onClick={unpublish}>Move to draft</AdminActionButton>
               )
             ) : (
               <span className="admin-chip admin-chip-muted">No publish access</span>
@@ -316,10 +286,7 @@ export function BlogEditorForm({
               <AdminActionButton
                 icon={showDeleteConfirm ? 'close' : 'delete'}
                 variant="danger"
-                onClick={() => {
-                  setShowDeleteConfirm((current) => !current);
-                  setDeleteConfirmText('');
-                }}
+                onClick={() => { setShowDeleteConfirm((c) => !c); setDeleteConfirmText(''); }}
               >
                 {showDeleteConfirm ? 'Cancel delete' : 'Delete post'}
               </AdminActionButton>
@@ -327,9 +294,7 @@ export function BlogEditorForm({
           </div>
         </div>
         {notice ? <p className="admin-subtle">{notice}</p> : null}
-        {validationIssues.length > 0 ? (
-          <p className="admin-error-text">{validationIssues[0].message}</p>
-        ) : null}
+        {validationIssues.length > 0 ? <p className="admin-error-text">{validationIssues[0].message}</p> : null}
         <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or content.</p>
       </section>
 
@@ -339,8 +304,7 @@ export function BlogEditorForm({
         reloadKey={revisionReloadKey}
         emptyMessage="Manual saves and publishing changes for this post will appear here."
         onRestore={(restoredPost) => {
-          setPost(restoredPost);
-          setBaseline(restoredPost);
+          setPost(restoredPost); setBaseline(restoredPost);
           setLastSavedAt(restoredPost.updatedAt ?? null);
           setNotice('Post restored from revision history.');
           setAutoSaveState('idle');
@@ -352,11 +316,7 @@ export function BlogEditorForm({
           <h3>Confirm deletion</h3>
           <p className="admin-subtle">Type DELETE to permanently remove this post.</p>
           <div className="admin-actions">
-            <input
-              value={deleteConfirmText}
-              onChange={(event) => setDeleteConfirmText(event.target.value)}
-              placeholder="Type DELETE"
-            />
+            <input value={deleteConfirmText} onChange={(e) => setDeleteConfirmText(e.target.value)} placeholder="Type DELETE" />
             <AdminActionButton icon="delete" variant="danger" disabled={!canDeleteConfirm} onClick={deletePost}>
               Permanently delete post
             </AdminActionButton>
@@ -372,63 +332,70 @@ export function BlogEditorForm({
             className={fieldErrors.title ? 'admin-input-error' : ''}
             aria-invalid={Boolean(fieldErrors.title)}
             value={post.title}
-            onChange={(event) => setPost({ ...post, title: event.target.value })}
+            onChange={(e) => handleTitleChange(e.target.value)}
           />
           {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
         </label>
         <label>
           Excerpt
-          <textarea value={post.excerpt} onChange={(event) => setPost({ ...post, excerpt: event.target.value })} />
+          <textarea value={post.excerpt} onChange={(e) => setPost({ ...post, excerpt: e.target.value })} />
         </label>
-        <label>
-          Content
-          <textarea
-            className={fieldErrors.content ? 'admin-input-error' : ''}
-            aria-invalid={Boolean(fieldErrors.content)}
+        <div>
+          <label style={{ marginBottom: 6 }}>Content</label>
+          <RichContentEditor
             value={post.content}
-            onChange={(event) => setPost({ ...post, content: event.target.value })}
+            onChange={(value) => setPost({ ...post, content: value })}
+            hasError={Boolean(fieldErrors.content)}
             rows={14}
           />
           <span className="admin-subtle">Word count: {countWords(post.content)}</span>
           {fieldErrors.content ? <span className="admin-error-text">{fieldErrors.content}</span> : null}
-        </label>
+        </div>
         <label>
           Author
-          <input
-            className={fieldErrors.author ? 'admin-input-error' : ''}
-            aria-invalid={Boolean(fieldErrors.author)}
-            value={post.author}
-            onChange={(event) => setPost({ ...post, author: event.target.value })}
-          />
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <input
+              className={fieldErrors.author ? 'admin-input-error' : ''}
+              aria-invalid={Boolean(fieldErrors.author)}
+              value={post.author}
+              onChange={(e) => setPost({ ...post, author: e.target.value })}
+              style={{ flex: 1 }}
+            />
+            {currentUser && currentUser.displayName && currentUser.displayName !== post.author ? (
+              <button
+                type="button"
+                className="slug-lock-btn"
+                onClick={() => setPost({ ...post, author: currentUser.displayName })}
+                title={`Use ${currentUser.displayName}`}
+              >
+                Use my name
+              </button>
+            ) : null}
+          </div>
           {fieldErrors.author ? <span className="admin-error-text">{fieldErrors.author}</span> : null}
         </label>
         <label>
           Primary Category
-          <select
-            value={post.categoryId || ''}
-            onChange={(event) => setPost({ ...post, categoryId: event.target.value || null })}
-          >
+          <select value={post.categoryId || ''} onChange={(e) => setPost({ ...post, categoryId: e.target.value || null })}>
             <option value="">Uncategorized</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
         </label>
         <div>
           <p className="admin-kpi-label">Tags (Quick Select)</p>
           <div className="admin-actions" style={{ flexWrap: 'wrap' }}>
-            {categories.map((category) => {
-              const active = post.tags.includes(category.slug);
+            {categories.map((cat) => {
+              const active = post.tags.includes(cat.slug);
               return (
                 <button
-                  key={category.id}
+                  key={cat.id}
                   type="button"
                   className={active ? 'v2-btn v2-btn-primary' : 'v2-btn v2-btn-secondary'}
-                  onClick={() => toggleTag(category.slug)}
+                  onClick={() => toggleTag(cat.slug)}
                 >
-                  {category.name}
+                  {cat.name}
                 </button>
               );
             })}
@@ -438,12 +405,7 @@ export function BlogEditorForm({
           Tags (comma separated)
           <input
             value={post.tags.join(', ')}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                tags: fromKeywordInput(event.target.value)
-              })
-            }
+            onChange={(e) => setPost({ ...post, tags: fromKeywordInput(e.target.value) })}
           />
         </label>
         <MediaPickerField
@@ -466,12 +428,7 @@ export function BlogEditorForm({
               type="datetime-local"
               value={toDatetimeLocalValue(post.scheduledPublishAt)}
               disabled={!canPublish}
-              onChange={(event) =>
-                setPost({
-                  ...post,
-                  scheduledPublishAt: fromDatetimeLocalValue(event.target.value)
-                })
-              }
+              onChange={(e) => setPost({ ...post, scheduledPublishAt: fromDatetimeLocalValue(e.target.value) })}
             />
             {fieldErrors.scheduledPublishAt ? (
               <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
@@ -487,12 +444,7 @@ export function BlogEditorForm({
               type="datetime-local"
               value={toDatetimeLocalValue(post.scheduledUnpublishAt)}
               disabled={!canPublish}
-              onChange={(event) =>
-                setPost({
-                  ...post,
-                  scheduledUnpublishAt: fromDatetimeLocalValue(event.target.value)
-                })
-              }
+              onChange={(e) => setPost({ ...post, scheduledUnpublishAt: fromDatetimeLocalValue(e.target.value) })}
             />
             {fieldErrors.scheduledUnpublishAt ? (
               <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
@@ -512,12 +464,7 @@ export function BlogEditorForm({
             className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
             aria-invalid={Boolean(fieldErrors['seo.metaTitle'])}
             value={post.seo.metaTitle}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: { ...post.seo, metaTitle: event.target.value }
-              })
-            }
+            onChange={(e) => setPost({ ...post, seo: { ...post.seo, metaTitle: e.target.value } })}
           />
           <span className="admin-subtle">{post.seo.metaTitle.length}/60 recommended</span>
           {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
@@ -528,70 +475,71 @@ export function BlogEditorForm({
             className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
             aria-invalid={Boolean(fieldErrors['seo.metaDescription'])}
             value={post.seo.metaDescription}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: { ...post.seo, metaDescription: event.target.value }
-              })
-            }
+            onChange={(e) => setPost({ ...post, seo: { ...post.seo, metaDescription: e.target.value } })}
           />
           <span className="admin-subtle">{post.seo.metaDescription.length}/160 recommended</span>
-          {fieldErrors['seo.metaDescription'] ? (
-            <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span>
-          ) : null}
+          {fieldErrors['seo.metaDescription'] ? <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span> : null}
         </label>
         <label>
           Slug
-          <input
-            className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
-            aria-invalid={Boolean(fieldErrors['seo.slug'])}
-            value={post.seo.slug}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: { ...post.seo, slug: event.target.value }
-              })
-            }
-          />
+          <div className="slug-field-row">
+            <input
+              className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
+              aria-invalid={Boolean(fieldErrors['seo.slug'])}
+              value={post.seo.slug}
+              onChange={(e) => handleSlugChange(e.target.value)}
+            />
+            {!slugTouched ? (
+              <span className="slug-lock-btn" style={{ cursor: 'default', background: '#eef5ff', borderColor: '#93c5fd', color: '#1d4ed8' }}>
+                Auto
+              </span>
+            ) : isNew ? (
+              <button
+                type="button"
+                className="slug-lock-btn"
+                onClick={() => { setSlugTouched(false); setPost({ ...post, seo: { ...post.seo, slug: normalizeSlug(post.title) } }); }}
+                title="Re-enable auto-generation from title"
+              >
+                Reset to auto
+              </button>
+            ) : null}
+          </div>
           {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
+          <span className="admin-subtle">URL: /blog/{post.seo.slug || '…'}</span>
         </label>
         <label>
           Canonical URL
           <input
             value={post.seo.canonical}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: { ...post.seo, canonical: event.target.value }
-              })
-            }
+            onChange={(e) => setPost({ ...post, seo: { ...post.seo, canonical: e.target.value } })}
           />
         </label>
         <MediaPickerField
           label="Social image"
           value={post.seo.socialImage}
-          onChange={(value) =>
-            setPost({
-              ...post,
-              seo: { ...post.seo, socialImage: value }
-            })
+          onChange={(value) => setPost({ ...post, seo: { ...post.seo, socialImage: value } })}
+          helperText={
+            post.seo.socialImage
+              ? 'Custom social image set.'
+              : post.coverImage
+                ? 'Not set — will use cover image for social sharing.'
+                : globalOgImage
+                  ? 'Not set — will use site default OG image.'
+                  : 'Optional Open Graph/Twitter image for social sharing.'
           }
-          helperText="Optional Open Graph/Twitter image for social sharing."
           aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
         />
+        {!post.seo.socialImage && effectiveSocialImage ? (
+          <p className="admin-subtle" style={{ marginTop: -8 }}>
+            Effective social image: <strong>{post.coverImage ? 'cover image' : 'site default'}</strong>
+            {' '}— set a custom image above to override.
+          </p>
+        ) : null}
         <label>
           Keywords (comma separated)
           <input
             value={toKeywordInput(post.seo.keywords)}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: {
-                  ...post.seo,
-                  keywords: fromKeywordInput(event.target.value)
-                }
-              })
-            }
+            onChange={(e) => setPost({ ...post, seo: { ...post.seo, keywords: fromKeywordInput(e.target.value) } })}
           />
         </label>
         <label>
@@ -599,12 +547,7 @@ export function BlogEditorForm({
           <input
             type="checkbox"
             checked={post.seo.noIndex}
-            onChange={(event) =>
-              setPost({
-                ...post,
-                seo: { ...post.seo, noIndex: event.target.checked }
-              })
-            }
+            onChange={(e) => setPost({ ...post, seo: { ...post.seo, noIndex: e.target.checked } })}
           />
         </label>
       </section>

@@ -59,6 +59,7 @@ function BlogEditor({ user }: BlogEditorProps) {
       initialPost={post}
       canPublish={user.permissions.includes('content:publish')}
       canDelete={user.permissions.includes('content:delete')}
+      currentUser={user}
     />
   );
 }

@@ -44,7 +44,8 @@ export async function generateMetadata({ params }: PortfolioDetailPageProps) {
     settings,
     { ...project.seo, slug: `portfolio/${project.seo.slug}`, keywords: project.seo.keywords ?? project.tags },
     project.title,
-    project.summary
+    project.summary,
+    project.coverImage || undefined
   );
 }
 

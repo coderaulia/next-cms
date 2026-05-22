@@ -44,7 +44,7 @@ function CreateBlogPost({ user }: CreateBlogPostProps) {
         title: 'Untitled post',
         excerpt: '',
         content: '',
-        author: 'Admin',
+        author: user.displayName || 'Admin',
         tags: [],
         coverImage: '',
         status: 'draft',
@@ -86,6 +86,7 @@ function CreateBlogPost({ user }: CreateBlogPostProps) {
       isNew
       canPublish={user.permissions.includes('content:publish')}
       canDelete={user.permissions.includes('content:delete')}
+      currentUser={user}
     />
   );
 }

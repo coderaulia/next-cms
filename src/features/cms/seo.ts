@@ -39,13 +39,14 @@ export function buildMetadata(
   site: SiteSettings,
   seo: SeoFields,
   fallbackTitle: string,
-  fallbackDescription: string
+  fallbackDescription: string,
+  coverImage?: string
 ): Metadata {
   const title = resolveTitle(site, seo.metaTitle, fallbackTitle);
   const description =
     seo.metaDescription || fallbackDescription || site.seo.defaultMetaDescription || '';
   const canonical = buildCanonical(site.general.baseUrl, seo.slug, seo.canonical);
-  const ogImage = seo.socialImage || site.seo.defaultOgImage;
+  const ogImage = seo.socialImage || coverImage || site.seo.defaultOgImage;
   const keywords = Array.isArray(seo.keywords)
     ? seo.keywords
         .map((keyword) => keyword.trim())
