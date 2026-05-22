@@ -7,15 +7,45 @@ import type {
   AdminSessionUser
 } from './adminTypes';
 
+const SESSION_KEY = 'cms_admin_session';
+
 let cachedSessionUser: AdminSessionUser | null | undefined;
 let sessionRequest: Promise<AdminSessionUser | null> | null = null;
 
+function readStorage(): AdminSessionUser | null | undefined {
+  if (typeof sessionStorage === 'undefined') return undefined;
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    return raw ? (JSON.parse(raw) as AdminSessionUser) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function writeStorage(user: AdminSessionUser | null): void {
+  if (typeof sessionStorage === 'undefined') return;
+  try {
+    if (user) {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+  } catch {}
+}
+
 export function getCachedAdminSession() {
+  if (cachedSessionUser === undefined) {
+    const stored = readStorage();
+    if (stored !== undefined) {
+      cachedSessionUser = stored;
+    }
+  }
   return cachedSessionUser;
 }
 
 export function primeAdminSession(user: AdminSessionUser | null) {
   cachedSessionUser = user;
+  writeStorage(user);
 }
 
 export async function getAdminSession(force = false): Promise<AdminSessionUser | null> {
@@ -34,15 +64,18 @@ export async function getAdminSession(force = false): Promise<AdminSessionUser |
     .then(async (response) => {
       if (!response.ok) {
         cachedSessionUser = null;
+        writeStorage(null);
         return null;
       }
 
       const payload = (await response.json()) as AdminAuthResponse;
       cachedSessionUser = payload.user;
+      writeStorage(payload.user);
       return payload.user;
     })
     .catch(() => {
       cachedSessionUser = null;
+      writeStorage(null);
       return null;
     })
     .finally(() => {
@@ -62,11 +95,13 @@ export async function loginAdmin(input: AdminLoginPayload): Promise<{ user: Admi
   if (!response.ok) {
     const payload = (await response.json().catch(() => null)) as AdminErrorResponse | null;
     cachedSessionUser = null;
+    writeStorage(null);
     return { user: null, error: payload?.error || 'Unable to sign in.' };
   }
 
   const payload = (await response.json()) as AdminAuthResponse;
   cachedSessionUser = payload.user;
+  writeStorage(payload.user);
   return { user: payload.user, error: null };
 }
 
@@ -75,6 +110,7 @@ export async function logoutAdmin() {
     method: 'DELETE'
   });
   cachedSessionUser = null;
+  writeStorage(null);
 }
 
 export async function logoutAllAdminSessions() {
@@ -82,4 +118,5 @@ export async function logoutAllAdminSessions() {
     method: 'POST'
   });
   cachedSessionUser = null;
+  writeStorage(null);
 }

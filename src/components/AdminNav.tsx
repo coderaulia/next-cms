@@ -38,13 +38,13 @@ function initialsForUser(user: AdminSessionUser) {
 }
 
 type AdminNavProps = {
-  user: AdminSessionUser;
+  user: AdminSessionUser | null;
 };
 
 export function AdminNav({ user }: AdminNavProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const permissionSet = new Set(user.permissions);
+  const permissionSet = new Set(user?.permissions ?? []);
 
   const isActive = (href: string) =>
     pathname === href || (href !== '/admin' && pathname.startsWith(href.split('?')[0]));
@@ -133,18 +133,29 @@ export function AdminNav({ user }: AdminNavProps) {
       </div>
 
       <div className="admin-sidebar-footer">
-        <div className="admin-user-card">
-          <span className="admin-user-avatar">{initialsForUser(user)}</span>
-          <div>
-            <strong>{user.displayName}</strong>
-            <p className="muted">{user.email}</p>
-            <span className="admin-chip admin-chip-muted">{formatAdminRoleLabel(user.role)}</span>
+        {user ? (
+          <>
+            <div className="admin-user-card">
+              <span className="admin-user-avatar">{initialsForUser(user)}</span>
+              <div>
+                <strong>{user.displayName}</strong>
+                <p className="muted">{user.email}</p>
+                <span className="admin-chip admin-chip-muted">{formatAdminRoleLabel(user.role)}</span>
+              </div>
+            </div>
+            <button type="button" className="admin-logout" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <div className="admin-user-card">
+            <span className="admin-user-avatar admin-skeleton" style={{ width: 32, height: 32 }} />
+            <div style={{ flex: 1 }}>
+              <span className="admin-skeleton" style={{ display: 'block', height: 14, width: '70%', marginBottom: 4 }} />
+              <span className="admin-skeleton" style={{ display: 'block', height: 12, width: '90%' }} />
+            </div>
           </div>
-        </div>
-
-        <button type="button" className="admin-logout" onClick={handleLogout}>
-          Logout
-        </button>
+        )}
       </div>
     </aside>
   );

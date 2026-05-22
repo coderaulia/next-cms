@@ -2095,6 +2095,18 @@ button:disabled {
   box-shadow: 0 18px 36px rgba(17, 37, 65, 0.08);
 }
 
+.admin-skeleton {
+  background: linear-gradient(90deg, #e8edf4 25%, #d0d8e8 50%, #e8edf4 75%);
+  background-size: 200% 100%;
+  animation: admin-skeleton-shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+
+@keyframes admin-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .admin-link-editor {
   display: grid;
   gap: 12px;
