@@ -164,7 +164,7 @@ function AnalyticsWidget({ data }: { data: DashboardSummary }) {
     <article className="admin-card">
       <div className="admin-inline-header">
         <h2>Analytics snapshot</h2>
-        <Link href="/admin/analytics">Full report</Link>
+        <Link href="/admin/analytics" className="admin-link-btn">Full report</Link>
       </div>
       {data.analytics.available ? (
         <ul className="admin-plain-list">
@@ -210,7 +210,7 @@ function HealthWidget({ data }: { data: DashboardSummary }) {
                 {item.label}
               </strong>
               <span>{item.detail}</span>
-              <Link href={item.href}>Open fix</Link>
+              <Link href={item.href} className="admin-link-btn">Open fix</Link>
             </li>
           ))}
         </ul>
@@ -226,7 +226,7 @@ function AuditWidget({ data }: { data: DashboardSummary }) {
     <section className="admin-card">
       <div className="admin-inline-header">
         <h2>Recent audit activity</h2>
-        <Link href="/admin/audit">View all</Link>
+        <Link href="/admin/audit" className="admin-link-btn">View all</Link>
       </div>
       <ul className="admin-plain-list">
         {data.auditLogs.map((entry) => (
