@@ -25,6 +25,8 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
   const { setMode } = useCursorMode();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const brandRef = useRef<HTMLDivElement>(null);
@@ -35,11 +37,25 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
   const mapLink = (link: NavItem): NavItem => ({
     href: link.href,
     label: link.label,
-    children: link.children?.filter((c) => c.enabled).map(mapLink),
+    children: link.children?.filter((c) => c.enabled !== false).map(mapLink),
   });
 
   const configuredLinks = settings.navigation.headerLinks.filter((l) => l.enabled).map(mapLink);
   const links = configuredLinks.length > 0 ? configuredLinks : navItems;
+
+  const handleDropdownEnter = (label: string) => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
+    setOpenDropdown(label);
+  };
+
+  const handleDropdownLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 150);
+  };
 
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
 
@@ -164,24 +180,119 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
             pointerEvents: collapsed ? 'none' : 'auto',
           }}
         >
-          {links.map((link) => (
-            <Link
-              key={`${link.href}-${link.label}`}
-              href={link.href}
-              className="no-underline"
-              style={{ fontSize: 14, color: '#0A0E1A', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = '#0033FF';
-                setMode('link');
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = '#0A0E1A';
-                setMode('default');
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) =>
+            link.children && link.children.length > 0 ? (
+              <div
+                key={`${link.href}-${link.label}`}
+                style={{ position: 'relative' }}
+                onMouseEnter={() => handleDropdownEnter(link.label)}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <button
+                  type="button"
+                  className="no-underline"
+                  style={{
+                    fontSize: 14,
+                    color: openDropdown === link.label ? '#0033FF' : '#0A0E1A',
+                    transition: 'color 0.2s',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    fontFamily: 'inherit',
+                    letterSpacing: 'inherit',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                  onMouseEnter={() => setMode('link')}
+                  onMouseLeave={() => setMode('default')}
+                  aria-expanded={openDropdown === link.label}
+                  aria-haspopup="true"
+                >
+                  {link.label}
+                  <svg
+                    width="10"
+                    height="6"
+                    viewBox="0 0 10 6"
+                    fill="none"
+                    style={{
+                      transition: 'transform 0.2s',
+                      transform: openDropdown === link.label ? 'rotate(180deg)' : 'rotate(0deg)',
+                    }}
+                  >
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {openDropdown === link.label && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      paddingTop: 12,
+                      zIndex: 110,
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: '#FFFFFF',
+                        borderRadius: 12,
+                        boxShadow: '0 8px 32px rgba(10,14,26,0.12), 0 2px 8px rgba(10,14,26,0.08)',
+                        border: '1px solid rgba(10,14,26,0.08)',
+                        padding: '8px 0',
+                        minWidth: 180,
+                      }}
+                    >
+                      {link.children.map((child) => (
+                        <Link
+                          key={`${child.href}-${child.label}`}
+                          href={child.href}
+                          className="no-underline block"
+                          style={{
+                            fontSize: 14,
+                            color: '#0A0E1A',
+                            padding: '10px 20px',
+                            transition: 'background 0.15s, color 0.15s',
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(0,51,255,0.06)';
+                            (e.currentTarget as HTMLAnchorElement).style.color = '#0033FF';
+                            setMode('link');
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                            (e.currentTarget as HTMLAnchorElement).style.color = '#0A0E1A';
+                            setMode('default');
+                          }}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={`${link.href}-${link.label}`}
+                href={link.href}
+                className="no-underline"
+                style={{ fontSize: 14, color: '#0A0E1A', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = '#0033FF';
+                  setMode('link');
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = '#0A0E1A';
+                  setMode('default');
+                }}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
         </nav>
 
         {/* CTA pill (inline — hidden when collapsed) */}
@@ -301,22 +412,54 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
               gap: 28,
             }}
           >
-            {links.map((link) => (
-              <Link
-                key={`mobile-${link.href}-${link.label}`}
-                href={link.href}
-                className="no-underline"
-                onClick={closeMobileMenu}
-                style={{
-                  fontSize: 20,
-                  color: '#0A0E1A',
-                  fontWeight: 500,
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) =>
+              link.children && link.children.length > 0 ? (
+                <div key={`mobile-${link.href}-${link.label}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(10,14,26,0.5)',
+                    }}
+                  >
+                    {link.label}
+                  </span>
+                  {link.children.map((child) => (
+                    <Link
+                      key={`mobile-${child.href}-${child.label}`}
+                      href={child.href}
+                      className="no-underline"
+                      onClick={closeMobileMenu}
+                      style={{
+                        fontSize: 18,
+                        color: '#0A0E1A',
+                        fontWeight: 500,
+                        letterSpacing: '-0.01em',
+                      }}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <Link
+                  key={`mobile-${link.href}-${link.label}`}
+                  href={link.href}
+                  className="no-underline"
+                  onClick={closeMobileMenu}
+                  style={{
+                    fontSize: 20,
+                    color: '#0A0E1A',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em',
+                  }}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </nav>
 
           <Link

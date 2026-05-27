@@ -98,9 +98,25 @@ export default async function RootLayout({
     ])
   );
 
-  const navItems = siteProfile.navigation.primaryPageOrder
+  const baseNavItems = siteProfile.navigation.primaryPageOrder
     .map((id) => pageNavMap.get(id))
     .filter((item): item is { href: string; label: string } => Boolean(item));
+
+  const productsGroup = {
+    href: '#products',
+    label: 'Products',
+    children: [
+      { href: '/hris', label: 'Vanaila HRIS' },
+      { href: '/psikotest', label: 'Psikotest' },
+      { href: '/flowraze', label: 'Flowraze' },
+    ],
+  };
+
+  const svcIdx = baseNavItems.findIndex((item) => /\/service/.test(item.href));
+  const navItems =
+    svcIdx >= 0
+      ? [...baseNavItems.slice(0, svcIdx + 1), productsGroup, ...baseNavItems.slice(svcIdx + 1)]
+      : [...baseNavItems.slice(0, 3), productsGroup, ...baseNavItems.slice(3)];
 
   const orgSchema = {
     '@context': 'https://schema.org',

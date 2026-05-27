@@ -11,6 +11,7 @@ import { SiteHeader } from './SiteHeader';
 type NavItem = {
   href: string;
   label: string;
+  children?: NavItem[];
 };
 
 type AppShellProps = {

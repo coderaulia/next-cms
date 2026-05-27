@@ -260,6 +260,49 @@ export function ServicePageView({ page }: ServicePageViewProps) {
         );
       })}
 
+      {/* PRODUCTS CROSS-REFERENCE */}
+      <section className="v-svc-block v-svc-block-cream" style={{ '--accent': '#0A0E1A' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">●</span>
+          <span className="v-svc-block-tag">PRODUCTS</span>
+        </div>
+
+        <div className="v-svc-block-head">
+          <h2>Our Products</h2>
+          <span className="v-svc-block-sub">Ready-to-deploy platforms built by Vanaila</span>
+        </div>
+
+        <p className="v-svc-lede">
+          Beyond custom development, we build and maintain standalone products that solve specific business challenges out of the box.
+        </p>
+
+        <div className="v-svc-deliverables">
+          {[
+            { n: '01', title: 'Vanaila HRIS', desc: 'End-to-end HR management — attendance, payroll, KPI, and employee database for Indonesian organizations.', href: '/hris' },
+            { n: '02', title: 'Psikotest', desc: 'Online assessment infrastructure for HR teams and psychologists. DISC, IQ, Big 5, and custom instruments with bilingual delivery.', href: '/psikotest' },
+            { n: '03', title: 'Flowraze', desc: 'CRM & sales platform — leads, deals, campaigns, and team performance. WhatsApp-first, built for Indonesian SMB teams.', href: '/flowraze' },
+          ].map((product) => (
+            <div key={product.n} className="v-svc-deliverable">
+              <div className="v-svc-deliverable-header">
+                <span>{product.n}</span>
+                <span className="v-svc-deliverable-bar" />
+              </div>
+              <h3>{product.title}</h3>
+              <p>{product.desc}</p>
+              <Link
+                href={product.href}
+                className="v-svc-discuss-link"
+                style={{ marginTop: 8 }}
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
+              >
+                Learn more <span>→</span>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* WHY US */}
       <section className="v-svc-why">
         <div className="v-svc-why-head">
