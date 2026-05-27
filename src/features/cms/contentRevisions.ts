@@ -26,6 +26,20 @@ const REVISION_DATA_DIR = path.join(process.cwd(), 'data');
 const REVISION_DATA_FILE = path.join(REVISION_DATA_DIR, 'content-revisions.json');
 const MAX_REVISIONS_PER_ENTITY = 20;
 
+let revisionsWriteLock: Promise<void> = Promise.resolve();
+
+async function withRevisionsLock<T>(fn: () => Promise<T>): Promise<T> {
+  const prev = revisionsWriteLock;
+  let resolve!: () => void;
+  revisionsWriteLock = new Promise<void>((r) => { resolve = r; });
+  await prev;
+  try {
+    return await fn();
+  } finally {
+    resolve();
+  }
+}
+
 type CaptureContentRevisionInput = {
   entityType: CmsRevisionEntityType;
   entityId: string;
@@ -321,9 +335,11 @@ export async function captureContentRevision(input: CaptureContentRevisionInput)
     }
   }
 
-  const next = pruneRevisions([revision, ...(await readFileRevisions())]);
-  await writeFileRevisions(next);
-  return toSummary(revision);
+  return withRevisionsLock(async () => {
+    const next = pruneRevisions([revision, ...(await readFileRevisions())]);
+    await writeFileRevisions(next);
+    return toSummary(revision);
+  });
 }
 
 export async function listContentRevisions(

@@ -11,7 +11,8 @@ export default [
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs['core-web-vitals'].rules,
-      '@next/next/no-img-element': 'off'
+      '@next/next/no-img-element': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
     }
   }
 ];

@@ -1,9 +1,10 @@
 import { draftMode } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 
 import { BlogPostView } from '@/components/pages/BlogPostView';
 import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
+import { getRedirectByFromPath } from '@/features/cms/contentStore';
 import { buildCanonical, buildMetadata } from '@/features/cms/seo';
 import {
   getPreviewBlogPostBySlug,
@@ -53,7 +54,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     isPreview ? getPreviewBlogPostBySlug(slug) : getPublishedBlogPostBySlug(slug),
     isPreview ? getPreviewBlogPosts() : getPublishedBlogPosts()
   ]);
-  if (!post) notFound();
+  if (!post) {
+    const r = await getRedirectByFromPath(`/blog/${slug}`);
+    if (r) {
+      if (r.type === '301' || r.type === '308') permanentRedirect(r.toPath);
+      redirect(r.toPath);
+    }
+    notFound();
+  }
 
   const canonical = buildCanonical(settings.baseUrl, `blog/${post.seo.slug}`, post.seo.canonical);
   const jsonLd = {

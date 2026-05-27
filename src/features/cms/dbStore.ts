@@ -1,4 +1,4 @@
-﻿import { eq, sql } from 'drizzle-orm';
+﻿import { and, asc, desc, eq, gt, ilike, isNull, isNotNull, lte, or, sql } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import {
@@ -10,6 +10,7 @@ import {
   portfolioProjectsTable,
   portfolioTagsTable,
   postCategoriesTable,
+  redirectsTable,
   siteSettingsTable
 } from '@/db/schema';
 
@@ -758,6 +759,19 @@ export async function replaceAllCmsContent(content: CmsContent) {
   }, undefined);
 }
 
+export async function getRedirectByFromPath(fromPath: string): Promise<{ toPath: string; type: string } | null> {
+  try {
+    const rows = await getDb()
+      .select({ toPath: redirectsTable.toPath, type: redirectsTable.type })
+      .from(redirectsTable)
+      .where(eq(redirectsTable.fromPath, fromPath))
+      .limit(1);
+    return rows[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function getSettings() {
   await ensureDbBootstrap();
   const row = await getDb().select().from(siteSettingsTable).where(eq(siteSettingsTable.id, 'default')).limit(1);
@@ -833,8 +847,7 @@ export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
 }
 
 export async function queryBlogPosts(input: BlogQueryInput) {
-  const posts = await loadAllPosts();
-  const query = (input.q ?? '').trim().toLowerCase();
+  const queryText = (input.q ?? '').trim().toLowerCase();
   const category = (input.category ?? '').trim().toLowerCase();
   const status =
     input.status === 'draft' || input.status === 'published' || input.status === 'all'
@@ -847,47 +860,91 @@ export async function queryBlogPosts(input: BlogQueryInput) {
       ? Math.min(Number(input.pageSize), 50)
       : 10;
 
-  const categories = Array.from(
-    new Set(
-      posts
-        .flatMap((post) => post.tags)
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0)
-    )
-  ).sort((a, b) => (a > b ? 1 : -1));
+  return withLegacyScheduleFallback(
+    async () => {
+      await ensureDbBootstrap();
+      const db = getDb();
+      const now = nowIso();
 
-  let filtered = posts.filter((post) => {
-    if (!input.includeDrafts && !isBlogPostLive(post)) return false;
-    if (status !== 'all' && post.status !== status) return false;
-    if (query.length > 0) {
-      const haystack = `${post.title} ${post.author}`.toLowerCase();
-      if (!haystack.includes(query)) return false;
+      const conditions = [];
+
+      if (!input.includeDrafts) {
+        conditions.push(
+          and(
+            or(
+              eq(blogPostsTable.status, 'published'),
+              and(isNotNull(blogPostsTable.scheduledPublishAt), lte(blogPostsTable.scheduledPublishAt, now))
+            ),
+            or(isNull(blogPostsTable.scheduledUnpublishAt), gt(blogPostsTable.scheduledUnpublishAt, now))
+          )
+        );
+      }
+      if (status !== 'all') {
+        conditions.push(eq(blogPostsTable.status, status));
+      }
+      if (queryText.length > 0) {
+        const pattern = `%${queryText}%`;
+        conditions.push(or(ilike(blogPostsTable.title, pattern), ilike(blogPostsTable.author, pattern)));
+      }
+      if (category.length > 0) {
+        conditions.push(
+          sql`EXISTS (
+            SELECT 1 FROM ${postCategoriesTable} pc
+            JOIN ${categoriesTable} c ON c.id = pc.category_id
+            WHERE pc.post_id = ${blogPostsTable.id}
+            AND lower(c.slug) = ${category}
+          )`
+        );
+      }
+
+      const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+      const orderClause = dateSort === 'oldest' ? asc(blogPostsTable.updatedAt) : desc(blogPostsTable.updatedAt);
+      const offset = (page - 1) * pageSize;
+
+      const [countResult, categoryRows, rows] = await Promise.all([
+        db.select({ total: sql<number>`count(*)` }).from(blogPostsTable).where(whereClause),
+        db.select({ slug: categoriesTable.slug }).from(categoriesTable).orderBy(asc(categoriesTable.slug)),
+        db.select().from(blogPostsTable).where(whereClause).orderBy(orderClause).limit(pageSize).offset(offset)
+      ]);
+
+      const total = Number(countResult[0]?.total ?? 0);
+      const categories = categoryRows.map((r) => r.slug);
+      const ids = rows.map((r) => r.id);
+      const tagMap = ids.length > 0 ? await mapBlogPostCategorySlugs(ids) : new Map<string, string[]>();
+      const posts = rows.map((row) => rowToPost(row, tagMap.get(row.id) ?? row.tags));
+
+      return { posts, meta: { total, page, pageSize, categories } };
+    },
+    async () => {
+      const posts = await loadAllPosts();
+
+      const categories = Array.from(
+        new Set(posts.flatMap((post) => post.tags).map((tag) => tag.trim()).filter((tag) => tag.length > 0))
+      ).sort((a, b) => (a > b ? 1 : -1));
+
+      let filtered = posts.filter((post) => {
+        if (!input.includeDrafts && !isBlogPostLive(post)) return false;
+        if (status !== 'all' && post.status !== status) return false;
+        if (queryText.length > 0) {
+          const haystack = `${post.title} ${post.author}`.toLowerCase();
+          if (!haystack.includes(queryText)) return false;
+        }
+        if (category.length > 0) {
+          if (!post.tags.some((tag) => tag.toLowerCase() === category)) return false;
+        }
+        return true;
+      });
+
+      filtered = filtered.sort((a, b) => {
+        if (dateSort === 'oldest') return a.updatedAt > b.updatedAt ? 1 : -1;
+        return a.updatedAt < b.updatedAt ? 1 : -1;
+      });
+
+      const total = filtered.length;
+      const start = (page - 1) * pageSize;
+      return { posts: filtered.slice(start, start + pageSize), meta: { total, page, pageSize, categories } };
     }
-    if (category.length > 0) {
-      const hasCategory = post.tags.some((tag) => tag.toLowerCase() === category);
-      if (!hasCategory) return false;
-    }
-    return true;
-  });
-
-  filtered = filtered.sort((a, b) => {
-    if (dateSort === 'oldest') return a.updatedAt > b.updatedAt ? 1 : -1;
-    return a.updatedAt < b.updatedAt ? 1 : -1;
-  });
-
-  const total = filtered.length;
-  const start = (page - 1) * pageSize;
-  const paginated = filtered.slice(start, start + pageSize);
-
-  return {
-    posts: paginated,
-    meta: {
-      total,
-      page,
-      pageSize,
-      categories
-    }
-  };
+  );
 }
 
 export async function getBlogPostById(id: string): Promise<BlogPost | null> {
@@ -1039,8 +1096,7 @@ export async function getPortfolioProjects(includeDrafts = false): Promise<Portf
 }
 
 export async function queryPortfolioProjects(input: PortfolioQueryInput) {
-  const projects = await loadAllPortfolioProjects();
-  const query = (input.q ?? '').trim().toLowerCase();
+  const queryText = (input.q ?? '').trim().toLowerCase();
   const tag = (input.tag ?? '').trim().toLowerCase();
   const status =
     input.status === 'draft' || input.status === 'published' || input.status === 'all'
@@ -1057,31 +1113,125 @@ export async function queryPortfolioProjects(input: PortfolioQueryInput) {
       ? Math.min(Number(input.pageSize), 50)
       : 10;
 
+  const inMemoryFallback = async () => {
+    const projects = await loadAllPortfolioProjects();
+    return inMemoryQueryPortfolio(projects, { queryText, tag, status, featured, dateSort, page, pageSize, includeDrafts: input.includeDrafts });
+  };
+
+  return withPortfolioTableFallback(
+    async () =>
+      withPortfolioRelationsFallback(
+        async () =>
+          withLegacyScheduleFallback(
+            async () => {
+              await ensureDbBootstrap();
+              const db = getDb();
+              const now = nowIso();
+              const includeRelations = await supportsPortfolioRelationsColumn();
+
+              const conditions = [];
+
+              if (!input.includeDrafts) {
+                conditions.push(
+                  and(
+                    or(
+                      eq(portfolioProjectsTable.status, 'published'),
+                      and(isNotNull(portfolioProjectsTable.scheduledPublishAt), lte(portfolioProjectsTable.scheduledPublishAt, now))
+                    ),
+                    or(isNull(portfolioProjectsTable.scheduledUnpublishAt), gt(portfolioProjectsTable.scheduledUnpublishAt, now))
+                  )
+                );
+              }
+              if (status !== 'all') {
+                conditions.push(eq(portfolioProjectsTable.status, status));
+              }
+              if (featured === 'featured') {
+                conditions.push(eq(portfolioProjectsTable.featured, true));
+              } else if (featured === 'standard') {
+                conditions.push(eq(portfolioProjectsTable.featured, false));
+              }
+              if (queryText.length > 0) {
+                const pattern = `%${queryText}%`;
+                conditions.push(
+                  or(
+                    ilike(portfolioProjectsTable.title, pattern),
+                    ilike(portfolioProjectsTable.clientName, pattern),
+                    ilike(portfolioProjectsTable.serviceType, pattern),
+                    ilike(portfolioProjectsTable.industry, pattern)
+                  )
+                );
+              }
+              if (tag.length > 0) {
+                conditions.push(
+                  sql`EXISTS (
+                    SELECT 1 FROM ${portfolioProjectTagsTable} pt
+                    JOIN ${portfolioTagsTable} t ON t.id = pt.tag_id
+                    WHERE pt.project_id = ${portfolioProjectsTable.id}
+                    AND lower(t.slug) = ${tag}
+                  )`
+                );
+              }
+
+              const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+              const orderClause = [
+                desc(portfolioProjectsTable.featured),
+                asc(portfolioProjectsTable.sortOrder),
+                dateSort === 'oldest' ? asc(portfolioProjectsTable.updatedAt) : desc(portfolioProjectsTable.updatedAt)
+              ];
+              const offset = (page - 1) * pageSize;
+
+              const [countResult, tagRows, rows] = await Promise.all([
+                db.select({ total: sql<number>`count(*)` }).from(portfolioProjectsTable).where(whereClause),
+                db.select({ slug: portfolioTagsTable.slug }).from(portfolioTagsTable).orderBy(asc(portfolioTagsTable.slug)),
+                db.select(portfolioSelectShape(includeRelations)).from(portfolioProjectsTable)
+                  .where(whereClause).orderBy(...orderClause).limit(pageSize).offset(offset)
+              ]);
+
+              const total = Number(countResult[0]?.total ?? 0);
+              const tags = tagRows.map((r) => r.slug);
+              const ids = rows.map((r) => r.id);
+              const tagMap = ids.length > 0 ? await mapPortfolioProjectTags(ids) : new Map<string, string[]>();
+              const projects = rows.map((row) => rowToPortfolio(row as PortfolioRowShape, tagMap.get(row.id) ?? row.tags));
+
+              return { projects, meta: { total, page, pageSize, tags } };
+            },
+            inMemoryFallback
+          ),
+        inMemoryFallback
+      ),
+    inMemoryQueryPortfolio([], { queryText, tag, status, featured, dateSort, page, pageSize, includeDrafts: input.includeDrafts })
+  );
+}
+
+function inMemoryQueryPortfolio(
+  projects: PortfolioProject[],
+  opts: {
+    queryText: string;
+    tag: string;
+    status: 'all' | 'draft' | 'published';
+    featured: 'all' | 'featured' | 'standard';
+    dateSort: 'newest' | 'oldest';
+    page: number;
+    pageSize: number;
+    includeDrafts: boolean;
+  }
+) {
+  const { queryText, tag, status, featured, dateSort, page, pageSize, includeDrafts } = opts;
+
   const tags = Array.from(
-    new Set(
-      projects
-        .flatMap((project) => project.tags)
-        .map((entry) => entry.trim())
-        .filter((entry) => entry.length > 0)
-    )
+    new Set(projects.flatMap((p) => p.tags).map((t) => t.trim()).filter((t) => t.length > 0))
   ).sort((a, b) => (a > b ? 1 : -1));
 
   let filtered = projects.filter((project) => {
-    if (!input.includeDrafts && !isPortfolioProjectLive(project)) return false;
+    if (!includeDrafts && !isPortfolioProjectLive(project)) return false;
     if (status !== 'all' && project.status !== status) return false;
     if (featured === 'featured' && !project.featured) return false;
     if (featured === 'standard' && project.featured) return false;
-
-    if (query.length > 0) {
+    if (queryText.length > 0) {
       const haystack = `${project.title} ${project.clientName} ${project.serviceType} ${project.industry}`.toLowerCase();
-      if (!haystack.includes(query)) return false;
+      if (!haystack.includes(queryText)) return false;
     }
-
-    if (tag.length > 0) {
-      const hasTag = project.tags.some((entry) => entry.toLowerCase() === tag);
-      if (!hasTag) return false;
-    }
-
+    if (tag.length > 0 && !project.tags.some((t) => t.toLowerCase() === tag)) return false;
     return true;
   });
 
@@ -1094,17 +1244,7 @@ export async function queryPortfolioProjects(input: PortfolioQueryInput) {
 
   const total = filtered.length;
   const start = (page - 1) * pageSize;
-  const paginated = filtered.slice(start, start + pageSize);
-
-  return {
-    projects: paginated,
-    meta: {
-      total,
-      page,
-      pageSize,
-      tags
-    }
-  };
+  return { projects: filtered.slice(start, start + pageSize), meta: { total, page, pageSize, tags } };
 }
 
 export async function getPortfolioProjectById(id: string): Promise<PortfolioProject | null> {

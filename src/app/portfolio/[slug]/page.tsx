@@ -1,9 +1,10 @@
 import { draftMode } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 
 import { PortfolioProjectView } from '@/components/pages/PortfolioProjectView';
 import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { SeoJsonLd } from '@/components/SeoJsonLd';
+import { getRedirectByFromPath } from '@/features/cms/contentStore';
 import { buildCanonical, buildMetadata } from '@/features/cms/seo';
 import {
   getPreviewPages,
@@ -58,7 +59,14 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
     isPreview ? getPreviewPortfolioProjects() : getPublishedPortfolioProjects(),
     isPreview ? getPreviewPages() : getPublishedPages()
   ]);
-  if (!project) notFound();
+  if (!project) {
+    const r = await getRedirectByFromPath(`/portfolio/${slug}`);
+    if (r) {
+      if (r.type === '301' || r.type === '308') permanentRedirect(r.toPath);
+      redirect(r.toPath);
+    }
+    notFound();
+  }
 
   const canonical = buildCanonical(settings.baseUrl, `portfolio/${project.seo.slug}`, project.seo.canonical);
   const jsonLd = {

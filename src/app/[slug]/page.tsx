@@ -1,5 +1,5 @@
 import { draftMode } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 
 import { MarketingPageRenderer } from '@/components/MarketingPageRenderer';
 import { PreviewModeBanner } from '@/components/PreviewModeBanner';
@@ -10,6 +10,7 @@ import { ProductHrisPageView } from '@/components/pages/ProductHrisPageView';
 import { ServiceDetailPageView } from '@/components/pages/ServiceDetailPageView';
 import { ServicePageView } from '@/components/pages/ServicePageView';
 import { isReservedPublicSlug, isServiceDetailPageId } from '@/config/site-profile';
+import { getRedirectByFromPath } from '@/features/cms/contentStore';
 import { buildMetadata } from '@/features/cms/seo';
 import {
   getPreviewPageBySlug,
@@ -53,7 +54,14 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
     isPreview ? getPreviewPageBySlug(slug) : getPublishedPageBySlug(slug),
     getSiteSettings()
   ]);
-  if (!page) notFound();
+  if (!page) {
+    const r = await getRedirectByFromPath(`/${slug}`);
+    if (r) {
+      if (r.type === '301' || r.type === '308') permanentRedirect(r.toPath);
+      redirect(r.toPath);
+    }
+    notFound();
+  }
 
   const previewBanner = isPreview ? <PreviewModeBanner path={`/${slug}`} /> : null;
 
@@ -77,7 +85,7 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
     return (
       <>
         {previewBanner}
-        <ProductHrisPageView page={page} />
+        <ProductHrisPageView />
       </>
     );
   }

@@ -6,7 +6,8 @@ import {
   resolvePortfolioProjectAssetUrls,
   resolveSettingsAssetUrls
 } from './assetUrls';
-import { loadCmsStoreModules, readRawCmsContent, writeRawCmsContent } from './storeAdapter';
+import { loadCmsStoreModules, isDatabaseMode, readRawCmsContent, writeRawCmsContent } from './storeAdapter';
+import { getRedirectByFromPath as dbGetRedirectByFromPath } from './dbStore';
 import type {
   BlogPost,
   Category,
@@ -31,6 +32,11 @@ export async function getSettings() {
   const { contentStore } = await loadCmsStoreModules();
   const settings = await contentStore.getSettings();
   return resolveSettingsAssetUrls(settings);
+}
+
+export async function getRedirectByFromPath(fromPath: string): Promise<{ toPath: string; type: string } | null> {
+  if (!isDatabaseMode()) return null;
+  return dbGetRedirectByFromPath(fromPath);
 }
 
 export async function updateSettings(settings: SiteSettings): Promise<SiteSettings> {
