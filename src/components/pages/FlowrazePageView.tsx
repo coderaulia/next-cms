@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { Reveal } from '@/components/animations/Reveal';
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
 import { useCursorMode } from '@/components/CustomCursor';
 
 import styles from './flowraze-page-view.module.css';
@@ -139,7 +141,7 @@ export function FlowrazePageView() {
 
   return (
     <main className={styles.root}>
-      <section className={styles.hero}>
+      <Reveal as="section" className={styles.hero}>
         <GridLines />
 
         <div className={styles.heroMeta}>
@@ -231,7 +233,7 @@ export function FlowrazePageView() {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
       <div className={styles.ticker} aria-hidden="true">
         <div className={styles.tickerTrack}>
@@ -244,7 +246,7 @@ export function FlowrazePageView() {
         </div>
       </div>
 
-      <section className={styles.stats}>
+      <Reveal as="section" className={styles.stats}>
         <div className={styles.statsHead}>
           <span className={styles.eyebrow}>[ WHY FLOWRAZE ]</span>
           <h2>
@@ -253,18 +255,18 @@ export function FlowrazePageView() {
             <i>Every</i> growth motion.
           </h2>
         </div>
-        <div className={styles.statsGrid}>
+        <StaggerGroup className={styles.statsGrid}>
           {stats.map((stat) => (
-            <div key={stat.label} className={styles.statCard}>
+            <StaggerItem key={stat.label} className={styles.statCard}>
               <span className={styles.statNumber}>{stat.number}</span>
               <h3>{stat.label}</h3>
               <p>{stat.detail}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
-      </section>
+        </StaggerGroup>
+      </Reveal>
 
-      <section id="features" className={styles.features}>
+      <Reveal as="section" id="features" className={styles.features}>
         <div className={styles.featuresHead}>
           <div>
             <span className={`${styles.eyebrow} ${styles.eyebrowLight}`}>
@@ -308,10 +310,11 @@ export function FlowrazePageView() {
             </article>
           ))}
         </div>
-      </section>
+      </Reveal>
 
       {deepDives.map((deepDive) => (
-        <section
+        <Reveal
+          as="section"
           key={deepDive.eyebrow}
           className={`${styles.deepDive} ${deepDive.tone === 'ink' ? styles.deepInk : styles.deepPaper} ${
             deepDive.layout === 'left' ? styles.deepLeft : ''
@@ -357,10 +360,10 @@ export function FlowrazePageView() {
               sizes="(max-width: 1100px) calc(100vw - 48px), 55vw"
             />
           </div>
-        </section>
+        </Reveal>
       ))}
 
-      <section className={styles.stack}>
+      <Reveal as="section" className={styles.stack}>
         <div className={styles.stackHead}>
           <span className={styles.eyebrow}>[ UNDER THE HOOD ]</span>
           <h2>
@@ -371,19 +374,19 @@ export function FlowrazePageView() {
             can build on for years.
           </p>
         </div>
-        <div className={styles.stackTable}>
+        <StaggerGroup className={styles.stackTable}>
           {stack.map((row, index) => (
-            <div key={row.layer} className={styles.stackRow}>
+            <StaggerItem key={row.layer} className={styles.stackRow}>
               <span className={styles.stackLayer}>
                 {String(index + 1).padStart(2, '0')} · {row.layer}
               </span>
               <span className={styles.stackTech}>{row.tech}</span>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
-      </section>
+        </StaggerGroup>
+      </Reveal>
 
-      <section className={styles.cta}>
+      <Reveal as="section" className={styles.cta}>
         <GridLines />
         <span className={`${styles.eyebrow} ${styles.ctaEyebrow}`}>[ READY ]</span>
         <h2>
@@ -420,7 +423,7 @@ export function FlowrazePageView() {
             </Link>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }

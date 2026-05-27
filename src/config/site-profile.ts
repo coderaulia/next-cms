@@ -18,6 +18,8 @@ export const siteProfile = {
     ],
     fallbackServices: [
       { href: '/hris', label: 'Vanaila HRIS' },
+      { href: '/flowraze', label: 'Flowraze CRM' },
+      { href: '/psikotest', label: 'Psikotest' },
       { href: '/website-development', label: 'Website Development' },
       { href: '/secure-online-shops', label: 'Secure Online Shops' },
       { href: '/mobile-business-app', label: 'Mobile Business App' },

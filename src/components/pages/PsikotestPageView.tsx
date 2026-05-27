@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Reveal } from '@/components/animations/Reveal';
+import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
 import { useCursorMode } from '@/components/CustomCursor';
 
 const assessmentTypes = [
@@ -192,7 +194,7 @@ export function PsikotestPageView() {
   return (
     <main className="pk-page">
       {/* HERO */}
-      <section className="pk-hero">
+      <Reveal as="section" className="pk-hero">
         <div className="pk-grid" aria-hidden>
           {Array.from({ length: 12 }).map((_, i) => (
             <div key={i} className="pk-grid-col" />
@@ -291,7 +293,7 @@ export function PsikotestPageView() {
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* TICKER */}
       <div className="pk-ticker">
@@ -303,7 +305,7 @@ export function PsikotestPageView() {
       </div>
 
       {/* STATS */}
-      <section className="pk-stats">
+      <Reveal as="section" className="pk-stats">
         <div className="pk-stats-head">
           <span className="pk-eyebrow">[ WHY PSIKOTEST ]</span>
           <h2>
@@ -312,27 +314,27 @@ export function PsikotestPageView() {
             <em>Four</em> roles. <em>Six</em> formats.
           </h2>
         </div>
-        <div className="pk-stats-grid">
-          <div className="pk-stat-card">
+        <StaggerGroup className="pk-stats-grid">
+          <StaggerItem className="pk-stat-card">
             <span className="pk-stat-n">6</span>
             <h3>Assessment formats</h3>
             <p>DISC, IQ, Big 5, Workload, Custom, Live Quiz</p>
-          </div>
-          <div className="pk-stat-card pk-stat-ink">
+          </StaggerItem>
+          <StaggerItem className="pk-stat-card pk-stat-ink">
             <span className="pk-stat-n">4</span>
             <h3>Distinct roles</h3>
             <p>HR · Participant · Reviewer · Platform admin</p>
-          </div>
-          <div className="pk-stat-card pk-stat-blue">
+          </StaggerItem>
+          <StaggerItem className="pk-stat-card pk-stat-blue">
             <span className="pk-stat-n">2</span>
             <h3>Languages out of box</h3>
             <p>English and Indonesian — per assessment link</p>
-          </div>
-        </div>
-      </section>
+          </StaggerItem>
+        </StaggerGroup>
+      </Reveal>
 
       {/* ASSESSMENT TYPES */}
-      <section className="pk-types">
+      <Reveal as="section" className="pk-types">
         <div className="pk-types-head">
           <div>
             <span className="pk-eyebrow pk-eyebrow-light">[ ASSESSMENT FORMATS ]</span>
@@ -366,11 +368,12 @@ export function PsikotestPageView() {
             </div>
           ))}
         </div>
-      </section>
+      </Reveal>
 
       {/* DEEP DIVES */}
       {deepDives.map((d, i) => (
-        <section
+        <Reveal
+          as="section"
           key={i}
           className={`pk-deep pk-deep-${d.tone} pk-deep-${d.side}`}
         >
@@ -410,11 +413,11 @@ export function PsikotestPageView() {
               style={{ display: 'block', width: '100%', height: 'auto' }}
             />
           </div>
-        </section>
+        </Reveal>
       ))}
 
       {/* WORKFLOW */}
-      <section className="pk-flow">
+      <Reveal as="section" className="pk-flow">
         <div className="pk-flow-head">
           <span className="pk-eyebrow">[ ASSESSMENT LIFECYCLE ]</span>
           <h2>
@@ -427,20 +430,20 @@ export function PsikotestPageView() {
             interpretation; HR owns visibility; participants never need an account.
           </p>
         </div>
-        <div className="pk-flow-steps">
+        <StaggerGroup className="pk-flow-steps">
           {flowSteps.map((f) => (
-            <div key={f.n} className="pk-flow-step">
+            <StaggerItem key={f.n} className="pk-flow-step">
               <span className="pk-flow-step-n">{f.n}</span>
               <h3>{f.t}</h3>
               <p>{f.d}</p>
               <span className="pk-flow-actor">{f.actor}</span>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
-      </section>
+        </StaggerGroup>
+      </Reveal>
 
       {/* ROLES */}
-      <section className="pk-roles">
+      <Reveal as="section" className="pk-roles">
         <div className="pk-roles-head">
           <span className="pk-eyebrow">[ BUILT FOR FOUR ROLES ]</span>
           <h2>
@@ -449,9 +452,9 @@ export function PsikotestPageView() {
             <em>Four</em> distinct experiences.
           </h2>
         </div>
-        <div className="pk-roles-grid">
+        <StaggerGroup className="pk-roles-grid">
           {roles.map((r) => (
-            <div key={r.t} className={`pk-role-card ${r.tone}`}>
+            <StaggerItem key={r.t} className={`pk-role-card ${r.tone}`}>
               <span className="pk-role-tag">{r.tag}</span>
               <h3>{r.t}</h3>
               <p>{r.d}</p>
@@ -460,13 +463,13 @@ export function PsikotestPageView() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
-      </section>
+        </StaggerGroup>
+      </Reveal>
 
       {/* CTA */}
-      <section className="pk-cta">
+      <Reveal as="section" className="pk-cta">
         <div className="pk-grid" aria-hidden>
           {Array.from({ length: 12 }).map((_, i) => (
             <div key={i} className="pk-grid-col" />
@@ -505,7 +508,7 @@ export function PsikotestPageView() {
             </Link>
           </div>
         </div>
-      </section>
+      </Reveal>
     </main>
   );
 }
