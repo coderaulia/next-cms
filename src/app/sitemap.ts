@@ -53,5 +53,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
     : [];
 
-  return [...pageEntries, ...blogEntries, ...portfolioEntries];
+  const staticEntries: MetadataRoute.Sitemap = [
+    { url: `${settings.baseUrl}/products`, changeFrequency: 'monthly', priority: 0.8 },
+  ];
+
+  return [...pageEntries, ...staticEntries, ...blogEntries, ...portfolioEntries];
 }

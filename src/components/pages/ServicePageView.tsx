@@ -281,6 +281,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             { n: '01', title: 'Vanaila HRIS', desc: 'End-to-end HR management — attendance, payroll, KPI, and employee database for Indonesian organizations.', href: '/hris' },
             { n: '02', title: 'Psikotest', desc: 'Online assessment infrastructure for HR teams and psychologists. DISC, IQ, Big 5, and custom instruments with bilingual delivery.', href: '/psikotest' },
             { n: '03', title: 'Flowraze', desc: 'CRM & sales platform — leads, deals, campaigns, and team performance. WhatsApp-first, built for Indonesian SMB teams.', href: '/flowraze' },
+            { n: '04', title: 'Vanaila Atelier', desc: 'Boutique design studio for brand identity, web experience, UI design, and creative direction — crafted with uncommon care.', href: '/atelier' },
           ].map((product) => (
             <div key={product.n} className="v-svc-deliverable">
               <div className="v-svc-deliverable-header">
@@ -301,6 +302,16 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             </div>
           ))}
         </div>
+
+        <Link
+          href="/products"
+          className="v-svc-discuss-link"
+          style={{ marginTop: 32, display: 'inline-flex' }}
+          onMouseEnter={() => setMode('link')}
+          onMouseLeave={() => setMode('default')}
+        >
+          See all products <span>→</span>
+        </Link>
       </section>
 
       {/* WHY US */}

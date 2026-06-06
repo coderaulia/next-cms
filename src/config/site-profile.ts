@@ -11,7 +11,7 @@ export const siteProfile = {
       { href: '/', label: 'Home' },
       { href: '/about', label: 'About Us' },
       { href: '/service', label: 'Services' },
-      { href: '/hris', label: 'HRIS' },
+      { href: '/products', label: 'Products' },
       { href: '/blog', label: 'Insights' },
       { href: '/partnership', label: 'Partnership' },
       { href: '/contact', label: 'Contact' }
@@ -20,6 +20,7 @@ export const siteProfile = {
       { href: '/hris', label: 'Vanaila HRIS' },
       { href: '/flowraze', label: 'Flowraze CRM' },
       { href: '/psikotest', label: 'Psikotest' },
+      { href: '/atelier', label: 'Vanaila Atelier' },
       { href: '/website-development', label: 'Website Development' },
       { href: '/secure-online-shops', label: 'Secure Online Shops' },
       { href: '/mobile-business-app', label: 'Mobile Business App' },
@@ -28,7 +29,7 @@ export const siteProfile = {
     ]
   },
   routing: {
-    reservedSlugs: ['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt', 'portfolio', 'privacy-policy', 'terms', 'data-collection'] as const,
+    reservedSlugs: ['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt', 'portfolio', 'privacy-policy', 'terms', 'data-collection', 'products', 'atelier'] as const,
     serviceDetailPageIds: [
       'service-website-development',
       'service-custom-business-tools',
