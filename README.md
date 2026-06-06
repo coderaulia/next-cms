@@ -6,11 +6,12 @@ The app ships with editable public pages, blog, portfolio/case studies, media ma
 
 ## Production Stack
 
-- Next.js 16 App Router and React 19
+- Next.js 16.2 App Router and React 19
 - TypeScript strict mode
 - Drizzle ORM with PostgreSQL-compatible databases
 - Local JSON persistence for development fallback
 - Managed media storage through Cloudflare R2 or Supabase Storage
+- Tailwind CSS 3.4
 - Vitest for the test baseline
 
 ## Production Requirements
@@ -140,8 +141,6 @@ npm run bootstrap:client -- --output ../acme-cms --site-name "Acme Studio"
 - [Client reuse playbook](./docs/client-reuse-playbook.md)
 - [Supabase + Hostinger setup](./docs/supabase-hostinger-setup.md)
 - [Security hardening notes](./docs/security-hardening.md)
-- [Source audit and gzip plan](./docs/src-audit-gzip-plan.md)
-- [Codebase audit](./codebase_audit.md)
 
 ## Operational Notes
 
