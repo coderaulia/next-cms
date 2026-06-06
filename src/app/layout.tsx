@@ -109,6 +109,7 @@ export default async function RootLayout({
       { href: '/hris', label: 'Vanaila HRIS' },
       { href: '/psikotest', label: 'Psikotest' },
       { href: '/flowraze', label: 'Flowraze' },
+      { href: '/atelier', label: 'Atelier Studio' },
     ],
   };
 
