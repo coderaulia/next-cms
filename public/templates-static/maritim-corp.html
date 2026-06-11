@@ -1,0 +1,964 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maritim Corp — In the Sea We Claim Prosperity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS — Maritime Navy (default) ─────────────────── */
+:root {
+  --bg:        #F4F1EC;
+  --bg2:       #E8E4DB;
+  --c1:        #B8A898;   /* warm muted — decorative / ghost / dividers */
+  --c2:        #7A8FA6;   /* blue-gray — secondary text, nav links */
+  --c3:        #1C3557;   /* deep navy — CTAs, hover, accents */
+  --ink:       #1A1A2E;   /* near-black with cool tint — headings, body */
+  --rule:      rgba(100,120,150,.14);
+  --stats-bg:  #1C3557;
+  --stats-txt: #7AACCC;
+  --stats-sub: rgba(122,172,204,.48);
+  --nav-bg:    rgba(244,241,236,.94);
+}
+
+/* ── BASE ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  transition: background .5s, color .5s;
+}
+
+/* ── NAV ──────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  padding: 28px 64px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: padding .5s ease, background .5s ease, box-shadow .5s ease;
+}
+#nav.solid {
+  padding: 16px 64px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 1px 0 var(--rule);
+}
+.nav-logo {
+  font-size: 15px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink); text-decoration: none;
+}
+.nav-logo em { font-style: normal; color: var(--c3); }
+.nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--c2); text-decoration: none;
+  transition: color .3s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--bg);
+  background: var(--c3); padding: 11px 28px; text-decoration: none;
+  transition: background .3s, color .3s;
+}
+.nav-cta:hover { background: var(--c2); }
+
+/* ── HERO ─────────────────────────────────── */
+.hero {
+  position: relative; height: 100vh; min-height: 680px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 64px 100px; overflow: hidden; background: var(--bg);
+  transition: background .5s;
+}
+.hero-ghost {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(88px, 16vw, 220px);
+  font-weight: 800; letter-spacing: -.04em; line-height: .92;
+  color: transparent; -webkit-text-stroke: 1px var(--c1);
+  white-space: nowrap; pointer-events: none; user-select: none;
+  text-align: center; will-change: transform;
+  transition: -webkit-text-stroke-color .5s;
+}
+.hero-wave {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 180px; pointer-events: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 860px; }
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .8s .25s ease, transform .8s .25s ease;
+}
+.eyebrow-dash { width: 36px; height: 1px; background: var(--c3); }
+.eyebrow-txt {
+  font-size: 11px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--c2);
+}
+.hero-h1 {
+  font-size: clamp(52px, 8.5vw, 112px);
+  font-weight: 800; letter-spacing: -.03em; line-height: 1.0;
+  margin-bottom: 32px; transition: font-weight .4s, letter-spacing .4s;
+}
+.tl { display: block; overflow: hidden; }
+.tl-in {
+  display: block; transform: translateY(108%);
+  transition: transform .9s cubic-bezier(.16,1,.3,1);
+}
+.tl:nth-child(2) .tl-in { transition-delay: .1s; }
+.tl:nth-child(3) .tl-in { transition-delay: .18s; }
+.hero-tag {
+  font-size: clamp(14px, 1.5vw, 19px); font-weight: 300; font-style: italic;
+  color: var(--c2); margin-bottom: 52px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .8s .85s ease, transform .8s .85s ease;
+}
+.hero-btns {
+  display: flex; align-items: center; gap: 40px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .8s 1.05s ease, transform .8s 1.05s ease;
+}
+.h-btn-primary {
+  font-size: 12px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--bg);
+  background: var(--c3); padding: 15px 40px; text-decoration: none;
+  transition: background .3s, color .3s;
+}
+.h-btn-primary:hover { background: var(--c2); }
+.h-btn-ghost {
+  font-size: 12px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--c3); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+  transition: color .3s, gap .3s;
+}
+.h-btn-ghost::after { content: '→'; transition: transform .3s; }
+.h-btn-ghost:hover { color: var(--ink); gap: 16px; }
+.hero-scroller {
+  position: absolute; right: 64px; bottom: 90px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; transition: opacity .8s 1.5s;
+}
+.scroller-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--c3), transparent);
+  animation: linePulse 2.4s ease-in-out infinite;
+}
+.scroller-lbl {
+  writing-mode: vertical-lr; font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--c2);
+}
+@keyframes linePulse {
+  0%,100% { transform: scaleY(1); opacity: 1; }
+  50%      { transform: scaleY(.5); opacity: .3; }
+}
+body.loaded .hero-eyebrow,
+body.loaded .hero-tag,
+body.loaded .hero-btns,
+body.loaded .hero-scroller { opacity: 1; transform: none; }
+body.loaded .tl-in { transform: translateY(0); }
+
+/* ── SECTIONS ─────────────────────────────── */
+section { padding: 120px 64px; }
+.sec-lbl {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  font-size: 10px; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--c3);
+}
+.sec-lbl::before { content:''; width: 22px; height: 1px; background: var(--c3); }
+.sec-h2 {
+  font-size: clamp(34px, 4.5vw, 58px); font-weight: 700;
+  letter-spacing: -.025em; line-height: 1.08;
+}
+.sec-sub {
+  font-size: 15px; font-weight: 300; color: var(--c2);
+  line-height: 1.8; margin-top: 18px; max-width: 460px;
+}
+.sec-header { margin-bottom: 72px; }
+
+/* ── SCROLL ANIM ENGINE ───────────────────── */
+.a {
+  opacity: 0;
+  transition: opacity .85s cubic-bezier(.16,1,.3,1),
+              transform .85s cubic-bezier(.16,1,.3,1);
+}
+.a.up    { transform: translateY(50px); }
+.a.left  { transform: translateX(-50px); }
+.a.right { transform: translateX(50px); }
+.a.scale { transform: scale(.93); }
+.a.in    { opacity: 1; transform: none; }
+[data-d="1"] { transition-delay: .08s !important; }
+[data-d="2"] { transition-delay: .16s !important; }
+[data-d="3"] { transition-delay: .24s !important; }
+[data-d="4"] { transition-delay: .32s !important; }
+[data-d="5"] { transition-delay: .40s !important; }
+[data-d="6"] { transition-delay: .48s !important; }
+
+/* ── SERVICES ─────────────────────────────── */
+#services { background: var(--bg); transition: background .5s; }
+.svc-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule); border-left: 1px solid var(--rule);
+}
+.svc {
+  padding: 52px; border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule); position: relative;
+  overflow: hidden; transition: background .4s, border-color .5s;
+}
+.svc::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--c3); opacity: 0;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .5s cubic-bezier(.16,1,.3,1), opacity .5s;
+}
+.svc:hover::after { transform: scaleX(1); opacity: .05; }
+.svc-no {
+  font-size: 10px; font-weight: 700; letter-spacing: .2em; color: var(--c1);
+  margin-bottom: 28px;
+}
+.svc-ico {
+  position: absolute; top: 52px; right: 52px;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c2); transition: all .35s;
+}
+.svc:hover .svc-ico { background: var(--c3); border-color: var(--c3); color: var(--bg); }
+.svc-title {
+  font-size: 21px; font-weight: 700; letter-spacing: -.01em;
+  line-height: 1.2; margin-bottom: 14px;
+}
+.svc-desc { font-size: 14px; font-weight: 300; color: var(--c2); line-height: 1.8; }
+
+/* ── STATS BAND ───────────────────────────── */
+.stats {
+  background: var(--stats-bg); padding: 80px 64px;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  transition: background .5s;
+}
+.stat {
+  text-align: center; padding: 0 20px;
+  border-right: 1px solid color-mix(in srgb, var(--stats-txt) 18%, transparent);
+}
+.stat:last-child { border-right: none; }
+.stat-val {
+  font-size: 58px; font-weight: 800; letter-spacing: -.04em;
+  color: var(--stats-txt); line-height: 1; margin-bottom: 10px;
+  transition: color .5s;
+}
+.stat-val sup { font-size: 34px; font-weight: 300; vertical-align: super; }
+.stat-lbl {
+  font-size: 11px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--stats-sub);
+  transition: color .5s;
+}
+
+/* ── TEAM ─────────────────────────────────── */
+#team { background: var(--bg2); transition: background .5s; }
+.team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; }
+.team-photo {
+  width: 100%; aspect-ratio: 3/4; background: var(--c1);
+  margin-bottom: 20px; position: relative; overflow: hidden;
+  transition: background .5s;
+}
+.team-photo::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    135deg, transparent, transparent 10px,
+    rgba(255,255,255,.08) 10px, rgba(255,255,255,.08) 20px
+  );
+}
+.photo-tag {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 10px 12px; font-family: monospace; font-size: 9px;
+  color: rgba(255,255,255,.42); background: rgba(0,0,0,.12); text-align: center;
+}
+.team-name  { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.team-role  { font-size: 13px; font-weight: 400; color: var(--c3); margin-bottom: 12px; }
+.team-bio   { font-size: 13px; font-weight: 300; color: var(--c2); line-height: 1.65; }
+
+/* ── PORTFOLIO ────────────────────────────── */
+#portfolio { background: var(--bg); padding-bottom: 0; padding-left: 0; padding-right: 0; transition: background .5s; }
+.port-header { padding: 0 64px; }
+.port-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 3px; margin-top: 60px;
+}
+.port-card {
+  position: relative; overflow: hidden; cursor: pointer;
+  min-height: 280px;
+}
+.port-card:nth-child(1) { grid-column: span 2; min-height: 400px; }
+/* Port card backgrounds are set per-scheme via JS */
+.port-card:nth-child(1) { background: #8DAFC8; }
+.port-card:nth-child(2) { background: #6B9AB8; }
+.port-card:nth-child(3) { background: #5A8CB4; }
+.port-card:nth-child(4) { background: #7A9EB8; }
+.port-card:nth-child(5) { background: #4A7FA8; }
+.port-card:nth-child(6) { background: #9AB8D0; }
+.port-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(255,255,255,.06) 8px, rgba(255,255,255,.06) 16px
+  );
+}
+.port-overlay {
+  position: absolute; inset: 0; padding: 32px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: linear-gradient(to top, rgba(26,26,46,0), transparent);
+  transition: background .45s;
+}
+.port-card:hover .port-overlay {
+  background: linear-gradient(to top, rgba(26,26,46,.88) 0%, rgba(26,26,46,.12) 100%);
+}
+.port-tag, .port-name {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .35s, transform .35s;
+}
+.port-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--stats-txt); margin-bottom: 8px;
+}
+.port-name {
+  font-size: 21px; font-weight: 700; color: #fff; line-height: 1.2;
+  transition-delay: .04s;
+}
+.port-card:hover .port-tag,
+.port-card:hover .port-name { opacity: 1; transform: none; }
+.port-img-lbl {
+  position: absolute; top: 12px; left: 12px;
+  font-family: monospace; font-size: 9px; color: rgba(255,255,255,.36);
+  background: rgba(0,0,0,.12); padding: 4px 8px;
+}
+
+/* ── CLIENTS ──────────────────────────────── */
+#clients { background: var(--bg2); padding: 100px 0; transition: background .5s; }
+.clients-top { padding: 0 64px; margin-bottom: 56px; }
+.marquee { overflow: hidden; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.marquee-track {
+  display: flex; width: max-content;
+  animation: mscroll 30s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.client-chip {
+  flex-shrink: 0; padding: 26px 68px;
+  border-right: 1px solid var(--rule);
+  font-size: 12px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--c2);
+  white-space: nowrap; transition: color .3s;
+}
+.client-chip:hover { color: var(--c3); }
+@keyframes mscroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── TESTIMONIALS ─────────────────────────── */
+#testimonials { background: var(--bg); transition: background .5s; }
+.testi-wrap { max-width: 880px; }
+.testi-mark {
+  font-size: 110px; font-weight: 800; color: var(--c3);
+  line-height: .7; margin-bottom: 36px; opacity: .25;
+}
+.testi-stage { position: relative; min-height: 260px; }
+.testi-item {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.testi-item.on { opacity: 1; transform: none; pointer-events: all; position: relative; }
+.testi-q {
+  font-size: clamp(17px, 2.2vw, 27px); font-weight: 300; font-style: italic;
+  line-height: 1.55; color: var(--ink); margin-bottom: 36px;
+  text-wrap: pretty;
+}
+.testi-author { display: flex; align-items: center; gap: 16px; }
+.testi-av {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--c1); flex-shrink: 0; position: relative; overflow: hidden;
+  transition: background .5s;
+}
+.testi-av::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    90deg, transparent, transparent 4px,
+    rgba(255,255,255,.18) 4px, rgba(255,255,255,.18) 8px
+  );
+}
+.testi-nm { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.testi-role { font-size: 12px; color: var(--c2); }
+.testi-foot { display: flex; align-items: center; gap: 14px; margin-top: 44px; }
+.tdot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c1); cursor: pointer;
+  transition: background .3s, transform .3s;
+}
+.tdot.on { background: var(--c3); transform: scale(1.5); }
+.tnav { margin-left: auto; display: flex; gap: 10px; }
+.tnav-btn {
+  width: 42px; height: 42px; border: 1px solid var(--rule);
+  background: none; cursor: pointer; font-size: 16px; color: var(--c2);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s;
+}
+.tnav-btn:hover { background: var(--c3); border-color: var(--c3); color: var(--bg); }
+
+/* ── CONTACT ──────────────────────────────── */
+#contact { background: var(--bg2); transition: background .5s; }
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1.3fr;
+  gap: 80px; align-items: start;
+}
+.ci-block { margin-bottom: 36px; }
+.ci-lbl {
+  font-size: 10px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--c3); margin-bottom: 8px;
+}
+.ci-val { font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--ink); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.fg { margin-bottom: 28px; }
+.flbl {
+  display: block; font-size: 10px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--c2); margin-bottom: 10px;
+}
+.fi, .fta {
+  width: 100%; padding: 12px 0;
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--rule);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px; font-weight: 300; color: var(--ink); outline: none;
+  transition: border-color .3s; -webkit-appearance: none;
+}
+.fi::placeholder, .fta::placeholder { color: var(--c1); }
+.fi:focus, .fta:focus { border-color: var(--c3); }
+.fta { resize: none; height: 110px; }
+.fsub {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--bg);
+  background: var(--c3); border: none; padding: 15px 44px;
+  cursor: pointer; transition: background .3s; margin-top: 8px;
+}
+.fsub:hover { background: var(--c2); }
+.fsub svg { transition: transform .3s; }
+.fsub:hover svg { transform: translateX(5px); }
+.f-ok {
+  display: none; margin-top: 20px; padding: 16px 20px;
+  background: color-mix(in srgb, var(--c3) 8%, transparent);
+  border-left: 3px solid var(--c3);
+  font-size: 14px; color: var(--c3);
+}
+
+/* ── FOOTER ───────────────────────────────── */
+footer { background: var(--ink); padding: 64px 64px 40px; transition: background .5s; }
+.foot-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px; padding-bottom: 48px;
+  border-bottom: 1px solid color-mix(in srgb, var(--c1) 12%, transparent);
+  margin-bottom: 32px;
+}
+.foot-logo {
+  font-size: 17px; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--bg); margin-bottom: 10px;
+}
+.foot-tag {
+  font-size: 13px; font-style: italic;
+  color: color-mix(in srgb, var(--c1) 45%, transparent);
+  margin-bottom: 32px;
+}
+.foot-soc { display: flex; gap: 10px; }
+.fsoc-a {
+  width: 34px; height: 34px;
+  border: 1px solid color-mix(in srgb, var(--c1) 18%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--c2);
+  text-decoration: none; transition: all .3s;
+}
+.fsoc-a:hover {
+  background: color-mix(in srgb, var(--c1) 10%, transparent);
+  color: var(--c1);
+}
+.foot-col-title {
+  font-size: 10px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--c1) 35%, transparent);
+  margin-bottom: 20px;
+}
+.foot-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.foot-links a {
+  font-size: 14px; color: var(--c2); text-decoration: none; transition: color .3s;
+}
+.foot-links a:hover { color: var(--c1); }
+.foot-btm { display: flex; justify-content: space-between; align-items: center; }
+.foot-copy {
+  font-size: 11px;
+  color: color-mix(in srgb, var(--c1) 28%, transparent);
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">MARITIM<em>.</em>CORP</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ──────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-ghost" id="hero-ghost">MARITIM<br>CORP</div>
+  <svg class="hero-wave" id="hero-svg" viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path id="wv1" fill="rgba(28,53,87,.14)"></path>
+    <path id="wv2" fill="rgba(122,172,204,.2)"></path>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dash"></span>
+      <span class="eyebrow-txt">Professional Consulting &amp; Advisory</span>
+    </div>
+    <h1 class="hero-h1" id="hero-h1">
+      <span class="tl"><span class="tl-in">Navigating</span></span>
+      <span class="tl"><span class="tl-in">Complexity,</span></span>
+      <span class="tl"><span class="tl-in">Delivering <em style="font-weight:300;font-style:italic">Clarity.</em></span></span>
+    </h1>
+    <p class="hero-tag">In the sea, we claim prosperity — Maritim Corp</p>
+    <div class="hero-btns">
+      <a href="#services" class="h-btn-primary">Our Services</a>
+      <a href="#portfolio" class="h-btn-ghost">View Our Work</a>
+    </div>
+  </div>
+  <div class="hero-scroller">
+    <div class="scroller-line"></div>
+    <span class="scroller-lbl">Scroll</span>
+  </div>
+</section>
+
+<!-- ── SERVICES ──────────────────── -->
+<section id="services">
+  <div class="sec-header">
+    <div class="sec-lbl a up">What We Do</div>
+    <h2 class="sec-h2 a up" data-d="1">Expertise Across<br>Every Discipline</h2>
+    <p class="sec-sub a up" data-d="2">We bring deep sector knowledge and proven methodologies to every engagement, ensuring your organization moves forward with confidence.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc a left">
+      <div class="svc-no">01</div>
+      <div class="svc-ico"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11L11 2M11 2H5.5M11 2V7.5"/></svg></div>
+      <h3 class="svc-title">Strategic Advisory</h3>
+      <p class="svc-desc">Navigate complex market landscapes with precision and confidence. We partner with leadership to define clear direction and actionable roadmaps.</p>
+    </div>
+    <div class="svc a right" data-d="1">
+      <div class="svc-no">02</div>
+      <div class="svc-ico"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><path d="M6.5 9.5l3-3-3-3"/></svg></div>
+      <h3 class="svc-title">Market Expansion</h3>
+      <p class="svc-desc">Unlock new territories and revenue streams with data-driven strategies tailored to your unique competitive position and long-term vision.</p>
+    </div>
+    <div class="svc a left" data-d="1">
+      <div class="svc-no">03</div>
+      <div class="svc-ico"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="1.5" width="4" height="4" rx="1"/><rect x="7.5" y="1.5" width="4" height="4" rx="1"/><rect x="1.5" y="7.5" width="4" height="4" rx="1"/><rect x="7.5" y="7.5" width="4" height="4" rx="1"/></svg></div>
+      <h3 class="svc-title">Operational Excellence</h3>
+      <p class="svc-desc">Streamline processes to achieve peak efficiency. We identify bottlenecks and implement lean solutions that scale with your ambitions.</p>
+    </div>
+    <div class="svc a right" data-d="2">
+      <div class="svc-no">04</div>
+      <div class="svc-ico"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 1.5v10M1.5 6.5h10"/><circle cx="6.5" cy="6.5" r="5"/></svg></div>
+      <h3 class="svc-title">Risk Management</h3>
+      <p class="svc-desc">Identify, assess, and mitigate risks before they impact your bottom line. Our frameworks protect value and preserve stakeholder confidence.</p>
+    </div>
+    <div class="svc a left" data-d="2">
+      <div class="svc-no">05</div>
+      <div class="svc-ico"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1.5,9.5 4.5,5.5 7.5,7.5 11.5,2.5"/></svg></div>
+      <h3 class="svc-title">Financial Consulting</h3>
+      <p class="svc-desc">Structure capital, optimize costs, and drive sustainable profitability. We translate financial complexity into clear executive decisions.</p>
+    </div>
+    <div class="svc a right" data-d="3">
+      <div class="svc-no">06</div>
+      <div class="svc-ico"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="4" r="2.2"/><path d="M2.5 11.5c0-2.2 1.8-4 4-4s4 1.8 4 4"/></svg></div>
+      <h3 class="svc-title">Organizational Transformation</h3>
+      <p class="svc-desc">Build the structures and culture that power long-term success. We guide organizations through change with clarity and precision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ───────────────────────── -->
+<div class="stats" id="stats-band">
+  <div class="stat a scale">
+    <div class="stat-val" data-target="25" data-suffix="+">0<sup>+</sup></div>
+    <div class="stat-lbl">Years of Excellence</div>
+  </div>
+  <div class="stat a scale" data-d="1">
+    <div class="stat-val" data-target="340" data-suffix="+">0<sup>+</sup></div>
+    <div class="stat-lbl">Projects Delivered</div>
+  </div>
+  <div class="stat a scale" data-d="2">
+    <div class="stat-val" data-target="18" data-suffix="+">0<sup>+</sup></div>
+    <div class="stat-lbl">Countries Served</div>
+  </div>
+  <div class="stat a scale" data-d="3">
+    <div class="stat-val" data-target="98" data-suffix="%">0<sup>%</sup></div>
+    <div class="stat-lbl">Client Retention</div>
+  </div>
+</div>
+
+<!-- ── TEAM ───────────────────────── -->
+<section id="team">
+  <div class="sec-header">
+    <div class="sec-lbl a up">Leadership</div>
+    <h2 class="sec-h2 a up" data-d="1">The People<br>Behind the Work</h2>
+    <p class="sec-sub a up" data-d="2">Our leadership team brings decades of cross-sector experience and a shared commitment to client outcomes.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card a up">
+      <div class="team-photo"><div class="photo-tag">portrait — James Harrington</div></div>
+      <div class="team-name">James Harrington</div>
+      <div class="team-role">Chief Executive Officer</div>
+      <div class="team-bio">20+ years advising Fortune 500 companies across Europe and the Asia-Pacific region on strategy and growth.</div>
+    </div>
+    <div class="team-card a up" data-d="1">
+      <div class="team-photo"><div class="photo-tag">portrait — Sophia Chen</div></div>
+      <div class="team-name">Sophia Chen</div>
+      <div class="team-role">Chief Operating Officer</div>
+      <div class="team-bio">Operational transformation expert with a track record in scaling organizations across 12 international markets.</div>
+    </div>
+    <div class="team-card a up" data-d="2">
+      <div class="team-photo"><div class="photo-tag">portrait — Radu Popescu</div></div>
+      <div class="team-name">Radu Popescu</div>
+      <div class="team-role">Chief Financial Officer</div>
+      <div class="team-bio">Former investment banker with deep expertise in capital structures, M&amp;A, and financial turnaround strategies.</div>
+    </div>
+    <div class="team-card a up" data-d="3">
+      <div class="team-photo"><div class="photo-tag">portrait — Maria Stavros</div></div>
+      <div class="team-name">Maria Stavros</div>
+      <div class="team-role">Managing Director</div>
+      <div class="team-bio">Strategic growth specialist, leading client engagements across financial services, infrastructure, and energy sectors.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PORTFOLIO ──────────────────── -->
+<section id="portfolio" style="padding-bottom:0;padding-left:0;padding-right:0;">
+  <div class="port-header sec-header">
+    <div class="sec-lbl a up">Our Work</div>
+    <h2 class="sec-h2 a up" data-d="1">Selected Projects</h2>
+    <p class="sec-sub a up" data-d="2">A selection of engagements that reflect the breadth and depth of our expertise across geographies and sectors.</p>
+  </div>
+  <div class="port-grid">
+    <div class="port-card a scale">
+      <div class="port-img-lbl">project image — Pacific Rim Initiative</div>
+      <div class="port-overlay">
+        <div class="port-tag">Advisory</div>
+        <div class="port-name">Pacific Rim Infrastructure Initiative</div>
+      </div>
+    </div>
+    <div class="port-card a scale" data-d="1">
+      <div class="port-img-lbl">project image — European Entry</div>
+      <div class="port-overlay">
+        <div class="port-tag">Market Expansion</div>
+        <div class="port-name">European Market Entry Strategy</div>
+      </div>
+    </div>
+    <div class="port-card a scale" data-d="2">
+      <div class="port-img-lbl">project image — SEA Operations</div>
+      <div class="port-overlay">
+        <div class="port-tag">Operations</div>
+        <div class="port-name">Southeast Asia Operations Overhaul</div>
+      </div>
+    </div>
+    <div class="port-card a scale" data-d="2">
+      <div class="port-img-lbl">project image — Meridian Holdings</div>
+      <div class="port-overlay">
+        <div class="port-tag">Finance</div>
+        <div class="port-name">Capital Restructuring, Meridian Holdings</div>
+      </div>
+    </div>
+    <div class="port-card a scale" data-d="3">
+      <div class="port-img-lbl">project image — Nordic ESG</div>
+      <div class="port-overlay">
+        <div class="port-tag">Compliance</div>
+        <div class="port-name">Nordic ESG Compliance Framework</div>
+      </div>
+    </div>
+    <div class="port-card a scale" data-d="4">
+      <div class="port-img-lbl">project image — Americas Distribution</div>
+      <div class="port-overlay">
+        <div class="port-tag">Operations</div>
+        <div class="port-name">Americas Distribution Network</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLIENTS ────────────────────── -->
+<section id="clients">
+  <div class="clients-top sec-header">
+    <div class="sec-lbl a up">Partners &amp; Clients</div>
+    <h2 class="sec-h2 a up" data-d="1">Trusted by Leaders<br>Across the Globe</h2>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track" id="mtrack"></div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ──────────────── -->
+<section id="testimonials">
+  <div class="sec-header">
+    <div class="sec-lbl a up">Testimonials</div>
+    <h2 class="sec-h2 a up" data-d="1">What Our Clients Say</h2>
+  </div>
+  <div class="testi-wrap a up" data-d="2">
+    <div class="testi-mark">&ldquo;</div>
+    <div class="testi-stage">
+      <div class="testi-item on">
+        <p class="testi-q">"Maritim Corp transformed our approach to market expansion. Their strategic clarity and execution precision helped us enter three new markets within 18 months — far ahead of our initial projections."</p>
+        <div class="testi-author">
+          <div class="testi-av"></div>
+          <div>
+            <div class="testi-nm">Marcus Liu</div>
+            <div class="testi-role">Chief Executive Officer, Pacific Holdings</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-item">
+        <p class="testi-q">"Their strategic insight is unmatched in the industry. From risk assessment to financial restructuring, Maritim Corp brought a level of rigor and sophistication that set them apart from every firm we've worked with."</p>
+        <div class="testi-author">
+          <div class="testi-av"></div>
+          <div>
+            <div class="testi-nm">Anna Bergström</div>
+            <div class="testi-role">Chief Financial Officer, Nordic Ventures</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-item">
+        <p class="testi-q">"Working with Maritim Corp was a turning point for our organization. Their team didn't just advise — they became true partners, committed to the outcome as if it were their own business."</p>
+        <div class="testi-author">
+          <div class="testi-av"></div>
+          <div>
+            <div class="testi-nm">David Khatri</div>
+            <div class="testi-role">Managing Director, Summit Capital</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-foot">
+      <div class="tdot on" data-i="0"></div>
+      <div class="tdot" data-i="1"></div>
+      <div class="tdot" data-i="2"></div>
+      <div class="tnav">
+        <button class="tnav-btn" id="tprev" aria-label="Previous">←</button>
+        <button class="tnav-btn" id="tnext" aria-label="Next">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────── -->
+<section id="contact">
+  <div class="sec-header">
+    <div class="sec-lbl a up">Get in Touch</div>
+    <h2 class="sec-h2 a up" data-d="1">Ready to Chart<br>Your Course?</h2>
+  </div>
+  <div class="contact-grid">
+    <div class="a left">
+      <div class="ci-block">
+        <div class="ci-lbl">Headquarters</div>
+        <div class="ci-val">12 Meridian Plaza, Tower 3<br>Amsterdam, Netherlands</div>
+      </div>
+      <div class="ci-block">
+        <div class="ci-lbl">Email</div>
+        <div class="ci-val">hello@maritimcorp.com</div>
+      </div>
+      <div class="ci-block">
+        <div class="ci-lbl">Phone</div>
+        <div class="ci-val">+31 20 555 0182</div>
+      </div>
+      <div class="ci-block">
+        <div class="ci-lbl">Office Hours</div>
+        <div class="ci-val">Monday – Friday, 09:00 – 18:00 CET</div>
+      </div>
+    </div>
+    <div class="a right" data-d="1">
+      <form id="cform">
+        <div class="form-row">
+          <div class="fg">
+            <label class="flbl" for="fname">Full Name</label>
+            <input class="fi" type="text" id="fname" placeholder="John Smith" required>
+          </div>
+          <div class="fg">
+            <label class="flbl" for="fco">Company</label>
+            <input class="fi" type="text" id="fco" placeholder="Acme Corp">
+          </div>
+        </div>
+        <div class="fg">
+          <label class="flbl" for="femail">Email Address</label>
+          <input class="fi" type="email" id="femail" placeholder="you@company.com" required>
+        </div>
+        <div class="fg">
+          <label class="flbl" for="fmsg">Message</label>
+          <textarea class="fta" id="fmsg" placeholder="Tell us about your project or inquiry…" required></textarea>
+        </div>
+        <button type="submit" class="fsub">
+          Send Message
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7.5h11M9 3l4.5 4.5L9 12"/></svg>
+        </button>
+        <div class="f-ok" id="f-ok">Thank you — we'll be in touch within one business day.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────── -->
+<footer>
+  <div class="foot-top">
+    <div>
+      <div class="foot-logo">Maritim Corp</div>
+      <div class="foot-tag">In the sea we claim prosperity</div>
+      <div class="foot-soc">
+        <a href="#" class="fsoc-a">Li</a>
+        <a href="#" class="fsoc-a">Tw</a>
+        <a href="#" class="fsoc-a">In</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-title">Company</div>
+      <ul class="foot-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#team">Leadership</a></li>
+        <li><a href="#portfolio">Case Studies</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">Expertise</div>
+      <ul class="foot-links">
+        <li><a href="#services">Strategic Advisory</a></li>
+        <li><a href="#services">Market Expansion</a></li>
+        <li><a href="#services">Risk Management</a></li>
+        <li><a href="#services">Financial Consulting</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-btm">
+    <div class="foot-copy">© 2026 Maritim Corp. All rights reserved.</div>
+    <div class="foot-copy">Privacy Policy &nbsp;·&nbsp; Terms of Service</div>
+  </div>
+</footer>
+
+
+
+<!-- ── PAGE SCRIPTS ──────────────── -->
+<script>
+/* HERO LOAD */
+window.addEventListener('load', () => setTimeout(() => document.body.classList.add('loaded'), 80));
+
+/* NAV + PARALLAX */
+const nav = document.getElementById('nav');
+const ghost = document.getElementById('hero-ghost');
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  nav.classList.toggle('solid', sy > 50);
+  ghost.style.transform = `translate(-50%, calc(-50% + ${sy * 0.28}px))`;
+}, { passive: true });
+
+/* WAVE */
+(function () {
+  const p1 = document.getElementById('wv1');
+  const p2 = document.getElementById('wv2');
+  const W = 1440, H = 180, STEPS = 14;
+  let t = 0;
+  function wave(amp, speed, phase, yBase) {
+    const pts = [];
+    for (let i = 0; i <= STEPS; i++) {
+      pts.push({ x: (W / STEPS) * i, y: yBase + amp * Math.sin(t * speed + phase + (i / STEPS) * Math.PI * 2) });
+    }
+    let d = `M0,${H} L0,${pts[0].y}`;
+    for (let i = 0; i < STEPS; i++) {
+      const a = pts[i], b = pts[i + 1];
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      d += ` Q${a.x},${a.y} ${mx},${my}`;
+    }
+    return d + ` L${W},${H} Z`;
+  }
+  function tick() {
+    t += 0.007;
+    p1.setAttribute('d', wave(22, 1.0, 0, 115));
+    p2.setAttribute('d', wave(16, 1.4, Math.PI * .5, 128));
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* INTERSECTION OBSERVER */
+const aEls = document.querySelectorAll('.a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+aEls.forEach(el => io.observe(el));
+
+/* COUNTER */
+let counted = false;
+const statsIO = new IntersectionObserver(entries => {
+  if (!entries[0].isIntersecting || counted) return;
+  counted = true;
+  document.querySelectorAll('.stat-val[data-target]').forEach(el => {
+    const target = +el.dataset.target, suf = el.dataset.suffix, dur = 1800, t0 = performance.now();
+    function tick(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      el.innerHTML = Math.round((1 - Math.pow(1 - p, 3)) * target) + `<sup>${suf}</sup>`;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}, { threshold: 0.5 });
+statsIO.observe(document.getElementById('stats-band'));
+
+/* MARQUEE */
+const clients = ['Global Ventures','Pacific Holdings','Meridian Group','Atlantic Advisors','Summit Capital','Delta Industries','Nexus Corp','Pinnacle Finance','Horizon Partners','Crestline Group'];
+const track = document.getElementById('mtrack');
+[...clients, ...clients].forEach(c => {
+  const d = document.createElement('div');
+  d.className = 'client-chip'; d.textContent = c;
+  track.appendChild(d);
+});
+
+/* TESTIMONIALS */
+const tItems = document.querySelectorAll('.testi-item');
+const tDots  = document.querySelectorAll('.tdot');
+let tCur = 0, tTimer;
+function goTo(idx) {
+  tItems[tCur].classList.remove('on'); tDots[tCur].classList.remove('on');
+  tCur = ((idx % tItems.length) + tItems.length) % tItems.length;
+  tItems[tCur].classList.add('on'); tDots[tCur].classList.add('on');
+}
+function resetTimer() { clearInterval(tTimer); tTimer = setInterval(() => goTo(tCur + 1), 6000); }
+tDots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.i); resetTimer(); }));
+document.getElementById('tprev').addEventListener('click', () => { goTo(tCur - 1); resetTimer(); });
+document.getElementById('tnext').addEventListener('click', () => { goTo(tCur + 1); resetTimer(); });
+resetTimer();
+
+/* CONTACT FORM */
+document.getElementById('cform').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const ok = document.getElementById('f-ok');
+  ok.style.display = 'block'; this.reset();
+  setTimeout(() => ok.style.display = 'none', 5000);
+});
+</script>
+
+
+
+
+
+
+</body>
+</html>
