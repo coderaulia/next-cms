@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { TemplatesPageView } from '@/components/pages/TemplatesPageView';
-import { getAllTemplates } from '@/components/templates/registry';
+import { getAllTemplateMetadata } from '@/components/templates/registry';
 
 export const metadata: Metadata = {
   title: 'Templates — Vanaila Atelier',
@@ -15,6 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default function TemplatesPage() {
-  const templates = getAllTemplates();
+  const templates = getAllTemplateMetadata();
   return <TemplatesPageView templates={templates} />;
 }

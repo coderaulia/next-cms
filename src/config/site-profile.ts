@@ -21,6 +21,7 @@ export const siteProfile = {
       { href: '/flowraze', label: 'Flowraze CRM' },
       { href: '/psikotest', label: 'Psikotest' },
       { href: '/atelier', label: 'Vanaila Atelier' },
+      { href: '/templates', label: 'Templates' },
       { href: '/website-development', label: 'Website Development' },
       { href: '/secure-online-shops', label: 'Secure Online Shops' },
       { href: '/mobile-business-app', label: 'Mobile Business App' },

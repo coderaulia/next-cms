@@ -1,13 +1,16 @@
 import type { ComponentType } from 'react';
 import { HtmlTemplateViewer } from './HtmlTemplateViewer';
 
-export type TemplateEntry = {
+export type TemplateMetadata = {
   slug: string;
   name: string;
   category: string;
   description: string;
   tags: string[];
   previewImage?: string;
+};
+
+export type TemplateEntry = TemplateMetadata & {
   component?: ComponentType;
 };
 
@@ -111,4 +114,15 @@ export function getTemplate(slug: string): TemplateEntry | null {
 
 export function getAllTemplates(): TemplateEntry[] {
   return templateRegistry;
+}
+
+export function getTemplateMetadata(slug: string): TemplateMetadata | null {
+  const entry = templateRegistry.find((t) => t.slug === slug);
+  if (!entry) return null;
+  const { component: _, ...meta } = entry;
+  return meta;
+}
+
+export function getAllTemplateMetadata(): TemplateMetadata[] {
+  return templateRegistry.map(({ component: _, ...meta }) => meta);
 }

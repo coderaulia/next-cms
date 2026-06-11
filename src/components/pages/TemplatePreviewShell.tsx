@@ -1,18 +1,17 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import Link from 'next/link';
-import type { TemplateEntry } from '@/components/templates/registry';
+import type { TemplateMetadata } from '@/components/templates/registry';
 
 type TemplatePreviewShellProps = {
-  template: TemplateEntry;
+  template: TemplateMetadata;
+  children: ReactNode;
 };
 
-export function TemplatePreviewShell({ template }: TemplatePreviewShellProps) {
-  const Component = template.component;
-
+export function TemplatePreviewShell({ template, children }: TemplatePreviewShellProps) {
   return (
     <div className="v-tmpl-preview-root">
-      {/* Thin preview bar */}
       <header className="v-tmpl-preview-bar">
         <Link href="/templates" className="v-tmpl-preview-back">
           <span aria-hidden>←</span>
@@ -29,11 +28,8 @@ export function TemplatePreviewShell({ template }: TemplatePreviewShellProps) {
         </div>
       </header>
 
-      {/* Template rendered full-width */}
       <div className="v-tmpl-preview-body">
-        {Component ? (
-          <Component />
-        ) : (
+        {children ?? (
           <div className="v-tmpl-preview-coming-soon">
             <span className="v-tmpl-empty-glyph">◈</span>
             <h2>{template.name}</h2>
