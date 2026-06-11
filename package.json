@@ -27,7 +27,9 @@
     "db:reseed": "npm run db:reset -- --force && npm run db:migrate && npm run db:seed:file",
     "bootstrap:client": "tsx scripts/bootstrap-client.ts",
     "media:migrate:supabase": "tsx scripts/migrate-media-to-supabase.ts",
-    "media:migrate:supabase:dry": "tsx scripts/migrate-media-to-supabase.ts --dry-run"
+    "media:migrate:supabase:dry": "tsx scripts/migrate-media-to-supabase.ts --dry-run",
+    "db:enable-rls": "tsx scripts/enable-rls.ts",
+    "db:enable-rls:dry": "tsx scripts/enable-rls.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1043.0",

@@ -1,0 +1,604 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D'costa — Inner and Outer Beauty in You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────── */
+:root {
+  --bg:#FDFAF6; --bg2:#F5EDE3; --dark:#2A1C38; --dark2:#3C2E4A;
+  --coral:#E8725C; --lavender:#A78DC0; --sage:#6BAF8D; --gold:#D9A84E;
+  --blush:#FBE8E2; --lilac:#EDE4F3; --mint:#DFF2E8; --cream:#FFF4DC;
+  --ink:#2A1C38; --ink2:#6D5F7E; --ink3:#A99AB8;
+  --card:#FFFFFF; --rule:rgba(42,28,56,.07);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Outfit',system-ui,sans-serif;
+  --r:16px; --r-sm:10px; --r-lg:24px;
+  --sh:0 2px 20px rgba(42,28,56,.06); --sh-md:0 12px 44px rgba(42,28,56,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);overflow-x:hidden;}
+img{display:block;max-width:100%;}
+
+/* ── ANIMATIONS ─────────────────────────────── */
+.rv{opacity:0;transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.rv.up{transform:translateY(40px);} .rv.left{transform:translateX(-40px);} .rv.right{transform:translateX(40px);} .rv.scale{transform:scale(.95);}
+.rv.in{opacity:1;transform:none;}
+[data-d="1"]{transition-delay:.1s!important;} [data-d="2"]{transition-delay:.2s!important;}
+[data-d="3"]{transition-delay:.3s!important;} [data-d="4"]{transition-delay:.4s!important;}
+
+/* ── NAV ────────────────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:26px 64px;transition:all .45s ease;}
+#nav.solid{background:rgba(253,250,246,.94);backdrop-filter:blur(18px);box-shadow:0 1px 0 var(--rule);padding:16px 64px;}
+.nav-logo{font-family:var(--serif);font-size:24px;font-weight:600;color:#fff;text-decoration:none;letter-spacing:.01em;}
+.nav-logo em{font-style:italic;color:var(--coral);}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
+.nav-links a{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;transition:color .25s;}
+.nav-links a:hover{color:rgba(255,255,255,.9);}
+.nav-cta{background:var(--coral);color:#fff;padding:11px 28px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background .25s,transform .25s;}
+.nav-cta:hover{background:#d4613f;transform:translateY(-1px);}
+#nav.solid .nav-logo{color:var(--ink);}
+#nav.solid .nav-links a{color:var(--ink2);} #nav.solid .nav-links a:hover{color:var(--ink);}
+#nav.solid .nav-cta{background:var(--dark);color:#fff;} #nav.solid .nav-cta:hover{background:var(--coral);color:#fff;}
+
+/* ── HERO ───────────────────────────────────── */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:120px 64px 80px;overflow:hidden;
+  background:repeating-linear-gradient(-45deg,#E8E2D8 0,#E8E2D8 1px,#F0EBE3 1px,#F0EBE3 14px);}
+.hero::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,114,92,.72) 0%,rgba(167,141,192,.6) 32%,rgba(107,175,141,.5) 62%,rgba(42,28,56,.92) 100%);pointer-events:none;}
+.hero-placeholder{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;text-align:center;color:rgba(42,28,56,.18);font-size:13px;letter-spacing:.12em;text-transform:uppercase;pointer-events:none;}
+.hero-placeholder svg{margin:0 auto 12px;opacity:.22;}
+.hero-content{position:relative;z-index:2;max-width:720px;}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.hero-eyebrow-line{width:32px;height:1.5px;background:var(--coral);}
+.hero-eyebrow-txt{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.hero h1{font-family:var(--serif);font-size:clamp(42px,5vw,72px);font-weight:400;line-height:1.08;color:#fff;margin-bottom:20px;letter-spacing:-.01em;}
+.hero h1 em{font-style:italic;color:var(--coral);}
+.hero-sub{font-size:17px;line-height:1.8;color:rgba(255,255,255,.5);max-width:480px;margin-bottom:40px;text-wrap:pretty;}
+.hero-btns{display:flex;gap:14px;margin-bottom:56px;}
+.btn-primary{background:#fff;color:var(--dark);padding:15px 36px;border-radius:999px;font-family:var(--sans);font-size:14px;font-weight:600;text-decoration:none;transition:all .25s;display:inline-flex;align-items:center;gap:10px;}
+.btn-primary:hover{background:var(--coral);color:#fff;transform:translateY(-2px);}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.6);padding:15px 36px;border-radius:999px;font-family:var(--sans);font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid rgba(255,255,255,.18);transition:all .25s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:#fff;}
+.hero-stats{display:flex;gap:48px;}
+.hstat-val{font-family:var(--serif);font-size:40px;font-weight:500;color:#fff;line-height:1;margin-bottom:4px;}
+.hstat-lbl{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase;}
+.hero-float{position:absolute;z-index:3;right:80px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:24px 28px;animation:hFloat 5s ease-in-out infinite;}
+@keyframes hFloat{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 10px))}}
+.hf-badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;color:#fff;}
+.hf-val{font-family:var(--serif);font-size:36px;color:#fff;line-height:1;margin-bottom:4px;}
+.hf-sub{font-size:12px;color:rgba(255,255,255,.45);}
+
+/* ── MARQUEE ────────────────────────────────── */
+.marquee{overflow:hidden;padding:20px 0;background:var(--card);border-bottom:1px solid var(--rule);}
+.marquee-track{display:flex;gap:48px;width:max-content;animation:marquee 25s linear infinite;}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee-item{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;display:flex;align-items:center;gap:48px;}
+.marquee-dot{width:5px;height:5px;border-radius:50%;background:var(--coral);flex-shrink:0;}
+
+/* ── SHARED SECTION ─────────────────────────── */
+.sec{padding:100px 64px;}
+.sec-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-tag-line{width:28px;height:1.5px;background:var(--coral);}
+.sec-tag-txt{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);}
+.sec-h2{font-family:var(--serif);font-size:clamp(32px,3.4vw,52px);font-weight:400;line-height:1.12;letter-spacing:-.01em;margin-bottom:16px;}
+.sec-h2 em{font-style:italic;}
+.sec-sub{font-size:16px;color:var(--ink2);line-height:1.78;max-width:500px;text-wrap:pretty;}
+.sec-header{margin-bottom:60px;}
+.sec--dark{background:var(--dark);} .sec--dark .sec-h2{color:#fff;} .sec--dark .sec-sub{color:rgba(255,255,255,.45);}
+.sec--dark .sec-tag-line{background:var(--coral);} .sec--dark .sec-tag-txt{color:var(--coral);}
+.sec--alt{background:var(--bg2);}
+
+/* ── ABOUT ──────────────────────────────────── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-img{position:relative;border-radius:var(--r-lg);overflow:visible;}
+.about-img-main{width:100%;aspect-ratio:4/5;background:var(--bg2);border:1px solid var(--rule);border-radius:var(--r-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--ink3);font-size:12px;letter-spacing:.1em;text-transform:uppercase;}
+.about-accent{position:absolute;bottom:-20px;right:-20px;padding:28px 32px;background:var(--coral);border-radius:var(--r);text-align:center;box-shadow:var(--sh-md);}
+.about-accent-val{font-family:var(--serif);font-size:44px;font-weight:500;color:#fff;line-height:1;margin-bottom:2px;}
+.about-accent-lbl{font-size:11px;color:rgba(255,255,255,.7);letter-spacing:.06em;text-transform:uppercase;}
+.about-values{display:flex;flex-direction:column;gap:18px;margin-top:36px;}
+.aval{display:flex;gap:16px;align-items:flex-start;padding:20px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--card);transition:box-shadow .3s,transform .3s;}
+.aval:hover{box-shadow:var(--sh);transform:translateY(-2px);}
+.aval-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.aval-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+.aval-desc{font-size:14px;color:var(--ink2);line-height:1.7;text-wrap:pretty;}
+
+/* ── PRODUCTS ───────────────────────────────── */
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.prod-card{border-radius:var(--r-lg);padding:36px 28px;cursor:default;transition:transform .35s,box-shadow .35s;position:relative;overflow:hidden;}
+.prod-card:hover{transform:translateY(-6px);box-shadow:var(--sh-md);}
+.prod-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);}
+.prod-count{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px;}
+.prod-name{font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:10px;color:var(--ink);}
+.prod-desc{font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:18px;text-wrap:pretty;}
+.prod-link{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:gap .25s;}
+.prod-link:hover{gap:10px;}
+
+/* ── STATS ──────────────────────────────────── */
+.stats-strip{padding:72px 64px;background:linear-gradient(135deg,var(--coral) 0%,var(--lavender) 45%,var(--sage) 100%);position:relative;overflow:hidden;}
+.stats-strip::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1' fill='rgba(255,255,255,.08)'/%3E%3C/svg%3E");pointer-events:none;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;position:relative;z-index:1;}
+.stat-box{text-align:center;}
+.stat-val{font-family:var(--serif);font-size:56px;font-weight:400;color:#fff;line-height:1;margin-bottom:6px;}
+.stat-lbl{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── SUSTAINABILITY ─────────────────────────── */
+.sust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.sust-card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);padding:40px 32px;transition:box-shadow .3s,transform .3s;}
+.sust-card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);}
+.sust-ico{width:56px;height:56px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
+.sust-title{font-family:var(--serif);font-size:22px;font-weight:500;margin-bottom:10px;}
+.sust-desc{font-size:14px;color:var(--ink2);line-height:1.75;text-wrap:pretty;}
+
+/* ── DISTRIBUTION ───────────────────────────── */
+.dist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.dist-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:40px 32px;transition:border-color .3s;}
+.dist-card:hover{border-color:rgba(255,255,255,.16);}
+.dist-dot{width:12px;height:12px;border-radius:50%;margin-bottom:20px;}
+.dist-region{font-family:var(--serif);font-size:28px;font-weight:500;color:#fff;margin-bottom:6px;}
+.dist-val{font-family:var(--serif);font-size:40px;font-weight:400;color:var(--coral);line-height:1;margin-bottom:4px;}
+.dist-lbl{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px;}
+.dist-cities{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7;}
+
+/* ── CAREERS ────────────────────────────────── */
+.careers-inner{display:flex;align-items:center;justify-content:space-between;gap:60px;}
+.careers-content{max-width:540px;}
+.careers-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;}
+.careers-tag{padding:8px 20px;border-radius:999px;font-size:13px;font-weight:500;background:var(--card);border:1px solid var(--rule);}
+
+/* ── CONTACT ────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;}
+.cinfo-list{display:flex;flex-direction:column;gap:32px;}
+.cinfo-item{display:flex;gap:16px;align-items:flex-start;}
+.cinfo-ico{width:44px;height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cinfo-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:4px;}
+.cinfo-val{font-size:15px;color:rgba(255,255,255,.65);line-height:1.65;}
+.cf-form{display:flex;flex-direction:column;gap:14px;}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.cf-field{display:flex;flex-direction:column;gap:6px;}
+.cf-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);}
+.cf-input,.cf-textarea{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--sans);font-size:14px;padding:13px 16px;border-radius:var(--r-sm);outline:none;transition:border-color .25s;width:100%;}
+.cf-input:focus,.cf-textarea:focus{border-color:rgba(232,114,92,.6);}
+.cf-input::placeholder,.cf-textarea::placeholder{color:rgba(255,255,255,.2);}
+.cf-textarea{resize:vertical;min-height:100px;}
+.cf-submit{background:var(--coral);color:#fff;font-family:var(--sans);font-size:14px;font-weight:700;padding:15px;border:none;border-radius:999px;cursor:pointer;transition:background .25s,transform .25s;margin-top:4px;}
+.cf-submit:hover{background:#d4613f;transform:translateY(-1px);}
+
+/* ── FOOTER ─────────────────────────────────── */
+footer{background:var(--dark2);padding:56px 64px 32px;border-top:1px solid rgba(255,255,255,.05);}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:44px;}
+.foot-logo{font-family:var(--serif);font-size:22px;font-weight:600;color:#fff;margin-bottom:12px;display:block;}
+.foot-logo em{font-style:italic;color:var(--coral);}
+.foot-desc{font-size:14px;color:rgba(255,255,255,.3);line-height:1.72;max-width:240px;text-wrap:pretty;}
+.foot-col-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:18px;}
+.foot-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.foot-links a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .25s;}
+.foot-links a:hover{color:rgba(255,255,255,.75);}
+.foot-btm{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.2);}
+.foot-colors{display:flex;gap:6px;align-items:center;}
+.foot-colors span{width:8px;height:8px;border-radius:50%;display:inline-block;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">D'<em>costa</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#sustainability">Sustainability</a></li>
+    <li><a href="#distribution">Coverage</a></li>
+    <li><a href="#careers">Careers</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-placeholder">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="6" y="10" width="36" height="28" rx="3"></rect><circle cx="18" cy="22" r="4"></circle><path d="M6 34l10-8 6 5 10-10 10 8"></path></svg>
+    Hero Lifestyle Photography
+  </div>
+  <div class="hero-content" style="position:relative;z-index:2;">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-line"></span>
+      <span class="hero-eyebrow-txt">Est. 1994 · Personal Care &amp; Beauty</span>
+    </div>
+    <h1>Inner and Outer<br><em>Beauty</em> in You</h1>
+    <p class="hero-sub">For over three decades, D'costa has crafted personal care products that celebrate natural beauty — trusted by millions across the Indonesian archipelago.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">
+        Our Products
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5"></path></svg>
+      </a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hstat-val">30+</div><div class="hstat-lbl">Years of Beauty</div></div>
+      <div><div class="hstat-val">27</div><div class="hstat-lbl">Products</div></div>
+      <div><div class="hstat-val">10K+</div><div class="hstat-lbl">Retail Points</div></div>
+    </div>
+  </div>
+  <div class="hero-float">
+    <div class="hf-badge" style="background:var(--coral);">Since 1994</div>
+    <div class="hf-val">27</div>
+    <div class="hf-sub">Products loved across<br>Sumatera, Java &amp; Bali</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Skincare<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Haircare<span class="marquee-dot" style="background:var(--lavender)"></span></span>
+    <span class="marquee-item">Body Care<span class="marquee-dot" style="background:var(--sage)"></span></span>
+    <span class="marquee-item">Fragrance<span class="marquee-dot" style="background:var(--gold)"></span></span>
+    <span class="marquee-item">D'costa<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Natural Ingredients<span class="marquee-dot" style="background:var(--sage)"></span></span>
+    <span class="marquee-item">Clean Beauty<span class="marquee-dot" style="background:var(--lavender)"></span></span>
+    <span class="marquee-item">Skincare<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Haircare<span class="marquee-dot" style="background:var(--lavender)"></span></span>
+    <span class="marquee-item">Body Care<span class="marquee-dot" style="background:var(--sage)"></span></span>
+    <span class="marquee-item">Fragrance<span class="marquee-dot" style="background:var(--gold)"></span></span>
+    <span class="marquee-item">D'costa<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Natural Ingredients<span class="marquee-dot" style="background:var(--sage)"></span></span>
+    <span class="marquee-item">Clean Beauty<span class="marquee-dot" style="background:var(--lavender)"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div class="about-grid">
+    <div class="rv left">
+      <div class="about-img">
+        <div class="about-img-main">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:.3;"><rect x="6" y="8" width="36" height="32" rx="3"></rect><circle cx="20" cy="22" r="5"></circle><path d="M6 36l12-10 8 6 10-10 6 5"></path></svg>
+          Company Photo
+        </div>
+        <div class="about-accent">
+          <div class="about-accent-val">30+</div>
+          <div class="about-accent-lbl">Years of Excellence</div>
+        </div>
+      </div>
+    </div>
+    <div class="rv right" data-d="1">
+      <div class="sec-tag"><span class="sec-tag-line"></span><span class="sec-tag-txt">Our Story</span></div>
+      <h2 class="sec-h2">Three Decades of<br><em>Beauty Innovation</em></h2>
+      <p class="sec-sub">What began as a small family workshop in Surabaya in 1994 has grown into one of Indonesia's most trusted personal care brands — with 27 products reaching over 10,000 retail points across Sumatera, Java, and Bali.</p>
+      <div class="about-values">
+        <div class="aval">
+          <div class="aval-dot" style="background:var(--coral);"></div>
+          <div>
+            <div class="aval-title">Natural Ingredients</div>
+            <div class="aval-desc">We source the finest botanicals from Indonesian farms, crafting formulas that honor traditional beauty wisdom.</div>
+          </div>
+        </div>
+        <div class="aval">
+          <div class="aval-dot" style="background:var(--sage);"></div>
+          <div>
+            <div class="aval-title">Science-Backed Care</div>
+            <div class="aval-desc">Every product undergoes rigorous testing in our R&amp;D lab, ensuring safety and efficacy you can trust.</div>
+          </div>
+        </div>
+        <div class="aval">
+          <div class="aval-dot" style="background:var(--lavender);"></div>
+          <div>
+            <div class="aval-title">Accessible Beauty</div>
+            <div class="aval-desc">Premium quality at fair prices — because everyone deserves to feel confident in their own skin.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" class="sec sec--alt">
+  <div class="sec-header">
+    <div class="sec-tag rv up"><span class="sec-tag-line"></span><span class="sec-tag-txt">Our Products</span></div>
+    <h2 class="sec-h2 rv up" data-d="1">Discover the<br><em>D'costa Collection</em></h2>
+    <p class="sec-sub rv up" data-d="2">27 carefully crafted products across four categories, each formulated with natural Indonesian botanicals.</p>
+  </div>
+  <div class="prod-grid">
+    <div class="prod-card rv up" style="background:var(--blush);">
+      <div class="prod-icon" style="color:var(--coral);">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4c-2 6-8 8-8 14a8 8 0 0016 0c0-6-6-8-8-14z"></path></svg>
+      </div>
+      <div class="prod-count">10 Products</div>
+      <div class="prod-name">Skincare</div>
+      <div class="prod-desc">Cleansers, serums, moisturizers, and treatments for radiant, healthy skin.</div>
+      <a href="#contact" class="prod-link">Explore <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6h8M7 3l3 3-3 3"></path></svg></a>
+    </div>
+    <div class="prod-card rv up" data-d="1" style="background:var(--lilac);">
+      <div class="prod-icon" style="color:var(--lavender);">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3v8"></path><path d="M10 7c0 0 2 4 4 4s4-4 4-4"></path><path d="M8 14c0 7 3 11 6 11s6-4 6-11"></path></svg>
+      </div>
+      <div class="prod-count">7 Products</div>
+      <div class="prod-name">Haircare</div>
+      <div class="prod-desc">Shampoos, conditioners, and treatments for lustrous, strong hair.</div>
+      <a href="#contact" class="prod-link">Explore <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6h8M7 3l3 3-3 3"></path></svg></a>
+    </div>
+    <div class="prod-card rv up" data-d="2" style="background:var(--mint);">
+      <div class="prod-icon" style="color:var(--sage);">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="14" cy="16" rx="8" ry="6"></ellipse><path d="M14 10V4"></path><path d="M11 6c0 0 1.5 2 3 2s3-2 3-2"></path></svg>
+      </div>
+      <div class="prod-count">6 Products</div>
+      <div class="prod-name">Body Care</div>
+      <div class="prod-desc">Lotions, scrubs, and body washes for smooth, nourished skin head to toe.</div>
+      <a href="#contact" class="prod-link">Explore <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6h8M7 3l3 3-3 3"></path></svg></a>
+    </div>
+    <div class="prod-card rv up" data-d="3" style="background:var(--cream);">
+      <div class="prod-icon" style="color:var(--gold);">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4l2.5 5h5.5l-4.5 3.5 1.5 5.5-5-3.5-5 3.5 1.5-5.5L6 9.5h5.5z"></path></svg>
+      </div>
+      <div class="prod-count">4 Products</div>
+      <div class="prod-name">Fragrance</div>
+      <div class="prod-desc">Signature scents inspired by the tropical landscapes of the archipelago.</div>
+      <a href="#contact" class="prod-link">Explore <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6h8M7 3l3 3-3 3"></path></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-grid">
+    <div class="stat-box rv scale">
+      <div class="stat-val">30+</div>
+      <div class="stat-lbl">Years in Business</div>
+    </div>
+    <div class="stat-box rv scale" data-d="1">
+      <div class="stat-val">27</div>
+      <div class="stat-lbl">Products</div>
+    </div>
+    <div class="stat-box rv scale" data-d="2">
+      <div class="stat-val">10K+</div>
+      <div class="stat-lbl">Retail Points</div>
+    </div>
+    <div class="stat-box rv scale" data-d="3">
+      <div class="stat-val">3</div>
+      <div class="stat-lbl">Islands Covered</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUSTAINABILITY -->
+<section id="sustainability" class="sec">
+  <div class="sec-header" style="text-align:center;display:flex;flex-direction:column;align-items:center;">
+    <div class="sec-tag rv up"><span class="sec-tag-line"></span><span class="sec-tag-txt">Sustainability</span></div>
+    <h2 class="sec-h2 rv up" data-d="1">Beauty That <em>Cares</em></h2>
+    <p class="sec-sub rv up" data-d="2" style="text-align:center;">We believe in creating products that are kind to you and the planet.</p>
+  </div>
+  <div class="sust-grid">
+    <div class="sust-card rv up">
+      <div class="sust-ico" style="background:var(--blush);color:var(--coral);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22c-4-4-8-7.5-8-11a8 8 0 0116 0c0 3.5-4 7-8 11z"></path><path d="M12 12V8"></path><path d="M10 10l2-2 2 2"></path></svg>
+      </div>
+      <div class="sust-title">Clean Ingredients</div>
+      <div class="sust-desc">Every product is free from parabens, sulfates, and harmful chemicals. We source natural botanicals from local Indonesian farms committed to sustainable agriculture.</div>
+    </div>
+    <div class="sust-card rv up" data-d="1">
+      <div class="sust-ico" style="background:var(--mint);color:var(--sage);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M5.6 5.6l2.2 2.2"></path><path d="M16.2 16.2l2.2 2.2"></path><path d="M3 12h3"></path><path d="M18 12h3"></path><circle cx="12" cy="12" r="4"></circle></svg>
+      </div>
+      <div class="sust-title">Eco Packaging</div>
+      <div class="sust-desc">80% of our packaging is made from recycled or biodegradable materials. We're on track to reach 100% sustainable packaging by 2028.</div>
+    </div>
+    <div class="sust-card rv up" data-d="2">
+      <div class="sust-ico" style="background:var(--lilac);color:var(--lavender);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="4"></circle><circle cx="15" cy="15" r="4"></circle><path d="M12.5 11.5l-1-1"></path></svg>
+      </div>
+      <div class="sust-title">Community Impact</div>
+      <div class="sust-desc">We partner with women-led cooperatives across Java and Bali, empowering 500+ local families through fair-trade ingredient sourcing programs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DISTRIBUTION -->
+<section id="distribution" class="sec sec--dark">
+  <div class="sec-header">
+    <div class="sec-tag rv up"><span class="sec-tag-line"></span><span class="sec-tag-txt">Distribution</span></div>
+    <h2 class="sec-h2 rv up" data-d="1">Where to<br><em>Find Us</em></h2>
+    <p class="sec-sub rv up" data-d="2">Available across three major Indonesian islands through 10,000+ retail partners.</p>
+  </div>
+  <div class="dist-grid">
+    <div class="dist-card rv up">
+      <div class="dist-dot" style="background:var(--coral);"></div>
+      <div class="dist-region">Sumatera</div>
+      <div class="dist-val">2,800+</div>
+      <div class="dist-lbl">Retail Points</div>
+      <div class="dist-cities">Medan · Palembang · Pekanbaru · Padang · Lampung</div>
+    </div>
+    <div class="dist-card rv up" data-d="1">
+      <div class="dist-dot" style="background:var(--lavender);"></div>
+      <div class="dist-region">Java</div>
+      <div class="dist-val">5,400+</div>
+      <div class="dist-lbl">Retail Points</div>
+      <div class="dist-cities">Jakarta · Surabaya · Bandung · Semarang · Yogyakarta</div>
+    </div>
+    <div class="dist-card rv up" data-d="2">
+      <div class="dist-dot" style="background:var(--sage);"></div>
+      <div class="dist-region">Bali</div>
+      <div class="dist-val">1,800+</div>
+      <div class="dist-lbl">Retail Points</div>
+      <div class="dist-cities">Denpasar · Ubud · Kuta · Sanur · Seminyak</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREERS -->
+<section id="careers" class="sec sec--alt">
+  <div class="careers-inner">
+    <div class="careers-content">
+      <div class="sec-tag rv up"><span class="sec-tag-line"></span><span class="sec-tag-txt">Careers</span></div>
+      <h2 class="sec-h2 rv up" data-d="1">Be Part of Something<br><em>Beautiful</em></h2>
+      <p class="sec-sub rv up" data-d="2">We're growing — and looking for passionate individuals who believe in the power of beauty to transform lives. Join a team that values creativity, integrity, and impact.</p>
+      <div class="careers-tags rv up" data-d="3">
+        <span class="careers-tag">Product Development</span>
+        <span class="careers-tag">Marketing</span>
+        <span class="careers-tag">Supply Chain</span>
+        <span class="careers-tag">R&amp;D</span>
+        <span class="careers-tag">Sales</span>
+      </div>
+    </div>
+    <div class="rv right" data-d="2">
+      <a href="#contact" class="btn-primary" style="font-size:16px;padding:18px 44px;">
+        View Open Roles
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5"></path></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="sec sec--dark">
+  <div class="contact-grid">
+    <div>
+      <div class="sec-tag rv left"><span class="sec-tag-line"></span><span class="sec-tag-txt">Contact Us</span></div>
+      <h2 class="sec-h2 rv left" data-d="1">Let's Talk<br><em>Beauty</em></h2>
+      <p class="sec-sub rv left" data-d="2" style="margin-bottom:44px;">Whether you're a retail partner, distributor, or curious customer — we'd love to hear from you.</p>
+      <div class="cinfo-list rv left" data-d="3">
+        <div class="cinfo-item">
+          <div class="cinfo-ico" style="background:rgba(232,114,92,.15);color:var(--coral);">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4h12a1 1 0 011 1v9a1 1 0 01-1 1H3a1 1 0 01-1-1V5a1 1 0 011-1z"></path><path d="M2 5l7 6 7-6"></path></svg>
+          </div>
+          <div>
+            <div class="cinfo-label">Email</div>
+            <div class="cinfo-val">hello@dcosta.id</div>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-ico" style="background:rgba(167,141,192,.15);color:var(--lavender);">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15.5 12.7l-2-1.9a1.5 1.5 0 00-2.1 0l-.8.8a11.9 11.9 0 01-4.2-4.2l.8-.8a1.5 1.5 0 000-2.1L5.3 2.5a1.5 1.5 0 00-2.1 0L2.4 3.3C1.4 4.3 1.9 7 5.2 10.2c3.3 3.3 6 3.8 7 2.8l.8-.8a1.5 1.5 0 000-2.1z"></path></svg>
+          </div>
+          <div>
+            <div class="cinfo-label">Phone</div>
+            <div class="cinfo-val">+62 31 5678 900</div>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-ico" style="background:rgba(107,175,141,.15);color:var(--sage);">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="7.5" r="2.5"></circle><path d="M9 2a5.5 5.5 0 015.5 5.5C14.5 11 9 16 9 16S3.5 11 3.5 7.5A5.5 5.5 0 019 2z"></path></svg>
+          </div>
+          <div>
+            <div class="cinfo-label">Headquarters</div>
+            <div class="cinfo-val">Jl. Raya Darmo No. 88<br>Surabaya, East Java 60241</div>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-ico" style="background:rgba(217,168,78,.15);color:var(--gold);">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="9" r="7"></circle><path d="M9 5v4l2.5 2.5"></path></svg>
+          </div>
+          <div>
+            <div class="cinfo-label">Business Hours</div>
+            <div class="cinfo-val">Mon – Fri: 08.00 – 17.00 WIB<br>Sat: 09.00 – 13.00 WIB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rv right" data-d="2">
+      <form class="cf-form" onsubmit="return false;">
+        <div class="cf-row">
+          <div class="cf-field">
+            <label class="cf-label">Full Name</label>
+            <input class="cf-input" type="text" placeholder="Your name">
+          </div>
+          <div class="cf-field">
+            <label class="cf-label">Company</label>
+            <input class="cf-input" type="text" placeholder="Company name">
+          </div>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Email</label>
+          <input class="cf-input" type="email" placeholder="you@company.com">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Phone</label>
+          <input class="cf-input" type="tel" placeholder="+62 812 345 6789">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Message</label>
+          <textarea class="cf-textarea" placeholder="Tell us how we can help..."></textarea>
+        </div>
+        <button type="submit" class="cf-submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <span class="foot-logo">D'<em>costa</em></span>
+      <div class="foot-desc">Inner and Outer Beauty in You. Indonesia's trusted personal care brand since 1994.</div>
+    </div>
+    <div>
+      <div class="foot-col-title">Products</div>
+      <ul class="foot-links">
+        <li><a href="#products">Skincare</a></li>
+        <li><a href="#products">Haircare</a></li>
+        <li><a href="#products">Body Care</a></li>
+        <li><a href="#products">Fragrance</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">Company</div>
+      <ul class="foot-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#sustainability">Sustainability</a></li>
+        <li><a href="#distribution">Distribution</a></li>
+        <li><a href="#careers">Careers</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">Get in Touch</div>
+      <ul class="foot-links">
+        <li><a href="tel:+623156789000">+62 31 5678 900</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#c7afa2ababa887a3a4a8b4b3a6e9a4a8e9aea3">hello@dcosta.id</a></li>
+        <li><a href="#">Jl. Raya Darmo No. 88</a></li>
+        <li><a href="#">Surabaya 60241</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-btm">
+    <div class="foot-copy">© 2026 D'costa. All rights reserved.</div>
+    <div class="foot-colors">
+      <span style="background:var(--coral)"></span>
+      <span style="background:var(--lavender)"></span>
+      <span style="background:var(--sage)"></span>
+      <span style="background:var(--gold)"></span>
+    </div>
+  </div>
+</footer>
+
+
+
+<script>
+// Nav scroll
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('solid', window.scrollY > 60);
+}, { passive: true });
+
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+
+
+
+
+
+
+</body>
+</html>

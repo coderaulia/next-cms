@@ -1,0 +1,992 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vela — The Workspace Platform for Modern Teams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400;1,9..40,500&display=swap" rel="stylesheet">
+
+<style>
+/* ── TOKENS ──────────────────────────────────────────────── */
+:root {
+  --bg:         #F8F7FC;
+  --bg-hero:    #EDE8FF;
+  --bg-dark:    #0D0A1E;
+  --acc:        #6B4EFF;
+  --acc-lt:     #EDE8FF;
+  --acc-mid:    #A78BFA;
+  --ink:        #0D0A1E;
+  --ink2:       #6B6880;
+  --ink3:       #ACA8C4;
+  --card:       #FFFFFF;
+  --bdr:        rgba(107,78,255,.10);
+  --r:          14px;
+  --r-sm:       8px;
+  --sh:         0 2px 20px rgba(107,78,255,.07);
+  --sh-md:      0 8px 40px rgba(107,78,255,.13);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 64px;
+  transition: background .4s, box-shadow .4s, padding .4s;
+}
+#nav.solid {
+  background: rgba(248,247,252,.95);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 var(--bdr);
+  padding: 14px 64px;
+}
+.nav-logo {
+  font-size: 19px; font-weight: 700; color: var(--ink);
+  text-decoration: none; display: flex; align-items: center; gap: 7px;
+}
+.nav-logo-mark {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--acc); display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-mark svg { display: block; }
+.nav-links { display: flex; gap: 34px; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: 15px; font-weight: 500; color: var(--ink2);
+  text-decoration: none; transition: color .25s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  background: var(--acc); color: #fff;
+  padding: 10px 22px; border-radius: 40px;
+  font-size: 15px; font-weight: 600; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: background .25s, transform .2s;
+}
+.nav-cta:hover { background: #5538EE; transform: translateY(-1px); }
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  background: var(--bg-hero);
+  min-height: 100vh;
+  padding: 130px 64px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+/* subtle dot-grid texture */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(107,78,255,.15) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(ellipse 80% 80% at 60% 50%, black 30%, transparent 100%);
+}
+/* glow orb */
+.hero-orb {
+  position: absolute; top: -160px; right: -80px;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(107,78,255,.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-left { position: relative; z-index: 2; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(107,78,255,.12); border-radius: 40px;
+  padding: 6px 14px; margin-bottom: 26px;
+  font-size: 13px; font-weight: 600; color: var(--acc);
+}
+.eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); }
+.hero-h1 {
+  font-size: clamp(42px, 5.2vw, 70px);
+  font-weight: 700; line-height: 1.06;
+  letter-spacing: -.03em; margin-bottom: 22px;
+}
+.hero-h1 em { font-style: italic; font-weight: 400; color: var(--acc); }
+.hero-sub {
+  font-size: 17px; font-weight: 400; color: var(--ink2);
+  line-height: 1.72; max-width: 430px; margin-bottom: 38px;
+}
+.hero-form {
+  display: flex; gap: 10px; margin-bottom: 44px; max-width: 420px;
+}
+.hero-input {
+  flex: 1; padding: 13px 18px;
+  border: 1.5px solid var(--bdr); border-radius: 40px;
+  background: var(--card); font-family: 'DM Sans', sans-serif;
+  font-size: 15px; color: var(--ink); outline: none;
+  transition: border-color .25s; box-shadow: var(--sh);
+}
+.hero-input:focus { border-color: var(--acc); }
+.hero-input::placeholder { color: var(--ink3); }
+.hero-btn {
+  background: var(--acc); color: #fff;
+  padding: 13px 24px; border-radius: 40px; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  display: flex; align-items: center; gap: 7px;
+  transition: background .25s, transform .2s;
+}
+.hero-btn:hover { background: #5538EE; transform: translateY(-1px); }
+.hero-kpis { display: flex; gap: 36px; }
+.hkpi-val { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.hkpi-lbl { font-size: 13px; color: var(--ink2); }
+
+/* ── HERO RIGHT — mockup ─────────────────────── */
+.hero-right {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+}
+.h-mockup {
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: var(--sh-md), 0 0 0 1px rgba(107,78,255,.08);
+  padding: 20px; width: 100%;
+}
+.h-mock-bar {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+.h-mock-dots { display: flex; gap: 5px; }
+.h-mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+.h-mock-pill {
+  flex: 1; height: 9px; border-radius: 5px;
+  background: var(--bg); margin: 0 auto; max-width: 100px;
+}
+.h-mock-av {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--acc); border: 2px solid var(--acc-lt);
+}
+.h-mock-body { display: grid; grid-template-columns: 72px 1fr; gap: 12px; }
+.h-mock-side { display: flex; flex-direction: column; gap: 7px; }
+.h-side-item {
+  height: 32px; border-radius: var(--r-sm); background: var(--bg);
+  display: flex; align-items: center; padding: 0 10px; gap: 7px;
+}
+.h-side-item.on { background: var(--acc-lt); }
+.h-si-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink3); flex-shrink: 0; }
+.h-side-item.on .h-si-dot { background: var(--acc); }
+.h-si-bar { height: 7px; border-radius: 3px; background: var(--ink3); width: 55%; }
+.h-side-item.on .h-si-bar { background: var(--acc); opacity: .45; }
+.h-mock-main { display: flex; flex-direction: column; gap: 10px; }
+.h-chart {
+  background: var(--bg); border-radius: var(--r-sm);
+  padding: 12px; height: 110px; overflow: hidden;
+}
+.h-chart-bars {
+  display: flex; align-items: flex-end; gap: 5px; height: 100%;
+}
+.h-bar {
+  flex: 1; border-radius: 4px 4px 0 0;
+  background: var(--acc-lt);
+}
+.h-bar.hi { background: var(--acc); }
+.h-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.h-mini {
+  background: var(--bg); border-radius: var(--r-sm); padding: 9px 11px;
+}
+.h-mini-val {
+  height: 13px; border-radius: 3px;
+  background: var(--ink); width: 48%; margin-bottom: 6px;
+}
+.h-mini-lbl { height: 8px; border-radius: 3px; background: var(--ink3); width: 70%; }
+.h-progs { display: flex; flex-direction: column; gap: 7px; }
+.h-prog { display: flex; align-items: center; gap: 8px; }
+.h-prog-track { flex: 1; height: 5px; border-radius: 3px; background: var(--bg); }
+.h-prog-fill { height: 100%; border-radius: 3px; background: var(--acc); }
+.h-prog-txt { font-size: 10px; color: var(--ink2); width: 26px; text-align: right; font-weight: 500; }
+
+/* floating badges */
+.h-badge {
+  position: absolute; background: var(--card);
+  border-radius: 12px; padding: 10px 14px;
+  box-shadow: 0 4px 22px rgba(107,78,255,.18), 0 0 0 1px var(--bdr);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 600; color: var(--ink);
+  white-space: nowrap; animation: floatBadge 4s ease-in-out infinite;
+}
+.h-badge-sub { font-size: 11px; font-weight: 400; color: var(--ink2); margin-top: 1px; }
+.h-badge-avatars { display: flex; }
+.h-bav {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid white; margin-left: -5px;
+}
+.h-bav:first-child { margin-left: 0; }
+.hb1 { bottom: -16px; left: -48px; animation-delay: 0s; }
+.hb2 { top: 16px; right: -44px; animation-delay: 1.8s; }
+@keyframes floatBadge {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* ── LOGOS ───────────────────────────────────────────────── */
+#logos {
+  background: var(--card); padding: 44px 0;
+  border-bottom: 1px solid rgba(107,78,255,.06);
+}
+.logos-lbl {
+  text-align: center; font-size: 12px; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 24px;
+}
+.logo-marquee { overflow: hidden; }
+.logo-track {
+  display: flex; width: max-content;
+  animation: logoScroll 26s linear infinite;
+}
+.logo-marquee:hover .logo-track { animation-play-state: paused; }
+.logo-chip {
+  flex-shrink: 0; padding: 0 54px;
+  font-size: 15px; font-weight: 700; letter-spacing: .03em;
+  color: var(--ink3); white-space: nowrap; transition: color .25s;
+}
+.logo-chip:hover { color: var(--ink2); }
+@keyframes logoScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── SECTION BASE ────────────────────────────────────────── */
+section { padding: 96px 64px; }
+.sec-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--acc);
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px;
+}
+.sec-eyebrow::before { content: '•'; font-size: 16px; }
+.sec-h2 {
+  font-size: clamp(30px, 3.2vw, 48px);
+  font-weight: 700; line-height: 1.12; letter-spacing: -.025em;
+  margin-bottom: 16px;
+}
+.sec-h2 em { font-style: italic; font-weight: 400; color: var(--acc); }
+.sec-sub { font-size: 16px; color: var(--ink2); line-height: 1.72; max-width: 500px; }
+.sec-header { margin-bottom: 60px; }
+
+/* ── SCROLL ANIM ─────────────────────────────────────────── */
+.a {
+  opacity: 0;
+  transition: opacity .75s cubic-bezier(.16,1,.3,1),
+              transform .75s cubic-bezier(.16,1,.3,1);
+}
+.a.up    { transform: translateY(38px); }
+.a.left  { transform: translateX(-38px); }
+.a.right { transform: translateX(38px); }
+.a.scale { transform: scale(.95); }
+.a.in    { opacity: 1; transform: none; }
+[data-d="1"] { transition-delay: .08s !important; }
+[data-d="2"] { transition-delay: .16s !important; }
+[data-d="3"] { transition-delay: .24s !important; }
+[data-d="4"] { transition-delay: .32s !important; }
+
+/* ── FEATURES 2-COL ──────────────────────────────────────── */
+#features { background: var(--bg); }
+.feat-2col {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.feat-visual {
+  position: relative; border-radius: 20px; overflow: hidden;
+  background: var(--bg-hero); aspect-ratio: 4/5;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.feat-visual-inner {
+  width: 88%; background: var(--card);
+  border-radius: 16px 16px 0 0; padding: 18px;
+  box-shadow: 0 -6px 32px rgba(107,78,255,.12);
+}
+.feat-badge-tl {
+  position: absolute; top: 22px; left: 22px;
+  background: var(--card); border-radius: 10px; padding: 10px 14px;
+  box-shadow: 0 4px 18px rgba(107,78,255,.16), 0 0 0 1px var(--bdr);
+  font-size: 13px; font-weight: 600; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+}
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #10B981; box-shadow: 0 0 0 3px rgba(16,185,129,.2);
+}
+.feat-badge-br {
+  position: absolute; bottom: 28px; right: 20px;
+  background: var(--acc); border-radius: 10px; padding: 10px 14px;
+  box-shadow: 0 6px 22px rgba(107,78,255,.4);
+  font-size: 13px; font-weight: 600; color: #fff;
+}
+.feat-content {}
+.feat-list { display: flex; flex-direction: column; gap: 26px; margin-top: 32px; }
+.feat-item { display: flex; gap: 16px; align-items: flex-start; }
+.feat-ico {
+  width: 40px; height: 40px; border-radius: 11px;
+  background: var(--acc-lt); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--acc);
+}
+.feat-item-title { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+.feat-item-desc { font-size: 14px; color: var(--ink2); line-height: 1.68; }
+
+/* ── FEATURE CARDS ───────────────────────────────────────── */
+#fcards { background: var(--bg-hero); }
+#fcards .sec-header {
+  text-align: center; display: flex; flex-direction: column; align-items: center;
+}
+.fcard-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.fcard {
+  background: var(--card); border-radius: var(--r);
+  padding: 30px; border: 1px solid var(--bdr);
+  box-shadow: var(--sh);
+  transition: transform .3s, box-shadow .3s;
+}
+.fcard:hover { transform: translateY(-4px); box-shadow: var(--sh-md); }
+.fcard-ico {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--acc-lt); display: flex; align-items: center;
+  justify-content: center; color: var(--acc); margin-bottom: 18px;
+}
+.fcard-title { font-size: 17px; font-weight: 600; margin-bottom: 9px; }
+.fcard-desc { font-size: 14px; color: var(--ink2); line-height: 1.68; }
+
+/* ── PRICING ──────────────────────────────────────────────── */
+#pricing { background: var(--bg); }
+#pricing .sec-header {
+  text-align: center; display: flex; flex-direction: column; align-items: center;
+}
+.price-toggle {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--bg-hero); border-radius: 40px;
+  padding: 5px; margin-bottom: 52px; border: 1px solid var(--bdr);
+}
+.ptog-opt {
+  padding: 8px 20px; border-radius: 40px; font-size: 14px;
+  font-weight: 500; color: var(--ink2); cursor: pointer;
+  transition: all .25s; border: none; background: transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+.ptog-opt.on { background: var(--card); color: var(--ink); box-shadow: var(--sh); font-weight: 600; }
+.price-save {
+  background: var(--acc); color: white; font-size: 11px; font-weight: 700;
+  padding: 3px 9px; border-radius: 20px; margin-left: 4px;
+}
+.price-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+.price-card {
+  background: var(--card); border-radius: 18px;
+  padding: 34px; border: 1px solid var(--bdr);
+}
+.price-card.featured {
+  background: var(--acc); border-color: transparent;
+  transform: scale(1.04); box-shadow: 0 16px 56px rgba(107,78,255,.38);
+}
+.price-hot {
+  display: inline-block; background: white; color: var(--acc);
+  font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; border-radius: 20px; padding: 4px 12px; margin-bottom: 18px;
+}
+.price-plan { font-size: 13px; font-weight: 600; color: var(--ink2); margin-bottom: 7px; }
+.price-card.featured .price-plan { color: rgba(255,255,255,.7); }
+.price-amount {
+  font-size: 44px; font-weight: 700; letter-spacing: -.03em;
+  line-height: 1; color: var(--ink); margin-bottom: 4px;
+}
+.price-card.featured .price-amount { color: #fff; }
+.price-per { font-size: 14px; color: var(--ink2); margin-bottom: 28px; }
+.price-card.featured .price-per { color: rgba(255,255,255,.6); }
+.price-hr { height: 1px; background: var(--bdr); margin-bottom: 22px; }
+.price-card.featured .price-hr { background: rgba(255,255,255,.18); }
+.price-feats { display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
+.pfeat { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink2); }
+.price-card.featured .pfeat { color: rgba(255,255,255,.82); }
+.pcheck {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  background: var(--acc-lt);
+  display: flex; align-items: center; justify-content: center; color: var(--acc);
+}
+.price-card.featured .pcheck { background: rgba(255,255,255,.18); color: #fff; }
+.price-btn {
+  display: block; width: 100%; padding: 13px; text-align: center;
+  border-radius: 40px; border: 1.5px solid var(--acc);
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  color: var(--acc); background: transparent;
+  cursor: pointer; text-decoration: none; transition: all .25s;
+}
+.price-btn:hover { background: var(--acc); color: #fff; }
+.price-card.featured .price-btn {
+  background: #fff; color: var(--acc); border-color: #fff;
+}
+.price-card.featured .price-btn:hover { background: transparent; color: #fff; }
+
+/* ── TESTIMONIALS ─────────────────────────────────────────── */
+#testimonials { background: var(--bg-hero); }
+#testimonials .sec-header {
+  text-align: center; display: flex; flex-direction: column; align-items: center;
+}
+.tcard-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.tcard {
+  background: var(--card); border-radius: var(--r);
+  padding: 26px; border: 1px solid var(--bdr);
+}
+.tcard-stars { display: flex; gap: 2px; margin-bottom: 13px; color: #F59E0B; font-size: 13px; }
+.tcard-q {
+  font-size: 15px; line-height: 1.68; color: var(--ink);
+  font-style: italic; margin-bottom: 20px; text-wrap: pretty;
+}
+.tcard-author { display: flex; align-items: center; gap: 11px; }
+.tcard-av { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; }
+.tcard-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.tcard-role { font-size: 12px; color: var(--ink2); }
+
+/* ── CTA DARK ─────────────────────────────────────────────── */
+#cta {
+  background: var(--bg-dark); padding: 96px 64px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-orb {
+  position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(107,78,255,.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--acc-mid); margin-bottom: 18px;
+}
+.cta-h2 {
+  font-size: clamp(34px, 3.8vw, 58px); font-weight: 700; color: #fff;
+  letter-spacing: -.03em; line-height: 1.1; margin-bottom: 16px;
+}
+.cta-h2 em { font-style: italic; font-weight: 300; color: var(--acc-mid); }
+.cta-sub {
+  font-size: 17px; color: rgba(255,255,255,.45);
+  line-height: 1.7; margin-bottom: 40px; max-width: 480px; margin-left: auto; margin-right: auto;
+}
+.cta-btns { display: flex; gap: 14px; justify-content: center; }
+.cta-primary {
+  background: var(--acc); color: #fff;
+  padding: 14px 30px; border-radius: 40px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  text-decoration: none; transition: background .25s, transform .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.cta-primary:hover { background: #5538EE; transform: translateY(-2px); }
+.cta-ghost {
+  background: transparent; color: rgba(255,255,255,.6);
+  padding: 14px 30px; border-radius: 40px;
+  border: 1.5px solid rgba(255,255,255,.18);
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  text-decoration: none; transition: all .25s;
+}
+.cta-ghost:hover { border-color: rgba(255,255,255,.5); color: #fff; }
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+footer {
+  background: var(--bg-dark); padding: 56px 64px 36px;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 44px; }
+.foot-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.foot-logo-mark {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--acc); display: flex; align-items: center; justify-content: center;
+}
+.foot-logo-name { font-size: 17px; font-weight: 700; color: #fff; }
+.foot-desc { font-size: 14px; color: rgba(255,255,255,.32); line-height: 1.7; max-width: 210px; }
+.foot-col-title {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(255,255,255,.26); margin-bottom: 18px;
+}
+.foot-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.foot-links a { font-size: 14px; color: rgba(255,255,255,.42); text-decoration: none; transition: color .25s; }
+.foot-links a:hover { color: rgba(255,255,255,.78); }
+.foot-btm {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 26px; border-top: 1px solid rgba(255,255,255,.06);
+}
+.foot-copy { font-size: 13px; color: rgba(255,255,255,.22); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L7 2L12 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9H10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    Vela
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#fcards">Solutions</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">
+    Get Started
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.5h9M8 3.5l3 3-3 3"/></svg>
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Now in public beta — free to start
+    </div>
+    <h1 class="hero-h1">
+      Simplify Your<br>Workflow. <em>Amplify</em><br>Your Results.
+    </h1>
+    <p class="hero-sub">Managing projects, tracking progress, and collaborating with your team has never been this effortless. Vela is built for how modern teams actually work.</p>
+    <form class="hero-form" onsubmit="return false;">
+      <input class="hero-input" type="email" placeholder="Enter your work email">
+      <button class="hero-btn" type="submit">
+        Get Started
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.5h9M8 3.5l3 3-3 3"/></svg>
+      </button>
+    </form>
+    <div class="hero-kpis">
+      <div>
+        <div class="hkpi-val">12K+</div>
+        <div class="hkpi-lbl">Teams using Vela</div>
+      </div>
+      <div>
+        <div class="hkpi-val">4.9★</div>
+        <div class="hkpi-lbl">Average rating</div>
+      </div>
+      <div>
+        <div class="hkpi-val">98%</div>
+        <div class="hkpi-lbl">Retention rate</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Dashboard Mockup -->
+    <div class="h-mockup">
+      <div class="h-mock-bar">
+        <div class="h-mock-dots">
+          <div class="h-mock-dot" style="background:#FF5F57"></div>
+          <div class="h-mock-dot" style="background:#FEBC2E"></div>
+          <div class="h-mock-dot" style="background:#28C840"></div>
+        </div>
+        <div class="h-mock-pill"></div>
+        <div class="h-mock-av"></div>
+      </div>
+      <div class="h-mock-body">
+        <div class="h-mock-side">
+          <div class="h-side-item on"><div class="h-si-dot"></div><div class="h-si-bar"></div></div>
+          <div class="h-side-item"><div class="h-si-dot"></div><div class="h-si-bar"></div></div>
+          <div class="h-side-item"><div class="h-si-dot"></div><div class="h-si-bar"></div></div>
+          <div class="h-side-item"><div class="h-si-dot"></div><div class="h-si-bar"></div></div>
+          <div class="h-side-item"><div class="h-si-dot"></div><div class="h-si-bar"></div></div>
+          <div class="h-side-item"><div class="h-si-dot"></div><div class="h-si-bar"></div></div>
+        </div>
+        <div class="h-mock-main">
+          <div class="h-chart">
+            <div class="h-chart-bars">
+              <div class="h-bar" style="height:42%"></div>
+              <div class="h-bar hi" style="height:68%"></div>
+              <div class="h-bar" style="height:52%"></div>
+              <div class="h-bar hi" style="height:84%"></div>
+              <div class="h-bar" style="height:59%"></div>
+              <div class="h-bar hi" style="height:91%"></div>
+              <div class="h-bar" style="height:65%"></div>
+              <div class="h-bar hi" style="height:76%"></div>
+            </div>
+          </div>
+          <div class="h-row2">
+            <div class="h-mini">
+              <div style="font-size:19px;font-weight:700;color:var(--ink);margin-bottom:3px;">87%</div>
+              <div style="font-size:11px;color:var(--ink2);">Task rate</div>
+            </div>
+            <div class="h-mini" style="background:var(--acc-lt);">
+              <div style="font-size:19px;font-weight:700;color:var(--acc);margin-bottom:3px;">↑ 24%</div>
+              <div style="font-size:11px;color:var(--acc);opacity:.7;">vs last mo.</div>
+            </div>
+          </div>
+          <div class="h-progs">
+            <div class="h-prog">
+              <div class="h-prog-track"><div class="h-prog-fill" style="width:78%"></div></div>
+              <span class="h-prog-txt">78%</span>
+            </div>
+            <div class="h-prog">
+              <div class="h-prog-track"><div class="h-prog-fill" style="width:54%;background:var(--acc-mid)"></div></div>
+              <span class="h-prog-txt">54%</span>
+            </div>
+            <div class="h-prog">
+              <div class="h-prog-track"><div class="h-prog-fill" style="width:91%"></div></div>
+              <span class="h-prog-txt">91%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Badges -->
+    <div class="h-badge hb1">
+      <div class="h-badge-avatars">
+        <div class="h-bav" style="background:var(--acc)"></div>
+        <div class="h-bav" style="background:var(--acc-mid)"></div>
+        <div class="h-bav" style="background:#F59E0B"></div>
+      </div>
+      <div>
+        <div>1,500+ Teams</div>
+        <div class="h-badge-sub">Growing every week</div>
+      </div>
+    </div>
+    <div class="h-badge hb2">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--acc)" stroke-width="2"><polyline points="2,11 6,6 9,9 14,3"/></svg>
+      <div>
+        <div>7K Projects</div>
+        <div class="h-badge-sub">Completed last month</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div id="logos">
+  <p class="logos-lbl">Trusted by teams at</p>
+  <div class="logo-marquee">
+    <div class="logo-track" id="logo-track"></div>
+  </div>
+</div>
+
+<!-- FEATURES 2-COL -->
+<section id="features">
+  <div class="feat-2col">
+    <div class="feat-visual a left">
+      <!-- Mini dashboard fragment -->
+      <div class="feat-visual-inner">
+        <div style="display:flex;gap:5px;align-items:flex-end;height:66px;margin-bottom:12px;">
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc-lt);height:48%"></div>
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc);height:75%"></div>
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc-lt);height:56%"></div>
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc);height:90%"></div>
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc-lt);height:62%"></div>
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc);height:100%"></div>
+          <div style="flex:1;border-radius:4px 4px 0 0;background:var(--acc-lt);height:72%"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:var(--bg);border-radius:8px;padding:11px;">
+            <div style="font-size:21px;font-weight:700;color:var(--ink);margin-bottom:3px;">340+</div>
+            <div style="font-size:11px;color:var(--ink2);">Active projects</div>
+          </div>
+          <div style="background:var(--acc-lt);border-radius:8px;padding:11px;">
+            <div style="font-size:21px;font-weight:700;color:var(--acc);margin-bottom:3px;">↑ 31%</div>
+            <div style="font-size:11px;color:var(--acc);opacity:.7;">Velocity up</div>
+          </div>
+        </div>
+      </div>
+      <div class="feat-badge-tl">
+        <span class="live-dot"></span>
+        24/7 Customer Support
+      </div>
+      <div class="feat-badge-br">Qualified Experts ✓</div>
+    </div>
+
+    <div class="feat-content a right" data-d="1">
+      <div class="sec-eyebrow">Exclusive Features</div>
+      <h2 class="sec-h2">Smarter Tools.<br><em>Faster Growth.</em></h2>
+      <p class="sec-sub">Leverage cutting-edge AI to streamline your processes, reduce manual work, and boost efficiency across your entire organization.</p>
+      <div class="feat-list">
+        <div class="feat-item">
+          <div class="feat-ico">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><polyline points="2,13 6,8 10,10 16,3"/><polyline points="11,3 16,3 16,8"/></svg>
+          </div>
+          <div>
+            <div class="feat-item-title">AI-Based Analytics</div>
+            <div class="feat-item-desc">Track performance trends, identify bottlenecks, and get actionable insights updated in real time.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-ico">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="4" width="14" height="11" rx="2"/><path d="M6 4V2.5a2.5 2.5 0 015 0V4"/><path d="M6 9h6M6 12h4"/></svg>
+          </div>
+          <div>
+            <div class="feat-item-title">Automated Reporting</div>
+            <div class="feat-item-desc">Generate beautiful, stakeholder-ready reports automatically — no manual compilation ever again.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-ico">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="9" r="7"/><circle cx="9" cy="9" r="2.5"/><path d="M9 2v2M9 14v2M2 9h2M14 9h2"/></svg>
+          </div>
+          <div>
+            <div class="feat-item-title">Goal Tracking</div>
+            <div class="feat-item-desc">Set team OKRs, monitor progress daily, and keep everyone aligned on what matters most.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE CARDS -->
+<section id="fcards">
+  <div class="sec-header">
+    <div class="sec-eyebrow a up">Everything You Need</div>
+    <h2 class="sec-h2 a up" data-d="1">Explore Our <em>Standout</em> Features</h2>
+    <p class="sec-sub a up" data-d="2">From project tracking to deep analytics — every tool your team needs to move faster and deliver results.</p>
+  </div>
+  <div class="fcard-grid">
+    <div class="fcard a up">
+      <div class="fcard-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><polyline points="3,14 7,9 11,11 17,4"/></svg></div>
+      <div class="fcard-title">Performance Analytics</div>
+      <div class="fcard-desc">Deep-dive into team metrics, sprint velocity, and workload distribution with real-time dashboards.</div>
+    </div>
+    <div class="fcard a up" data-d="1">
+      <div class="fcard-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="14" height="12" rx="2"/><path d="M7 5V3.5a2.5 2.5 0 015 0V5"/></svg></div>
+      <div class="fcard-title">Project Management</div>
+      <div class="fcard-desc">Kanban boards, Gantt charts, and sprint planning — all synced across your entire organization.</div>
+    </div>
+    <div class="fcard a up" data-d="2">
+      <div class="fcard-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="7" r="3.5"/><path d="M2 17v-1a5 5 0 0110 0v1"/><path d="M16 9l2 2-4 4"/></svg></div>
+      <div class="fcard-title">Team Collaboration</div>
+      <div class="fcard-desc">Built-in chat, file sharing, and async video updates keep distributed teams in perfect sync.</div>
+    </div>
+    <div class="fcard a up" data-d="1">
+      <div class="fcard-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10h14M3 5h14M3 15h8"/></svg></div>
+      <div class="fcard-title">Custom Workflows</div>
+      <div class="fcard-desc">Automate repetitive tasks with flexible rule-based workflows tailored to your team's process.</div>
+    </div>
+    <div class="fcard a up" data-d="2">
+      <div class="fcard-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.5 2.5"/></svg></div>
+      <div class="fcard-title">Time Tracking</div>
+      <div class="fcard-desc">Capture billable hours effortlessly and turn time data into accurate project cost forecasts.</div>
+    </div>
+    <div class="fcard a up" data-d="3">
+      <div class="fcard-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg></div>
+      <div class="fcard-title">100+ Integrations</div>
+      <div class="fcard-desc">Connect with Slack, GitHub, Figma, and every tool your team already loves and uses every day.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="sec-header">
+    <div class="sec-eyebrow a up">Pricing</div>
+    <h2 class="sec-h2 a up" data-d="1">Our Pricing</h2>
+    <p class="sec-sub a up" data-d="2">Start free, scale as you grow. No hidden fees, no surprises.</p>
+  </div>
+  <div style="text-align:center;">
+    <div class="price-toggle">
+      <button class="ptog-opt on" id="tog-m">Monthly</button>
+      <button class="ptog-opt" id="tog-y">Annually <span class="price-save">−20%</span></button>
+    </div>
+  </div>
+  <div class="price-grid">
+    <div class="price-card a up">
+      <div class="price-plan">Free</div>
+      <div class="price-amount">$0<span style="font-size:20px;font-weight:400;">/m</span></div>
+      <div class="price-per">Forever free for individuals</div>
+      <div class="price-hr"></div>
+      <div class="price-feats">
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>3 active projects</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Up to 5 members</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Basic analytics</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>2 GB storage</div>
+      </div>
+      <a href="#" class="price-btn">Get Started Free</a>
+    </div>
+    <div class="price-card featured a scale" data-d="1">
+      <div class="price-hot">Most Popular</div>
+      <div class="price-plan">Pro</div>
+      <div class="price-amount">$14.99<span style="font-size:20px;font-weight:400;">/m</span></div>
+      <div class="price-per">Billed monthly per seat</div>
+      <div class="price-hr"></div>
+      <div class="price-feats">
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Unlimited projects</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Up to 50 members</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Advanced analytics</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Priority support</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Custom integrations</div>
+      </div>
+      <a href="#" class="price-btn">Start Pro Trial</a>
+    </div>
+    <div class="price-card a up" data-d="2">
+      <div class="price-plan">Enterprise</div>
+      <div class="price-amount">$49.99<span style="font-size:20px;font-weight:400;">/m</span></div>
+      <div class="price-per">Billed annually per seat</div>
+      <div class="price-hr"></div>
+      <div class="price-feats">
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Everything in Pro</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Unlimited members</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>SSO & advanced security</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>Dedicated support</div>
+        <div class="pfeat"><div class="pcheck"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2.5"/></svg></div>SLA guarantee</div>
+      </div>
+      <a href="#" class="price-btn">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="sec-header">
+    <div class="sec-eyebrow a up">Testimonials</div>
+    <h2 class="sec-h2 a up" data-d="1">What People Say</h2>
+  </div>
+  <div class="tcard-grid">
+    <div class="tcard a up">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-q">"Vela transformed how our product team operates. We shipped 40% more features last quarter with no additional headcount."</p>
+      <div class="tcard-author">
+        <div class="tcard-av" style="background:var(--acc)"></div>
+        <div>
+          <div class="tcard-name">Sarah Kim</div>
+          <div class="tcard-role">VP of Product, Luma Inc.</div>
+        </div>
+      </div>
+    </div>
+    <div class="tcard a up" data-d="1">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-q">"The analytics dashboard alone was worth the switch. Our leadership team finally has real-time visibility into every project's progress."</p>
+      <div class="tcard-author">
+        <div class="tcard-av" style="background:#10B981"></div>
+        <div>
+          <div class="tcard-name">James Okonkwo</div>
+          <div class="tcard-role">CTO, Meridian Systems</div>
+        </div>
+      </div>
+    </div>
+    <div class="tcard a up" data-d="2">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-q">"Onboarding was seamless. Within a week, our 60-person team had fully migrated from three different tools into one clean workspace."</p>
+      <div class="tcard-author">
+        <div class="tcard-av" style="background:#F59E0B"></div>
+        <div>
+          <div class="tcard-name">Priya Sharma</div>
+          <div class="tcard-role">Head of Operations, Apex Co.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-orb"></div>
+  <div class="cta-eyebrow a up">Get Started Today</div>
+  <h2 class="cta-h2 a up" data-d="1">Your Team Deserves<br><em>Better Tools.</em></h2>
+  <p class="cta-sub a up" data-d="2">Join 12,000+ teams already using Vela to move faster, work smarter, and deliver results that matter.</p>
+  <div class="cta-btns a up" data-d="3">
+    <a href="#pricing" class="cta-primary">
+      Start Free — No Card Required
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.5h9M8 3.5l3 3-3 3"/></svg>
+    </a>
+    <a href="#features" class="cta-ghost">See All Features</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">
+        <div class="foot-logo-mark">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 12L7 2L12 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9H10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="foot-logo-name">Vela</span>
+      </div>
+      <div class="foot-desc">The workspace intelligence platform built for modern, high-performing teams.</div>
+    </div>
+    <div>
+      <div class="foot-col-title">Product</div>
+      <ul class="foot-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Roadmap</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">Company</div>
+      <ul class="foot-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">Legal</div>
+      <ul class="foot-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-btm">
+    <div class="foot-copy">© 2026 Vela Technologies Inc. All rights reserved.</div>
+    <div class="foot-copy">Made for ambitious teams.</div>
+  </div>
+</footer>
+
+
+
+<!-- SCRIPTS -->
+<script>
+/* Nav */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('solid', window.scrollY > 40);
+}, { passive: true });
+
+/* Logos */
+const brands = ['Stripe','Notion','Linear','Figma','Vercel','Loom','Miro','Asana','Intercom','Zapier'];
+const track = document.getElementById('logo-track');
+[...brands, ...brands].forEach(b => {
+  const d = document.createElement('div');
+  d.className = 'logo-chip'; d.textContent = b;
+  track.appendChild(d);
+});
+
+/* Scroll animations */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.a').forEach(el => io.observe(el));
+
+/* Pricing toggle */
+const MONTHLY = { free:'$0',pro:'$14.99',ent:'$49.99' };
+const ANNUAL  = { free:'$0',pro:'$11.99',ent:'$39.99' };
+const togM = document.getElementById('tog-m');
+const togY = document.getElementById('tog-y');
+const amounts = document.querySelectorAll('.price-amount');
+let yearly = false;
+function setYearly(v) {
+  yearly = v;
+  togM.classList.toggle('on', !v);
+  togY.classList.toggle('on', v);
+  const d = v ? ANNUAL : MONTHLY;
+  const suffix = '<span style="font-size:20px;font-weight:400;">/m</span>';
+  if (amounts[0]) amounts[0].innerHTML = d.free + suffix;
+  if (amounts[1]) amounts[1].innerHTML = d.pro + suffix;
+  if (amounts[2]) amounts[2].innerHTML = d.ent + suffix;
+}
+togM.addEventListener('click', () => setYearly(false));
+togY.addEventListener('click', () => setYearly(true));
+</script>
+
+
+
+
+
+
+</body>
+</html>

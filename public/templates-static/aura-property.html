@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luxury Property Showcase</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1A1A1A",
+                        "background-light": "#F8F8F8",
+                        "background-dark": "#0F0F0F",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1C1C1C",
+                        accent: "#D4AF37"
+                    },
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'lg': '1rem',
+                        'xl': '1.5rem',
+                        '2xl': '2rem',
+                    },
+                },
+            },
+        };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300">
+<nav class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center text-white mix-blend-difference">
+<a class="font-display text-2xl font-bold tracking-wider" href="#">AURA.</a>
+<div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+<a class="hover:text-accent transition-colors" href="#">Collection</a>
+<a class="hover:text-accent transition-colors" href="#">Architects</a>
+<a class="hover:text-accent transition-colors" href="#">Journal</a>
+<a class="hover:text-accent transition-colors" href="#">Contact</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="text-sm font-medium hover:text-accent transition-colors hidden md:block">Sign In</button>
+<button class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition-colors">Menu</button>
+</div>
+</nav>
+<header class="relative h-screen w-full overflow-hidden">
+<img alt="Modern glass house at sunset" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccmfEp2OLqZN-u88LioSPbOEqhoOfTVu_76y71-yBseN19VMWfcz8MibTN0N0VfUf2THtY2TbYBwKlp_JSkSdGcQ8SlfekznVQe-H5w2-jx2DyILW83dNUxArVvCJ6N2f4K7qGW67rJnZIDyZdPhY3z16e2aA7xih0hemxM6z64dUEL_fayCh2WA9Ev1ta6qFIx-10448shOhxIRm15SVm1df7jQGVT5CROxNXVn-9JXEoR51igTD3TpDtdn8E84XjqxMLZ_MjfM"/>
+<div class="absolute inset-0 bg-black/30"></div>
+<div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+<p class="text-white/80 uppercase tracking-[0.3em] text-sm mb-6 font-medium">Curated Residences</p>
+<h1 class="text-white font-display text-6xl md:text-8xl lg:text-9xl mb-8 leading-tight">The Art of<br/>Living</h1>
+<button class="bg-accent text-white px-8 py-4 rounded-full text-sm uppercase tracking-widest font-semibold hover:bg-yellow-600 transition-colors">Explore the Collection</button>
+</div>
+<div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4">
+<div class="bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md rounded-full p-2 flex items-center justify-between shadow-2xl border border-white/20">
+<div class="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300">Discover by Style</div>
+<button class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors">
+<span class="material-icons">expand_more</span>
+</button>
+</div>
+</div>
+</header>
+<section class="py-24 px-6 md:px-12 lg:px-24 max-w-screen-2xl mx-auto">
+<div class="flex justify-between items-end mb-16">
+<div>
+<p class="text-accent uppercase tracking-widest text-xs font-semibold mb-3">Featured</p>
+<h2 class="text-4xl md:text-5xl font-display">Architectural Spotlights</h2>
+</div>
+<a class="hidden md:flex items-center text-sm font-semibold border-b border-black dark:border-white pb-1 hover:text-accent hover:border-accent transition-colors" href="#">
+                View All Projects <span class="material-icons ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+<div class="md:col-span-8 group cursor-pointer">
+<div class="relative h-[60vh] md:h-[80vh] overflow-hidden rounded-2xl mb-6">
+<img alt="Minimalist concrete villa" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlZYgb3m0GFH1TCxLeR3XqoiP_jvQbCLyODmELPYhCXcra-0FrdiRuAVFuZYnwtqTM6OUWpaup9g4rpWPHZiBISK0JBfgb_nt3fygi5IfoE4lHriHwWigzpeD_FS6ODjsaJ0z2KbZzYjfUwIX3NcGzseBZCZZYFgSRFRtPDCdXth8EDD7TsNgzjFMy4ntxvqJB-J35DtEtONZ34SnxygVFntIxfItbFzEQZCUjxJG-yz9hh3cHSl8w_A2jLTHvkYD4V37xdf8Pmiw"/>
+<div class="absolute top-6 left-6 bg-white/90 dark:bg-black/90 px-4 py-2 rounded-full text-xs font-semibold tracking-wider">NEW LISTING</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-2xl font-display mb-2">The Concrete Pavilion</h3>
+<p class="text-gray-500 dark:text-gray-400 text-sm">By Studio OODA • Kyoto, Japan</p>
+</div>
+<div class="text-right">
+<p class="text-xl font-medium">$8,500,000</p>
+</div>
+</div>
+</div>
+<div class="md:col-span-4 flex flex-col gap-8 md:gap-12">
+<div class="group cursor-pointer">
+<div class="relative h-[40vh] overflow-hidden rounded-2xl mb-4">
+<img alt="Modern interior design" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6DTWSnHzrShv_mGlsOe1HTYImEQfRFfHRqjLpQwSXO4N1Bt_IuKypfmrIJOx4reoYofccwS6Wg7CEoax-b_96HhFlPTZihoLll9iWT8sV2EZunH75PM__BCBp08ZdV1OVkq2OTYb8Y-MoCfKn3tdD1nSKTJrdmX0DrMdtKpV8oUloaTR1rZqnTHFloy1lEBW7W4dvr19ZzNenFTXlsU1Gi76xm8I9ByV6zWFcrZ7aZ5FU483DrBLbwBNo3TKvGuxEVm_6CPE9SDA"/>
+</div>
+<h3 class="text-xl font-display mb-1">Glass House Retreat</h3>
+<p class="text-gray-500 dark:text-gray-400 text-sm mb-2">By Philip Johnson Assoc.</p>
+<p class="font-medium">$4,200,000</p>
+</div>
+<div class="group cursor-pointer">
+<div class="relative h-[40vh] overflow-hidden rounded-2xl mb-4">
+<img alt="Luxury pool area" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf9oWpFyg2E_Y_szRsQ1GhzqsTNACcw30lcnGUxSNTml9L4gbiQjybmtLBjLh_xkcbW9tIOsxQbq3LoULcYyYvScYf8LDkAwkmzwKLzVNQB7ZFhlqHftKiZwfIcGZpINbdrTZ3wgfG1Db6AEw7MGgmcTDFIgUH9BvLfUqSZVBZwfLK7Xv4ayh53TGBn0Fogo5Vuobk7I0pN-J_woVoBD3ZGvq6ycm4SON9y18goVlG2geaR9xCW04ePgs3eIWVswvGOIFsbDrcH9U"/>
+</div>
+<h3 class="text-xl font-display mb-1">Villa Aqua</h3>
+<p class="text-gray-500 dark:text-gray-400 text-sm mb-2">By SAOTA • Mykonos, Greece</p>
+<p class="font-medium">$12,000,000</p>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-surface-light dark:bg-surface-dark py-12 px-6 md:px-12 border-t border-gray-200 dark:border-gray-800">
+<div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center">
+<div class="text-2xl font-display font-bold mb-4 md:mb-0">AURA.</div>
+<div class="flex space-x-6 text-sm text-gray-500 dark:text-gray-400">
+<a class="hover:text-primary dark:hover:text-white transition-colors" href="#">Instagram</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors" href="#">Pinterest</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors" href="#">LinkedIn</a>
+</div>
+<p class="text-xs text-gray-400 mt-4 md:mt-0">© 2024 Aura Properties. All rights reserved.</p>
+</div>
+</footer>
+
+</body></html>

@@ -24,8 +24,9 @@ type AppShellProps = {
 export function AppShell({ siteName, navItems, settings, children }: AppShellProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
+  const isTemplatePreview = /^\/templates\/[^/]+/.test(pathname);
 
-  if (isAdminRoute) {
+  if (isAdminRoute || isTemplatePreview) {
     return <>{children}</>;
   }
 
