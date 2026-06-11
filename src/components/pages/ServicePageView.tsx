@@ -314,6 +314,51 @@ export function ServicePageView({ page }: ServicePageViewProps) {
         </Link>
       </section>
 
+      {/* TEMPLATES CROSS-REFERENCE */}
+      <section className="v-svc-block v-svc-block-ink" style={{ '--accent': '#C8E64B' } as CSSProperties}>
+        <div className="v-svc-block-marker">
+          <span className="v-svc-block-n">◈</span>
+          <span className="v-svc-block-tag">TEMPLATES</span>
+        </div>
+
+        <div className="v-svc-block-head">
+          <h2>Need a head start?</h2>
+          <span className="v-svc-block-sub">Vanaila Atelier originals</span>
+        </div>
+
+        <p className="v-svc-lede">
+          Production-ready websites built on the Vanaila design system — with full scroll animations,
+          design tokens, and clean React + Tailwind code. Pick a template. Own it completely.
+        </p>
+
+        <div className="v-svc-deliverables">
+          {[
+            { n: '01', title: 'Design-first', desc: 'Every template ships with the full Vanaila token set — spacing, typography, motion, colour. Not a theme. A system.' },
+            { n: '02', title: 'Fully editable', desc: 'Plain React and Tailwind. No black-box theme system. Your devs can modify everything from day one.' },
+            { n: '03', title: 'Production-ready', desc: 'Not prototypes. Each template is built and verified to perform in real deployments — fast, accessible, and maintainable.' },
+          ].map((item) => (
+            <div key={item.n} className="v-svc-deliverable">
+              <div className="v-svc-deliverable-header">
+                <span>{item.n}</span>
+                <span className="v-svc-deliverable-bar" />
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <Link
+          href="/templates"
+          className="v-svc-discuss-link"
+          style={{ marginTop: 32, display: 'inline-flex' }}
+          onMouseEnter={() => setMode('link')}
+          onMouseLeave={() => setMode('default')}
+        >
+          Browse template collection <span>→</span>
+        </Link>
+      </section>
+
       {/* WHY US */}
       <section className="v-svc-why">
         <div className="v-svc-why-head">

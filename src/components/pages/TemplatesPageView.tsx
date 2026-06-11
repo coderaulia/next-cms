@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
 import { useCursorMode } from '@/components/CustomCursor';
-import type { TemplateEntry } from '@/components/templates/registry';
+import type { TemplateMetadata } from '@/components/templates/registry';
 
 type TemplatesPageViewProps = {
-  templates: TemplateEntry[];
+  templates: TemplateMetadata[];
 };
 
 const CATEGORY_ACCENT: Record<string, string> = {
@@ -34,7 +34,7 @@ function EmptyState() {
   );
 }
 
-function TemplateCard({ template }: { template: TemplateEntry }) {
+function TemplateCard({ template }: { template: TemplateMetadata }) {
   const { setMode } = useCursorMode();
   const accent = categoryAccent(template.category);
 
