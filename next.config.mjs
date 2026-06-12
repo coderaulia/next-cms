@@ -8,7 +8,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   compress: true,
   experimental: {
-    optimizePackageImports: ['lucide-react']
+    optimizePackageImports: ['lucide-react'],
+    // Inline CSS into the HTML to remove the render-blocking stylesheet
+    // request (~1.3s on mobile). CSP already allows style-src unsafe-inline.
+    inlineCss: true
   }
 };
 

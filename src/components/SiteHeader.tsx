@@ -131,6 +131,8 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
               <img
                 src={brandLogo}
                 alt={brandName}
+                fetchPriority="high"
+                decoding="async"
                 style={{ height: 36, width: 'auto', maxWidth: 160, objectFit: 'contain' }}
               />
             ) : (

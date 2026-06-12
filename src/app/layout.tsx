@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Sora, Playfair_Display, Inter_Tight, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
+import { preconnect, preload } from 'react-dom';
 
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { AppShell } from '@/components/AppShell';
@@ -92,6 +93,21 @@ export default async function RootLayout({
 }>) {
   const nonce = (await headers()).get('x-nonce') || undefined;
   const [settings, pages] = await Promise.all([getSiteSettings(), getPublishedPages()]);
+
+  // The header logo is the LCP element on most pages. Warm up its origin and
+  // start fetching it before the parser reaches the <img> deep in the body.
+  const brandLogo = settings.branding.headerLogo || settings.organizationLogo;
+  if (brandLogo) {
+    try {
+      const logoOrigin = new URL(brandLogo, settings.general.baseUrl).origin;
+      if (logoOrigin !== new URL(settings.general.baseUrl).origin) {
+        preconnect(logoOrigin);
+      }
+    } catch {
+      // Malformed logo URL — skip the hint, the <img> will still load.
+    }
+    preload(brandLogo, { as: 'image', fetchPriority: 'high' });
+  }
 
   const pageNavMap = new Map(
     pages.map((page) => [
