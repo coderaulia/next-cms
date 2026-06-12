@@ -584,7 +584,7 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
         ) : null}
         {form.url ? (
           <div className="admin-card" style={{ marginTop: 16 }}>
-            <p className="admin-kpi-label">Preview</p>
+            <h3 className="admin-section-heading">Preview</h3>
             <img src={form.url} alt={form.altText || form.title} style={{ maxWidth: '100%', borderRadius: 16 }} />
           </div>
         ) : null}

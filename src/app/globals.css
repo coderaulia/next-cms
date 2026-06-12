@@ -1397,6 +1397,31 @@ main {
   margin: 0;
 }
 
+/* Tailwind preflight resets headings to inherit; restore an explicit
+   admin type scale so h2/h3/h4 are visually distinct from body text. */
+.admin-shell h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.admin-shell h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.admin-shell h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.admin-shell .admin-section-heading {
+  font-size: 1rem;
+}
+
+.admin-shell .admin-form-section-title {
+  font-size: 0.78rem;
+}
+
 
 .admin-editor-toolbar {
   position: sticky;
@@ -1437,6 +1462,31 @@ main {
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+}
+
+.admin-section-heading {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-form-section-title {
+  grid-column: 1 / -1;
+  margin: 14px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.admin-form-section-title:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .admin-form-wrap label {

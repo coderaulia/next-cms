@@ -218,6 +218,7 @@ function SettingsEditor() {
 
         {activeTab === 'general' ? (
           <div className="admin-grid-2">
+            <h3 className="admin-form-section-title">Site identity</h3>
             <label>
               Website title
               <input
@@ -341,6 +342,7 @@ function SettingsEditor() {
                 onChange={(event) => setSettings({ ...settings, organizationName: event.target.value })}
               />
             </label>
+            <h3 className="admin-form-section-title">Brand assets</h3>
             <div style={{ gridColumn: '1 / -1' }}>
               <MediaPickerField
                 label="Organization logo"
@@ -393,6 +395,7 @@ function SettingsEditor() {
                 No uploaded logo is set right now. The public site is using the built-in text logo fallback until you upload a real header or organization logo.
               </p>
             ) : null}
+            <h3 className="admin-form-section-title">Header navigation</h3>
             <div style={{ gridColumn: '1 / -1' }}>
               <NavigationLinksEditor
                 label="Header menu links"
@@ -431,6 +434,7 @@ function SettingsEditor() {
                 }
               />
             </label>
+            <h3 className="admin-form-section-title">Footer navigation</h3>
             <div style={{ gridColumn: '1 / -1' }}>
               <NavigationLinksEditor
                 label="Footer navigator links"
@@ -459,6 +463,7 @@ function SettingsEditor() {
                 }
               />
             </div>
+            <h3 className="admin-form-section-title">Contact details</h3>
             <label>
               Company name
               <input
@@ -631,6 +636,7 @@ function SettingsEditor() {
                 }
               />
             </label>
+            <h3 className="admin-form-section-title">Social links</h3>
             <label>
               Website/social link
               <input
@@ -679,6 +685,7 @@ function SettingsEditor() {
                 }
               />
             </label>
+            <h3 className="admin-form-section-title">Footer branding</h3>
             <label>
               Footer tagline
               <input

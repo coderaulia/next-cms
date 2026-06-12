@@ -254,7 +254,7 @@ function MediaAssetBrowser({
         <div className="admin-media-browser">
           <div className="admin-inline-header">
             <div>
-              <p className="admin-kpi-label">Media library</p>
+              <h3 className="admin-section-heading">Media library</h3>
               <p className="admin-subtle">Pick from uploaded images without copying URLs.</p>
             </div>
             <input
@@ -412,7 +412,7 @@ export function MediaGalleryField({ label, values, onChange, helperText }: Media
     <div className="admin-media-field">
       <div className="admin-inline-header">
         <div>
-          <p className="admin-kpi-label">{label}</p>
+          <h3 className="admin-section-heading">{label}</h3>
           {helperText ? <p className="admin-subtle">{helperText}</p> : null}
         </div>
         <MediaAssetBrowser

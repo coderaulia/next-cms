@@ -392,7 +392,7 @@ export function BlogEditorForm({
           </select>
         </label>
         <div>
-          <p className="admin-kpi-label">Tags (Quick Select)</p>
+          <h3 className="admin-section-heading">Tags (Quick Select)</h3>
           <div className="admin-actions" style={{ flexWrap: 'wrap' }}>
             {categories.map((cat) => {
               const active = post.tags.includes(cat.slug);

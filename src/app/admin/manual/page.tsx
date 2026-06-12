@@ -103,7 +103,7 @@ function RoleBadge({ role, color }: { role: string; color: string }) {
 function SectionAnchor({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="admin-card" style={{ scrollMarginTop: 80 }}>
-      <h2 style={{ margin: '0 0 16px', fontSize: '1.15rem', color: '#0f2240' }}>{title}</h2>
+      <h2 style={{ margin: '0 0 16px', color: '#0f2240' }}>{title}</h2>
       {children}
     </section>
   );
@@ -236,14 +236,14 @@ export default function AdminManualPage() {
                 <><strong>Revision history</strong> — every save is versioned; restore any previous version</>,
               ]} />
 
-              <h3 style={{ margin: '18px 0 10px', fontSize: '0.95rem', color: '#0f2240' }}>Home page extras</h3>
+              <h3 style={{ margin: '18px 0 10px', color: '#0f2240' }}>Home page extras</h3>
               <Bullets items={[
                 'Add, remove, reorder, or toggle homepage blocks (hero, value triplet, solutions grid, etc.)',
                 <>Pick a theme token: <code>light</code>, <code>blue-soft</code>, or <code>mist</code></>,
                 'Edit each block\'s content directly in the block editor',
               ]} />
 
-              <h3 style={{ margin: '18px 0 10px', fontSize: '0.95rem', color: '#0f2240' }}>All other pages</h3>
+              <h3 style={{ margin: '18px 0 10px', color: '#0f2240' }}>All other pages</h3>
               <Bullets items={[
                 <>Layout toggle per section: <code>stacked</code> (image above/below text) or <code>split</code> (side by side)</>,
                 'Heading, body copy, CTA button, and media fields per section',
@@ -260,7 +260,7 @@ export default function AdminManualPage() {
                 'Publish immediately, keep as draft, or schedule for a future date',
                 'Restore from revision history if you need to undo a change',
               ]} />
-              <h3 style={{ margin: '18px 0 10px', fontSize: '0.95rem', color: '#0f2240' }}>Finding posts</h3>
+              <h3 style={{ margin: '18px 0 10px', color: '#0f2240' }}>Finding posts</h3>
               <Bullets items={[
                 'Search by title or author name',
                 'Filter by status: draft / published / scheduled',
@@ -279,7 +279,7 @@ export default function AdminManualPage() {
                 'Publish immediately or schedule',
                 'Restore from revision history if needed',
               ]} />
-              <h3 style={{ margin: '18px 0 10px', fontSize: '0.95rem', color: '#0f2240' }}>List extras</h3>
+              <h3 style={{ margin: '18px 0 10px', color: '#0f2240' }}>List extras</h3>
               <Bullets items={[
                 'Tag filter — organize by technology, industry, etc.',
                 'Featured filter — surface specific projects in featured sections',
@@ -298,7 +298,7 @@ export default function AdminManualPage() {
                 <><strong>Storage quota</strong> — default 1 GB; uploads blocked once exceeded (set via <code>CMS_STORAGE_QUOTA_MB</code>)</>,
               ]} />
               <Tip>You don&apos;t need to open the media library to add images. Every image field in the page/post/portfolio editor has a built-in upload button and library picker.</Tip>
-              <h3 style={{ margin: '18px 0 10px', fontSize: '0.95rem', color: '#0f2240' }}>Storage providers</h3>
+              <h3 style={{ margin: '18px 0 10px', color: '#0f2240' }}>Storage providers</h3>
               <p style={{ margin: '0 0 8px', fontSize: '0.88rem', color: '#6b7280' }}>First matching provider wins:</p>
               <Steps items={[
                 'Cloudflare R2 — set all R2_* environment variables',
