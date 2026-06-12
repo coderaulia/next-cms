@@ -45,6 +45,7 @@ const BdoClth = () => (
 export const templateRegistry: TemplateEntry[] = [
   {
     slug: 'maritim-corp',
+    previewImage: '/templates-static/previews/maritim-corp.jpg',
     name: 'Maritim Corp',
     category: 'Corporate',
     description:
@@ -54,6 +55,7 @@ export const templateRegistry: TemplateEntry[] = [
   },
   {
     slug: 'vela',
+    previewImage: '/templates-static/previews/vela.jpg',
     name: 'Vela',
     category: 'SaaS',
     description:
@@ -63,6 +65,7 @@ export const templateRegistry: TemplateEntry[] = [
   },
   {
     slug: 'kantor-hukum',
+    previewImage: '/templates-static/previews/kantor-hukum.jpg',
     name: 'Kantor Hukum',
     category: 'Law Firm',
     description:
@@ -72,6 +75,7 @@ export const templateRegistry: TemplateEntry[] = [
   },
   {
     slug: 'dcosta',
+    previewImage: '/templates-static/previews/dcosta.jpg',
     name: "D'costa",
     category: 'FMCG',
     description:
@@ -81,6 +85,7 @@ export const templateRegistry: TemplateEntry[] = [
   },
   {
     slug: 'aura-property',
+    previewImage: '/templates-static/previews/aura-property.jpg',
     name: 'AURA.',
     category: 'Real Estate',
     description:
@@ -90,6 +95,7 @@ export const templateRegistry: TemplateEntry[] = [
   },
   {
     slug: 'javanesa',
+    previewImage: '/templates-static/previews/javanesa.jpg',
     name: 'Javanesa.',
     category: 'E-commerce',
     description:
@@ -99,6 +105,7 @@ export const templateRegistry: TemplateEntry[] = [
   },
   {
     slug: 'bdo-clth',
+    previewImage: '/templates-static/previews/bdo-clth.jpg',
     name: 'BDO.CLTH',
     category: 'Streetwear',
     description:

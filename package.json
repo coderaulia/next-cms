@@ -69,6 +69,7 @@
     "eslint": "^9.17.0",
     "eslint-config-next": "^16.2.6",
     "jsdom": "^25.0.1",
+    "puppeteer-core": "^25.1.0",
     "tsx": "^4.21.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.59.0",
