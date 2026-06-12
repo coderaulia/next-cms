@@ -41,11 +41,13 @@ function normalizeLinks(
       const label = String(row.label ?? '').trim();
       const href = String(row.href ?? '').trim();
       if (!label || !href) return null;
+      const children = Array.isArray(row.children) ? normalizeLinks(row.children, []) : [];
       return {
         id: String(row.id ?? '').trim() || `link-${index + 1}`,
         label,
         href,
-        enabled: typeof row.enabled === 'boolean' ? row.enabled : true
+        enabled: typeof row.enabled === 'boolean' ? row.enabled : true,
+        ...(children.length > 0 ? { children } : {})
       };
     })
     .filter((entry): entry is SiteSettings['navigation']['headerLinks'][number] => Boolean(entry));
