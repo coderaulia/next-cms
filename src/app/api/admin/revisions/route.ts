@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { assertAdminPermission } from '@/features/cms/adminAuth';
-import { listContentRevisions } from '@/features/cms/contentRevisions';
+import { listContentRevisions, listContentRevisionsPage } from '@/features/cms/contentRevisions';
 import type { CmsRevisionEntityType } from '@/features/cms/types';
 
 const revisionEntityTypes: CmsRevisionEntityType[] = ['page', 'blog_post', 'portfolio_project', 'site_settings'];
@@ -29,6 +29,16 @@ export async function GET(request: Request) {
   if ('error' in auth) return auth.error;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const session = auth.session;
+
+  const pageParam = url.searchParams.get('page');
+  if (pageParam) {
+    const pageSize = Number(url.searchParams.get('pageSize') ?? '10');
+    const result = await listContentRevisionsPage(entityType, entityId, Number(pageParam), pageSize);
+    return NextResponse.json({
+      revisions: result.revisions,
+      meta: { total: result.total, page: result.page, pageSize: result.pageSize }
+    });
+  }
 
   const revisions = await listContentRevisions(entityType, entityId, limit);
   return NextResponse.json({ revisions });

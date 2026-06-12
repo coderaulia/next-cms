@@ -2,7 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import { cmsContentRevisionsTable } from '@/db/schema';
@@ -115,6 +115,33 @@ function buildRevisionSummary(entityType: CmsRevisionEntityType, payload: CmsRev
     default:
       return 'Content revision';
   }
+}
+
+function collectChangedPaths(a: unknown, b: unknown, prefix: string, depth: number, out: string[]): string[] {
+  if (out.length > 12) return out;
+  const bothPlainObjects =
+    a && b && typeof a === 'object' && typeof b === 'object' && !Array.isArray(a) && !Array.isArray(b);
+
+  if (!bothPlainObjects || depth >= 2) {
+    if (JSON.stringify(a) !== JSON.stringify(b)) out.push(prefix || 'content');
+    return out;
+  }
+
+  const recordA = a as Record<string, unknown>;
+  const recordB = b as Record<string, unknown>;
+  const keys = new Set([...Object.keys(recordA), ...Object.keys(recordB)]);
+  for (const key of keys) {
+    collectChangedPaths(recordA[key], recordB[key], prefix ? `${prefix}.${key}` : key, depth + 1, out);
+  }
+  return out;
+}
+
+function buildChangeSummary(previous: CmsRevisionPayload, next: CmsRevisionPayload): string | null {
+  const paths = collectChangedPaths(previous, next, '', 0, []);
+  if (paths.length === 0) return null;
+  const shown = paths.slice(0, 5);
+  const more = paths.length - shown.length;
+  return `Changed: ${shown.join(', ')}${more > 0 ? ` +${more} more` : ''}`;
 }
 
 function parseRevisionFile(raw: string): CmsContentRevision[] {
@@ -301,12 +328,14 @@ export async function captureContentRevision(input: CaptureContentRevisionInput)
     return toSummary(latest);
   }
 
+  const changeSummary = latest ? buildChangeSummary(latest.payload, input.payload) : null;
+
   const revision: CmsContentRevision = {
     id: randomUUID(),
     entityType: input.entityType,
     entityId: input.entityId,
     label: input.label,
-    summary: input.summary || buildRevisionSummary(input.entityType, input.payload),
+    summary: input.summary || changeSummary || buildRevisionSummary(input.entityType, input.payload),
     createdAt: nowIso(),
     userId: input.userId ?? null,
     userDisplayName: input.userDisplayName ?? null,
@@ -381,6 +410,75 @@ export async function listContentRevisions(
     .filter((revision) => revision.entityType === entityType && revision.entityId === entityId)
     .slice(0, safeLimit)
     .map(toSummary);
+}
+
+export type PagedContentRevisions = {
+  revisions: CmsContentRevisionSummary[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
+export async function listContentRevisionsPage(
+  entityType: CmsRevisionEntityType,
+  entityId: string,
+  page = 1,
+  pageSize = 10
+): Promise<PagedContentRevisions> {
+  const safePage = Math.max(1, Math.floor(page) || 1);
+  const safePageSize = Math.min(Math.max(Math.floor(pageSize) || 10, 1), 50);
+  const offset = (safePage - 1) * safePageSize;
+
+  if (env.databaseUrl) {
+    try {
+      const where = and(
+        eq(cmsContentRevisionsTable.entityType, entityType),
+        eq(cmsContentRevisionsTable.entityId, entityId)
+      );
+
+      const [countRows, rows] = await Promise.all([
+        getDb().select({ total: sql<number>`count(*)` }).from(cmsContentRevisionsTable).where(where),
+        getDb()
+          .select()
+          .from(cmsContentRevisionsTable)
+          .where(where)
+          .orderBy(desc(cmsContentRevisionsTable.createdAt))
+          .limit(safePageSize)
+          .offset(offset)
+      ]);
+
+      return {
+        revisions: rows.map((row) => ({
+          id: row.id,
+          entityType: row.entityType as CmsRevisionEntityType,
+          entityId: row.entityId,
+          label: row.label,
+          summary: row.summary,
+          createdAt: row.createdAt,
+          userId: row.userId ?? null,
+          userDisplayName: row.userDisplayName ?? null
+        })),
+        total: Number(countRows[0]?.total ?? 0),
+        page: safePage,
+        pageSize: safePageSize
+      };
+    } catch (error) {
+      if (isMissingRelationError(error)) {
+        return { revisions: [], total: 0, page: safePage, pageSize: safePageSize };
+      }
+      throw error;
+    }
+  }
+
+  const all = (await readFileRevisions()).filter(
+    (revision) => revision.entityType === entityType && revision.entityId === entityId
+  );
+  return {
+    revisions: all.slice(offset, offset + safePageSize).map(toSummary),
+    total: all.length,
+    page: safePage,
+    pageSize: safePageSize
+  };
 }
 
 export async function restoreContentRevision(

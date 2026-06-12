@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 
 import type {
@@ -23,6 +24,8 @@ type ContentRevisionPanelProps<TPayload extends CmsRevisionPayload = CmsRevision
   title?: string;
   emptyMessage?: string;
   reloadKey?: number;
+  limit?: number;
+  viewAllHref?: string;
   onRestore?: (payload: TPayload) => void;
 };
 
@@ -32,6 +35,8 @@ export function ContentRevisionPanel<TPayload extends CmsRevisionPayload = CmsRe
   title = 'Revision history',
   emptyMessage = 'No saved revisions yet.',
   reloadKey = 0,
+  limit = 10,
+  viewAllHref,
   onRestore
 }: ContentRevisionPanelProps<TPayload>) {
   const [revisions, setRevisions] = useState<CmsContentRevisionSummary[]>([]);
@@ -53,7 +58,7 @@ export function ContentRevisionPanel<TPayload extends CmsRevisionPayload = CmsRe
     const params = new URLSearchParams({
       entityType,
       entityId,
-      limit: '10'
+      limit: String(limit)
     });
 
     const response = await csrfFetch(`/api/admin/revisions?${params.toString()}`);
@@ -108,7 +113,14 @@ export function ContentRevisionPanel<TPayload extends CmsRevisionPayload = CmsRe
     <section className="admin-card">
       <div className="admin-inline-header">
         <h2>{title}</h2>
-        {loading ? <span className="admin-subtle">Loading...</span> : <span className="admin-subtle">{revisions.length} entries</span>}
+        <div className="admin-actions" style={{ alignItems: 'center' }}>
+          {loading ? <span className="admin-subtle">Loading...</span> : <span className="admin-subtle">{revisions.length} entries</span>}
+          {viewAllHref ? (
+            <Link href={viewAllHref} className="v2-btn v2-btn-secondary">
+              View all
+            </Link>
+          ) : null}
+        </div>
       </div>
       {notice ? <p className="admin-subtle">{notice}</p> : null}
       {error ? <p className="admin-error-text">{error}</p> : null}
