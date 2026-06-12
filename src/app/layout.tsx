@@ -76,7 +76,12 @@ export async function generateMetadata(): Promise<Metadata> {
         shortcut: icon,
         apple: icon
       }
-      : undefined
+      : undefined,
+    alternates: {
+      types: {
+        'application/rss+xml': [{ url: '/feed.xml', title: `${settings.general.siteName} — Insights` }]
+      }
+    }
   };
 }
 

@@ -42,7 +42,13 @@ export async function generateMetadata({ params }: BlogDetailPageProps) {
     { ...post.seo, slug: `blog/${post.seo.slug}`, keywords: post.seo.keywords ?? post.tags },
     post.title,
     post.excerpt,
-    post.coverImage || undefined
+    post.coverImage || undefined,
+    {
+      publishedTime: post.publishedAt || undefined,
+      modifiedTime: post.updatedAt,
+      authors: post.author ? [post.author] : undefined,
+      tags: post.tags.length > 0 ? post.tags : undefined
+    }
   );
 }
 

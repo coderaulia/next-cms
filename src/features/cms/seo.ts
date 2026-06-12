@@ -35,12 +35,20 @@ export function buildCanonical(baseUrl: string, slug: string, explicitCanonical?
   return absoluteUrl(baseUrl, path);
 }
 
+type ArticleMeta = {
+  publishedTime?: string;
+  modifiedTime?: string;
+  authors?: string[];
+  tags?: string[];
+};
+
 export function buildMetadata(
   site: SiteSettings,
   seo: SeoFields,
   fallbackTitle: string,
   fallbackDescription: string,
-  coverImage?: string
+  coverImage?: string,
+  article?: ArticleMeta
 ): Metadata {
   const title = resolveTitle(site, seo.metaTitle, fallbackTitle);
   const description =
@@ -62,13 +70,25 @@ export function buildMetadata(
       canonical
     },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      url: canonical,
-      images: ogImage ? [{ url: ogImage }] : []
-    },
+    openGraph: article
+      ? {
+          title,
+          description,
+          type: 'article',
+          url: canonical,
+          images: ogImage ? [{ url: ogImage }] : [],
+          publishedTime: article.publishedTime,
+          modifiedTime: article.modifiedTime,
+          authors: article.authors,
+          tags: article.tags
+        }
+      : {
+          title,
+          description,
+          type: 'website',
+          url: canonical,
+          images: ogImage ? [{ url: ogImage }] : []
+        },
     twitter: {
       card: 'summary_large_image',
       title,
