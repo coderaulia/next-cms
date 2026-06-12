@@ -8,6 +8,7 @@ import { csrfFetch } from '@/lib/clientCsrf';
 import { AdminShell } from '@/components/AdminShell';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
+import { GeneralLocaleFields } from '@/components/admin/GeneralLocaleFields';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 import { NavigationLinksEditor } from '@/components/admin/NavigationLinksEditor';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
@@ -270,54 +271,18 @@ function SettingsEditor() {
                 }
               />
             </label>
-            <label>
-              Time zone
-              <input
-                value={settings.general.timezone}
-                onChange={(event) =>
-                  setSettings({
-                    ...settings,
-                    general: { ...settings.general, timezone: event.target.value }
-                  })
-                }
-              />
-            </label>
-            <label>
-              Language
-              <input
-                value={settings.general.language}
-                onChange={(event) =>
-                  setSettings({
-                    ...settings,
-                    general: { ...settings.general, language: event.target.value }
-                  })
-                }
-              />
-            </label>
-            <label>
-              Date format
-              <input
-                value={settings.general.dateFormat}
-                onChange={(event) =>
-                  setSettings({
-                    ...settings,
-                    general: { ...settings.general, dateFormat: event.target.value }
-                  })
-                }
-              />
-            </label>
-            <label>
-              Time format
-              <input
-                value={settings.general.timeFormat}
-                onChange={(event) =>
-                  setSettings({
-                    ...settings,
-                    general: { ...settings.general, timeFormat: event.target.value }
-                  })
-                }
-              />
-            </label>
+            <GeneralLocaleFields
+              timezone={settings.general.timezone}
+              language={settings.general.language}
+              dateFormat={settings.general.dateFormat}
+              timeFormat={settings.general.timeFormat}
+              onPatch={(patch) =>
+                setSettings({
+                  ...settings,
+                  general: { ...settings.general, ...patch }
+                })
+              }
+            />
             <label>
               Week starts on (0-6)
               <input
@@ -1398,16 +1363,20 @@ function SettingsEditor() {
       </section>
 
 
-<ContentRevisionPanel<SiteSettings>
-        entityType="site_settings"
-        entityId="default"
-        reloadKey={revisionReloadKey}
-        emptyMessage="Saved settings revisions will appear here."
-        onRestore={(restoredSettings) => {
-          setSettings(restoredSettings);
-          setNotice('Settings restored from revision history.');
-        }}
-      />
+{activeTab === 'general' ? (
+        <ContentRevisionPanel<SiteSettings>
+          entityType="site_settings"
+          entityId="default"
+          reloadKey={revisionReloadKey}
+          limit={5}
+          viewAllHref="/admin/settings/revisions"
+          emptyMessage="Saved settings revisions will appear here."
+          onRestore={(restoredSettings) => {
+            setSettings(restoredSettings);
+            setNotice('Settings restored from revision history.');
+          }}
+        />
+      ) : null}
     </div>
   );
 }
