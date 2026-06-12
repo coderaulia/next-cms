@@ -109,6 +109,8 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
             <Link
               href="/contact"
               className="v-svc-btn-ghost"
+              data-analytics-event="cta_click"
+              data-analytics-label="Portfolio hero contact CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -296,6 +298,8 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
             <Link
               href="/contact"
               className="v-svc-btn-primary v-svc-btn-primary-lg"
+              data-analytics-event="cta_click"
+              data-analytics-label="Portfolio footer primary CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >

@@ -16,6 +16,9 @@ import * as contentStore from './contentStore';
 
 const RESERVED_PAGE_SLUGS = new Set(['admin', 'api', 'blog', 'portfolio']);
 
+// Routes that exist as hardcoded app directories rather than CMS pages.
+const STATIC_APP_ROUTES = ['/products', '/templates', '/privacy-policy', '/data-collection'];
+
 type LinkReference = {
   href: string;
   label: string;
@@ -75,11 +78,20 @@ function collectPageBlockLinks(block: HomeBlock): string[] {
   }
 }
 
+// Some page views (e.g. ServiceDetailPageView CTA sections) repurpose
+// mediaImage as a link target, so only flag values that look like assets.
+function looksLikeImageAsset(url: string) {
+  if (isExternalHref(url)) return true;
+  const [pathname] = url.split(/[?#]/, 1);
+  const lastSegment = pathname.split('/').pop() ?? '';
+  return lastSegment.includes('.');
+}
+
 function collectPageImageReferences(page: LandingPage): ImageReference[] {
   const refs: ImageReference[] = [];
 
   for (const section of page.sections) {
-    if (section.mediaImage.trim()) {
+    if (section.mediaImage.trim() && looksLikeImageAsset(section.mediaImage.trim())) {
       refs.push({
         url: section.mediaImage.trim(),
         label: `${page.title}: section "${section.heading || section.id}" image`,
@@ -176,7 +188,7 @@ function collectKnownPaths(
   posts: BlogPost[],
   projects: PortfolioProject[]
 ) {
-  const publishedPaths = new Set<string>(['/', '/blog', '/portfolio']);
+  const publishedPaths = new Set<string>(['/', '/blog', '/portfolio', ...STATIC_APP_ROUTES]);
   const draftOnlyPaths = new Set<string>();
 
   for (const page of pages) {

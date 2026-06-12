@@ -160,6 +160,8 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             <Link
               href="/contact"
               className="v-svc-btn-primary"
+              data-analytics-event="cta_click"
+              data-analytics-label="Service hero primary CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -403,6 +405,8 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             <Link
               href="/contact"
               className="v-svc-btn-primary v-svc-btn-primary-lg"
+              data-analytics-event="cta_click"
+              data-analytics-label="Service footer primary CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -412,6 +416,8 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             <a
               href="mailto:care@vanaila.com"
               className="v-svc-cta-mail"
+              data-analytics-event="cta_click"
+              data-analytics-label="Service footer email CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >

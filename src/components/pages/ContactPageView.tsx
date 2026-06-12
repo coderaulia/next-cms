@@ -119,6 +119,8 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
             <a
               href="#brief"
               className="v-home-btn v-home-btn-primary"
+              data-analytics-event="cta_click"
+              data-analytics-label="Contact hero brief anchor"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -127,6 +129,8 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
             <a
               href="#meet"
               className="v-home-btn v-home-btn-ghost"
+              data-analytics-event="cta_click"
+              data-analytics-label="Contact hero meet anchor"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -253,7 +257,11 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
                 >
                   {status === 'saving' ? 'Submitting…' : 'Submit my project brief →'}
                 </button>
-                <span className="v-contact-form-note">Reviewed by a human. No auto-replies.</span>
+                <span className="v-contact-form-note">
+                  {interests.length === 0
+                    ? 'Select at least one service above to submit.'
+                    : 'Reviewed by a human. No auto-replies.'}
+                </span>
               </div>
             </form>
           )}
@@ -280,6 +288,8 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
             <a
               href={emailHref}
               className="v-contact-card-cta"
+              data-analytics-event="cta_click"
+              data-analytics-label="Contact meet invite CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -337,6 +347,8 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
                 <a
                   href={whatsappHref}
                   className="v-contact-channel-v"
+                  data-analytics-event="cta_click"
+                  data-analytics-label="Contact WhatsApp channel"
                   onMouseEnter={() => setMode('link')}
                   onMouseLeave={() => setMode('default')}
                 >

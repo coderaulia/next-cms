@@ -72,6 +72,8 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
             <Link
               className="v-home-btn v-home-btn-primary"
               href={hero?.primaryCtaHref || '/contact'}
+              data-analytics-event="cta_click"
+              data-analytics-label="Home hero primary CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
@@ -81,12 +83,15 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
             <Link
               className="v-home-btn v-home-btn-ghost"
               href={hero?.secondaryCtaHref || '/portfolio'}
+              data-analytics-event="cta_click"
+              data-analytics-label="Home hero secondary CTA"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
               {hero?.secondaryCtaLabel || 'See our work'}
             </Link>
           </div>
+          <p className="v-home-trust">Free 30-min consultation · Reply within 24 business hours · No commitment</p>
         </div>
         <div className="v-home-ticker">
           <div className="v-home-ticker-track">
@@ -151,7 +156,12 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
           ))}
         </StaggerGroup>
         <Reveal>
-          <Link className="v-home-text-link v-home-text-link-light" href="/service">
+          <Link
+            className="v-home-text-link v-home-text-link-light"
+            href="/service"
+            data-analytics-event="cta_click"
+            data-analytics-label="Home explore all solutions"
+          >
             Explore all solutions <span>-&gt;</span>
           </Link>
         </Reveal>
@@ -194,7 +204,12 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
           ))}
         </StaggerGroup>
         <Reveal>
-          <Link className="v-home-text-link" href="/portfolio">
+          <Link
+            className="v-home-text-link"
+            href="/portfolio"
+            data-analytics-event="cta_click"
+            data-analytics-label="Home view full portfolio"
+          >
             View our full portfolio <span>-&gt;</span>
           </Link>
         </Reveal>
@@ -241,8 +256,12 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
           </div>
         </Reveal>
         <div className="v-home-logo-actions">
-          <Link href="/portfolio">View our portfolio -&gt;</Link>
-          <Link href="/contact">Let&apos;s talk growth -&gt;</Link>
+          <Link href="/portfolio" data-analytics-event="cta_click" data-analytics-label="Home logos portfolio link">
+            View our portfolio -&gt;
+          </Link>
+          <Link href="/contact" data-analytics-event="cta_click" data-analytics-label="Home logos contact link">
+            Let&apos;s talk growth -&gt;
+          </Link>
         </div>
       </Reveal>
 
@@ -261,15 +280,22 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </h2>
         <div className="v-home-cta-foot">
           <p>{cta?.accentText || 'Join the organizations that trust Vanaila Digital with their brand.'}</p>
-          <Link
-            className="v-home-btn v-home-btn-primary v-home-btn-large"
-            href={cta?.ctaHref || '/contact'}
-            onMouseEnter={() => setMode('link')}
-            onMouseLeave={() => setMode('default')}
-          >
-            {cta?.ctaLabel || 'Claim free consultation call'}
-            <span>-&gt;</span>
-          </Link>
+          <div className="v-home-cta-actions">
+            <Link
+              className="v-home-btn v-home-btn-primary v-home-btn-large"
+              href={cta?.ctaHref || '/contact'}
+              data-analytics-event="cta_click"
+              data-analytics-label="Home footer primary CTA"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              {cta?.ctaLabel || 'Claim free consultation call'}
+              <span>-&gt;</span>
+            </Link>
+            <p className="v-home-trust v-home-trust-light">
+              No commitment — a founder replies within 24 business hours.
+            </p>
+          </div>
         </div>
       </Reveal>
     </main>

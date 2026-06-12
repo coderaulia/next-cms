@@ -3111,6 +3111,25 @@ button:disabled {
   gap: 14px;
 }
 
+.v-home-trust {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.v-home-trust-light {
+  color: #fff;
+}
+
+.v-home-cta-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
 .v-home-btn {
   display: inline-flex;
   align-items: center;

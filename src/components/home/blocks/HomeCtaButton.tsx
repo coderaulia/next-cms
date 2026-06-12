@@ -12,7 +12,7 @@ export function HomeCtaButton({ href, label, styleToken = 'primary' }: HomeCtaBu
   const showArrow = styleToken !== 'primary';
 
   return (
-    <Link href={href} className={`v2-btn v2-btn-${styleToken}`}>
+    <Link href={href} className={`v2-btn v2-btn-${styleToken}`} data-analytics-event="cta_click" data-analytics-label={label}>
       <span>{label}</span>
       {showArrow ? <span aria-hidden="true">{'->'}</span> : null}
     </Link>
