@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react';
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { LandingPage } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 const PageEditorForm = dynamic(
   () => import('@/components/forms/PageEditorForm').then((module) => module.PageEditorForm),
   {
-    loading: () => <p>Loading page editor...</p>
+    loading: () => <AdminLoading label="Loading page editor..." />
   }
 );
 
@@ -51,7 +52,7 @@ function PageEditorScreen({ user }: PageEditorScreenProps) {
       </section>
     );
   }
-  if (loading) return <p>Loading page editor...</p>;
+  if (loading) return <AdminLoading label="Loading page editor..." />;
   if (!page) return <p>Page not found.</p>;
 
   return <PageEditorForm initialPage={page} canPublish={user.permissions.includes('content:publish')} />;

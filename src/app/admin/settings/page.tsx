@@ -11,6 +11,7 @@ import { ContentRevisionPanel } from '@/components/admin/ContentRevisionPanel';
 import { MediaPickerField } from '@/components/admin/MediaPickerField';
 import { NavigationLinksEditor } from '@/components/admin/NavigationLinksEditor';
 import type { Category, LandingPage, SiteSettings } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type SettingsResponse = {
   settings: SiteSettings;
@@ -190,7 +191,7 @@ function SettingsEditor() {
     setRevisionReloadKey((current) => current + 1);
   };
 
-  if (loading) return <p>Loading settings...</p>;
+  if (loading) return <AdminLoading label="Loading settings..." />;
   if (error) return <p className="error">{error}</p>;
   if (!settings) return <p>Settings not available.</p>;
 

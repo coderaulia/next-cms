@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react';
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { PortfolioProject } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 const PortfolioEditorForm = dynamic(
   () => import('@/components/forms/PortfolioEditorForm').then((module) => module.PortfolioEditorForm),
   {
-    loading: () => <p>Loading project editor...</p>
+    loading: () => <AdminLoading label="Loading project editor..." />
   }
 );
 
@@ -51,7 +52,7 @@ function PortfolioEditor({ user }: PortfolioEditorProps) {
       </section>
     );
   }
-  if (loading) return <p>Loading project...</p>;
+  if (loading) return <AdminLoading label="Loading project..." />;
   if (!project) return <p>Portfolio project not found.</p>;
 
   return (

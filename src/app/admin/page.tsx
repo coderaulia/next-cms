@@ -13,6 +13,7 @@ import {
 } from '@/features/cms/publicationState';
 import type { AdminPermission } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type DashboardPanelProps = {
   user: AdminSessionUser;
@@ -331,7 +332,7 @@ function DashboardPanel({ user }: DashboardPanelProps) {
   };
 
   if (error) return <p className="error">{error}</p>;
-  if (!data || !metrics) return <p>Loading dashboard...</p>;
+  if (!data || !metrics) return <AdminLoading label="Loading dashboard..." />;
 
   const renderWidget = (widgetId: WidgetId) => {
     switch (widgetId) {

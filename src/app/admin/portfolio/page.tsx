@@ -9,6 +9,7 @@ import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
 import type { PortfolioProject } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type PortfolioListPayload = {
   projects: PortfolioProject[];
@@ -127,7 +128,7 @@ function ReorderPanel({ user, onClose, onSaved }: ReorderPanelProps) {
     }
   };
 
-  if (loading) return <p>Loading projects...</p>;
+  if (loading) return <AdminLoading label="Loading projects..." />;
 
   return (
     <div className="admin-form-wrap">
@@ -367,7 +368,7 @@ function PortfolioList({ user, onReorder }: PortfolioListProps) {
     await loadProjects();
   };
 
-  if (loading) return <p>Loading projects...</p>;
+  if (loading) return <AdminLoading label="Loading projects..." />;
   if (error && !data) return <p className="error">{error}</p>;
   if (!data) return null;
 

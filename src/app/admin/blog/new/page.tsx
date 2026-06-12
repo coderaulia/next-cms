@@ -1,17 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 const BlogEditorForm = dynamic(
   () => import('@/components/forms/BlogEditorForm').then((module) => module.BlogEditorForm),
   {
-    loading: () => <p>Loading post editor...</p>
+    loading: () => <AdminLoading label="Loading post editor..." />
   }
 );
 
@@ -21,19 +22,12 @@ type CreateBlogPostProps = {
 
 function CreateBlogPost({ user }: CreateBlogPostProps) {
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const startedRef = useRef(false);
 
-  if (!user.permissions.includes('content:edit')) {
-    return (
-      <section className="admin-card">
-        <p className="admin-subtle">Your role cannot create or edit blog posts.</p>
-      </section>
-    );
-  }
+  const canEdit = user.permissions.includes('content:edit');
 
-  const createDraft = async () => {
-    setPending(true);
+  const createDraft = useCallback(async () => {
     setError('');
     const response = await csrfFetch('/api/admin/blog', {
       method: 'POST',
@@ -59,25 +53,41 @@ function CreateBlogPost({ user }: CreateBlogPostProps) {
         }
       })
     });
-    setPending(false);
     if (!response.ok) {
       setError('Failed to create draft post');
       return;
     }
     const payload = (await response.json()) as { post: BlogPost };
     setPost(payload.post);
-  };
+  }, [user.displayName]);
 
-  if (!post) {
+  useEffect(() => {
+    if (!canEdit || startedRef.current) return;
+    startedRef.current = true;
+    void createDraft();
+  }, [canEdit, createDraft]);
+
+  if (!canEdit) {
     return (
       <section className="admin-card">
-        <p>Create a draft post, then edit and publish it.</p>
-        <button type="button" onClick={createDraft} disabled={pending}>
-          {pending ? 'Creating...' : 'Create draft'}
-        </button>
-        {error ? <p className="error">{error}</p> : null}
+        <p className="admin-subtle">Your role cannot create or edit blog posts.</p>
       </section>
     );
+  }
+
+  if (error) {
+    return (
+      <section className="admin-card">
+        <p className="error">{error}</p>
+        <button type="button" className="v2-btn v2-btn-secondary" onClick={() => void createDraft()}>
+          Try again
+        </button>
+      </section>
+    );
+  }
+
+  if (!post) {
+    return <AdminLoading label="Preparing your new post..." />;
   }
 
   return (
@@ -93,7 +103,7 @@ function CreateBlogPost({ user }: CreateBlogPostProps) {
 
 export default function AdminBlogCreatePage() {
   return (
-    <AdminShell title="New Post" description="Create a draft, then complete content and SEO fields.">
+    <AdminShell title="New Post" description="A draft is created automatically — complete content and SEO fields, then publish.">
       {(user) => <CreateBlogPost user={user} />}
     </AdminShell>
   );

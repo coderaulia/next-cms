@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react';
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 const BlogEditorForm = dynamic(
   () => import('@/components/forms/BlogEditorForm').then((module) => module.BlogEditorForm),
   {
-    loading: () => <p>Loading post editor...</p>
+    loading: () => <AdminLoading label="Loading post editor..." />
   }
 );
 
@@ -51,7 +52,7 @@ function BlogEditor({ user }: BlogEditorProps) {
       </section>
     );
   }
-  if (loading) return <p>Loading post...</p>;
+  if (loading) return <AdminLoading label="Loading post..." />;
   if (!post) return <p>Post not found.</p>;
 
   return (

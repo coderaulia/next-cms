@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type Redirect = {
   id: string;
@@ -199,7 +200,7 @@ function RedirectsManager({ user }: RedirectsManagerProps) {
     );
   }
 
-  if (loading) return <p>Loading redirects...</p>;
+  if (loading) return <AdminLoading label="Loading redirects..." />;
 
   return (
     <div className="admin-form-wrap">

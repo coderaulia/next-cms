@@ -6,6 +6,7 @@ import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { logoutAllAdminSessions } from '@/features/cms/adminClientAuth';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type SessionInfo = {
   id: string;
@@ -156,7 +157,7 @@ function SessionsManager({ user }: SessionsManagerProps) {
     );
   }
 
-  if (loading) return <p>Loading active sessions...</p>;
+  if (loading) return <AdminLoading label="Loading active sessions..." />;
 
   const currentUserSessions = sessions.filter((s) => s.isCurrent);
   const otherSessions = sessions.filter((s) => !s.isCurrent);

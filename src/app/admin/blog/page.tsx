@@ -9,6 +9,7 @@ import { AdminPostsTable } from '@/components/admin/AdminPostsTable';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { BlogPost } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type BlogListPayload = {
   posts: BlogPost[];
@@ -132,7 +133,7 @@ function BlogList({ user }: BlogListProps) {
     await loadPosts();
   };
 
-  if (loading) return <p>Loading posts...</p>;
+  if (loading) return <AdminLoading label="Loading posts..." />;
   if (error && !data) return <p className="error">{error}</p>;
   if (!data) return null;
 

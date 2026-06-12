@@ -48,6 +48,7 @@ export const blogPostsTable = pgTable(
     excerpt: text('excerpt').notNull(),
     content: text('content').notNull(),
     author: text('author').notNull(),
+    categoryId: text('category_id'),
     tags: jsonb('tags').$type<string[]>().notNull(),
     coverImage: text('cover_image').notNull(),
     status: text('status').$type<BlogStatus>().notNull(),

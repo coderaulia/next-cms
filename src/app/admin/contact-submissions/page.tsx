@@ -5,6 +5,7 @@ import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { ContactSubmission, ContactSubmissionStatus } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type ContactSubmissionsResponse = {
   submissions: ContactSubmission[];
@@ -79,7 +80,7 @@ function ContactSubmissionsManager() {
     );
   };
 
-  if (loading) return <p>Loading contact submissions...</p>;
+  if (loading) return <AdminLoading label="Loading contact submissions..." />;
 
   return (
     <div className="admin-form-wrap">

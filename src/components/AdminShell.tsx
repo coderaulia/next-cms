@@ -8,6 +8,7 @@ import type { AdminSessionUser } from '@/features/cms/adminTypes';
 
 import { AdminNav } from './AdminNav';
 import { NotificationBell } from './admin/NotificationBell';
+import { AdminLoading } from './admin/AdminLoading';
 
 type AdminShellProps = {
   title: string;
@@ -70,8 +71,7 @@ export function AdminShell({ title, description, actions, children }: AdminShell
           {!ready ? (
             <div className="admin-auth-loading">
               <div className="admin-auth-loading-panel">
-                <span className="admin-chip admin-chip-muted">Loading admin</span>
-                <p className="admin-subtle">Restoring your session.</p>
+                <AdminLoading label="Restoring your session..." />
               </div>
             </div>
           ) : user ? (

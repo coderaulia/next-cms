@@ -5,6 +5,7 @@ import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { Category } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type CategoriesResponse = {
   categories: Category[];
@@ -113,7 +114,7 @@ function CategoriesManager() {
     await load();
   };
 
-  if (loading) return <p>Loading categories...</p>;
+  if (loading) return <AdminLoading label="Loading categories..." />;
 
   return (
     <div className="admin-form-wrap">

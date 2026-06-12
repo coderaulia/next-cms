@@ -8,6 +8,7 @@ import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { MediaAsset } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type MediaResponse = {
   mediaAssets: MediaAsset[];
@@ -419,7 +420,7 @@ function MediaLibraryManager({ user }: MediaLibraryManagerProps) {
     await load();
   };
 
-  if (loading) return <p>Loading media library...</p>;
+  if (loading) return <AdminLoading label="Loading media library..." />;
 
   return (
     <div className="admin-form-wrap">

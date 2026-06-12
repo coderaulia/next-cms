@@ -1,17 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import type { PortfolioProject } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 const PortfolioEditorForm = dynamic(
   () => import('@/components/forms/PortfolioEditorForm').then((module) => module.PortfolioEditorForm),
   {
-    loading: () => <p>Loading project editor...</p>
+    loading: () => <AdminLoading label="Loading project editor..." />
   }
 );
 
@@ -21,19 +22,12 @@ type CreatePortfolioProjectProps = {
 
 function CreatePortfolioProject({ user }: CreatePortfolioProjectProps) {
   const [project, setProject] = useState<PortfolioProject | null>(null);
-  const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const startedRef = useRef(false);
 
-  if (!user.permissions.includes('content:edit')) {
-    return (
-      <section className="admin-card">
-        <p className="admin-subtle">Your role cannot create or edit portfolio projects.</p>
-      </section>
-    );
-  }
+  const canEdit = user.permissions.includes('content:edit');
 
-  const createDraft = async () => {
-    setPending(true);
+  const createDraft = useCallback(async () => {
     setError('');
 
     const response = await csrfFetch('/api/admin/portfolio', {
@@ -69,8 +63,6 @@ function CreatePortfolioProject({ user }: CreatePortfolioProjectProps) {
       })
     });
 
-    setPending(false);
-
     if (!response.ok) {
       setError('Failed to create draft portfolio project');
       return;
@@ -78,18 +70,35 @@ function CreatePortfolioProject({ user }: CreatePortfolioProjectProps) {
 
     const payload = (await response.json()) as { project: PortfolioProject };
     setProject(payload.project);
-  };
+  }, []);
 
-  if (!project) {
+  useEffect(() => {
+    if (!canEdit || startedRef.current) return;
+    startedRef.current = true;
+    void createDraft();
+  }, [canEdit, createDraft]);
+
+  if (!canEdit) {
     return (
       <section className="admin-card">
-        <p>Create a draft portfolio project, then edit and publish it.</p>
-        <button type="button" onClick={createDraft} disabled={pending}>
-          {pending ? 'Creating...' : 'Create draft'}
-        </button>
-        {error ? <p className="error">{error}</p> : null}
+        <p className="admin-subtle">Your role cannot create or edit portfolio projects.</p>
       </section>
     );
+  }
+
+  if (error) {
+    return (
+      <section className="admin-card">
+        <p className="error">{error}</p>
+        <button type="button" className="v2-btn v2-btn-secondary" onClick={() => void createDraft()}>
+          Try again
+        </button>
+      </section>
+    );
+  }
+
+  if (!project) {
+    return <AdminLoading label="Preparing your new project..." />;
   }
 
   return (
@@ -104,7 +113,7 @@ function CreatePortfolioProject({ user }: CreatePortfolioProjectProps) {
 
 export default function AdminPortfolioCreatePage() {
   return (
-    <AdminShell title="New Portfolio Project" description="Create a draft, then complete content and SEO fields.">
+    <AdminShell title="New Portfolio Project" description="A draft is created automatically — complete content and SEO fields, then publish.">
       {(user) => <CreatePortfolioProject user={user} />}
     </AdminShell>
   );

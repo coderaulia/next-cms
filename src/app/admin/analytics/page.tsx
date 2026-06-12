@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type AnalyticsSummary = {
   available: boolean;
@@ -166,7 +167,7 @@ function AnalyticsPagePanel({ user }: AnalyticsPagePanelProps) {
 
   if (error) return <p className="error">{error}</p>;
 
-  if (!data && loading) return <p>Loading analytics&hellip;</p>;
+  if (!data && loading) return <AdminLoading label="Loading analytics..." />;
 
   if (data && !data.available) {
     return (

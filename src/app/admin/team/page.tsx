@@ -8,6 +8,7 @@ import type { AdminTeamMember, AdminSessionUser } from '@/features/cms/adminType
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import type { AdminRole } from '@/features/cms/types';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type TeamResponse = {
   available: boolean;
@@ -210,7 +211,7 @@ function TeamManager({ user }: TeamManagerProps) {
     );
   }
 
-  if (loading) return <p>Loading team members...</p>;
+  if (loading) return <AdminLoading label="Loading team members..." />;
 
   if (!available) {
     return (

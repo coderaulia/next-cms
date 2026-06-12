@@ -389,11 +389,21 @@ export function PortfolioEditorForm({
           </label>
           <label>
             Service type
-            <input
+            <select
               className={fieldErrors.serviceType ? 'admin-input-error' : ''}
               value={project.serviceType}
               onChange={(event) => setProject({ ...project, serviceType: event.target.value })}
-            />
+            >
+              <option value="">Select a service...</option>
+              {serviceOptions.map((option) => (
+                <option key={option.id} value={option.label}>
+                  {option.label}
+                </option>
+              ))}
+              {project.serviceType && !serviceOptions.some((option) => option.label === project.serviceType) ? (
+                <option value={project.serviceType}>{project.serviceType} (custom)</option>
+              ) : null}
+            </select>
             {fieldErrors.serviceType ? <span className="admin-error-text">{fieldErrors.serviceType}</span> : null}
           </label>
           <label>

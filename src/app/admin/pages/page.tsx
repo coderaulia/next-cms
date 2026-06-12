@@ -10,6 +10,7 @@ import { filterAndSortPages, type PagesSortBy, type PagesStatusFilter } from '@/
 import { getLandingPagePublicationLabel } from '@/features/cms/publicationState';
 import type { LandingPage, PageId } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { AdminLoading } from '@/components/admin/AdminLoading';
 
 type PagesListProps = {
   user: AdminSessionUser;
@@ -113,7 +114,7 @@ function PagesList({ user }: PagesListProps) {
     await loadPages();
   };
 
-  if (loading) return <p>Loading pages...</p>;
+  if (loading) return <AdminLoading label="Loading pages..." />;
   if (error && pages.length === 0) return <p className="error">{error}</p>;
 
   return (
