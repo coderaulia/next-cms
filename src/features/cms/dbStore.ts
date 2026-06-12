@@ -39,6 +39,7 @@ import {
 import {
   mergeWithDefaults,
   normalizePageForWrite,
+  compareByPublishedAtDesc,
   normalizeSettings,
   normalizeSlug,
   nowIso,
@@ -845,7 +846,7 @@ export async function upsertPage(page: LandingPage): Promise<LandingPage> {
 export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
   const posts = await loadAllPosts();
   const filtered = includeDrafts ? posts : posts.filter((post) => isBlogPostLive(post));
-  return filtered.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+  return filtered.sort(compareByPublishedAtDesc);
 }
 
 export async function queryBlogPosts(input: BlogQueryInput) {

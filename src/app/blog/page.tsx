@@ -37,7 +37,8 @@ export default async function BlogListPage({ searchParams }: BlogListPageProps) 
   const query = params.q ?? '';
   const activeTag = params.tag ?? 'all';
   const page = Number.parseInt(params.page ?? '1', 10);
-  const pageSize = Math.max(1, Math.min(settings.reading.postsPerPage, 24));
+  // Cap at 9 so the archive grid stays in complete 3-column rows.
+  const pageSize = Math.max(1, Math.min(settings.reading.postsPerPage, 9));
 
   return (
     <BlogPageView

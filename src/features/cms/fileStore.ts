@@ -15,6 +15,7 @@ import {
   isPortfolioProjectLive
 } from './publicationState';
 import {
+  compareByPublishedAtDesc,
   mergeWithDefaults,
   normalizePageForWrite,
   normalizeSettings,
@@ -218,7 +219,7 @@ export async function getBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
   const filtered = includeDrafts
     ? content.blogPosts
     : content.blogPosts.filter((post) => isBlogPostLive(post));
-  return filtered.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+  return filtered.sort(compareByPublishedAtDesc);
 }
 
 export async function queryBlogPosts(input: BlogQueryInput) {

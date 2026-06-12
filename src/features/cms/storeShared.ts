@@ -12,6 +12,17 @@ export { isObject, nowIso } from '@/lib/utils';
 
 
 
+/** Newest-first by publish date, falling back to updatedAt for never-published drafts. */
+export function compareByPublishedAtDesc(
+  a: Pick<BlogPost, 'publishedAt' | 'updatedAt'>,
+  b: Pick<BlogPost, 'publishedAt' | 'updatedAt'>
+) {
+  const aKey = a.publishedAt || a.updatedAt;
+  const bKey = b.publishedAt || b.updatedAt;
+  if (aKey === bKey) return 0;
+  return aKey < bKey ? 1 : -1;
+}
+
 function isPlaceholderAssetUrl(value: string) {
   try {
     const parsed = new URL(value);

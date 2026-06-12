@@ -80,7 +80,9 @@ export function AdminPostsTable({
                       ))}
                     </div>
                   </td>
-                  <td>{new Date(post.updatedAt).toLocaleDateString()}</td>
+                  <td title={`Last updated: ${new Date(post.updatedAt).toLocaleDateString()}`}>
+                    {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '—'}
+                  </td>
                   <td>
                     {(() => {
                       const publicationLabel = getBlogPostPublicationLabel(post);
