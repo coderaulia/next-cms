@@ -26,10 +26,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const withLastModified = settings.sitemap.includeLastModified;
 
+  // Store timestamps come back in Postgres format ("2026-06-12 08:05:00+00"),
+  // which is not valid sitemap lastmod. Convert to Date so Next emits W3C ISO.
+  const toLastModified = (value: string | null | undefined) => {
+    if (!withLastModified || !value) return undefined;
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? undefined : date;
+  };
+
   const pageEntries: MetadataRoute.Sitemap = settings.sitemap.includePages
     ? pages.map((page) => ({
         url: `${settings.baseUrl}${page.seo.slug ? `/${page.seo.slug}` : ''}`,
-        lastModified: withLastModified ? page.updatedAt : undefined,
+        lastModified: toLastModified(page.updatedAt),
         changeFrequency: 'weekly',
         priority: page.id === 'home' ? 1 : 0.7
       }))
@@ -38,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogEntries: MetadataRoute.Sitemap = settings.sitemap.includePosts
     ? posts.map((post) => ({
         url: `${settings.baseUrl}/blog/${post.seo.slug}`,
-        lastModified: withLastModified ? post.updatedAt : undefined,
+        lastModified: toLastModified(post.updatedAt),
         changeFrequency: 'weekly',
         priority: 0.6
       }))
@@ -47,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const portfolioEntries: MetadataRoute.Sitemap = settings.sitemap.includePortfolio
     ? portfolioProjects.map((project) => ({
         url: `${settings.baseUrl}/portfolio/${project.seo.slug}`,
-        lastModified: withLastModified ? project.updatedAt : undefined,
+        lastModified: toLastModified(project.updatedAt),
         changeFrequency: 'monthly',
         priority: project.featured ? 0.8 : 0.6
       }))
