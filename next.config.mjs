@@ -7,6 +7,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   compress: true,
+  productionBrowserSourceMaps: false,
   experimental: {
     optimizePackageImports: ['lucide-react'],
     // Inline CSS into the HTML to remove the render-blocking stylesheet

@@ -54,7 +54,6 @@ export function middleware(request: NextRequest) {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
   response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
   response.headers.set('Cross-Origin-Resource-Policy', 'same-site');
-  response.headers.set('X-XSS-Protection', '1; mode=block');
 
   const csrfToken = request.cookies.get(CSRF_COOKIE_NAME)?.value;
   if (!csrfToken) {

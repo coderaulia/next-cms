@@ -99,11 +99,9 @@ export async function POST(request: Request) {
 
     revalidatePublicCmsCache();
     return NextResponse.json(result);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to import JSON.'
-      },
+      { error: 'Failed to import JSON.' },
       { status: 400 }
     );
   }

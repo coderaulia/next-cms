@@ -6,13 +6,13 @@ import { env } from '@/services/env';
 
 export async function GET() {
   if (!env.databaseUrl) {
-    return NextResponse.json({ status: 'ok', db: false, mode: 'file' });
+    return NextResponse.json({ status: 'ok' });
   }
 
   try {
     await getDb().execute(sql`select 1`);
-    return NextResponse.json({ status: 'ok', db: true, mode: 'database' });
+    return NextResponse.json({ status: 'ok' });
   } catch {
-    return NextResponse.json({ status: 'degraded', db: false, mode: 'database' }, { status: 503 });
+    return NextResponse.json({ status: 'degraded' }, { status: 503 });
   }
 }
