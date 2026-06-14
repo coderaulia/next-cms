@@ -50,9 +50,25 @@ const contactSubmissionMaxLengths = {
   name: 120,
   company: 160,
   email: 254,
-  serviceCategory: 200,
   projectOverview: 5000
 } as const;
+
+const VALID_SERVICE_CATEGORIES = new Set([
+  'Website Development',
+  'Custom Web App Development',
+  'Mobile App Development (React Native)',
+  'High-Conversion Landing Page',
+  'Online Shop / E-Commerce',
+  'Professional Business Email',
+  'Partnership / Referral',
+]);
+
+function validateServiceCategory(raw: string): string | null {
+  const tokens = raw.split(',').map((s) => s.trim()).filter(Boolean);
+  if (tokens.length === 0) return null;
+  if (!tokens.every((t) => VALID_SERVICE_CATEGORIES.has(t))) return null;
+  return tokens.join(', ');
+}
 const HOME_BLOCK_TYPES: HomeBlockType[] = [
   'hero',
   'value_triplet',
@@ -541,7 +557,7 @@ export function validateContactSubmission(payload: unknown): ContactSubmission |
   const name = asString(payload.name).trim();
   const company = asString(payload.company).trim();
   const email = asString(payload.email).trim().toLowerCase();
-  const serviceCategory = asString(payload.serviceCategory).trim();
+  const serviceCategory = validateServiceCategory(asString(payload.serviceCategory));
   const projectOverview = asString(payload.projectOverview).trim();
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -549,7 +565,6 @@ export function validateContactSubmission(payload: unknown): ContactSubmission |
     name.length <= contactSubmissionMaxLengths.name &&
     company.length <= contactSubmissionMaxLengths.company &&
     email.length <= contactSubmissionMaxLengths.email &&
-    serviceCategory.length <= contactSubmissionMaxLengths.serviceCategory &&
     projectOverview.length <= contactSubmissionMaxLengths.projectOverview;
 
   if (!name || !emailOk || !serviceCategory || !projectOverview || !lengthsOk) {

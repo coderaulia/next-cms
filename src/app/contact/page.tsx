@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { ContactPageView } from '@/components/pages/ContactPageView';
 import { buildMetadata } from '@/features/cms/seo';
 import { getPublishedPage, getSiteSettings } from '@/features/cms/publicApi';
+import { getAllTemplateMetadata } from '@/components/templates/registry';
 
 type ContactPageProps = {
   searchParams?: Promise<{ interest?: string; template?: string }>;
@@ -69,11 +70,13 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   let initialOverview: string | undefined;
 
   if (rawInterest === 'template') {
-    const templateName = typeof params?.template === 'string'
-      ? params.template.slice(0, 120).replace(/[<>"']/g, '')
+    // Validate slug against the registry — never embed URL-supplied text directly.
+    const rawSlug = typeof params?.template === 'string' ? params.template : null;
+    const templateEntry = rawSlug
+      ? getAllTemplateMetadata().find((t) => t.slug === rawSlug)
       : null;
-    if (templateName) {
-      initialOverview = `Hi, I'm interested in the "${templateName}" template. I'd love to build a website using this design.`;
+    if (templateEntry) {
+      initialOverview = `Hi, I'm interested in the "${templateEntry.name}" template. I'd love to build a website using this design.`;
     }
   } else if (rawInterest && OVERVIEW_PREFILL[rawInterest]) {
     initialOverview = OVERVIEW_PREFILL[rawInterest];

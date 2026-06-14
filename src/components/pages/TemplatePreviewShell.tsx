@@ -10,7 +10,7 @@ type TemplatePreviewShellProps = {
 };
 
 export function TemplatePreviewShell({ template, children }: TemplatePreviewShellProps) {
-  const ctaHref = `/contact?interest=template&template=${encodeURIComponent(template.name)}`;
+  const ctaHref = `/contact?interest=template&template=${encodeURIComponent(template.slug)}`;
 
   return (
     <div className="v-tmpl-preview-root">
