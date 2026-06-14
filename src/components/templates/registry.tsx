@@ -42,6 +42,34 @@ const BdoClth = () => (
   <HtmlTemplateViewer src="/templates-static/bdo-clth.html" title="BDO.CLTH" />
 );
 
+const PoBusBahariAlam = () => (
+  <HtmlTemplateViewer src="/templates-static/po-bus-bahari-alam.html" title="PO Bus Bahari Alam" />
+);
+
+const NusaJayaHeritage = () => (
+  <HtmlTemplateViewer src="/templates-static/nusa-jaya-heritage.html" title="Nusa Jaya Heritage" />
+);
+
+const NusaJayaModern = () => (
+  <HtmlTemplateViewer src="/templates-static/nusa-jaya-modern.html" title="Nusa Jaya Modern" />
+);
+
+const BudiMobil = () => (
+  <HtmlTemplateViewer src="/templates-static/budi-mobil.html" title="Budi Mobil Shop" />
+);
+
+const TokoMeubelRahayu = () => (
+  <HtmlTemplateViewer src="/templates-static/toko-meubel-rahayu.html" title="Toko Meubel Rahayu" />
+);
+
+const SinarAgenTravel = () => (
+  <HtmlTemplateViewer src="/templates-static/sinar-agen-travel.html" title="Sinar Agen Travel" />
+);
+
+const CateringMamaFadil = () => (
+  <HtmlTemplateViewer src="/templates-static/catering-mama-fadil.html" title="Catering Mama Fadil" />
+);
+
 export const templateRegistry: TemplateEntry[] = [
   {
     slug: 'maritim-corp',
@@ -112,6 +140,76 @@ export const templateRegistry: TemplateEntry[] = [
       'Bandung streetwear apparel. Bold Inter + Oswald type, horizontal scroll product strip, dark hero, testimonials, local brand vibes.',
     tags: ['fashion', 'streetwear', 'local'],
     component: BdoClth,
+  },
+  {
+    slug: 'po-bus-bahari-alam',
+    previewImage: '/templates-static/previews/po-bus-bahari-alam.png',
+    name: 'PO Bus Bahari Alam',
+    category: 'Transportation',
+    description:
+      'Executive bus transportation service. Animated hero with route highlights, fleet showcase, ticket booking CTA, Plus Jakarta Sans + Work Sans typography.',
+    tags: ['transportation', 'travel', 'blue'],
+    component: PoBusBahariAlam,
+  },
+  {
+    slug: 'nusa-jaya-heritage',
+    previewImage: '/templates-static/previews/nusa-jaya-heritage.png',
+    name: 'Nusa Jaya Heritage',
+    category: 'Restaurant',
+    description:
+      'Heritage Indonesian fine dining. EB Garamond serif headlines, gold accent palette, dark refined aesthetic, menu showcase and reservation flow.',
+    tags: ['restaurant', 'fine-dining', 'gold'],
+    component: NusaJayaHeritage,
+  },
+  {
+    slug: 'nusa-jaya-modern',
+    previewImage: '/templates-static/previews/nusa-jaya-modern.png',
+    name: 'Nusa Jaya Modern',
+    category: 'Restaurant',
+    description:
+      'Modern Nusantara dining. Animated slide-up hero, vertical progress bar, warm amber accents, EB Garamond + Plus Jakarta Sans pairing.',
+    tags: ['restaurant', 'modern', 'amber'],
+    component: NusaJayaModern,
+  },
+  {
+    slug: 'budi-mobil',
+    previewImage: '/templates-static/previews/budi-mobil.png',
+    name: 'Budi Mobil Shop',
+    category: 'Automotive',
+    description:
+      'Modern automotive workshop. Bold Montserrat + JetBrains Mono, dark mechanical hero, services grid, red accent CTA, trust-badge section.',
+    tags: ['automotive', 'workshop', 'dark'],
+    component: BudiMobil,
+  },
+  {
+    slug: 'toko-meubel-rahayu',
+    previewImage: '/templates-static/previews/toko-meubel-rahayu.png',
+    name: 'Toko Meubel Rahayu',
+    category: 'Furniture',
+    description:
+      'Jakarta heritage furniture store. Source Serif 4 + Work Sans, warm walnut palette, editorial product grid, generous whitespace, Heritage Modernist design system.',
+    tags: ['furniture', 'e-commerce', 'walnut'],
+    component: TokoMeubelRahayu,
+  },
+  {
+    slug: 'sinar-agen-travel',
+    previewImage: '/templates-static/previews/sinar-agen-travel.png',
+    name: 'Sinar Agen Travel',
+    category: 'Travel Agency',
+    description:
+      'Adventure travel agency. Bold orange primary, destination cards, package pricing, Plus Jakarta Sans + Work Sans, energetic hero with search widget.',
+    tags: ['travel', 'adventure', 'orange'],
+    component: SinarAgenTravel,
+  },
+  {
+    slug: 'catering-mama-fadil',
+    previewImage: '/templates-static/previews/catering-mama-fadil.png',
+    name: 'Catering Mama Fadil',
+    category: 'Catering',
+    description:
+      "Bogor home catering service. Warm coral palette, Literata + Be Vietnam Pro, menu gallery, testimonials, WhatsApp order CTA, home-cooked tradition story.",
+    tags: ['catering', 'food', 'coral'],
+    component: CateringMamaFadil,
   },
 ];
 

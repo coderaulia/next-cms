@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sinar Agen Travel - Adventure Variant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#1a1c1e",
+                    "surface-container-low": "#f3f3f6",
+                    "primary-fixed-dim": "#ffb597",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#116395",
+                    "background": "#f9f9fc",
+                    "surface-container-highest": "#e2e2e5",
+                    "on-tertiary-container": "#00302d",
+                    "primary-container": "#c94c00",
+                    "surface-bright": "#f9f9fc",
+                    "on-surface-variant": "#594138",
+                    "tertiary-container": "#34a099",
+                    "on-tertiary-fixed-variant": "#00504c",
+                    "surface": "#f9f9fc",
+                    "surface-tint": "#a43d00",
+                    "inverse-primary": "#ffb597",
+                    "secondary-fixed": "#cde5ff",
+                    "tertiary-fixed-dim": "#72d7cf",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#e1bfb2",
+                    "on-secondary-fixed": "#001d32",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#fffbff",
+                    "tertiary-fixed": "#8ff4eb",
+                    "surface-variant": "#e2e2e5",
+                    "primary": "#a03b00",
+                    "on-surface": "#1a1c1e",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "tertiary": "#006a65",
+                    "inverse-surface": "#2f3133",
+                    "on-primary-fixed-variant": "#7d2d00",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#360f00",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#004b74",
+                    "surface-container-high": "#e8e8ea",
+                    "on-tertiary-fixed": "#00201e",
+                    "outline": "#8d7166",
+                    "surface-container": "#eeeef0",
+                    "primary-fixed": "#ffdbcd",
+                    "on-secondary-container": "#005380",
+                    "secondary-container": "#87c7ff",
+                    "surface-dim": "#dadadc",
+                    "inverse-on-surface": "#f0f0f3",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#94ccff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "max-width": "1280px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px",
+                    "base": "8px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "display": ["Plus Jakarta Sans"],
+                    "label-sm": ["Work Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Work Sans"],
+                    "body-md": ["Work Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Work Sans"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-parallax {
+                background-attachment: scroll;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface shadow-sm border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-max-width mx-auto">
+<div class="font-display text-headline-md font-bold text-primary">Sinar &amp; Bahari Travel</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md" href="#">Routes</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Tour Packages</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">About Us</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all active:scale-95 shadow-md">
+                Check Booking
+            </button>
+</div>
+</nav>
+<main>
+<!-- Hero Section with Parallax -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 hero-parallax z-0" data-alt="A cinematic wide-angle shot of the Borobudur Temple in Indonesia at sunrise. The sky is a breathtaking gradient of deep amber, warm gold, and soft sky blue, with misty mountains in the far distance. The ancient stone stupas are silhouetted against the radiant morning light, creating a serene and adventurous atmosphere. The lighting is ethereal and high-contrast, perfectly capturing the spirit of exploration in a modern travel photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD72RnRgXjNGuKyC20VyObUd-JNBbxhKDCvbdR7eBNsvzC6jF2YUE9Q-J6gFINfsONKOq93i90xjPPtFGikStlDywJaA7neXk8BxQkIQoni1ii4wPGBJNEo39n7S3_adrQMtfLhmgNDMKMXHANm9oJol40B70WWTS1mcNBhjFItuexB-z35DqLu4RAS4vnpyvGEQmrGTWL89t5F2SXiFPOnQG2P9r7gvhycQ3gmKh9u1EVOzqBXdOSck9FDQpWVLIV9KNGChTOYQDg');">
+<div class="absolute inset-0 bg-black/30"></div>
+</div>
+<div class="relative z-10 text-center px-4 max-w-4xl reveal active">
+<h1 class="font-display text-headline-lg md:text-display text-white mb-6 drop-shadow-lg">
+                    Discover the Radiance of Indonesia
+                </h1>
+<p class="font-body-lg text-white/90 mb-10 max-w-2xl mx-auto drop-shadow-md">
+                    Experience curated adventures where golden sunsets meet emerald landscapes. From Borobudur's peaks to the deep blue of Raja Ampat.
+                </p>
+<!-- Floating Booking Widget -->
+<div class="bg-surface p-2 rounded-xl shadow-2xl flex flex-col md:flex-row items-stretch gap-2 max-w-5xl mx-auto">
+<div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
+<div class="flex items-center gap-3 px-4 py-3 bg-surface-container-low rounded-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
+<div class="text-left">
+<span class="block text-label-sm text-on-surface-variant">Destination</span>
+<span class="block font-label-md text-on-surface">Yogyakarta, ID</span>
+</div>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-surface-container-low rounded-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
+<div class="text-left">
+<span class="block text-label-sm text-on-surface-variant">Departure</span>
+<span class="block font-label-md text-on-surface">12 Oct 2024</span>
+</div>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-surface-container-low rounded-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+<div class="text-left">
+<span class="block text-label-sm text-on-surface-variant">Travelers</span>
+<span class="block font-label-md text-on-surface">2 Adults, 1 Child</span>
+</div>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-10 py-4 rounded-lg font-headline-md flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-lg active:scale-95">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+                        Search Tours
+                    </button>
+</div>
+</div>
+</section>
+<!-- Trending Packages (Bento Grid Style) -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4 reveal">
+<div>
+<span class="text-primary font-bold tracking-widest uppercase text-label-sm mb-2 block">Curated Journeys</span>
+<h2 class="font-display text-headline-lg text-on-surface">Trending Tour Packages</h2>
+</div>
+<a class="text-primary flex items-center gap-1 font-label-md group" href="#">
+                    View all routes 
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="bento-grid">
+<!-- Main Featured Card -->
+<div class="md:col-span-8 md:row-span-2 relative group overflow-hidden rounded-xl h-[500px] reveal">
+<img alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A vibrant landscape of Bali rice terraces at the golden hour. The sunlight filters through coconut palms, casting long shadows and illuminating the emerald green tiered fields. Two travelers are seen walking a narrow path, perfectly embodying the spirit of exploration. The warm amber lighting and lush environment create a high-end, premium adventure aesthetic consistent with the Sinar Agen Travel brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDIRMUNUYqKgOredDd9Wa28JmPB_Uv4mg8RLU24-YVC_5XjA8S1yUJY0of-Cg5zpEh_qjIrnOEPc_lOqaHOc0XgItuah53csF7nSbitxnmOm7cR2C70uwYBE4P_sJSslK3K9jRo1kSXiQL9amrWor_a7mjApjjYKzT2En4YNogyNgNrQ_p5RjRQ4SPsNxbEs5h14pEF5_B43l0p4WsSFRx2USlCQ8tXI3dcpV-A_FvYufhRkgsJ0SfSK3LLxXiLlztn-GrrsPnsyw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-label-sm font-bold mb-4 inline-block">Best Seller</span>
+<h3 class="font-display text-headline-lg text-white mb-2">Ubud Cultural Expedition</h3>
+<p class="text-white/80 font-body-md mb-6 max-w-md">Immerse yourself in the spiritual heart of Bali with private temple visits and luxury terrace dining.</p>
+<div class="flex items-center gap-6">
+<span class="text-white font-headline-md">Rp 4.250.000 <span class="text-sm font-normal">/ person</span></span>
+<button class="bg-white text-on-background px-6 py-2 rounded-lg font-label-md hover:bg-primary-fixed transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Secondary Card 1 -->
+<div class="md:col-span-4 relative group overflow-hidden rounded-xl h-[238px] reveal">
+<img alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A majestic volcano, Mount Bromo, during the early dawn with a purple and sky blue sky background. The crater emits a gentle smoke plume, and the surrounding sand sea is covered in a light mist. The lighting is cool yet radiant, capturing the mystical morning atmosphere of East Java in a high-fidelity, professional travel magazine style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGwqp0by2Za6UjXQb-zAJQJU_l-iIQj4b8Z2fCeaj7ZQpli8cJv8Vl8z6yimDNwXtkJhRrbXsTUB-Iyjf7rMSiiqPYBg3MUIaPQQ8CtpJDvg2gLwrB4jnmrnqNluyrpZRQW_LthbJLkEN9crzBGVI6kAxQIAmsm5qRqg8GrbPBigoEvWgXj6mglwO04HGU1ASos1J1gGeaKxEekH3mfNmkYTcUWGZbVn6BaWkiFGtjtzxaO9tLPWmyy0B5T53ZWLwl6j7x-XLxGLg"/>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<h3 class="font-display text-headline-md text-white mb-1">Bromo Sunrise Trek</h3>
+<span class="text-white/90 text-label-md">3 Days 2 Nights</span>
+</div>
+</div>
+<!-- Secondary Card 2 -->
+<div class="md:col-span-4 relative group overflow-hidden rounded-xl h-[238px] reveal">
+<img alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Pristine turquoise waters of Raja Ampat with dramatic limestone karsts rising from the sea. The sun is high, turning the water crystal clear and highlighting the vibrant coral reefs beneath. A traditional Indonesian wooden boat is anchored nearby. The aesthetic is bright, optimistic, and saturated with natural beauty, representing the ultimate sea exploration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuSwzRhHYpBCZFxk-4iYpsHNNeXP83qvKua-W5ysljESa69acBQzthNNRVfGRqDbN7xFEEwAkKyYfYpiq7Ja3bnscKwcGxOimdzEuhJ-k8REWsryYAa2qVVnzJI45G5Uh05A55be0g0EiLbFOaiOV8rqcOI9qelgTtUENsF48HeYG3ldY1dOqnJZHd64S7L6Z75FjFj5aflk_gu7x02gxWCpXfR_it8MNdKam5Z_6F90k9LISdqv1ncHo61AqCD2YoNUIvUQ3c7Jw"/>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<h3 class="font-display text-headline-md text-white mb-1">Raja Ampat Diving</h3>
+<span class="text-white/90 text-label-md">5 Days Luxury Liveaboard</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Choose Sinar (Feature Section) -->
+<section class="bg-surface-container-low py-24 px-margin-mobile md:px-margin-desktop">
+<div class="max-w-max-width mx-auto">
+<div class="text-center mb-16 reveal">
+<h2 class="font-display text-headline-lg text-on-surface mb-4">Why Travel with Sinar?</h2>
+<p class="font-body-md text-on-surface-variant max-w-xl mx-auto">We combine the warmth of Indonesian hospitality with modern reliability to create unforgettable journeys.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow reveal">
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="verified_user">verified_user</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-3">Safe &amp; Trusted</h3>
+<p class="font-body-md text-on-surface-variant">Every route and partner is vetted for the highest safety standards in the industry.</p>
+</div>
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow reveal" style="transition-delay: 100ms">
+<div class="w-16 h-16 bg-secondary-fixed rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="diamond">diamond</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-3">Luxury Comfort</h3>
+<p class="font-body-md text-on-surface-variant">From business-class bus fleets to 5-star villas, comfort is our primary promise.</p>
+</div>
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow reveal" style="transition-delay: 200ms">
+<div class="w-16 h-16 bg-tertiary-fixed rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="explore">explore</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-3">Expert Guides</h3>
+<p class="font-body-md text-on-surface-variant">Our local experts don't just show you sights; they tell the stories behind them.</p>
+</div>
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow reveal" style="transition-delay: 300ms">
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="support_agent">support_agent</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-3">24/7 Concierge</h3>
+<p class="font-body-md text-on-surface-variant">Real human support available at every stage of your journey, wherever you are.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter / CTA -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto">
+<div class="bg-primary rounded-3xl p-12 md:p-24 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12 reveal">
+<!-- Abstract decorative element -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-0 left-0 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+<div class="relative z-10 md:w-1/2">
+<h2 class="font-display text-headline-lg md:text-[40px] text-white leading-tight mb-6">Ready to start your next adventure?</h2>
+<p class="text-white/80 font-body-lg mb-8">Join our newsletter to receive exclusive offers and early access to seasonal tour packages.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<input class="flex-1 px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/50" placeholder="Your email address" type="email"/>
+<button class="bg-white text-primary px-8 py-4 rounded-lg font-bold hover:bg-surface-container-low transition-colors">Subscribe</button>
+</div>
+</div>
+<div class="relative z-10 md:w-1/3">
+<div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
+<div class="flex items-center gap-4 mb-4">
+<img alt="" class="w-12 h-12 rounded-full object-cover" data-alt="Close up portrait of a smiling young male traveler with a backpack, wearing a casual shirt. The background is a soft-focus tropical sunset. The image is bright and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQOOhmv3j7kIgAGePHjEMSr65cB16pdS2GUh9oS9h6bEYcuCLhEVKm5cytcNnWXTAyI6C-oCQHXLRTtHWK9zBhw4KOww8GcxwyDvJsSuUuwr5wUaVIb2lPqJ89wnPk4SQB5XoviulKapQ7AF7Ve-e72HTEg53s62FWpQwXQVeYIdX5he2K0I0xsojwl7lTDz_DF_Ub-0R4bVcE-0ll8dDGZs3RXOZfBJxuGVHFJikRLb8ASTpML52sWxkg_kTYYk9auDa_O7Av_Gk"/>
+<div>
+<p class="text-white font-bold">Latest Review</p>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<p class="text-white/90 italic font-body-md">"The Borobudur tour was magical. Sinar handled every detail, from the luxury transport to the hidden breakfast spot with a view."</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant">
+<div class="w-full py-12 px-margin-desktop flex flex-col md:flex-row justify-between items-start max-w-max-width mx-auto gap-12">
+<div class="max-w-sm">
+<div class="font-display text-headline-md font-bold text-on-surface mb-4">Sinar &amp; Bahari Travel</div>
+<p class="text-on-surface-variant font-body-md mb-6">Premium travel solutions across the Indonesian archipelago. Connecting people to the beauty of our islands since 2004.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+<div>
+<h4 class="font-bold text-on-surface mb-6 font-label-md uppercase tracking-wider">Company</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">About Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Tour Packages</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Routes</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 font-label-md uppercase tracking-wider">Legal</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Safety &amp; Security</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 font-label-md uppercase tracking-wider">Support</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Help Center</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Contact Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Booking Guide</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="w-full py-8 px-margin-desktop border-t border-outline-variant max-w-max-width mx-auto text-center md:text-left">
+<p class="text-on-surface-variant font-label-sm">© 2024 Sinar &amp; Bahari Travel Group. Jakarta Headquarters. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Scroll Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+
+        // Initial check for elements in view
+        document.addEventListener("DOMContentLoaded", reveal);
+
+        // Parallax Micro-interaction (Desktop only)
+        window.addEventListener('scroll', function() {
+            if (window.innerWidth > 768) {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.hero-parallax');
+                if (parallax) {
+                    parallax.style.transform = 'translateY(' + (scrolled * 0.3) + 'px)';
+                }
+            }
+        });
+    </script>
+</body></html>

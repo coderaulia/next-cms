@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nusa Jaya | Modern Nusantara Dining</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        
+        .progress-bar {
+            width: 2px;
+            height: 0%;
+            background-color: #ffdea5; /* secondary-fixed */
+            transition: height 0.1s ease-out;
+        }
+
+        .text-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .spice-pip {
+            width: 8px;
+            height: 8px;
+            border-radius: 0px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#5f5e5e",
+                      "on-tertiary-fixed": "#1b1c19",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed-dim": "#c7c7c2",
+                      "surface-container-highest": "#e5e2e1",
+                      "tertiary": "#000000",
+                      "surface": "#fdf8f8",
+                      "on-secondary-fixed-variant": "#5d4201",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#e9c176",
+                      "surface-container-low": "#f7f3f2",
+                      "on-secondary-fixed": "#261900",
+                      "background": "#fdf8f8",
+                      "surface-container-high": "#ebe7e6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#848480",
+                      "tertiary-container": "#1b1c19",
+                      "on-primary-fixed-variant": "#474746",
+                      "surface-bright": "#fdf8f8",
+                      "secondary-fixed": "#ffdea5",
+                      "secondary": "#775a19",
+                      "on-primary-fixed": "#1c1b1b",
+                      "on-surface": "#1c1b1b",
+                      "inverse-surface": "#313030",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#c8c6c5",
+                      "on-secondary-container": "#785a1a",
+                      "surface-container": "#f1edec",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c4c7c7",
+                      "surface-dim": "#ddd9d8",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e5e2e1",
+                      "tertiary-fixed": "#e3e3de",
+                      "on-background": "#1c1b1b",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#464744",
+                      "outline": "#747878",
+                      "primary-fixed": "#e5e2e1",
+                      "primary-container": "#1c1b1b",
+                      "primary": "#000000",
+                      "inverse-on-surface": "#f4f0ef",
+                      "on-primary-container": "#858383",
+                      "on-surface-variant": "#444748",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#fed488",
+                      "primary-fixed-dim": "#c8c6c5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "unit": "8px",
+                      "container-max": "1200px",
+                      "section-gap": "120px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": ["EB Garamond"],
+                      "label-caps": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "display-lg": ["EB Garamond"],
+                      "headline-md": ["EB Garamond"],
+                      "headline-sm": ["EB Garamond"],
+                      "body-lg": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                      "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                      "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-primary dark:bg-primary-container text-surface-container-lowest overflow-x-hidden">
+<!-- Sticky Progress Indicator -->
+<div class="fixed right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-50 hidden md:flex">
+<span class="font-label-caps text-label-caps text-on-primary-container text-vertical tracking-widest">SCROLL</span>
+<div class="w-[2px] h-32 bg-on-primary-container/20 relative">
+<div class="progress-bar absolute top-0 left-0" id="scrollProgress"></div>
+</div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-primary/95 backdrop-blur-md border-b border-secondary/30">
+<div class="flex justify-between items-center max-w-[1200px] mx-auto px-margin-desktop py-4">
+<div class="font-display-lg text-headline-sm tracking-tight text-surface-container-lowest">Nusa Jaya</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-caps text-label-caps text-secondary border-b border-secondary pb-1" href="#">Menu</a>
+<a class="font-label-caps text-label-caps text-on-primary-container hover:text-surface-container-lowest transition-colors" href="#">Heritage</a>
+<a class="font-label-caps text-label-caps text-on-primary-container hover:text-surface-container-lowest transition-colors" href="#">Gallery</a>
+<a class="font-label-caps text-label-caps text-on-primary-container hover:text-surface-container-lowest transition-colors" href="#">Private Dining</a>
+</div>
+<button class="px-6 py-2 bg-secondary text-on-secondary font-label-caps text-label-caps hover:bg-secondary-container transition-all active:scale-95">
+                Book a Table
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative min-h-screen flex items-center pt-20">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-contrast shot of a contemporary Indonesian dish featuring vibrant red sambal and gold-flecked garnishes, presented on a dark artisanal ceramic plate. The background is a moody, charcoal-toned upscale restaurant setting in Jakarta with soft amber lighting. The visual style is premium and artistic, emphasizing the rich textures and bold colors of modern Nusantara cuisine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_cjkUH-8P1UlLp1aNypISF_vf0dZlI-vhnl9nRY5-9rF0dPC9AZNGmhFtksLucGpDZeHHhslrkk30yuCZpmCo13trmQko3cs87kk6u_oK7r-gh1KO5qfx9W_ZNmDCmtvkGwyqccufKwKaP3lZL1Hav3DNh80JPC3wtRDoxAsHFnsLFQOBnRZ0hatIyQbOKUuYri8bu8GI0p6v9Vkpjn1vVwKikIt7WRDjeXKu0q58a_jE76vsHhELcVA01cDxrCu4hS6thyDcYJ8"/>
+</div>
+<div class="relative z-20 max-w-[1200px] mx-auto px-margin-desktop w-full grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-7">
+<p class="font-label-caps text-label-caps text-secondary-fixed mb-6 animate-slide-up stagger-1">EST. 2024 • JAKARTA SELATAN</p>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-surface-container-lowest leading-tight mb-8 animate-slide-up stagger-2">
+                    Tradition Reimagined <br/> <span class="italic text-secondary-fixed">for the Modern Palate.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-primary-container max-w-lg mb-10 animate-slide-up stagger-3">
+                    Experience the grandeur of the archipelago through a contemporary lens. Nusa Jaya celebrates Indonesian heritage with precision, soul, and metropolitan sophistication.
+                </p>
+<div class="flex gap-4 animate-slide-up" style="animation-delay: 0.4s">
+<button class="px-8 py-4 bg-surface-container-lowest text-primary font-label-caps text-label-caps hover:bg-secondary-fixed transition-colors">EXPLORE THE MENU</button>
+<button class="px-8 py-4 border border-surface-container-lowest/30 text-surface-container-lowest font-label-caps text-label-caps hover:border-secondary transition-colors">OUR HERITAGE</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Taste of Jakarta Section (Asymmetric Bento Grid) -->
+<section class="py-section-gap max-w-[1200px] mx-auto px-margin-desktop">
+<div class="flex justify-between items-end mb-16 reveal-on-scroll">
+<div>
+<h2 class="font-display-lg text-headline-md md:text-display-lg text-surface-container-lowest">Taste of Jakarta</h2>
+<div class="w-24 h-1 bg-error mt-4"></div>
+</div>
+<p class="font-body-md text-body-md text-on-primary-container max-w-xs hidden md:block">
+                A curated selection of the city's most beloved flavors, elevated through meticulous technique and premium sourcing.
+            </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Featured Card -->
+<div class="md:col-span-7 aspect-[4/5] relative group overflow-hidden reveal-on-scroll">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A close-up shot of an elevated Oxtail Soup (Sop Buntut) presented in a modern clear glass bowl, showcasing clear, rich broth and perfectly seared meat. Minimalist lighting emphasizes the steam and vibrant green scallion garnishes. The setting is a dark, sophisticated dining table with subtle warm gold accents, reflecting a high-end Jakarta culinary experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ_3Y0bB2u3Qp9zJktccDKeKRfc6ReDxrmpAxXVwy7Toa-L7xTdeXkuvPND6GsbfigQ2TPgXHLNvHi5h1TqoK0VQG-St2c2-8yZu2ysRz-FRjj7Z-Y9BbkHKWiv0OHT2-fiYx-h6ximYTaoAkzbQFuyYk4Evby_Xl_NJhaePHwZ0HxV1dFakMjjm8BUsBjdVcWWe-m0Z4TPMGALQbFSkOI0WtOey7rYCQhpUKsFIBv8dz_qf6GSVoI_4H1IG5PMrfv-2PG80hu1a4"/>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+<div class="absolute bottom-8 left-8">
+<span class="font-label-caps text-label-caps text-secondary-fixed bg-primary/80 px-3 py-1 mb-4 inline-block">SIGNATURE</span>
+<h3 class="font-display-lg text-headline-md text-surface-container-lowest">Deconstructed Sop Buntut</h3>
+</div>
+</div>
+<div class="md:col-span-5 flex flex-col gap-8">
+<!-- Small Card 1 -->
+<div class="bg-surface-container-low/5 p-8 border border-outline-variant/10 reveal-on-scroll">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline-sm text-headline-sm text-surface-container-lowest">Wagyu Satay Maranggi</h4>
+<span class="font-label-caps text-label-caps text-secondary">IDR 345K</span>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<div class="spice-pip bg-error"></div>
+<span class="font-label-caps text-[10px] text-on-primary-container">MEDIUM SPICE</span>
+</div>
+<p class="font-body-md text-body-md text-on-primary-container">
+                        Grade 9+ Wagyu beef, marinated in aromatic ginger and galangal, charcoal-grilled to perfection. Served with a reduction of sweet soy and bird's eye chili.
+                    </p>
+<div class="mt-6 border-t border-secondary/20 pt-4">
+<button class="text-secondary font-label-caps text-label-caps flex items-center gap-2 hover:gap-4 transition-all">
+                            VIEW DETAILS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="bg-surface-container-low/5 p-8 border border-outline-variant/10 reveal-on-scroll">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline-sm text-headline-sm text-surface-container-lowest">Black Cod Gado-Gado</h4>
+<span class="font-label-caps text-label-caps text-secondary">IDR 285K</span>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<div class="spice-pip bg-secondary-fixed"></div>
+<span class="font-label-caps text-[10px] text-on-primary-container">MILD SOUL</span>
+</div>
+<p class="font-body-md text-body-md text-on-primary-container">
+                        Pan-seared black cod, blanched organic mountain vegetables, house-made cashew-peanut emulsion, and gold-leaf kerupuk.
+                    </p>
+<div class="mt-6 border-t border-secondary/20 pt-4">
+<button class="text-secondary font-label-caps text-label-caps flex items-center gap-2 hover:gap-4 transition-all">
+                            VIEW DETAILS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Weekend Brunch Feature -->
+<section class="bg-surface-container-low/5 py-section-gap relative overflow-hidden">
+<div class="max-w-[1200px] mx-auto px-margin-desktop grid grid-cols-1 lg:grid-cols-2 items-center gap-24">
+<div class="reveal-on-scroll">
+<p class="font-label-caps text-label-caps text-secondary-fixed mb-4">EVERY SATURDAY &amp; SUNDAY</p>
+<h2 class="font-display-lg text-display-lg mb-8 text-surface-container-lowest">The Royal <br/> <span class="italic">Nusa Brunch</span></h2>
+<p class="font-body-lg text-body-lg text-on-primary-container mb-10">
+                    A grand weekend ritual. Indulge in an unlimited flow of contemporary small plates, artisanal sambals, and premium Indonesian tea blends, all served in an atmosphere of quiet luxury.
+                </p>
+<ul class="space-y-6 mb-12">
+<li class="flex items-center gap-4 group">
+<span class="w-12 h-[1px] bg-secondary group-hover:w-16 transition-all"></span>
+<span class="font-label-caps text-label-caps text-surface-container-lowest">LIVE GAMELAN QUARTET</span>
+</li>
+<li class="flex items-center gap-4 group">
+<span class="w-12 h-[1px] bg-secondary group-hover:w-16 transition-all"></span>
+<span class="font-label-caps text-label-caps text-surface-container-lowest">UNLIMITED CHEF'S SPECIALS</span>
+</li>
+<li class="flex items-center gap-4 group">
+<span class="w-12 h-[1px] bg-secondary group-hover:w-16 transition-all"></span>
+<span class="font-label-caps text-label-caps text-surface-container-lowest">PREMIUM COFFEE ARTISTRY</span>
+</li>
+</ul>
+<button class="px-10 py-5 bg-secondary text-on-secondary font-label-caps text-label-caps hover:bg-secondary-container transition-all">RESERVE BRUNCH</button>
+</div>
+<div class="relative reveal-on-scroll">
+<div class="aspect-square border border-secondary/30 absolute -top-8 -right-8 w-full h-full -z-10"></div>
+<img class="w-full aspect-square object-cover" data-alt="An elegant, brightly lit morning scene of a luxury restaurant interior in Jakarta. Large windows show lush city greenery while the interior features marble tables set with premium white ceramics and gold cutlery. The atmosphere is sophisticated and airy, perfect for an upscale weekend brunch. Warm light filters through, highlighting a serene, minimalist aesthetic with rich textures of wood and stone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3bt8_GnyOkKdZDgcQ4tPv_hdDgKANQdnwWP8jDIdK2-yQEJyAJZiUyjo85UTDh1CO4WNIBuVysfMLHjl_sdJ74r2YjFi7WSZSe6bDSL8aFzi4nQ4HvqoksjHUwd4uvtdmXuUkp7UiTm3b-itNEeh_RNWnwCo383Wfq8Cb5yHS4GvzZpGZkGCecSmLOvk67lyaX8b4wWXubef8IxXRTKHTfoeEqqDRW9roeBD2Kdhlf9WjJ0eDBHCixuxb074t3wAMGbLWbNOYwGE"/>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-primary border-t border-secondary/30">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter max-w-[1200px] mx-auto px-margin-desktop py-section-gap">
+<div class="col-span-1 md:col-span-2 lg:col-span-1">
+<div class="font-display-lg text-headline-md text-surface-container-lowest mb-6">Nusa Jaya</div>
+<p class="font-body-md text-body-md text-on-primary-container mb-8">
+                    Defining the future of Indonesian heritage through a lens of modern luxury.
+                </p>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-secondary mb-6 uppercase tracking-widest">Visit Us</h5>
+<p class="font-body-md text-body-md text-on-primary-container">
+                    Jalan Senopati No. 8<br/>
+                    Jakarta Selatan, 12190<br/>
+                    Indonesia
+                </p>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-secondary mb-6 uppercase tracking-widest">Inquiries</h5>
+<ul class="space-y-4">
+<li><a class="font-label-caps text-label-caps text-on-primary-container hover:text-secondary-fixed transition-colors underline underline-offset-8" href="#">Reservations</a></li>
+<li><a class="font-label-caps text-label-caps text-on-primary-container hover:text-secondary-fixed transition-colors underline underline-offset-8" href="#">Press Kit</a></li>
+<li><a class="font-label-caps text-label-caps text-on-primary-container hover:text-secondary-fixed transition-colors underline underline-offset-8" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-secondary mb-6 uppercase tracking-widest">Follow</h5>
+<div class="flex gap-4">
+<a class="w-10 h-10 border border-on-primary-container/30 flex items-center justify-center hover:border-secondary transition-colors" href="#">
+<span class="font-label-caps text-[10px]">IG</span>
+</a>
+<a class="w-10 h-10 border border-on-primary-container/30 flex items-center justify-center hover:border-secondary transition-colors" href="#">
+<span class="font-label-caps text-[10px]">FB</span>
+</a>
+<a class="w-10 h-10 border border-on-primary-container/30 flex items-center justify-center hover:border-secondary transition-colors" href="#">
+<span class="font-label-caps text-[10px]">TW</span>
+</a>
+</div>
+</div>
+</div>
+<div class="max-w-[1200px] mx-auto px-margin-desktop py-8 border-t border-on-primary-container/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-caps text-[10px] text-on-primary-container">© 2024 NUSA JAYA RESTO JAKARTA. DEFINED BY HERITAGE.</p>
+<div class="flex gap-8">
+<a class="font-label-caps text-[10px] text-on-primary-container hover:text-secondary" href="#">PRIVACY POLICY</a>
+<a class="font-label-caps text-[10px] text-on-primary-container hover:text-secondary" href="#">TERMS OF SERVICE</a>
+</div>
+</div>
+</footer>
+<script>
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollProgress').style.height = scrollPercent + '%';
+        });
+
+        // Reveal on Scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

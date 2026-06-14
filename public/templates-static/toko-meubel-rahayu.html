@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#2b1613",
+                        "inverse-on-surface": "#f1f1f0",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#e3beb8",
+                        "surface-tint": "#745853",
+                        "surface-bright": "#f9f9f8",
+                        "surface-container-high": "#e8e8e7",
+                        "on-primary-fixed-variant": "#5b403c",
+                        "secondary-fixed-dim": "#adcec0",
+                        "primary-container": "#3e2723",
+                        "on-secondary-fixed-variant": "#2f4d42",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f4f4f3",
+                        "surface-variant": "#e2e2e2",
+                        "surface-dim": "#dadad9",
+                        "on-surface-variant": "#504442",
+                        "on-surface": "#1a1c1c",
+                        "on-primary-container": "#ae8d87",
+                        "tertiary-fixed-dim": "#cfc4c0",
+                        "on-tertiary-container": "#9c938f",
+                        "tertiary": "#1d1815",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eeeeed",
+                        "primary": "#271310",
+                        "on-secondary-fixed": "#012018",
+                        "secondary": "#46655a",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ece0dc",
+                        "outline-variant": "#d3c3c0",
+                        "outline": "#827472",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#e3beb8",
+                        "surface": "#f9f9f8",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1a1c1c",
+                        "inverse-surface": "#2f3130",
+                        "primary-fixed": "#ffdad4",
+                        "background": "#f9f9f8",
+                        "on-secondary-container": "#4c6b60",
+                        "on-tertiary-fixed-variant": "#4c4542",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-container": "#c8eadc",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#201a18",
+                        "tertiary-container": "#322c29",
+                        "secondary-fixed": "#c8eadc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Work Sans"],
+                        "headline-xl": ["Source Serif 4"],
+                        "headline-md": ["Source Serif 4"],
+                        "headline-lg": ["Source Serif 4"],
+                        "body-lg": ["Work Sans"],
+                        "label-sm": ["Work Sans"],
+                        "label-md": ["Work Sans"],
+                        "headline-lg-mobile": ["Source Serif 4"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px rgba(62, 39, 35, 0.08);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(62, 39, 35, 0.12);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-gutter max-w-container-max mx-auto h-20 bg-surface/90 backdrop-blur-md shadow-sm dark:shadow-none">
+<div class="text-headline-md font-headline-md text-primary tracking-tight">Toko Meubel Rahayu</div>
+<!-- Desktop Nav -->
+<div class="hidden md:flex gap-lg items-center">
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md" href="#">Living Room</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Bedroom</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Dining</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">About Us</a>
+</div>
+<button class="bg-primary text-on-primary px-md py-sm rounded-lg font-label-md hover:opacity-80 transition-opacity active:scale-95 duration-200">
+            Visit Showroom
+        </button>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative h-[921px] w-full overflow-hidden flex items-center">
+<div class="absolute inset-0 z-0">
+<img alt="Modern Living Room" class="w-full h-full object-cover" data-alt="A luxuriously styled Jakarta living room featuring a rich walnut coffee table and a deep forest green velvet sofa. The space is flooded with soft natural afternoon light streaming through large windows, highlighting the grain of the handcrafted timber furniture. Minimalist decor and high-end Indonesian textiles create an atmosphere of heritage modernist elegance and sophisticated comfort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1p2hGoj_QoNVZeUnNetwPu-VuyHztuzZ12dDMBcxufG-prFuup-Zy3DCweDY4_VaVOBQ6_gVL1k6VyXgWCfdDt3aXhbkcxrDTJaYPDBFrQioxM-BRnydnXEyxtaLCo6x9bFgjwI8wzJa1WcyJOV2Ryun--yRJKX_2oHcqDYQZFMjHkkjukzIskj4LGZwqWpcuc6lM0Lc45Wjci9te5C2uIc8wL2bhzvmBSj15_Q_-EsoOdJB401hAK6EF2rI8jU6Ts7jfQE45Bks"/>
+<div class="absolute inset-0 bg-primary/20"></div>
+</div>
+<div class="relative z-10 px-margin-mobile md:px-gutter max-w-container-max mx-auto w-full">
+<div class="max-w-2xl reveal">
+<h1 class="text-headline-lg-mobile md:text-headline-xl font-headline-xl text-white mb-md">Modern Comfort, Timeless Quality.</h1>
+<p class="text-body-lg text-white/90 mb-lg max-w-lg font-body-md">Handpicked furniture for your home, crafted with precision in Jakarta. Elevating Sunter's heritage through expert woodwork and modern silhouettes.</p>
+<div class="flex gap-md">
+<button class="bg-primary text-on-primary px-lg py-md rounded-lg font-label-md hover:opacity-90 transition-all active:scale-95">
+                            Explore Collections
+                        </button>
+<button class="border border-white text-white px-lg py-md rounded-lg font-label-md hover:bg-white/10 transition-all active:scale-95">
+                            Our Story
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-xl px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="reveal group text-center md:text-left">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center mb-md mx-auto md:mx-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="high_quality">high_quality</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary mb-sm">Quality Materials</h3>
+<p class="text-on-surface-variant font-body-md">Sourced from sustainable forests, our solid teak and walnut woods are treated to last for generations of family gatherings.</p>
+</div>
+<div class="reveal group text-center md:text-left" style="transition-delay: 100ms;">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center mb-md mx-auto md:mx-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="architecture">architecture</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary mb-sm">Custom Designs</h3>
+<p class="text-on-surface-variant font-body-md">Collaborate with our Jakarta-based designers to create bespoke pieces that perfectly fit your home's unique architectural footprint.</p>
+</div>
+<div class="reveal group text-center md:text-left" style="transition-delay: 200ms;">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center mb-md mx-auto md:mx-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="location_on">location_on</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary mb-sm">Sunter Local Expertise</h3>
+<p class="text-on-surface-variant font-body-md">Rooted in North Jakarta since 1988, our artisans bring decades of localized craftsmanship and regional aesthetic knowledge to every joint.</p>
+</div>
+</div>
+</section>
+<!-- Collections Preview -->
+<section class="bg-surface-container-low py-xl">
+<div class="px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-lg reveal">
+<div>
+<span class="text-label-md font-label-md text-secondary uppercase tracking-widest block mb-xs">Curated Selection</span>
+<h2 class="text-headline-lg font-headline-lg text-primary">Featured Collections</h2>
+</div>
+<a class="text-primary font-label-md border-b border-primary hover:opacity-70 transition-opacity hidden md:block" href="#">View All Furniture</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Product Card 1 -->
+<div class="reveal bg-surface p-base rounded-lg hover-lift overflow-hidden">
+<div class="aspect-[4/5] bg-surface-container overflow-hidden rounded-lg mb-md">
+<img alt="Modern Sofa" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" data-alt="A minimalist forest green velvet sofa with tapered solid oak legs, positioned against a light gray textured wall. The lighting is soft and architectural, creating gentle shadows that emphasize the premium upholstery and precision stitching. The image embodies a clean, heritage modernist style consistent with high-end Jakarta furniture boutiques." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfSOlYW6POcr-wk2PM-H6PF5cM4QGMoKYEUAH6pwQtywSNDdvxt-45lTy9xGTB40Heihc3w18aZ5V-DobeeK6T6C8q7ixMat8VDRuR6PJvsD1C0WBbDpJqVdbVd0T9qM2pBw174Mj_klh6BBTit-oDuxac0G5YlifJvfGeMcHbjwF4tCvgRq-2jETh62j31FJMLgWHCwJyWY06zE1MZzENc2_Ay4gL29xGe0Er-zD75txurJkr7nTG4PJov1Ldc074lWH4V4SQCK8"/>
+</div>
+<div class="px-sm pb-sm">
+<span class="text-label-sm font-label-sm text-secondary bg-secondary-container px-xs py-1 rounded mb-sm inline-block">Hand-Carved</span>
+<h4 class="text-headline-md font-headline-md text-primary mb-xs">Rahayu Velvet Sofa</h4>
+<p class="text-on-surface-variant font-label-md mb-md">Rp 12.500.000</p>
+<button class="w-full border border-outline text-primary py-sm rounded-lg font-label-md hover:bg-primary hover:text-white transition-all">View Details</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="reveal bg-surface p-base rounded-lg hover-lift overflow-hidden" style="transition-delay: 150ms;">
+<div class="aspect-[4/5] bg-surface-container overflow-hidden rounded-lg mb-md">
+<img alt="Dining Table" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" data-alt="A grand solid teak dining table with natural oil finish, showcasing the intricate wood grain and artisanal joinery. The table is set in a bright, modern dining room with neutral tones and minimalist lighting. The overall mood is sophisticated and warm, highlighting the durability and timeless quality of Sunter-crafted furniture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgX5MXG2ZuGGrpCjEBS-ZCLFaPPpHt-fv5ON6Xl0qz7UtAl2Bi6Hx6Mw6qnaDdlDwWt9bbHuIXDFPV2kJFbOaloMzG8Vmj_l_nfQenhf0pY3iGD5hAool6G2pagNhyQXWDhdEhG33ZbpvUTe9t2vRXt1qYXBObvQ8uEyao-_RNWwUpcwFMyHUEHUT9tZgE56Jk3F91yquTTY0Qcg34T1KR7hrbmG2XY-xpl4W9UeO0IcaN1RqVrcytT9v23ZUwiKEsw_OconOpqug"/>
+</div>
+<div class="px-sm pb-sm">
+<span class="text-label-sm font-label-sm text-secondary bg-secondary-container px-xs py-1 rounded mb-sm inline-block">Solid Teak</span>
+<h4 class="text-headline-md font-headline-md text-primary mb-xs">Heritage Dining Table</h4>
+<p class="text-on-surface-variant font-label-md mb-md">Rp 8.750.000</p>
+<button class="w-full border border-outline text-primary py-sm rounded-lg font-label-md hover:bg-primary hover:text-white transition-all">View Details</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="reveal bg-surface p-base rounded-lg hover-lift overflow-hidden" style="transition-delay: 300ms;">
+<div class="aspect-[4/5] bg-surface-container overflow-hidden rounded-lg mb-md">
+<img alt="Bed Frame" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" data-alt="A master bedroom scene featuring a minimalist bed frame made from premium solid walnut wood. The bed is dressed in high-quality white linens and situated in a serene, light-filled space with clean architectural lines. The image emphasizes the architectural integrity and professional craftsmanship of the Rahayu furniture collection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl8HgTI_xtaMvpAFRMojsOchdzDXHj0EB8of83ulJz6cmeqzFW-rtnirsh2bzN2y25m6ulppHo8BXuoeiqxVuDckbPDoOGDrFMAuvhuKhUAJzN1RfE3PHoAqI_ezGtCTOrTyx85RG8tC-7dz7Hy05cWMb12TK71vQOdDTL_Tj5p-Qr1AoR-C2DU4W-f2B0xsQDYVdD9IEGdqww_07M1NfWe9ZMuoXCAA7x98WtjIYmldmJVkvDzYUysIYFBDzEM_2EzR0wuvMaV68"/>
+</div>
+<div class="px-sm pb-sm">
+<span class="text-label-sm font-label-sm text-secondary bg-secondary-container px-xs py-1 rounded mb-sm inline-block">Premium Walnut</span>
+<h4 class="text-headline-md font-headline-md text-primary mb-xs">Sunter Bed Frame</h4>
+<p class="text-on-surface-variant font-label-md mb-md">Rp 15.200.000</p>
+<button class="w-full border border-outline text-primary py-sm rounded-lg font-label-md hover:bg-primary hover:text-white transition-all">View Details</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="py-xl px-margin-mobile md:px-gutter max-w-container-max mx-auto overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
+<div class="reveal">
+<h2 class="text-headline-lg font-headline-lg text-primary mb-md">A Legacy of Sunter Craftsmanship</h2>
+<div class="space-y-md text-on-surface-variant font-body-md">
+<p>For over three decades, Toko Meubel Rahayu has been a cornerstone of the Sunter community. What started as a small family workshop has evolved into Jakarta's premier destination for furniture that balances heritage techniques with modern lifestyle needs.</p>
+<p>We believe that furniture is an investment in your home's story. That's why we prioritize durability and timeless aesthetics over fleeting trends. Every joint, finish, and fabric selection is vetted by our master artisans who have been with us since the beginning.</p>
+</div>
+<div class="mt-lg flex items-center gap-md">
+<div class="flex -space-x-4">
+<div class="w-12 h-12 rounded-full border-4 border-background bg-surface-container overflow-hidden">
+<img alt="Craftsman" data-alt="Portrait of an Indonesian master craftsman in a sunlit woodworking shop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhZWGKywqJ-FKsqgA1YQElvuY7lbpw94hlFliGPAlkXoh5wsT1oZPwIvAqOnMr4-ZRr9OWbsVORNGPWqktGbhbt9x_4VX7f4TIuFATnwCfb3PFqVO7ASyqtgoyZdP0T6mzlvRJWNc-uP6VFMw32sbktXRiBG6Ov4fFsZuM2WFhNnl4g4JwptV96zNKcxT-UolPNWZ0xjt28BmFo1AloEIR5EodyYDc14cjbUv8yNGBuVPPMBDawInEp3QPrZtsMtyUVDpnhhm1Ptw"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-background bg-surface-container overflow-hidden">
+<img alt="Designer" data-alt="Portrait of a modern Jakarta furniture designer in a minimalist studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0SkStbdzs5UAQteH2Lnf7YrXH1z2dDRLPyGNDJ04wOqyoijtyNgorLWryDH3d6EWdTVmmNO-7OFDxcypm9Q7oSqHK3tQf2pwnZbeLiZqju8KNk_KrzY5Hus8tEg4HHTQF1BisU_hlvLqD3gUK3IWwyDm2J0SB5mlRdz_oc9DBwT0Dbkqc20JxSf7BNY9eVsv1TGV64YK6Ueie2bBMBIpAuDKNjzfyrZfPT1buQHU7E9IfvY8JcRO8H-2GGPji6ge2zTlE03Jdi7U"/>
+</div>
+</div>
+<p class="text-label-md font-label-md text-primary">Trusted by 2,000+ Jakarta families</p>
+</div>
+</div>
+<div class="reveal relative" style="transition-delay: 200ms;">
+<div class="aspect-video bg-surface-container-highest rounded-xl overflow-hidden soft-shadow">
+<img alt="Workshop" class="w-full h-full object-cover" data-alt="A clean, organized furniture workshop in Jakarta where sunlight filters through high vents, illuminating wood shavings on a craftsman's workbench. A half-finished teak table sits in the foreground, showcasing traditional dovetail joints and the raw beauty of Indonesian timber. The scene is calm, professional, and authentic to the Rahayu brand story." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5-WT0tm4HaQKH0zsWhZsgM5U5H_hXURF7N5G2u2gG7LE4g_ipGvLUgSIMs-HRMKLA2U0NMqsImiEbtT681Fh5QCFSPSd9QqzMrXBGaX6TefKeJgeA2Zb6nLrQlgFbcGVctRoo06NAglqAPTBmc2dNC-QPhjxOAIS8bSyFi7KGF_U8uNtS_uxDbgV6fNg3AHZRyrETH2zGtgY71K4JzF7Ef1clzNfmA-Jpd0jgTue07TgCt1WT8GpAAigsVDt5gbQqjwS0Craz_5c"/>
+</div>
+<div class="absolute -bottom-md -right-md bg-tertiary-fixed p-lg rounded-xl soft-shadow hidden md:block">
+<p class="text-headline-md font-headline-md text-on-tertiary-fixed mb-xs">35+</p>
+<p class="text-label-sm font-label-sm text-on-tertiary-fixed-variant">Years of Local Heritage</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="reveal my-xl px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<div class="bg-primary-container rounded-xl p-xl text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24"></div>
+<h2 class="text-headline-lg font-headline-lg text-white mb-md relative z-10">Visit Our Sunter Showroom Today</h2>
+<p class="text-body-lg text-on-primary-container mb-lg max-w-xl mx-auto relative z-10">Experience the quality of our craftsmanship firsthand. See the textures, test the comfort, and talk to our experts.</p>
+<div class="flex flex-col md:flex-row gap-md justify-center relative z-10">
+<button class="bg-white text-primary px-lg py-md rounded-lg font-label-md hover:bg-surface-container-low transition-colors">Get Directions</button>
+<button class="border border-white/30 text-white px-lg py-md rounded-lg font-label-md hover:bg-white/10 transition-colors">Book a Consultation</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Inquiry Button (Floating) -->
+<button class="fixed bottom-gutter right-gutter bg-secondary text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-lg flex items-center justify-center transition-all opacity-0 translate-y-10 pointer-events-none z-[60] hover:scale-110 active:scale-90" id="inquiry-btn">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</button>
+<!-- Footer -->
+<footer class="w-full py-xl px-margin-mobile md:px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between gap-lg bg-tertiary">
+<div class="max-w-sm">
+<div class="text-headline-md font-headline-md text-on-tertiary mb-md">Toko Meubel Rahayu</div>
+<p class="text-tertiary-fixed-dim text-body-md mb-lg">Bringing Jakarta's finest artisanal furniture to homes that value quality over quantity.</p>
+<p class="text-label-sm font-label-sm text-tertiary-fixed-dim">© 2024 Toko Meubel Rahayu. All rights reserved. Crafted in Jakarta.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-2 gap-lg">
+<div>
+<h5 class="text-on-tertiary font-label-md mb-md">Quick Links</h5>
+<ul class="space-y-sm">
+<li><a class="text-tertiary-fixed-dim hover:text-on-secondary-container transition-colors font-body-md" href="#">Collections</a></li>
+<li><a class="text-tertiary-fixed-dim hover:text-on-secondary-container transition-colors font-body-md" href="#">Sunter Showroom</a></li>
+<li><a class="text-tertiary-fixed-dim hover:text-on-secondary-container transition-colors font-body-md" href="#">Custom Orders</a></li>
+<li><a class="text-tertiary-fixed-dim hover:text-on-secondary-container transition-colors font-body-md" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-on-tertiary font-label-md mb-md">Contact Us</h5>
+<ul class="space-y-sm">
+<li><a class="text-tertiary-fixed-dim hover:text-on-secondary-container transition-colors font-body-md" href="#">Instagram</a></li>
+<li><a class="text-tertiary-fixed-dim hover:text-on-secondary-container transition-colors font-body-md" href="#">WhatsApp</a></li>
+<li class="text-tertiary-fixed-dim font-body-md">Jl. Danau Sunter Utara No.12</li>
+</ul>
+</div>
+</div>
+</footer>
+<script>
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Floating Button Toggle
+        const inquiryBtn = document.getElementById('inquiry-btn');
+        const heroHeight = window.innerHeight * 0.8;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > heroHeight) {
+                inquiryBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                inquiryBtn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+            } else {
+                inquiryBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                inquiryBtn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+            }
+        });
+
+        // Simple Smooth Scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body></html>

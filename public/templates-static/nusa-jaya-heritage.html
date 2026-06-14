@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nusa Jaya | Heritage Indonesian Fine Dining</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#5f5e5e",
+                    "on-tertiary-fixed": "#1b1c19",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#c7c7c2",
+                    "surface-container-highest": "#e5e2e1",
+                    "tertiary": "#000000",
+                    "surface": "#fdf8f8",
+                    "on-secondary-fixed-variant": "#5d4201",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed-dim": "#e9c176",
+                    "surface-container-low": "#f7f3f2",
+                    "on-secondary-fixed": "#261900",
+                    "background": "#fdf8f8",
+                    "surface-container-high": "#ebe7e6",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#848480",
+                    "tertiary-container": "#1b1c19",
+                    "on-primary-fixed-variant": "#474746",
+                    "surface-bright": "#fdf8f8",
+                    "secondary-fixed": "#ffdea5",
+                    "secondary": "#775a19",
+                    "on-primary-fixed": "#1c1b1b",
+                    "on-surface": "#1c1b1b",
+                    "inverse-surface": "#313030",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#c8c6c5",
+                    "on-secondary-container": "#785a1a",
+                    "surface-container": "#f1edec",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c4c7c7",
+                    "surface-dim": "#ddd9d8",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e5e2e1",
+                    "tertiary-fixed": "#e3e3de",
+                    "on-background": "#1c1b1b",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#464744",
+                    "outline": "#747878",
+                    "primary-fixed": "#e5e2e1",
+                    "primary-container": "#1c1b1b",
+                    "primary": "#000000",
+                    "inverse-on-surface": "#f4f0ef",
+                    "on-primary-container": "#858383",
+                    "on-surface-variant": "#444748",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fed488",
+                    "primary-fixed-dim": "#c8c6c5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "section-gap": "120px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["EB Garamond"],
+                    "label-caps": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "display-lg": ["EB Garamond"],
+                    "headline-md": ["EB Garamond"],
+                    "headline-sm": ["EB Garamond"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .parallax-bg {
+            transform: translateY(0);
+            transition: transform 0.1s ease-out;
+        }
+        .gold-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C5A059 50%, transparent);
+            opacity: 0.4;
+        }
+        .luxury-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .luxury-button:hover {
+            letter-spacing: 0.15em;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/90 dark:bg-surface-container/90 backdrop-blur-md border-b border-secondary/30 transition-all duration-500" id="navbar">
+<div class="flex justify-between items-center max-w-[1200px] mx-auto px-margin-desktop py-4">
+<a class="font-display-lg text-headline-sm tracking-tight text-primary" href="#">Nusa Jaya</a>
+<div class="hidden md:flex items-center space-x-10">
+<a class="font-label-caps text-label-caps text-secondary border-b border-secondary pb-1 uppercase" href="#">Menu</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors uppercase" href="#">Heritage</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors uppercase" href="#">Gallery</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors uppercase" href="#">Private Dining</a>
+</div>
+<button class="bg-primary text-on-primary px-8 py-3 font-label-caps text-label-caps uppercase luxury-button">
+                Book a Table
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative h-screen flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-[120%] object-cover parallax-bg brightness-75" data-alt="A cinematic close-up of a slow-cooked Indonesian Beef Rendang, presented in a dark charcoal stone bowl. The meat is tender and coated in a rich, dark spice reduction, garnished with fine julienned lime leaves and a single star anise. The lighting is moody and high-end, reflecting a luxury restaurant environment with warm gold highlights and deep shadows. The background is a soft-focus ivory stone surface." id="hero-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLZYPTObSdtQPUtKJDU8TEjIffquciif3XlfAtLneJB2IA2r413W15yEYeBsdbt97CZNSaSb9sRwPwlzN2SqJzotzIo1VtKw_RSra0uIM6vWMhU3STbzqFuj_vrZTKJoX9CspKo6VPURaYdNyCBSXztWJh4-3gEGUvbT26H5zBKHmvnsTitGlDmQp_IVvYA0emj5Qi5RrmOYaUEqclgpUOzxwT5kbQvaqX2fUSXxGOEkNq2yn0ZiNrkqLQQKelzywl1sDwiCGGOoA"/>
+</div>
+<div class="relative z-10 text-center text-white px-margin-mobile reveal" id="hero-content">
+<span class="font-label-caps text-label-caps uppercase tracking-[0.3em] mb-6 block text-secondary-fixed">Established 1984</span>
+<h1 class="font-display-lg text-display-lg md:text-[120px] leading-[0.9] mb-8">The Heritage<br/><span class="italic">Collection</span></h1>
+<div class="gold-divider w-24 mx-auto mb-8"></div>
+<p class="font-body-lg text-body-lg max-w-xl mx-auto opacity-90">An odyssey through the ancestral flavors of the Indonesian archipelago, refined for the modern epicurean.</p>
+</div>
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
+<span class="material-symbols-outlined text-secondary-fixed">keyboard_double_arrow_down</span>
+</div>
+</header>
+<!-- Origin Section (Spices) -->
+<section class="py-section-gap bg-surface relative overflow-hidden">
+<div class="max-w-[1200px] mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<div class="lg:col-span-5 reveal">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest mb-4 block">Archipelago Roots</span>
+<h2 class="font-headline-md text-display-lg mb-8">The Sacred Spices of Nusa</h2>
+<p class="font-body-lg text-on-surface-variant mb-12 leading-relaxed">Our kitchen is a sanctuary for the rare and the ancient. From the volcanic soils of Sumatra to the spice forests of Maluku, we source spices that have defined our heritage for centuries. Each blend is ground by hand, preserving the volatile oils that carry the soul of our islands.</p>
+<div class="space-y-6">
+<div class="flex items-center gap-6 border-b border-secondary/20 pb-6 group cursor-default">
+<span class="font-display-lg text-headline-sm text-secondary group-hover:scale-110 transition-transform">01</span>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase mb-1">Galangal &amp; Turmeric</h4>
+<p class="text-sm text-on-surface-variant">The earthy foundation of every celebratory tumpeng.</p>
+</div>
+</div>
+<div class="flex items-center gap-6 border-b border-secondary/20 pb-6 group cursor-default">
+<span class="font-display-lg text-headline-sm text-secondary group-hover:scale-110 transition-transform">02</span>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase mb-1">Nutmeg &amp; Clove</h4>
+<p class="text-sm text-on-surface-variant">Rare gems from the legendary Banda Islands.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-6 lg:offset-1 relative reveal" style="transition-delay: 0.2s;">
+<div class="aspect-[4/5] overflow-hidden">
+<img class="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-[2s]" data-alt="An artistic flat-lay arrangement of raw Indonesian spices on a textured stone surface. Whole cinnamon sticks, star anise, bright orange fresh turmeric roots, and peppercorns are scattered with intentional elegance. The lighting is natural and directional, creating soft shadows that emphasize the organic textures. The overall color palette consists of warm earth tones, burnt oranges, and deep browns against a neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO2XJun2Z-OnjL3PwgUtA22WMopogEpaQM5euUdWl966U2rPSW5bipqckHi4sqzU1UwAYoC49ciT3cqfXiyIni3Yf8zSznfFirLY2bHrjLJhKjJqrT5z3bldfYO8fLeIm7V2Qz7rKer8EhCBb95lfJ1cb1sfkxqQhEyR7CFZro-R9iVDZZVNsEeIxTsh_zBFp7YZ2oJbwTYpv_efGXscaJ-zpVgvRoAkn284B0C3g6W7sn-07srMd5sRhQ19IymbUuqZ0d5ZYGQMA"/>
+</div>
+<div class="absolute -bottom-10 -left-10 bg-secondary-container p-12 hidden xl:block">
+<span class="material-symbols-outlined text-secondary text-5xl" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Gallery / Signature Dishes -->
+<section class="py-section-gap bg-surface-container-low">
+<div class="max-w-[1200px] mx-auto px-margin-desktop">
+<div class="text-center mb-20 reveal">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.2em] mb-4 block">The Selection</span>
+<h2 class="font-display-lg text-display-lg">Culinary Masterpieces</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Large Feature -->
+<div class="md:col-span-2 relative group overflow-hidden reveal">
+<img class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A vibrant Indonesian Gado-Gado salad presented as a fine-dining dish. Crisp blanched vegetables are arranged geometrically with halved quail eggs, fried tofu cubes, and a artistic drizzle of rich peanut sauce. The plate is a handmade ceramic piece in a matte charcoal finish. The lighting is bright and clean, emphasizing the freshness of the greens and the golden hues of the peanut dressing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL8I4nUM82aNU0OXB9qMHvPpi9euAlbVYAnTVoKwtFLANJvuS26sWpuYtmVrcqiRY_RlBUGpzoHjcT-L1VCf3HdQ2GL88ft77NjiMAMXQC33273r-QjDVl4pVQrceIQXXa9kv7Ry-pbZRxQ1gOX4pPE8yLLW5tw3sem27st1zwUDHQM9jmAnjrjug7QsnruLDzpvG-VZVVyrq0J8OZSsS5xV16Sfe9jpgG-uf6-8C5G42tHhNLWbOJLennU-pJbuOUAevFn5hLzUI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-10">
+<h3 class="text-white font-display-lg text-headline-md mb-2">Modern Gado-Gado</h3>
+<p class="text-white/80 font-label-caps text-label-caps uppercase">Vegetal Harmony • Peanut Emulsion</p>
+</div>
+</div>
+<!-- Side Item -->
+<div class="relative group overflow-hidden reveal" style="transition-delay: 0.1s;">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Glistening lamb satay skewers grilled over coconut husk charcoal. The meat is perfectly charred and glazed with sweet soy sauce and aromatic spices. Wisps of smoke are captured in a high-contrast, moody light setting. The skewers are placed on a dark teak wood platter, reflecting a sophisticated and authentic Indonesian grilling experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARMnzoYBbpi22xZtcwnhoeQ_m-PKcx_pHG-NkHC_1bN0_tCAsyYvVGBsUA5K021hrnrHvFm4JvCmY-k5BKVsnxNeMXFvD7Q-VJ1Y7tKYYLu6JkaQl3TDRs31YqfbUg4KoYsLAxAgc5oDQEcq8nueDEPShFUCzdJs8gsvrOjXQ3xKda-A5uGkto27qhX-SYZ6s1QvXGiJ_QTa0NgXJFO8f9dsiXadq7PJ27xbwwMI8x-kUcU-3oZN45UE8BEP_fzaB3MR3U8nSDPC0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-10">
+<h3 class="text-white font-display-lg text-headline-md mb-2">Sate Maranggi</h3>
+<p class="text-white/80 font-label-caps text-label-caps uppercase">Wagyu MB9 • Sweet Soy</p>
+</div>
+</div>
+<!-- Side Item 2 -->
+<div class="relative group overflow-hidden reveal" style="transition-delay: 0.2s;">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Fragrant Nasi Kuning (Yellow Rice) served in a silver leaf mold, accompanied by artisanal side dishes. The rice is a vibrant turmeric yellow, contrasted by bright red sambal and crispy fried shallots. The presentation is elegant and regal, set against an ivory linen background with subtle gold silverware visible in the frame." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYOx23O7gICt4TK68k-2cOKCwbJb_ILQQCOLreSKxODyPkczbf418hwmyoF8b1SckoyE6Bg5ngFZHaSoTmn0yyrz9MrqV1XciokFI_Uk_n1i_i8avun1ccyOX9U4DjmLODCRm6JhC5LWa5ntKdhtmA3K58OCHWiN4oq08FuasCBYuniezlH552DMBgDcLM6N5OmCwh85UCXQ6sN3-Y2JiPcS8AHO-V5xKqqDv4nRvrVYl1qLFFFkug0U0k8cCQ0nom-a66A9dUizQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-10">
+<h3 class="text-white font-display-lg text-headline-md mb-2">Nasi Kuning Jaya</h3>
+<p class="text-white/80 font-label-caps text-label-caps uppercase">Turmeric Rice • Heritage Sides</p>
+</div>
+</div>
+<!-- Large Feature 2 -->
+<div class="md:col-span-2 relative group overflow-hidden reveal" style="transition-delay: 0.3s;">
+<img class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Luxury Indonesian desserts: Es Teler re-imagined as a delicate mousse with avocado foam, jackfruit pearls, and coconut sorbet. The dessert is served in a crystal bowl, catching the light like a jewel. The setting is a polished black marble table reflecting the soft ambient lighting of a high-end restaurant interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTtMDP6_gpVa1RFrTgI_e13euWQFPC7erEbxJ0h8ml-lNl4HuaCBjITzz4BGOL9MuTKgJhE134me406MqzZ9CHIOCdV1baw3m_nXcU5dpvqOJPDVpS6H-qpNLrXlVGLkIXuerP5KqQHIIOD8Lc4tV3L24Xh2PwsgrmLl5rY7sHhm6dIhqwQeewBoNkhBg1NghcvpXhCu4cw40YAAD79hvfh1ENNdNMalU_Ld-VOAjL_SsE2QpS6YWinOdIccAFMBm-BWRDCYrpP2s"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-10">
+<h3 class="text-white font-display-lg text-headline-md mb-2">Nusantara Sweets</h3>
+<p class="text-white/80 font-label-caps text-label-caps uppercase">Tropical Deconstruction • Fine Pastry</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Private Dining -->
+<section class="py-section-gap relative">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover brightness-[0.2] grayscale" data-alt="An exclusive and intimate private dining room in a high-end Jakarta restaurant. The room features dark wood paneling, a large circular stone table set for eight people with fine china and gold-rimmed glasses. Large floor-to-ceiling windows show the Jakarta city lights in a soft blur. The atmosphere is quiet, opulent, and incredibly private." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw-az7lN86URr1nPzXUr23VF6mVtNGnbOwR8rCvwmTcruemGr7IKFQa0jAjwxzifPJHivk1ugK9pJKKCOyrV4_nQnGdNfySUKeCBGM_3-KIxGv6szmTt5j2_A0i7aIz2Q1seqrlT4_9CLOouTifbV9-QGdGv0p4Bss4B9gW3aAnUvqvWCF-uvTWFauMTVFtx9LTuPtFwlMNATn8pxSKf7luzZfbhJPEk3A20gWKDPTdRWXCKyqdrMHuVku1rBmVM_jYguMtRixYfc"/>
+</div>
+<div class="max-w-[1200px] mx-auto px-margin-desktop relative z-10 text-white">
+<div class="max-w-2xl reveal">
+<span class="font-label-caps text-label-caps text-secondary-fixed uppercase tracking-[0.3em] mb-4 block">Exclusive Experiences</span>
+<h2 class="font-display-lg text-display-lg mb-8 text-surface-container-lowest">Private Dining in Senopati</h2>
+<p class="font-body-lg mb-10 opacity-80">Experience discretion and grandeur in our bespoke private chambers. Perfect for intimate celebrations or high-stakes corporate gatherings, our private dining service includes a dedicated butler and a customized menu curated by our Executive Chef.</p>
+<div class="grid grid-cols-2 gap-12 mb-12">
+<div>
+<h4 class="font-label-caps text-label-caps uppercase text-secondary-fixed mb-2">The Kraton Suite</h4>
+<p class="text-sm opacity-70">Up to 12 Guests • Traditional Javanese Decor</p>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase text-secondary-fixed mb-2">The Jaya Room</h4>
+<p class="text-sm opacity-70">Up to 24 Guests • Modern Jakarta Skyline Views</p>
+</div>
+</div>
+<button class="border border-secondary-fixed text-secondary-fixed px-10 py-4 font-label-caps text-label-caps uppercase hover:bg-secondary-fixed hover:text-on-secondary-fixed transition-all duration-300">
+                    Inquire for Availability
+                </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-secondary/30">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter max-w-[1200px] mx-auto px-margin-desktop py-section-gap">
+<div class="col-span-1 lg:col-span-1">
+<h3 class="font-display-lg text-headline-md text-primary mb-6">Nusa Jaya</h3>
+<p class="font-body-md text-on-surface-variant mb-8">© 2024 Nusa Jaya Resto Jakarta. Defined by Heritage.</p>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase mb-6 text-primary">Location</h4>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Jalan Senopati No. 8,<br/>Kebayoran Baru, Jakarta Selatan<br/>12190</p>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase mb-6 text-primary">Connect</h4>
+<ul class="space-y-4">
+<li><a class="font-body-md text-on-surface-variant hover:text-primary underline underline-offset-8 transition-all" href="#">Instagram</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:text-primary underline underline-offset-8 transition-all" href="#">Reservations</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:text-primary underline underline-offset-8 transition-all" href="#">Press Kit</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase mb-6 text-primary">Newsletter</h4>
+<p class="text-sm text-on-surface-variant mb-4">Join our inner circle for exclusive tastings.</p>
+<form class="flex flex-col gap-4">
+<input class="bg-transparent border-b border-outline py-2 focus:border-primary focus:ring-0 outline-none transition-colors" placeholder="Email Address" type="email"/>
+<button class="font-label-caps text-label-caps uppercase text-left text-secondary hover:text-primary transition-colors">Subscribe</button>
+</form>
+</div>
+</div>
+</footer>
+<script>
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroImage = document.getElementById('hero-image');
+            if (heroImage) {
+                heroImage.style.transform = `translateY(${scrolled * 0.4}px)`;
+            }
+
+            // Navbar background transition
+            const navbar = document.getElementById('navbar');
+            if (scrolled > 50) {
+                navbar.classList.add('py-2', 'shadow-sm');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.remove('py-2', 'shadow-sm');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        // Reveal animations on scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+            revealElements.forEach(el => {
+                const elTop = el.getBoundingClientRect().top;
+                if (elTop < triggerBottom) {
+                    el.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Initial check
+        revealOnScroll();
+
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+                btn.style.opacity = '0.8';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+                btn.style.opacity = '1';
+            });
+        });
+    </script>
+</body></html>

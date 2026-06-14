@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PO Bus Bahari Alam - Executive Variant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-line {
+            transition: height 0.1s linear;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .bus-card-slide {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease-out;
+        }
+        .bus-card-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .bus-card-slide:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1a1c1e",
+                        "surface-container-low": "#f3f3f6",
+                        "primary-fixed-dim": "#ffb597",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#116395",
+                        "background": "#f9f9fc",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-tertiary-container": "#00302d",
+                        "primary-container": "#c94c00",
+                        "surface-bright": "#f9f9fc",
+                        "on-surface-variant": "#594138",
+                        "tertiary-container": "#34a099",
+                        "on-tertiary-fixed-variant": "#00504c",
+                        "surface": "#f9f9fc",
+                        "surface-tint": "#a43d00",
+                        "inverse-primary": "#ffb597",
+                        "secondary-fixed": "#cde5ff",
+                        "tertiary-fixed-dim": "#72d7cf",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#e1bfb2",
+                        "on-secondary-fixed": "#001d32",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "tertiary-fixed": "#8ff4eb",
+                        "surface-variant": "#e2e2e5",
+                        "primary": "#a03b00",
+                        "on-surface": "#1a1c1e",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "tertiary": "#006a65",
+                        "inverse-surface": "#2f3133",
+                        "on-primary-fixed-variant": "#7d2d00",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#360f00",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004b74",
+                        "surface-container-high": "#e8e8ea",
+                        "on-tertiary-fixed": "#00201e",
+                        "outline": "#8d7166",
+                        "surface-container": "#eeeef0",
+                        "primary-fixed": "#ffdbcd",
+                        "on-secondary-container": "#005380",
+                        "secondary-container": "#87c7ff",
+                        "surface-dim": "#dadadc",
+                        "inverse-on-surface": "#f0f0f3",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#94ccff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "base": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display": ["Plus Jakarta Sans"],
+                        "label-sm": ["Work Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-md": ["Work Sans"],
+                        "body-md": ["Work Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- Scroll Progress Line -->
+<div class="fixed left-4 md:left-8 top-0 bottom-0 w-[2px] bg-outline-variant z-50 pointer-events-none">
+<div class="progress-line w-full bg-secondary origin-top scale-y-0 h-full" id="scrollProgress"></div>
+</div>
+<!-- TopNavBar -->
+<header class="bg-surface sticky top-0 z-40 border-b border-outline-variant shadow-sm">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
+<div class="flex items-center gap-2">
+<span class="font-display text-headline-md font-bold text-primary">Sinar &amp; Bahari Travel</span>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Routes</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">Tour Packages</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">About Us</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md shadow-sm active:scale-95 transition-all">
+                Check Booking
+            </button>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[870px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Executive Bus at Dawn" class="w-full h-full object-cover brightness-75" data-alt="A premium, sleek modern bus with a metallic navy blue finish parked at a glass-walled contemporary bus station at dawn. The sky is a gradient of soft gold and deep morning blue, reflecting off the bus's polished surfaces. The scene conveys a sense of high-end, reliable corporate travel with professional cinematic lighting and an atmosphere of serenity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR_UEF8zhv59VOfeyX872Le3lxjcwiHbDRNaVfB80LE69nILdAoIqrt3fZucwHBOsF5leI3WW5s35Ar8vJoQaeAPwZJDuMUD9mkIMQRZ9l5pNLSddzDbMVxGZDgzLQZRZpWf8h3f726l0en0LoDIAgoXNDe5zdIeZP732v4HUka67CZxkXmIBBrPLYPO-braaO0wuhlmqM9s8BzSw1nAOvScvxxJ5thwQHyw7tErJzU8Vyno__4TuV3R3-flftg8kpAYxNE_codBs"/>
+<div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto w-full">
+<div class="max-w-2xl reveal">
+<h1 class="font-display text-white text-5xl md:text-7xl mb-6 leading-tight">
+                        The Gold Standard of Intercity Travel.
+                    </h1>
+<p class="font-body-lg text-surface-variant mb-8 max-w-lg">
+                        Experience reliability through the lens of luxury. PO Bus Bahari Alam brings a maritime legacy of safety and serenity to every mile of your journey.
+                    </p>
+<div class="flex gap-4">
+<a class="bg-secondary text-white px-8 py-4 rounded-lg font-label-md hover:bg-secondary-container hover:text-on-secondary-container transition-all flex items-center gap-2" href="#booking">
+                            Explore Routes <span class="material-symbols-outlined">arrow_downward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking Widget Section -->
+<section class="relative z-20 -mt-16 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto" id="booking">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-lg border border-outline-variant reveal">
+<div class="flex gap-8 mb-8 border-b border-outline-variant">
+<button class="pb-4 border-b-2 border-secondary text-secondary font-bold font-label-md flex items-center gap-2">
+<span class="material-symbols-outlined">directions_bus</span> Bus Ticket
+                    </button>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-base">location_on</span> Origin
+                        </label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-secondary outline-none transition-all" placeholder="Select City" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-base">near_me</span> Destination
+                        </label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-secondary outline-none transition-all" placeholder="Select City" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-base">calendar_today</span> Date
+                        </label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-secondary outline-none transition-all" type="date"/>
+</div>
+<div class="flex items-end">
+<button class="w-full bg-secondary text-white py-3.5 rounded-lg font-bold shadow-md hover:brightness-110 active:scale-95 transition-all">
+                            Search Routes
+                        </button>
+</div>
+</form>
+</div>
+</section>
+<!-- Bus Class Comparison -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto">
+<div class="text-center mb-16 reveal">
+<h2 class="font-display text-headline-lg text-on-background mb-4">Choose Your Voyage</h2>
+<p class="font-body-md text-on-surface-variant max-w-xl mx-auto">Two distinct levels of comfort, one unwavering commitment to punctuality and safety.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<!-- Executive Card -->
+<div class="bus-card-slide bg-white rounded-xl overflow-hidden border border-outline-variant hover:shadow-xl transition-shadow group">
+<div class="h-64 overflow-hidden relative">
+<img alt="Executive Interior" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Interior of a luxury executive bus showing plush teal and grey ergonomic reclining seats with ample legroom. The cabin is clean with soft blue LED ambient lighting along the ceiling. Large panoramic windows offer a glimpse of a sunrise landscape, maintaining a professional and serene maritime-inspired travel atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzTDPhEvM63GATXYZ3vJ3wQpcAlAv3t4zCvOGOkfeBcyly__AZFiEg6QHW_Dqklx9-HgLG1juW57gBG_3kkgTfK--RgSuq5oUvlknObKyMzppP9gDReu5M69ciTDZ7rgkGeCn8gZtHDdFTS95Fh-iVY7KxmVDni2Ed1UjrQQ3mEK5Q4gqp3Kl9CVMEJcOS6muzd1PM3GERxVpGZ4NDdv_WUc55cPdjx5v4LrXNwE6QrFVORC3uYz9yGclLYsAJkHYU52MtJQOSJO0"/>
+<div class="absolute top-4 left-4 bg-secondary text-white px-4 py-1 rounded-full text-sm font-bold">EXECUTIVE</div>
+</div>
+<div class="p-8">
+<h3 class="font-display text-headline-md mb-4 text-on-background">Executive Fleet</h3>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary">airline_seat_recline_extra</span>
+<span>2+2 Seat Configuration (32 Seats)</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary">ac_unit</span>
+<span>Full Climate Control</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary">restaurant</span>
+<span>Complimentary Snack Box</span>
+</div>
+</div>
+<p class="text-secondary font-bold text-headline-md">From Rp 180.000</p>
+</div>
+</div>
+<!-- Super Executive Card -->
+<div class="bus-card-slide bg-white rounded-xl overflow-hidden border-2 border-secondary shadow-lg hover:shadow-2xl transition-shadow group relative">
+<div class="absolute top-0 right-0 bg-secondary text-white px-6 py-2 rounded-bl-xl font-bold z-10">RECOMMENDED</div>
+<div class="h-64 overflow-hidden relative">
+<img alt="Super Executive Interior" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Ultra-luxury super executive bus cabin featuring wide, individual leather seats in a 2+1 layout. Each seat has a personal entertainment screen and footrests. The interior is bathed in warm, soft teal light and high-quality wood accents, representing the pinnacle of intercity bus travel reliability and premium comfort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzVQbzkfpPBwwMCQxcUogV24OWxqGlplZ0aoeYvt8eOf2CNocvHWmGwKO-JzgqE2iTI8-YAM7vLzwyrdBc1JdUIsnRFSO1nFd92VNZT3BpeT7LGsbPKV90TcCh4u1ShkRMD9JNVRRK5DRp1tPQo2pd-2GN1fKTir-9_j3Nstu7VVLYw73lbzlvVHvBrWIhbR68FIj3LjxKiYDqUyA0oBelAG93hW4_W-T4zKc1lHg4Iukohoc43K5Jpeu4eNAJ48f-z4vsaV3XIEM"/>
+<div class="absolute top-4 left-4 bg-tertiary text-white px-4 py-1 rounded-full text-sm font-bold">SUPER EXECUTIVE</div>
+</div>
+<div class="p-8">
+<h3 class="font-display text-headline-md mb-4 text-on-background">Super Executive</h3>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary">airline_seat_flat</span>
+<span>2+1 Configuration (21 Seats)</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary">tv</span>
+<span>Personal AVOD Entertainment</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary">coffee</span>
+<span>Buffet Service &amp; Free Coffee</span>
+</div>
+</div>
+<p class="text-secondary font-bold text-headline-md">From Rp 350.000</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Tracking Teaser -->
+<section class="py-24 bg-surface-container-low overflow-hidden">
+<div class="px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto flex flex-col md:flex-row items-center gap-16">
+<div class="w-full md:w-1/2 reveal">
+<div class="inline-flex items-center gap-2 bg-tertiary-container/10 text-tertiary font-bold px-4 py-1 rounded-full mb-6 text-sm">
+<span class="w-2 h-2 bg-tertiary rounded-full animate-pulse"></span> LIVE TRACKING
+                    </div>
+<h2 class="font-display text-headline-lg text-on-background mb-6">Real-Time Reliability in Your Hands</h2>
+<p class="font-body-md text-on-surface-variant mb-8">
+                        Never wonder about arrival times again. Our maritime-precision GPS system provides second-by-second tracking for every bus in our fleet. Share your live location with family for peace of mind.
+                    </p>
+<ul class="space-y-4 mb-10">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>Precise ETA based on traffic data</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>Driver profile and bus photo verification</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>One-tap safety SOS sharing</span>
+</li>
+</ul>
+<button class="border-2 border-secondary text-secondary px-8 py-3 rounded-lg font-bold hover:bg-secondary hover:text-white transition-all">
+                        Learn More
+                    </button>
+</div>
+<div class="w-full md:w-1/2 relative reveal">
+<div class="aspect-square bg-white rounded-3xl shadow-2xl p-6 border border-outline-variant overflow-hidden">
+<div class="w-full h-full bg-surface-container-highest rounded-2xl relative overflow-hidden">
+<div class="absolute inset-0 opacity-20">
+<svg height="100%" preserveaspectratio="none" viewbox="0 0 100 100" width="100%">
+<path class="text-secondary" d="M0,20 Q50,0 100,20 V80 Q50,100 0,80 Z" fill="none" stroke="currentColor" stroke-width="0.5"></path>
+<path class="text-secondary/30" d="M10,0 V100 M30,0 V100 M50,0 V100 M70,0 V100 M90,0 V100" stroke="currentColor" stroke-width="0.2"></path>
+<path class="text-secondary/30" d="M0,10 H100 M0,30 H100 M0,50 H100 M0,70 H100 M0,90 H100" stroke="currentColor" stroke-width="0.2"></path>
+</svg>
+</div>
+<!-- Map Pin Animation -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<div class="relative">
+<div class="absolute inset-0 bg-secondary rounded-full animate-ping opacity-25"></div>
+<span class="material-symbols-outlined text-4xl text-secondary relative z-10" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+</div>
+<div class="mt-2 bg-white px-3 py-1 rounded shadow-md text-xs font-bold border border-outline-variant">
+                                    BH-204 | OTW Jakarta
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Stats -->
+<section class="py-16 bg-secondary text-white text-center">
+<div class="px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="reveal">
+<div class="text-4xl font-bold mb-2">99.8%</div>
+<div class="text-sm opacity-80 uppercase tracking-wider">Punctuality Rate</div>
+</div>
+<div class="reveal">
+<div class="text-4xl font-bold mb-2">12k+</div>
+<div class="text-sm opacity-80 uppercase tracking-wider">Monthly Trips</div>
+</div>
+<div class="reveal">
+<div class="text-4xl font-bold mb-2">50+</div>
+<div class="text-sm opacity-80 uppercase tracking-wider">Executive Cities</div>
+</div>
+<div class="reveal">
+<div class="text-4xl font-bold mb-2">4.9/5</div>
+<div class="text-sm opacity-80 uppercase tracking-wider">User Satisfaction</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant">
+<div class="w-full py-12 px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-start max-w-max-width mx-auto gap-8">
+<div class="space-y-4">
+<span class="font-display text-headline-md font-bold text-on-surface">Sinar &amp; Bahari Travel</span>
+<p class="max-w-xs text-on-surface-variant font-body-md">Connecting Indonesia's major cities with unparalleled safety and modern reliability since 1998.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+<div class="space-y-4">
+<h4 class="font-bold text-secondary">Company</h4>
+<ul class="space-y-2 text-on-surface-variant font-label-md">
+<li><a class="hover:text-primary transition-colors" href="#">Routes</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tour Packages</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold text-secondary">Support</h4>
+<ul class="space-y-2 text-on-surface-variant font-label-md">
+<li><a class="hover:text-primary transition-colors" href="#">Safety &amp; Security</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Support</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQs</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 py-6 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto text-center md:text-left">
+<p class="text-on-surface-variant font-label-sm">© 2024 Sinar &amp; Bahari Travel Group. Jakarta Headquarters. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Scroll Progress Logic
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = winScroll / height;
+            document.getElementById('scrollProgress').style.transform = `scaleY(${scrolled})`;
+        });
+
+        // Intersection Observer for Reveal Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .bus-card-slide').forEach(el => observer.observe(el));
+
+        // Form Submission Micro-interaction
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Searching...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert('Searching for available Bahari Alam Executive routes...');
+            }, 1500);
+        });
+    </script>
+</body></html>
