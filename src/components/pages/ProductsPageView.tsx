@@ -311,7 +311,7 @@ export function ProductsPageView() {
           </p>
           <div className="prods-cta-actions">
             <Link
-              href="/contact"
+              href="/contact?interest=webapp"
               className="prods-btn-primary"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

@@ -172,7 +172,7 @@ export function ProductHrisPageView(_props: ProductHrisPageViewProps) {
               <span className="pk-btn-arrow">→</span>
             </Link>
             <Link
-              href="/contact"
+              href="/contact?interest=hris"
               className="pk-btn-ghost"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
@@ -627,7 +627,7 @@ export function ProductHrisPageView(_props: ProductHrisPageViewProps) {
               <span className="pk-btn-arrow">→</span>
             </Link>
             <Link
-              href="/contact"
+              href="/contact?interest=hris"
               className="pk-cta-mail"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

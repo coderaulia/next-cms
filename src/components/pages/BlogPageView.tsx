@@ -108,7 +108,7 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
               <span>-&gt;</span>
             </a>
             <Link
-              href="/contact"
+              href="/contact?interest=blog"
               className="v-svc-btn-ghost"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
@@ -285,7 +285,7 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
           <p>Let us translate engineering insight into a practical roadmap for your business.</p>
           <div className="v-svc-cta-actions">
             <Link
-              href="/contact"
+              href="/contact?interest=blog"
               className="v-svc-btn-primary v-svc-btn-primary-lg"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

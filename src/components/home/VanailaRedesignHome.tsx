@@ -259,7 +259,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
           <Link href="/portfolio" data-analytics-event="cta_click" data-analytics-label="Home logos portfolio link">
             View our portfolio -&gt;
           </Link>
-          <Link href="/contact" data-analytics-event="cta_click" data-analytics-label="Home logos contact link">
+          <Link href="/contact?interest=website" data-analytics-event="cta_click" data-analytics-label="Home logos contact link">
             Let&apos;s talk growth -&gt;
           </Link>
         </div>

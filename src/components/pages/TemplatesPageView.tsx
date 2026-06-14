@@ -318,7 +318,7 @@ export function TemplatesPageView({ templates }: TemplatesPageViewProps) {
           </p>
           <div className="v-svc-cta-actions">
             <Link
-              href="/contact"
+              href="/contact?interest=template"
               className="v-svc-btn-primary v-svc-btn-primary-lg"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

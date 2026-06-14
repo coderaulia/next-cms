@@ -414,7 +414,7 @@ export function FlowrazePageView() {
               <span className={styles.arrow}>→</span>
             </a>
             <Link
-              href="/contact"
+              href="/contact?interest=flowraze"
               className={styles.mailLink}
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

@@ -141,7 +141,7 @@ export function AtelierPageView() {
               <span className={styles.arrow}>→</span>
             </Link>
             <Link
-              href="/contact"
+              href="/contact?interest=atelier"
               className={styles.ghostButton}
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
@@ -297,7 +297,7 @@ export function AtelierPageView() {
           </p>
           <div className={styles.ctaActions}>
             <Link
-              href="/contact"
+              href="/contact?interest=atelier"
               className={`${styles.primaryButton} ${styles.largeButton}`}
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

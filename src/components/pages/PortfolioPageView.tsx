@@ -107,7 +107,7 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
               <span>-&gt;</span>
             </a>
             <Link
-              href="/contact"
+              href="/contact?interest=portfolio"
               className="v-svc-btn-ghost"
               data-analytics-event="cta_click"
               data-analytics-label="Portfolio hero contact CTA"
@@ -296,7 +296,7 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
           <p>Bring us the business problem. We will map the technical path, timeline, and launch plan.</p>
           <div className="v-svc-cta-actions">
             <Link
-              href="/contact"
+              href="/contact?interest=portfolio"
               className="v-svc-btn-primary v-svc-btn-primary-lg"
               data-analytics-event="cta_click"
               data-analytics-label="Portfolio footer primary CTA"

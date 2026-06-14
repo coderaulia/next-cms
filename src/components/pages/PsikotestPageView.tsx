@@ -245,7 +245,7 @@ export function PsikotestPageView() {
               <span className="pk-btn-arrow">→</span>
             </Link>
             <Link
-              href="/contact"
+              href="/contact?interest=psikotest"
               className="pk-btn-ghost"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
@@ -499,7 +499,7 @@ export function PsikotestPageView() {
               <span className="pk-btn-arrow">→</span>
             </Link>
             <Link
-              href="/contact"
+              href="/contact?interest=psikotest"
               className="pk-cta-mail"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}

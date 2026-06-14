@@ -158,7 +158,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
           <p>{heroSection.body}</p>
           <div className="v-svc-actions">
             <Link
-              href="/contact"
+              href="/contact?interest=website"
               className="v-svc-btn-primary"
               data-analytics-event="cta_click"
               data-analytics-label="Service hero primary CTA"
@@ -249,7 +249,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                   </Link>
                 )}
                 <Link
-                  href="/contact"
+                  href="/contact?interest=website"
                   className="v-svc-discuss-link"
                   onMouseEnter={() => setMode('link')}
                   onMouseLeave={() => setMode('default')}
@@ -403,7 +403,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
           </p>
           <div className="v-svc-cta-actions">
             <Link
-              href="/contact"
+              href="/contact?interest=website"
               className="v-svc-btn-primary v-svc-btn-primary-lg"
               data-analytics-event="cta_click"
               data-analytics-label="Service footer primary CTA"
