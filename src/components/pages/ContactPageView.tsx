@@ -12,6 +12,7 @@ type ContactPageViewProps = {
   page: LandingPage;
   settings?: Pick<SiteSettings, 'contact'>;
   initialInterest?: string;
+  initialOverview?: string;
 };
 
 const PARTNERSHIP_INTEREST = 'Partnership / Referral';
@@ -26,7 +27,7 @@ const SERVICES = [
   PARTNERSHIP_INTEREST,
 ] as const;
 
-export function ContactPageView({ settings, initialInterest }: ContactPageViewProps) {
+export function ContactPageView({ settings, initialInterest, initialOverview }: ContactPageViewProps) {
   const { setMode } = useCursorMode();
   const c = settings?.contact;
 
@@ -37,13 +38,16 @@ export function ContactPageView({ settings, initialInterest }: ContactPageViewPr
   const companyName = c?.companyName || 'PT Vanaila Digital Vision';
   const addressLine1 = c?.addressLine1 || 'Bogor, Indonesia';
 
-  const [interests, setInterests] = useState<string[]>(() =>
-    initialInterest === PARTNERSHIP_INTEREST ? [PARTNERSHIP_INTEREST] : []
-  );
+  const [interests, setInterests] = useState<string[]>(() => {
+    if (initialInterest && SERVICES.includes(initialInterest as (typeof SERVICES)[number])) {
+      return [initialInterest];
+    }
+    return [];
+  });
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
   const [emailField, setEmailField] = useState('');
-  const [overview, setOverview] = useState('');
+  const [overview, setOverview] = useState(initialOverview ?? '');
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 

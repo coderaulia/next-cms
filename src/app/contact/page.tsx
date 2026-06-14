@@ -5,7 +5,7 @@ import { buildMetadata } from '@/features/cms/seo';
 import { getPublishedPage, getSiteSettings } from '@/features/cms/publicApi';
 
 type ContactPageProps = {
-  searchParams?: Promise<{ interest?: string }>;
+  searchParams?: Promise<{ interest?: string; template?: string }>;
 };
 
 export async function generateMetadata() {
@@ -28,6 +28,27 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   if (page.seo.slug && page.seo.slug !== 'contact') {
     redirect(`/${page.seo.slug}`);
   }
-  const initialInterest = params?.interest === 'partnership' ? 'Partnership / Referral' : undefined;
-  return <ContactPageView page={page} settings={settings} initialInterest={initialInterest} />;
+  let initialInterest: string | undefined;
+  let initialOverview: string | undefined;
+
+  if (params?.interest === 'partnership') {
+    initialInterest = 'Partnership / Referral';
+  } else if (params?.interest === 'template') {
+    initialInterest = 'Website Development';
+    const templateName = typeof params.template === 'string'
+      ? params.template.slice(0, 120).replace(/[<>"']/g, '')
+      : null;
+    if (templateName) {
+      initialOverview = `Hi, I'm interested in the "${templateName}" template. I'd love to build a website using this design.`;
+    }
+  }
+
+  return (
+    <ContactPageView
+      page={page}
+      settings={settings}
+      initialInterest={initialInterest}
+      initialOverview={initialOverview}
+    />
+  );
 }

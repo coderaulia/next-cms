@@ -10,6 +10,8 @@ type TemplatePreviewShellProps = {
 };
 
 export function TemplatePreviewShell({ template, children }: TemplatePreviewShellProps) {
+  const ctaHref = `/contact?interest=template&template=${encodeURIComponent(template.name)}`;
+
   return (
     <div className="v-tmpl-preview-root">
       <header className="v-tmpl-preview-bar">
@@ -26,6 +28,10 @@ export function TemplatePreviewShell({ template, children }: TemplatePreviewShel
             <span key={tag} className="v-tmpl-tag v-tmpl-tag-dark">{tag}</span>
           ))}
         </div>
+        <Link href={ctaHref} className="v-tmpl-preview-cta">
+          <span>I want this website!</span>
+          <span aria-hidden>→</span>
+        </Link>
       </header>
 
       <div className="v-tmpl-preview-body">

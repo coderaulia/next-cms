@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import { Reveal } from '@/components/animations/Reveal';
@@ -22,6 +23,33 @@ const CATEGORY_ACCENT: Record<string, string> = {
 
 function categoryAccent(category: string) {
   return CATEGORY_ACCENT[category.toLowerCase()] ?? '#0033FF';
+}
+
+const MAX_QUERY_LEN = 100;
+
+function sanitizeQuery(raw: string): string {
+  return raw.slice(0, MAX_QUERY_LEN).trimStart();
+}
+
+function filterTemplates(
+  templates: TemplateMetadata[],
+  query: string,
+  category: string | null,
+  validCategories: Set<string>,
+): TemplateMetadata[] {
+  const safeCategory = category && validCategories.has(category) ? category : null;
+  const q = query.trim().toLowerCase();
+
+  return templates.filter((t) => {
+    if (safeCategory && t.category !== safeCategory) return false;
+    if (!q) return true;
+    return (
+      t.name.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.category.toLowerCase().includes(q) ||
+      t.tags.some((tag) => tag.toLowerCase().includes(q))
+    );
+  });
 }
 
 function EmptyState() {
@@ -76,6 +104,23 @@ function TemplateCard({ template }: { template: TemplateMetadata }) {
 
 export function TemplatesPageView({ templates }: TemplatesPageViewProps) {
   const { setMode } = useCursorMode();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  const validCategories = useMemo(
+    () => new Set(templates.map((t) => t.category)),
+    [templates],
+  );
+
+  const categories = useMemo(
+    () => Array.from(validCategories).sort(),
+    [validCategories],
+  );
+
+  const filtered = useMemo(
+    () => filterTemplates(templates, searchQuery, activeCategory, validCategories),
+    [templates, searchQuery, activeCategory, validCategories],
+  );
 
   return (
     <main className="v-svc">
@@ -181,11 +226,72 @@ export function TemplatesPageView({ templates }: TemplatesPageViewProps) {
           <span className="v-svc-block-sub">Vanaila Atelier originals</span>
         </div>
 
+        {templates.length > 0 && (
+          <div className="v-tmpl-filters">
+            <div className="v-tmpl-search-wrap">
+              <span className="v-tmpl-search-icon" aria-hidden>⌕</span>
+              <input
+                className="v-tmpl-search"
+                type="search"
+                placeholder="Search templates…"
+                value={searchQuery}
+                maxLength={MAX_QUERY_LEN}
+                autoComplete="off"
+                spellCheck={false}
+                onChange={(e) => setSearchQuery(sanitizeQuery(e.target.value))}
+                aria-label="Search templates"
+              />
+              {searchQuery && (
+                <button
+                  className="v-tmpl-search-clear"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                  type="button"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+            <div className="v-tmpl-cats" role="group" aria-label="Filter by category">
+              <button
+                className={`v-tmpl-cat${activeCategory === null ? ' is-active' : ''}`}
+                onClick={() => setActiveCategory(null)}
+                type="button"
+              >
+                All
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  className={`v-tmpl-cat${activeCategory === cat ? ' is-active' : ''}`}
+                  onClick={() => setActiveCategory(cat)}
+                  type="button"
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            {(searchQuery || activeCategory) && (
+              <p className="v-tmpl-filter-count">
+                {filtered.length === 0
+                  ? 'No templates match.'
+                  : `${filtered.length} of ${templates.length} shown`}
+              </p>
+            )}
+          </div>
+        )}
+
         {templates.length === 0 ? (
           <EmptyState />
+        ) : filtered.length === 0 ? (
+          <div className="v-tmpl-empty">
+            <span className="v-tmpl-empty-glyph">◎</span>
+            <h3>No match found.</h3>
+            <p>Try a different search term or clear the category filter.</p>
+          </div>
         ) : (
           <StaggerGroup className="v-tmpl-grid">
-            {templates.map((template) => (
+            {filtered.map((template) => (
               <TemplateCard key={template.slug} template={template} />
             ))}
           </StaggerGroup>
