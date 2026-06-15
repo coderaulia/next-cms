@@ -14,6 +14,7 @@ type AdminPostsTableProps = {
   selectedIds?: string[];
   onToggleSelect?: (id: string, checked: boolean) => void;
   onToggleSelectAll?: (checked: boolean) => void;
+  viewCounts?: Record<string, number>;
 };
 
 export function AdminPostsTable({
@@ -26,7 +27,8 @@ export function AdminPostsTable({
   onNext,
   selectedIds = [],
   onToggleSelect,
-  onToggleSelectAll
+  onToggleSelectAll,
+  viewCounts
 }: AdminPostsTableProps) {
   const hasPosts = posts.length > 0;
   const selectedSet = new Set(selectedIds);
@@ -51,6 +53,7 @@ export function AdminPostsTable({
               <th>Categories</th>
               <th>Date</th>
               <th>Status</th>
+              <th>Views</th>
               <th />
             </tr>
           </thead>
@@ -99,6 +102,7 @@ export function AdminPostsTable({
                       );
                     })()}
                   </td>
+                  <td>{viewCounts?.[`/blog/${post.seo.slug}`]?.toLocaleString() ?? '—'}</td>
                   <td>
                     <Link href={`/admin/blog/${post.id}`}>Edit</Link>
                   </td>
@@ -108,7 +112,7 @@ export function AdminPostsTable({
           ) : (
             <tbody>
               <tr>
-                <td colSpan={7} className="admin-subtle">
+                <td colSpan={8} className="admin-subtle">
                   No posts match the current filters. Clear filters or create the first post from the Posts screen.
                 </td>
               </tr>

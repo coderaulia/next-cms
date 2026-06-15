@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-import { desc, gte } from 'drizzle-orm';
+import { desc, gte, inArray } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
 import { analyticsEventsTable } from '@/db/schema';
@@ -218,6 +218,30 @@ export async function trackAnalyticsEvent(input: AnalyticsEventInput) {
   }
 
   return true;
+}
+
+export async function getViewCountsForPaths(paths: string[]): Promise<Map<string, number>> {
+  if (!env.databaseUrl) return new Map();
+  const uniquePaths = [...new Set(paths.filter(Boolean))];
+  if (uniquePaths.length === 0) return new Map();
+
+  try {
+    const rows = await getDb()
+      .select({ entityId: analyticsEventsTable.entityId })
+      .from(analyticsEventsTable)
+      .where(inArray(analyticsEventsTable.entityId, uniquePaths));
+
+    const counts = new Map<string, number>();
+    for (const row of rows) {
+      if (row.entityId) {
+        counts.set(row.entityId, (counts.get(row.entityId) ?? 0) + 1);
+      }
+    }
+    return counts;
+  } catch (error) {
+    if (isMissingAnalyticsSchemaError(error)) return new Map();
+    throw error;
+  }
 }
 
 export async function getAnalyticsSummary(days = 30, excludeInternal = true): Promise<AnalyticsSummary> {

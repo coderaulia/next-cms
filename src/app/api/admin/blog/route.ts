@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { assertAdminPermission, getAdminSession, logAdminAuditEvent } from '@/features/cms/adminAuth';
 import { createBlogPost, queryBlogPosts } from '@/features/cms/contentStore';
 import { revalidateBlogCache } from '@/features/cms/publicCache';
+import { getViewCountsForPaths } from '@/features/cms/analyticsStore';
 import type { BlogPost } from '@/features/cms/types';
 
 export async function GET(request: Request) {
@@ -29,7 +30,12 @@ export async function GET(request: Request) {
     page,
     pageSize
   });
-  return NextResponse.json(payload);
+
+  const paths = payload.posts.filter((p) => p.seo.slug).map((p) => `/blog/${p.seo.slug}`);
+  const countsMap = await getViewCountsForPaths(paths).catch(() => new Map<string, number>());
+  const viewCounts = Object.fromEntries(countsMap);
+
+  return NextResponse.json({ ...payload, viewCounts });
 }
 
 export async function POST(request: Request) {

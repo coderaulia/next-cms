@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
@@ -39,46 +39,116 @@ const PERIODS = [
 ] as const;
 
 function DailyTrendChart({ daily }: { daily: Array<{ date: string; views: number; visitors: number }> }) {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const W = 600;
+  const H = 120;
+  const PAD_X = 40;
+  const PAD_TOP = 18;
+  const PAD_BOTTOM = 20;
+  const n = daily.length;
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      if (!svgRef.current || n < 2) return;
+      const rect = svgRef.current.getBoundingClientRect();
+      const relX = ((e.clientX - rect.left) / rect.width) * W;
+      const chartX = relX - PAD_X;
+      const chartW = W - PAD_X * 2;
+      const idx = Math.round((chartX / chartW) * (n - 1));
+      setHoveredIdx(Math.max(0, Math.min(n - 1, idx)));
+    },
+    [n]
+  );
+
   if (daily.length < 2) {
     return <p className="admin-subtle" style={{ textAlign: 'center', padding: '2rem 0', fontSize: 13 }}>Not enough data for this period yet.</p>;
   }
 
-  const W = 600;
-  const H = 100;
-  const PAD = 6;
-  const n = daily.length;
   const maxVal = Math.max(...daily.map((d) => d.views), 1);
+  const gridVals = [0, Math.round(maxVal * 0.25), Math.round(maxVal * 0.5), Math.round(maxVal * 0.75), maxVal];
 
-  const xAt = (i: number) => PAD + (i / (n - 1)) * (W - PAD * 2);
-  const yAt = (v: number) => H - PAD - (v / maxVal) * (H - PAD * 2);
+  const xAt = (i: number) => PAD_X + (i / (n - 1)) * (W - PAD_X * 2);
+  const yAt = (v: number) => PAD_TOP + (1 - v / maxVal) * (H - PAD_TOP - PAD_BOTTOM);
 
   const viewsPoints = daily.map((d, i) => `${xAt(i)},${yAt(d.views)}`).join(' ');
   const visitorsPoints = daily.map((d, i) => `${xAt(i)},${yAt(d.visitors)}`).join(' ');
 
-  const gridPcts = [0.25, 0.5, 0.75, 1.0];
-
+  const peakIdx = daily.reduce((best, d, i) => (d.views > daily[best].views ? i : best), 0);
   const labelEvery = n <= 7 ? 1 : n <= 14 ? 2 : n <= 30 ? 5 : 10;
-  const labelDates = daily.filter((_, i) => i === 0 || i === n - 1 || i % labelEvery === 0);
+  const hovered = hoveredIdx !== null ? daily[hoveredIdx] : null;
 
   return (
     <div>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 120, display: 'block' }}>
-        {gridPcts.map((p) => {
-          const y = H - PAD - p * (H - PAD * 2);
-          return <line key={p} x1={PAD} y1={y} x2={W - PAD} y2={y} stroke="#e5e7eb" strokeWidth="0.5" />;
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${W} ${H}`}
+        style={{ width: '100%', height: 150, display: 'block', cursor: 'crosshair' }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setHoveredIdx(null)}
+      >
+        {/* Y-axis grid lines + labels */}
+        {gridVals.map((v) => {
+          const y = yAt(v);
+          return (
+            <g key={v}>
+              <line x1={PAD_X} y1={y} x2={W - PAD_X + 4} y2={y} stroke="#e5e7eb" strokeWidth="0.5" />
+              <text x={PAD_X - 4} y={y + 4} textAnchor="end" fontSize="7" fill="#9ca3af">{v}</text>
+            </g>
+          );
         })}
+
+        {/* Lines */}
         <polyline fill="none" stroke="#6366f1" strokeWidth="2" strokeLinejoin="round" points={viewsPoints} />
         <polyline fill="none" stroke="#10b981" strokeWidth="1.5" strokeLinejoin="round" strokeDasharray="4 3" points={visitorsPoints} />
-        {labelDates.map((d) => {
-          const i = daily.indexOf(d);
+
+        {/* Peak label (always shown) */}
+        {hoveredIdx !== peakIdx ? (
+          <text x={xAt(peakIdx)} y={yAt(daily[peakIdx].views) - 6} textAnchor="middle" fontSize="8" fill="#6366f1" fontWeight="600">
+            {daily[peakIdx].views}
+          </text>
+        ) : null}
+
+        {/* Dots at each point */}
+        {daily.map((d, i) => (
+          <g key={d.date}>
+            <circle cx={xAt(i)} cy={yAt(d.views)} r={hoveredIdx === i ? 5 : 2.5} fill="#6366f1" stroke="#fff" strokeWidth="1.5" />
+            <circle cx={xAt(i)} cy={yAt(d.visitors)} r={hoveredIdx === i ? 4 : 2} fill="#10b981" stroke="#fff" strokeWidth="1.5" />
+          </g>
+        ))}
+
+        {/* Hover crosshair */}
+        {hoveredIdx !== null ? (
+          <g>
+            <line
+              x1={xAt(hoveredIdx)} y1={PAD_TOP}
+              x2={xAt(hoveredIdx)} y2={H - PAD_BOTTOM}
+              stroke="#6366f1" strokeWidth="1" strokeDasharray="3 2" opacity="0.6"
+            />
+            {/* Hovered data label */}
+            <text x={xAt(hoveredIdx)} y={yAt(daily[hoveredIdx].views) - 8} textAnchor="middle" fontSize="9" fill="#6366f1" fontWeight="700">
+              {daily[hoveredIdx].views}
+            </text>
+            <text x={xAt(hoveredIdx)} y={yAt(daily[hoveredIdx].visitors) - 6} textAnchor="middle" fontSize="8" fill="#10b981">
+              {daily[hoveredIdx].visitors}
+            </text>
+          </g>
+        ) : null}
+
+        {/* X-axis date labels */}
+        {daily.map((d, i) => {
+          if (i !== 0 && i !== n - 1 && i % labelEvery !== 0) return null;
           return (
-            <text key={d.date} x={xAt(i)} y={H - 1} textAnchor="middle" fontSize="7" fill="#9ca3af">
+            <text key={d.date} x={xAt(i)} y={H - 4} textAnchor="middle" fontSize="7" fill="#9ca3af">
               {d.date.slice(5)}
             </text>
           );
         })}
       </svg>
-      <div style={{ display: 'flex', gap: 20, marginTop: 8, fontSize: 12, color: '#6b7280' }}>
+
+      {/* Legend + hover summary */}
+      <div style={{ display: 'flex', gap: 20, marginTop: 8, fontSize: 12, color: '#6b7280', flexWrap: 'wrap', alignItems: 'center' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <svg width="16" height="2" style={{ display: 'inline' }}>
             <line x1="0" y1="1" x2="16" y2="1" stroke="#6366f1" strokeWidth="2" />
@@ -91,8 +161,83 @@ function DailyTrendChart({ daily }: { daily: Array<{ date: string; views: number
           </svg>
           Unique visitors
         </span>
+        {hovered ? (
+          <span style={{ marginLeft: 'auto', fontWeight: 600, color: '#374151' }}>
+            {hovered.date} &mdash; <span style={{ color: '#6366f1' }}>{hovered.views} views</span> &middot; <span style={{ color: '#10b981' }}>{hovered.visitors} visitors</span>
+          </span>
+        ) : null}
       </div>
     </div>
+  );
+}
+
+function ConversionFunnelChart({ totals }: { totals: { pageViews: number; ctaClicks: number; contactLeads: number } }) {
+  const steps = [
+    { label: 'Page views', value: totals.pageViews, color: '#6366f1' },
+    { label: 'CTA clicks', value: totals.ctaClicks, color: '#8b5cf6' },
+    { label: 'Contact leads', value: totals.contactLeads, color: '#10b981' }
+  ];
+  const max = Math.max(totals.pageViews, 1);
+
+  return (
+    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {steps.map((step, i) => {
+        const pct = Math.round((step.value / max) * 100);
+        const fromPrev = i > 0 && steps[i - 1].value > 0
+          ? Math.round((step.value / steps[i - 1].value) * 100)
+          : null;
+        return (
+          <li key={step.label}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 5 }}>
+              <span style={{ fontWeight: 500 }}>{step.label}</span>
+              <span style={{ display: 'flex', gap: 10 }}>
+                {fromPrev !== null ? (
+                  <span className="admin-subtle" style={{ fontSize: 12 }}>{fromPrev}% of prev</span>
+                ) : null}
+                <span style={{ color: step.color, fontWeight: 600 }}>{step.value.toLocaleString()}</span>
+              </span>
+            </div>
+            <div style={{ height: 10, borderRadius: 4, background: '#e5e7eb', overflow: 'hidden' }}>
+              <div style={{ height: 10, borderRadius: 4, width: `${pct}%`, background: step.color, transition: 'width 0.4s ease', minWidth: pct > 0 ? 4 : 0 }} />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function ContentTypeMixChart({ topPaths }: { topPaths: Array<{ entityType: string; views: number }> }) {
+  const typeMap = new Map<string, number>();
+  for (const p of topPaths) {
+    typeMap.set(p.entityType, (typeMap.get(p.entityType) ?? 0) + p.views);
+  }
+  const items = Array.from(typeMap.entries())
+    .map(([type, views]) => ({ label: type, count: views }))
+    .sort((a, b) => b.count - a.count);
+  const total = items.reduce((s, i) => s + i.count, 0);
+  const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+
+  if (items.length === 0) return <p className="admin-subtle" style={{ fontSize: 13 }}>No content type data yet.</p>;
+
+  return (
+    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {items.map((item, i) => {
+        const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
+        const color = COLORS[i % COLORS.length];
+        return (
+          <li key={item.label}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
+              <span style={{ textTransform: 'capitalize' }}>{item.label.replace(/_/g, ' ')}</span>
+              <span className="admin-subtle">{pct}% &middot; {item.count.toLocaleString()}</span>
+            </div>
+            <div style={{ height: 6, borderRadius: 3, background: '#e5e7eb' }}>
+              <div style={{ height: 6, borderRadius: 3, width: `${pct}%`, background: color, minWidth: pct > 0 ? 4 : 0 }} />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -243,6 +388,20 @@ function AnalyticsPagePanel({ user }: AnalyticsPagePanelProps) {
               <h2>Daily trend</h2>
             </div>
             <DailyTrendChart daily={data.daily} />
+          </section>
+
+          {/* Conversion funnel + Content type mix */}
+          <section className="admin-grid-2">
+            <article className="admin-card">
+              <h2>Conversion funnel</h2>
+              <p className="admin-subtle" style={{ fontSize: 12, marginBottom: 16 }}>views → clicks → leads</p>
+              <ConversionFunnelChart totals={data.totals} />
+            </article>
+            <article className="admin-card">
+              <h2>Content type mix</h2>
+              <p className="admin-subtle" style={{ fontSize: 12, marginBottom: 16 }}>views by content category</p>
+              <ContentTypeMixChart topPaths={data.topPaths} />
+            </article>
           </section>
 
           {/* Top content paths */}

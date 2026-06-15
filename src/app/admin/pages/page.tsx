@@ -22,6 +22,7 @@ function PagesList({ user }: PagesListProps) {
   const router = useRouter();
 
   const [pages, setPages] = useState<LandingPage[]>([]);
+  const [viewCounts, setViewCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -43,8 +44,9 @@ function PagesList({ user }: PagesListProps) {
         setError('Failed to load pages.');
         return;
       }
-      const payload = (await response.json()) as { pages: LandingPage[] };
+      const payload = (await response.json()) as { pages: LandingPage[]; viewCounts?: Record<string, number> };
       setPages(payload.pages);
+      setViewCounts(payload.viewCounts ?? {});
       setError('');
     } finally {
       setLoading(false);
@@ -204,6 +206,7 @@ function PagesList({ user }: PagesListProps) {
                 <th>Slug</th>
                 <th>Status</th>
                 <th>Updated</th>
+                <th>Views</th>
                 <th />
               </tr>
             </thead>
@@ -242,6 +245,7 @@ function PagesList({ user }: PagesListProps) {
                       <span className={`admin-chip ${chipClass}`}>{publicationLabel}</span>
                     </td>
                     <td>{new Date(page.updatedAt).toLocaleDateString()}</td>
+                    <td>{(viewCounts[page.id === 'home' ? '/' : `/${page.seo.slug || page.id}`] ?? 0).toLocaleString() || '—'}</td>
                     <td>
                       <Link href={`/admin/pages/${page.id}`}>Edit</Link>
                     </td>
@@ -250,7 +254,7 @@ function PagesList({ user }: PagesListProps) {
               })}
               {visiblePages.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="admin-subtle">
+                  <td colSpan={7} className="admin-subtle">
                     No pages match the current filters. Clear filters to see the full landing-page set.
                   </td>
                 </tr>

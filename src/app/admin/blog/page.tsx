@@ -19,6 +19,7 @@ type BlogListPayload = {
     pageSize: number;
     categories: string[];
   };
+  viewCounts?: Record<string, number>;
 };
 
 function parsePositiveInt(value: string | null, fallback: number) {
@@ -267,6 +268,7 @@ function BlogList({ user }: BlogListProps) {
           }}
           onPrev={() => setPage((current) => current - 1)}
           onNext={() => setPage((current) => current + 1)}
+          viewCounts={data.viewCounts}
         />
       </section>
 
