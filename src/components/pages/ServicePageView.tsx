@@ -30,7 +30,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     n: '01', accent: '#0033FF', tone: 'cream', tag: 'WEB',
     title: 'Website Development',
     sub: 'React & WordPress',
-    lede: 'High-performance digital presence, built with the right tool for the job.',
+    lede: 'A fast, modern site that makes the right first impression — and loads before visitors lose patience and leave.',
     blocks: [
       { k: 'Framework-Powered Sites', v: 'React-based builds for projects that demand maximum speed and SEO. We shift work from the browser to a build step — ultra-lightweight, instantly fast.' },
       { k: 'Custom WordPress Solutions', v: 'For teams that need an intuitive CMS, we build secure, custom-themed WordPress environments — content updates without technical friction.' },
@@ -42,7 +42,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP',
     title: 'Custom Business Tools',
     sub: 'Python & React',
-    lede: 'Complex, data-driven applications tailored to your internal or customer-facing workflows.',
+    lede: "Replace the spreadsheets and manual steps eating your team's week with software built around exactly how you work.",
     blocks: [
       { k: 'Frontend', v: 'React and modern JavaScript for dynamic, responsive interfaces that hold up under real-world load.' },
       { k: 'Backend', v: 'Python for secure, scalable server-side logic and clean API design — built to integrate.' },
@@ -55,7 +55,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     n: '03', accent: '#C8E64B', tone: 'blue', tag: 'COMMERCE',
     title: 'Secure Online Shops',
     sub: 'WooCommerce & Custom Stores',
-    lede: 'Complete retail ecosystems connecting your products to your customers — and your back office.',
+    lede: 'Sell online without the headaches — checkout that converts, payments that clear, and stock that stays in sync.',
     blocks: [
       { k: 'Payment Gateway Integration', v: 'Seamless Midtrans for the Indonesian market, Stripe for international transactions — checkout that just works.' },
       { k: 'Operational Stability', v: 'Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking.' },
@@ -67,7 +67,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH',
     title: 'High-Conversion Landing Pages',
     sub: 'Marketing-led builds',
-    lede: 'Pages designed to turn paid traffic into pipeline — for commercial and non-profit campaigns alike.',
+    lede: "Stop burning ad budget on pages that don't convert. Built to turn paid clicks into leads you can actually close.",
     blocks: [
       { k: 'Performance Focused', v: "Engineered for speed so paid clicks and social traffic don't bounce before the page paints." },
       { k: 'Conversion Optimization', v: 'Structured around UX principles that lift lead generation, sign-ups, and engagement — measurable, iterable.' },
@@ -78,7 +78,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     n: '05', accent: '#FF5B22', tone: 'ink', tag: 'MOBILE',
     title: 'Mobile Business App',
     sub: 'React Native',
-    lede: 'Reach customers on iOS and Android with a single, high-fidelity codebase.',
+    lede: "Put your business in your customers' pocket — one app on both iOS and Android, at a fraction of the two-team cost.",
     blocks: [
       { k: 'Cross-Platform Efficiency', v: 'React Native delivers native-like performance with the cost-efficiency of one codebase — ship once, run everywhere.' },
       { k: 'Enterprise Features', v: 'Push notifications, location services, and offline data sync — your app keeps working anywhere your users are.' },
@@ -90,7 +90,7 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
     n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE',
     title: 'Official Business Email',
     sub: 'Email · Domain · Workspace',
-    lede: "Establish digital authority and secure your team's day-to-day communications.",
+    lede: 'Look credible from the first email. Professional addresses on your own domain, set up to land in inboxes — not spam.',
     blocks: [
       { k: 'Company Email Setup', v: 'Professional Google Workspace deployment — enterprise-grade email, cloud storage, and collaboration on yourcompany.com.' },
       { k: 'Professional Mail Services', v: 'Reliable business email on your own domain, configured for high deliverability and security from day one.' },
@@ -101,9 +101,9 @@ const SERVICE_DEFAULTS: ServiceDef[] = [
 ];
 
 const TRUST_ITEMS = [
-  { k: 'Versatile expertise', v: 'Our portfolio spans agile SMEs, large corporate entities, and mission-driven non-profits.', tone: 'ink', glyph: '◐' },
-  { k: 'Ecosystem ready', v: 'We know the Indonesian tech landscape — your tools integrate cleanly with local payment and logistics providers.', tone: 'blue', glyph: '◑' },
-  { k: '8+ years of technical leadership', v: 'Nearly a decade of hands-on development experience. Every line of code is an asset, not a liability.', tone: 'lime', glyph: '◒' },
+  { k: '30+ projects shipped', v: "SMEs, corporates, and non-profits across industries. You're not our practice run — we've solved problems like yours before.", tone: 'ink', glyph: '◐' },
+  { k: 'Built for Indonesia', v: 'Midtrans, local logistics, WhatsApp-first workflows — your tools work with the providers your customers already use.', tone: 'blue', glyph: '◑' },
+  { k: '8+ years, still hands-on', v: "Nearly a decade building and maintaining real software. We write code you won't have to rip out and rebuild in a year.", tone: 'lime', glyph: '◒' },
 ];
 
 export function ServicePageView({ page }: ServicePageViewProps) {
@@ -111,9 +111,9 @@ export function ServicePageView({ page }: ServicePageViewProps) {
 
   const heroSection = sectionWithFallback(page, 0, {
     id: 'service-hero',
-    heading: 'Tailored digital infrastructure, built around your goals.',
-    body: "End-to-end technical solutions engineered for performance and scale. We don't sell one-size-fits-all — we choose the optimal stack for your goals, whether you're a high-growth startup, a global corporation, or a mission-driven non-profit.",
-    ctaLabel: 'Claim free consultation',
+    heading: 'Built to grow your business, not just your tech stack.',
+    body: "Six ways we help your business win more customers and waste less time online — from the website people judge you by to the internal tools your team runs on. We pick the right stack for your goal, build it, and keep it fast. No templates, no bloated retainers.",
+    ctaLabel: 'Get a free quote',
     ctaHref: '/contact',
     mediaImage: '',
     mediaAlt: '',
@@ -145,13 +145,13 @@ export function ServicePageView({ page }: ServicePageViewProps) {
         </div>
 
         <h1 className="v-svc-h1">
-          Tailored digital
+          Built to grow
           <br />
-          <em>infrastructure</em>,
+          <em>your business</em>,
           <br />
-          built around <del>templates.</del>
+          not just <del>your tech.</del>
           <br />
-          <em>your goals.</em>
+          <em>your revenue.</em>
         </h1>
 
         <div className="v-svc-hero-foot">
@@ -165,7 +165,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Claim free consultation</span>
+              <span>Get a free quote</span>
               <span>→</span>
             </Link>
             <Link
@@ -392,14 +392,14 @@ export function ServicePageView({ page }: ServicePageViewProps) {
         </div>
         <span className="v-svc-cta-eye">[ NEXT STEP ]</span>
         <h2>
-          Pick a discipline,
+          Not sure which
           <br />
-          or <span className="v-svc-cta-blue">compose them.</span>
+          you need? <span className="v-svc-cta-blue">Let&apos;s talk.</span>
         </h2>
         <div className="v-svc-cta-foot">
           <p>
-            Tell us what you&apos;re building. We&apos;ll come back within two business days with a recommended stack
-            and an honest scope — free, no commitment.
+            Tell us what you&apos;re building — or just what&apos;s slowing you down. We&apos;ll come back within two business
+            days with a recommended stack and an honest scope. Free, no commitment.
           </p>
           <div className="v-svc-cta-actions">
             <Link
@@ -410,7 +410,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Claim free consultation</span>
+              <span>Get a free quote</span>
               <span>→</span>
             </Link>
             <a

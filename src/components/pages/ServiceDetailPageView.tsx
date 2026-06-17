@@ -87,7 +87,9 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
     fallbackSection({
       id: 'hero',
       heading: `${page.title}|Delivered with technical clarity`,
-      body: page.seo.metaDescription || 'A CMS-managed service page ready for package, process, and CTA editing.',
+      body:
+        page.seo.metaDescription ||
+        "Clear packages, a proven process, and a fixed scope agreed up front — so you know exactly what you're getting, what it costs, and when it ships before we start.",
       ctaLabel: 'Service overview',
       ctaHref: serviceHref,
       layout: 'stacked'
@@ -176,7 +178,9 @@ export function ServiceDetailPageView({ page, portfolioProjects = [] }: ServiceD
     fallbackSection({
       id: 'cta',
       heading: `Ready to move forward with|${page.title}?`,
-      body: page.seo.metaDescription || 'Talk through the brief and next implementation steps.',
+      body:
+        page.seo.metaDescription ||
+        "Tell us about your project. We'll send back a clear scope, a fixed quote, and a timeline — free, no commitment.",
       ctaLabel: 'Book a Strategy Call',
       ctaHref: '/contact',
       mediaAlt: 'Get a Free Technical Audit',
