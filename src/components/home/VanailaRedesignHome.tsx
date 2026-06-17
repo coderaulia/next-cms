@@ -31,7 +31,7 @@ function splitHeroTitle(page: LandingPage) {
 
 export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps) {
   const { setMode } = useCursorMode();
-  const { hero, accent } = splitHeroTitle(page);
+  const { hero } = splitHeroTitle(page);
   const values = findBlock<ValueTripletBlock>(page, 'value_triplet');
   const solutions = findBlock<SolutionsGridBlock>(page, 'solutions_grid');
   const why = findBlock<WhySplitBlock>(page, 'why_split');
@@ -53,20 +53,20 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </div>
         <div className="v-home-hero-meta">
           <span>[ 01 / Home ]</span>
-          <span>Est. 2018 / 8+ years / 30+ projects</span>
-          <span className="v-home-status">Start your solution projects</span>
+          <span>Since 2018 / 30+ projects shipped / Built in weeks, not months</span>
+          <span className="v-home-status">Booking new projects now</span>
         </div>
         <h1 className="v-home-hero-title">
-          <span>{accent.replace('Scaled Results.', 'Faster, smarter,')}</span>
+          <span>Stop losing customers to a</span>
           <br />
-          and built to <del>struggle.</del>
+          <del>slow, outdated site.</del>
           <br />
-          <span>scale.</span>
+          <span>website that sells.</span>
         </h1>
         <div className="v-home-hero-foot">
           <p>
             {hero?.description ||
-              'Vanaila Digital helps you reclaim your time. We build high-speed websites and custom business tools that work as hard as you do.'}
+              'Vanaila Digital builds fast, modern websites and custom business tools for growing companies — so you stop bleeding leads to a slow site and stop losing hours to work that should already be automated. Shipped in weeks, not months.'}
           </p>
           <div className="v-home-actions">
             <Link
@@ -77,7 +77,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              {hero?.primaryCtaLabel || 'Book your free consultation'}
+              {hero?.primaryCtaLabel || 'Get my free website audit'}
               <span>-&gt;</span>
             </Link>
             <Link
@@ -91,7 +91,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               {hero?.secondaryCtaLabel || 'See our work'}
             </Link>
           </div>
-          <p className="v-home-trust">Free 30-min consultation · Reply within 24 business hours · No commitment</p>
+          <p className="v-home-trust">Free 30-min strategy call · We reply within 24 hours · No retainer, no pressure</p>
         </div>
         <div className="v-home-ticker">
           <div className="v-home-ticker-track">
@@ -109,7 +109,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
           <h2>
             Tech that <i>just works.</i>
           </h2>
-          <p>You should not have to worry about how your website works. You just need it to perform.</p>
+          <p>You shouldn&apos;t have to think about hosting, speed, or security. You run the business — we make sure the tech behind it never slows you down.</p>
         </div>
         <StaggerGroup className="v-home-promise-grid">
           {(values?.items ?? []).slice(0, 3).map((item, index) => (
@@ -131,7 +131,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               Solutions built for your <i>growth.</i>
             </h2>
           </div>
-          <p>{solutions?.subheading || 'Engineered solutions for modern business infrastructure.'}</p>
+          <p>{solutions?.subheading || 'Whatever your business needs to grow online — we build it, ship it, and keep it running.'}</p>
         </div>
         <StaggerGroup className="v-home-service-grid">
           {(solutions?.items ?? []).map((service, index) => (
@@ -176,7 +176,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               Real businesses, <i>real results.</i>
             </h2>
           </div>
-          <p>2024 - 2026 / {Math.max(projects.length, 4)} delivered stories in the CMS.</p>
+          <p>A few of the {projects.length > 0 ? `${projects.length}+` : '30+'} businesses we&apos;ve helped grow.</p>
         </div>
         <StaggerGroup className="v-home-work-grid">
           {featuredProjects.map((project, index) => (
@@ -242,7 +242,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
       {/* ── Logos ── */}
       <Reveal as="section" className="v-home-logos">
         <div className="v-home-logos-head">
-          <span>[ 06 ] Trusted by Companies</span>
+          <span>[ 06 ] Trusted by 30+ growing businesses</span>
           <span>SMEs / Corporations / Non-profits</span>
         </div>
         <Reveal className="v-home-logo-marquee" preset="fadeIn">
@@ -274,12 +274,12 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </div>
         <span className="v-home-cta-eye">[ 07 ] Ready to grow?</span>
         <h2>
-          {cta?.heading || "Let's build"}
+          {cta?.heading || "Let's build something"}
           <br />
-          <span>{cta?.description || 'something that works as hard as you do.'}</span>
+          <span>{cta?.description || 'worth showing off.'}</span>
         </h2>
         <div className="v-home-cta-foot">
-          <p>{cta?.accentText || 'Join the organizations that trust Vanaila Digital with their brand.'}</p>
+          <p>{cta?.accentText || "Tell us about your project. We'll send back exactly how we'd approach it, what it costs, and how fast we can ship — free, no strings."}</p>
           <div className="v-home-cta-actions">
             <Link
               className="v-home-btn v-home-btn-primary v-home-btn-large"
@@ -289,11 +289,11 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              {cta?.ctaLabel || 'Claim free consultation call'}
+              {cta?.ctaLabel || 'Start my project'}
               <span>-&gt;</span>
             </Link>
             <p className="v-home-trust v-home-trust-light">
-              No commitment — a founder replies within 24 business hours.
+              No commitment — a founder (not a bot) replies within 24 hours.
             </p>
           </div>
         </div>
