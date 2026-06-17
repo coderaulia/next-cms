@@ -9,6 +9,7 @@ import { PartnershipPageView } from '@/components/pages/PartnershipPageView';
 import { ProductHrisPageView } from '@/components/pages/ProductHrisPageView';
 import { ServiceDetailPageView } from '@/components/pages/ServiceDetailPageView';
 import { ServicePageView } from '@/components/pages/ServicePageView';
+import { customPageRegistry } from '@/config/custom-pages';
 import { isReservedPublicSlug, isServiceDetailPageId } from '@/config/site-profile';
 import { getRedirectByFromPath } from '@/features/cms/contentStore';
 import { buildMetadata } from '@/features/cms/seo';
@@ -111,6 +112,17 @@ export default async function DynamicLandingPage({ params }: DynamicPageProps) {
       <>
         {previewBanner}
         <ContactPageView page={page} settings={settings} />
+      </>
+    );
+  }
+
+  const customEntry = customPageRegistry.find((r) => r.id === (page.id as string));
+  if (customEntry) {
+    const View = await customEntry.loadView();
+    return (
+      <>
+        {previewBanner}
+        <View />
       </>
     );
   }

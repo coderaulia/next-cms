@@ -14,6 +14,7 @@ import {
   siteSettingsTable
 } from '@/db/schema';
 
+import { customPageRegistry } from '@/config/custom-pages';
 import { getDefaultContent } from './defaultContent';
 import {
   deleteBlogPostCategoryLinks,
@@ -544,6 +545,30 @@ async function supportsPortfolioRelationsColumn() {
   return portfolioRelationsColumnPromise;
 }
 
+async function ensureCustomPages(db: ReturnType<typeof getDb>) {
+  if (customPageRegistry.length === 0) return;
+  const existingIds = await db.select({ id: pagesTable.id }).from(pagesTable);
+  const existingSet = new Set<string>(existingIds.map((r) => r.id));
+  const now = nowIso();
+  for (const entry of customPageRegistry) {
+    if (existingSet.has(entry.id)) continue;
+    const row = {
+      id: entry.id as PageId,
+      title: entry.title,
+      navLabel: entry.navLabel,
+      slug: entry.slug,
+      published: true,
+      scheduledPublishAt: null,
+      scheduledUnpublishAt: null,
+      seo: { ...entry.seo, slug: entry.slug, canonical: '' },
+      sections: [] as LandingPage['sections'],
+      homeBlocks: null,
+      updatedAt: now,
+    };
+    await db.insert(pagesTable).values(row).onConflictDoNothing();
+  }
+}
+
 async function ensureDbBootstrap() {
   if (isBuildPhase()) {
     warnSkippedBuildBootstrap();
@@ -629,6 +654,8 @@ async function ensureDbBootstrap() {
     if (existingMedia.length === 0) {
       await db.insert(mediaAssetsTable).values(defaults.mediaAssets).onConflictDoNothing();
     }
+
+    await ensureCustomPages(db);
 
     const seededPosts = await withLegacyScheduleFallback(
       () => db.select().from(blogPostsTable).then((rows) => rows.map((row) => rowToPost(row))),
