@@ -1,9 +1,10 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import type { CSSProperties } from 'react';
 
 import { useCursorMode } from '@/components/CustomCursor';
+import { Link } from '@/i18n/navigation';
 import type { LandingPage } from '@/features/cms/types';
 
 import { sectionWithFallback } from './sectionContent';
@@ -12,108 +13,57 @@ type ServicePageViewProps = {
   page: LandingPage;
 };
 
-type ServiceDef = {
-  n: string;
-  accent: string;
-  tone: 'cream' | 'ink' | 'blue' | 'lime';
-  tag: string;
+type ServiceText = {
   title: string;
   sub: string;
   lede: string;
   blocks: { k: string; v: string }[];
-  tags: string[];
-  href?: string;
 };
 
-const SERVICE_DEFAULTS: ServiceDef[] = [
-  {
-    n: '01', accent: '#0033FF', tone: 'cream', tag: 'WEB',
-    title: 'Website Development',
-    sub: 'React & WordPress',
-    lede: 'A fast, modern site that makes the right first impression — and loads before visitors lose patience and leave.',
-    blocks: [
-      { k: 'Framework-Powered Sites', v: 'React-based builds for projects that demand maximum speed and SEO. We shift work from the browser to a build step — ultra-lightweight, instantly fast.' },
-      { k: 'Custom WordPress Solutions', v: 'For teams that need an intuitive CMS, we build secure, custom-themed WordPress environments — content updates without technical friction.' },
-    ],
-    tags: ['React', 'Next.js', 'WordPress', 'Headless CMS'],
-    href: '/website-development',
-  },
-  {
-    n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP',
-    title: 'Custom Business Tools',
-    sub: 'Python & React',
-    lede: "Replace the spreadsheets and manual steps eating your team's week with software built around exactly how you work.",
-    blocks: [
-      { k: 'Frontend', v: 'React and modern JavaScript for dynamic, responsive interfaces that hold up under real-world load.' },
-      { k: 'Backend', v: 'Python for secure, scalable server-side logic and clean API design — built to integrate.' },
-      { k: 'Ecosystem Integration', v: 'We connect your app with the CRMs, databases, and automation workflows you already rely on.' },
-    ],
-    tags: ['Python', 'React', 'PostgreSQL', 'REST', 'CRM'],
-    href: '/custom-business-tools',
-  },
-  {
-    n: '03', accent: '#C8E64B', tone: 'blue', tag: 'COMMERCE',
-    title: 'Secure Online Shops',
-    sub: 'WooCommerce & Custom Stores',
-    lede: 'Sell online without the headaches — checkout that converts, payments that clear, and stock that stays in sync.',
-    blocks: [
-      { k: 'Payment Gateway Integration', v: 'Seamless Midtrans for the Indonesian market, Stripe for international transactions — checkout that just works.' },
-      { k: 'Operational Stability', v: 'Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking.' },
-    ],
-    tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'],
-    href: '/secure-online-shops',
-  },
-  {
-    n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH',
-    title: 'High-Conversion Landing Pages',
-    sub: 'Marketing-led builds',
-    lede: "Stop burning ad budget on pages that don't convert. Built to turn paid clicks into leads you can actually close.",
-    blocks: [
-      { k: 'Performance Focused', v: "Engineered for speed so paid clicks and social traffic don't bounce before the page paints." },
-      { k: 'Conversion Optimization', v: 'Structured around UX principles that lift lead generation, sign-ups, and engagement — measurable, iterable.' },
-    ],
-    tags: ['A/B testing', 'Analytics', 'Lead capture', 'SEO'],
-  },
-  {
-    n: '05', accent: '#FF5B22', tone: 'ink', tag: 'MOBILE',
-    title: 'Mobile Business App',
-    sub: 'React Native',
-    lede: "Put your business in your customers' pocket — one app on both iOS and Android, at a fraction of the two-team cost.",
-    blocks: [
-      { k: 'Cross-Platform Efficiency', v: 'React Native delivers native-like performance with the cost-efficiency of one codebase — ship once, run everywhere.' },
-      { k: 'Enterprise Features', v: 'Push notifications, location services, and offline data sync — your app keeps working anywhere your users are.' },
-    ],
-    tags: ['React Native', 'iOS', 'Android'],
-    href: '/mobile-business-app',
-  },
-  {
-    n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE',
-    title: 'Official Business Email',
-    sub: 'Email · Domain · Workspace',
-    lede: 'Look credible from the first email. Professional addresses on your own domain, set up to land in inboxes — not spam.',
-    blocks: [
-      { k: 'Company Email Setup', v: 'Professional Google Workspace deployment — enterprise-grade email, cloud storage, and collaboration on yourcompany.com.' },
-      { k: 'Professional Mail Services', v: 'Reliable business email on your own domain, configured for high deliverability and security from day one.' },
-    ],
-    tags: ['Google Workspace', 'M365', 'DNS', 'Deliverability'],
-    href: '/official-business-email',
-  },
+// Structural (non-translatable) service metadata. Display copy lives in
+// messages under `service.items` (same order) and is pulled via t.raw().
+const SERVICE_META: Array<{
+  n: string;
+  accent: string;
+  tone: 'cream' | 'ink' | 'blue' | 'lime';
+  tag: string;
+  tags: string[];
+  href?: string;
+}> = [
+  { n: '01', accent: '#0033FF', tone: 'cream', tag: 'WEB', tags: ['React', 'Next.js', 'WordPress', 'Headless CMS'], href: '/website-development' },
+  { n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP', tags: ['Python', 'React', 'PostgreSQL', 'REST', 'CRM'], href: '/custom-business-tools' },
+  { n: '03', accent: '#C8E64B', tone: 'blue', tag: 'COMMERCE', tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'], href: '/secure-online-shops' },
+  { n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH', tags: ['A/B testing', 'Analytics', 'Lead capture', 'SEO'] },
+  { n: '05', accent: '#FF5B22', tone: 'ink', tag: 'MOBILE', tags: ['React Native', 'iOS', 'Android'], href: '/mobile-business-app' },
+  { n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE', tags: ['Google Workspace', 'M365', 'DNS', 'Deliverability'], href: '/official-business-email' },
 ];
 
-const TRUST_ITEMS = [
-  { k: '30+ projects shipped', v: "SMEs, corporates, and non-profits across industries. You're not our practice run — we've solved problems like yours before.", tone: 'ink', glyph: '◐' },
-  { k: 'Built for Indonesia', v: 'Midtrans, local logistics, WhatsApp-first workflows — your tools work with the providers your customers already use.', tone: 'blue', glyph: '◑' },
-  { k: '8+ years, still hands-on', v: "Nearly a decade building and maintaining real software. We write code you won't have to rip out and rebuild in a year.", tone: 'lime', glyph: '◒' },
+const TRUST_META = [
+  { tone: 'ink', glyph: '◐' },
+  { tone: 'blue', glyph: '◑' },
+  { tone: 'lime', glyph: '◒' },
+];
+
+const PRODUCT_META = [
+  { n: '01', href: '/hris' },
+  { n: '02', href: '/psikotest' },
+  { n: '03', href: '/flowraze' },
+  { n: '04', href: '/atelier' },
 ];
 
 export function ServicePageView({ page }: ServicePageViewProps) {
   const { setMode } = useCursorMode();
+  const t = useTranslations('service');
+  const serviceItems = t.raw('items') as ServiceText[];
+  const trustItems = t.raw('trust') as Array<{ k: string; v: string }>;
+  const productItems = t.raw('products') as Array<{ title: string; desc: string }>;
+  const templateItems = t.raw('templates') as Array<{ title: string; desc: string }>;
 
   const heroSection = sectionWithFallback(page, 0, {
     id: 'service-hero',
     heading: 'Built to grow your business, not just your tech stack.',
-    body: "Six ways we help your business win more customers and waste less time online — from the website people judge you by to the internal tools your team runs on. We pick the right stack for your goal, build it, and keep it fast. No templates, no bloated retainers.",
-    ctaLabel: 'Get a free quote',
+    body: t('heroBody'),
+    ctaLabel: t('heroCta'),
     ctaHref: '/contact',
     mediaImage: '',
     mediaAlt: '',
@@ -145,13 +95,13 @@ export function ServicePageView({ page }: ServicePageViewProps) {
         </div>
 
         <h1 className="v-svc-h1">
-          Built to grow
+          {t('h1Line1')}
           <br />
-          <em>your business</em>,
+          <em>{t('h1Accent1')}</em>,
           <br />
-          not just <del>your tech.</del>
+          not just <del>{t('h1Strike')}</del>
           <br />
-          <em>your revenue.</em>
+          <em>{t('h1Accent2')}</em>
         </h1>
 
         <div className="v-svc-hero-foot">
@@ -165,7 +115,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Get a free quote</span>
+              <span>{t('heroCta')}</span>
               <span>→</span>
             </Link>
             <Link
@@ -174,13 +124,13 @@ export function ServicePageView({ page }: ServicePageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              See selected work
+              {t('heroSecondaryCta')}
             </Link>
           </div>
         </div>
 
         <div className="v-svc-index">
-          {SERVICE_DEFAULTS.map((svc) => (
+          {SERVICE_META.map((svc) => (
             <a
               key={svc.n}
               href={`#svc-${svc.n}`}
@@ -196,8 +146,8 @@ export function ServicePageView({ page }: ServicePageViewProps) {
       </section>
 
       {/* SERVICE BLOCKS */}
-      {SERVICE_DEFAULTS.map((svc) => {
-        const tags = svc.tags;
+      {SERVICE_META.map((svc, index) => {
+        const text = serviceItems[index];
 
         return (
           <section
@@ -212,14 +162,14 @@ export function ServicePageView({ page }: ServicePageViewProps) {
             </div>
 
             <div className="v-svc-block-head">
-              <h2>{svc.title}</h2>
-              <span className="v-svc-block-sub">{svc.sub}</span>
+              <h2>{text.title}</h2>
+              <span className="v-svc-block-sub">{text.sub}</span>
             </div>
 
-            <p className="v-svc-lede">{svc.lede}</p>
+            <p className="v-svc-lede">{text.lede}</p>
 
             <div className="v-svc-deliverables">
-              {svc.blocks.map((block, bi) => (
+              {text.blocks.map((block, bi) => (
                 <div key={bi} className="v-svc-deliverable">
                   <div className="v-svc-deliverable-header">
                     <span>{String(bi + 1).padStart(2, '0')}</span>
@@ -233,7 +183,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
 
             <div className="v-svc-block-foot">
               <div className="v-svc-tags">
-                {tags.map((tag) => (
+                {svc.tags.map((tag) => (
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
@@ -245,7 +195,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                     onMouseEnter={() => setMode('link')}
                     onMouseLeave={() => setMode('default')}
                   >
-                    Learn more <span>→</span>
+                    {t('learnMore')} <span>→</span>
                   </Link>
                 )}
                 <Link
@@ -254,7 +204,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                   onMouseEnter={() => setMode('link')}
                   onMouseLeave={() => setMode('default')}
                 >
-                  Discuss this solution <span>→</span>
+                  {t('discussLink')} <span>→</span>
                 </Link>
               </div>
             </div>
@@ -266,32 +216,25 @@ export function ServicePageView({ page }: ServicePageViewProps) {
       <section className="v-svc-block v-svc-block-cream" style={{ '--accent': '#0A0E1A' } as CSSProperties}>
         <div className="v-svc-block-marker">
           <span className="v-svc-block-n">●</span>
-          <span className="v-svc-block-tag">PRODUCTS</span>
+          <span className="v-svc-block-tag">{t('productsTag')}</span>
         </div>
 
         <div className="v-svc-block-head">
-          <h2>Our Products</h2>
-          <span className="v-svc-block-sub">Ready-to-deploy platforms built by Vanaila</span>
+          <h2>{t('productsHeading')}</h2>
+          <span className="v-svc-block-sub">{t('productsSub')}</span>
         </div>
 
-        <p className="v-svc-lede">
-          Beyond custom development, we build and maintain standalone products that solve specific business challenges out of the box.
-        </p>
+        <p className="v-svc-lede">{t('productsLede')}</p>
 
         <div className="v-svc-deliverables">
-          {[
-            { n: '01', title: 'Vanaila HRIS', desc: 'End-to-end HR management — attendance, payroll, KPI, and employee database for Indonesian organizations.', href: '/hris' },
-            { n: '02', title: 'Psikotest', desc: 'Online assessment infrastructure for HR teams and psychologists. DISC, IQ, Big 5, and custom instruments with bilingual delivery.', href: '/psikotest' },
-            { n: '03', title: 'Flowraze', desc: 'CRM & sales platform — leads, deals, campaigns, and team performance. WhatsApp-first, built for Indonesian SMB teams.', href: '/flowraze' },
-            { n: '04', title: 'Vanaila Atelier', desc: 'Boutique design studio for brand identity, web experience, UI design, and creative direction — crafted with uncommon care.', href: '/atelier' },
-          ].map((product) => (
+          {PRODUCT_META.map((product, index) => (
             <div key={product.n} className="v-svc-deliverable">
               <div className="v-svc-deliverable-header">
                 <span>{product.n}</span>
                 <span className="v-svc-deliverable-bar" />
               </div>
-              <h3>{product.title}</h3>
-              <p>{product.desc}</p>
+              <h3>{productItems[index].title}</h3>
+              <p>{productItems[index].desc}</p>
               <Link
                 href={product.href}
                 className="v-svc-discuss-link"
@@ -299,7 +242,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                 onMouseEnter={() => setMode('link')}
                 onMouseLeave={() => setMode('default')}
               >
-                Learn more <span>→</span>
+                {t('learnMore')} <span>→</span>
               </Link>
             </div>
           ))}
@@ -312,7 +255,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
           onMouseEnter={() => setMode('link')}
           onMouseLeave={() => setMode('default')}
         >
-          See all products <span>→</span>
+          {t('productsAllLink')} <span>→</span>
         </Link>
       </section>
 
@@ -320,28 +263,21 @@ export function ServicePageView({ page }: ServicePageViewProps) {
       <section className="v-svc-block v-svc-block-ink" style={{ '--accent': '#C8E64B' } as CSSProperties}>
         <div className="v-svc-block-marker">
           <span className="v-svc-block-n">◈</span>
-          <span className="v-svc-block-tag">TEMPLATES</span>
+          <span className="v-svc-block-tag">{t('templatesTag')}</span>
         </div>
 
         <div className="v-svc-block-head">
-          <h2>Need a head start?</h2>
-          <span className="v-svc-block-sub">Vanaila Atelier originals</span>
+          <h2>{t('templatesHeading')}</h2>
+          <span className="v-svc-block-sub">{t('templatesSub')}</span>
         </div>
 
-        <p className="v-svc-lede">
-          Production-ready websites built on the Vanaila design system — with full scroll animations,
-          design tokens, and clean React + Tailwind code. Pick a template. Own it completely.
-        </p>
+        <p className="v-svc-lede">{t('templatesLede')}</p>
 
         <div className="v-svc-deliverables">
-          {[
-            { n: '01', title: 'Design-first', desc: 'Every template ships with the full Vanaila token set — spacing, typography, motion, colour. Not a theme. A system.' },
-            { n: '02', title: 'Fully editable', desc: 'Plain React and Tailwind. No black-box theme system. Your devs can modify everything from day one.' },
-            { n: '03', title: 'Production-ready', desc: 'Not prototypes. Each template is built and verified to perform in real deployments — fast, accessible, and maintainable.' },
-          ].map((item) => (
-            <div key={item.n} className="v-svc-deliverable">
+          {templateItems.map((item, index) => (
+            <div key={index} className="v-svc-deliverable">
               <div className="v-svc-deliverable-header">
-                <span>{item.n}</span>
+                <span>{String(index + 1).padStart(2, '0')}</span>
                 <span className="v-svc-deliverable-bar" />
               </div>
               <h3>{item.title}</h3>
@@ -357,27 +293,27 @@ export function ServicePageView({ page }: ServicePageViewProps) {
           onMouseEnter={() => setMode('link')}
           onMouseLeave={() => setMode('default')}
         >
-          Browse template collection <span>→</span>
+          {t('templatesAllLink')} <span>→</span>
         </Link>
       </section>
 
       {/* WHY US */}
       <section className="v-svc-why">
         <div className="v-svc-why-head">
-          <span className="v-svc-why-eyebrow">[ TRUST ] WHY ORGANIZATIONS CHOOSE VANAILA</span>
+          <span className="v-svc-why-eyebrow">{t('trustEyebrow')}</span>
           <h2>
-            Eight years of
+            {t('trustHeadingLine1')}
             <br />
-            engineering, <em>compounding.</em>
+            {t('trustHeadingLine2')} <em>{t('trustHeadingAccent')}</em>
           </h2>
         </div>
         <div className="v-svc-why-grid">
-          {TRUST_ITEMS.map((trust, i) => (
-            <div key={trust.k} className={`v-svc-why-cell v-svc-why-${trust.tone}`}>
+          {trustItems.map((trust, i) => (
+            <div key={trust.k} className={`v-svc-why-cell v-svc-why-${TRUST_META[i].tone}`}>
               <span className="v-svc-why-n">0{i + 1}</span>
               <h3>{trust.k}</h3>
               <p>{trust.v}</p>
-              <div className="v-svc-why-glyph">{trust.glyph}</div>
+              <div className="v-svc-why-glyph">{TRUST_META[i].glyph}</div>
             </div>
           ))}
         </div>
@@ -392,15 +328,12 @@ export function ServicePageView({ page }: ServicePageViewProps) {
         </div>
         <span className="v-svc-cta-eye">[ NEXT STEP ]</span>
         <h2>
-          Not sure which
+          {t('ctaHeadingLine1')}
           <br />
-          you need? <span className="v-svc-cta-blue">Let&apos;s talk.</span>
+          {t('ctaHeadingLine2')} <span className="v-svc-cta-blue">{t('ctaHeadingAccent')}</span>
         </h2>
         <div className="v-svc-cta-foot">
-          <p>
-            Tell us what you&apos;re building — or just what&apos;s slowing you down. We&apos;ll come back within two business
-            days with a recommended stack and an honest scope. Free, no commitment.
-          </p>
+          <p>{t('ctaBody')}</p>
           <div className="v-svc-cta-actions">
             <Link
               href="/contact?interest=website"
@@ -410,7 +343,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Get a free quote</span>
+              <span>{t('ctaButton')}</span>
               <span>→</span>
             </Link>
             <a
@@ -421,7 +354,7 @@ export function ServicePageView({ page }: ServicePageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              or email care@vanaila.com
+              {t('ctaEmail')}
             </a>
           </div>
         </div>

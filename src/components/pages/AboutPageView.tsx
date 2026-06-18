@@ -1,10 +1,11 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import type { CSSProperties } from 'react';
 
 import { Reveal } from '@/components/animations/Reveal';
 import { useCursorMode } from '@/components/CustomCursor';
+import { Link } from '@/i18n/navigation';
 import type { LandingPage } from '@/features/cms/types';
 
 import { paragraphs, sectionWithFallback, splitAccent } from './sectionContent';
@@ -13,21 +14,22 @@ type AboutPageViewProps = {
   page: LandingPage;
 };
 
-const storyStats = [
-  { k: '8+', v: 'Years building and shipping software' },
-  { k: '30+', v: 'Projects across web, app, and commerce' },
-  { k: '3', v: 'Standards we never cut: speed, security, scale' }
-];
-
 const pillarTones = ['ink', 'blue', 'lime'] as const;
 
 export function AboutPageView({ page }: AboutPageViewProps) {
   const { setMode } = useCursorMode();
+  const t = useTranslations('about');
+
+  const storyStats = [
+    { k: '8+', v: t('stat1') },
+    { k: '30+', v: t('stat2') },
+    { k: '3', v: t('stat3') }
+  ];
 
   const hero = sectionWithFallback(page, 0, {
     id: 'about-hero',
-    heading: 'A Decade of|Engineering Excellence',
-    body: 'For 8+ years we have built websites, apps, and tools for businesses that need them to actually work — fast, secure, and built to grow. No jargon, no disappearing after launch.',
+    heading: t('heroHeading'),
+    body: t('heroBody'),
     ctaLabel: 'About Vanaila',
     ctaHref: '/about',
     mediaImage: '',
@@ -36,18 +38,18 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const story = sectionWithFallback(page, 1, {
     id: 'about-story',
-    heading: 'How we got here',
-    body: "Vanaila Digital started with one observation: too many businesses were forced to choose between a site that looked good and one that actually worked.\n\nFor 8+ years we've built both into the same product — and stuck around to maintain it long after launch.",
-    ctaLabel: '2018',
-    ctaHref: 'Founded in Indonesia',
+    heading: t('storyHeading'),
+    body: t('storyBody'),
+    ctaLabel: t('storyTag'),
+    ctaHref: t('storySub'),
     mediaImage: '',
     mediaAlt: 'We prioritize speed, security, and stability above all else, ensuring your digital presence is as reliable as it is beautiful.',
     layout: 'split'
   });
   const vision = sectionWithFallback(page, 2, {
     id: 'about-vision',
-    heading: 'Our Vision',
-    body: 'A web where fast, reliable, well-built software is normal for every business — not a luxury only big companies can afford.',
+    heading: t('visionHeading'),
+    body: t('visionBody'),
     ctaLabel: 'Vision',
     ctaHref: '',
     mediaImage: '',
@@ -56,8 +58,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const mission = sectionWithFallback(page, 3, {
     id: 'about-mission',
-    heading: 'Our Mission',
-    body: 'Give growing businesses software that scales without drama — clear pricing, plain-language updates, and code they fully own.',
+    heading: t('missionHeading'),
+    body: t('missionBody'),
     ctaLabel: 'Mission',
     ctaHref: '',
     mediaImage: '',
@@ -66,9 +68,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const pillarsIntro = sectionWithFallback(page, 4, {
     id: 'about-pillars-intro',
-    heading: 'What we stand for',
+    heading: t('pillarsHeading'),
     body: 'Three principles that guide every decision we make — for every client, every sprint, and every launch.',
-    ctaLabel: 'Principles',
+    ctaLabel: t('pillarsEyebrowLabel'),
     ctaHref: '',
     mediaImage: '',
     mediaAlt: '',
@@ -77,8 +79,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const pillars = [
     sectionWithFallback(page, 5, {
       id: 'about-pillar-1',
-      heading: 'We build for next year, not just launch day',
-      body: "Every project is built to scale and stay easy to maintain — so you're not paying to rebuild it from scratch in 12 months.",
+      heading: t('pillar1Heading'),
+      body: t('pillar1Body'),
       ctaLabel: '01',
       ctaHref: '',
       mediaImage: '',
@@ -87,8 +89,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     }),
     sectionWithFallback(page, 6, {
       id: 'about-pillar-2',
-      heading: 'We treat your project like our own',
-      body: 'From how it looks on a phone to how fast the database responds, the details get the same care we give our own products.',
+      heading: t('pillar2Heading'),
+      body: t('pillar2Body'),
       ctaLabel: '02',
       ctaHref: '',
       mediaImage: '',
@@ -97,8 +99,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     }),
     sectionWithFallback(page, 7, {
       id: 'about-pillar-3',
-      heading: 'We measure what actually matters',
-      body: 'Success is your load times, your conversion rates, and your growth — not how clever the tech looks under the hood.',
+      heading: t('pillar3Heading'),
+      body: t('pillar3Body'),
       ctaLabel: '03',
       ctaHref: '',
       mediaImage: '',
@@ -108,9 +110,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   ];
   const quote = sectionWithFallback(page, 8, {
     id: 'about-quote',
-    heading: 'The best software disappears — your team just gets their time back, and your customers just get what they came for.',
-    body: 'Whether you are a startup finding your footing or an established company cleaning up years of patchwork tools, we turn the messy problem into software that quietly works.',
-    ctaLabel: 'Founder Note',
+    heading: t('quoteHeading'),
+    body: t('quoteBody'),
+    ctaLabel: t('quoteTag'),
     ctaHref: '',
     mediaImage: '',
     mediaAlt: '',
@@ -119,8 +121,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const cta = sectionWithFallback(page, 9, {
     id: 'about-cta',
     heading: "Let's build|something that lasts",
-    body: 'Work with a team that builds software like it has to last — because what we build, we maintain.',
-    ctaLabel: 'Start your project',
+    body: t('ctaBody'),
+    ctaLabel: t('ctaButton'),
     ctaHref: '/contact',
     mediaImage: '',
     mediaAlt: '',
@@ -150,8 +152,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
 
         <div className="v-svc-hero-meta">
           <span>[ ABOUT / VANAILA DIGITAL ]</span>
-          <span>ENGINEERING CULTURE / BUSINESS CLARITY</span>
-          <span className="v-svc-status">BOOKING NEW PROJECTS</span>
+          <span>{t('metaCulture')}</span>
+          <span className="v-svc-status">{t('metaStatus')}</span>
         </div>
 
         <h1 className="v-svc-h1">
@@ -159,9 +161,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
           <br />
           <em>{heroAccent}</em>
           <br />
-          for brands that <del>guess.</del>
+          {t('h1Mid')} <del>{t('h1Strike')}</del>
           <br />
-          <em>grow.</em>
+          <em>{t('h1Accent')}</em>
         </h1>
 
         <div className="v-svc-hero-foot">
@@ -173,7 +175,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Read our story</span>
+              <span>{t('readStory')}</span>
               <span>-&gt;</span>
             </Link>
             <Link
@@ -182,7 +184,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              Explore services
+              {t('exploreServices')}
             </Link>
           </div>
         </div>
@@ -191,11 +193,11 @@ export function AboutPageView({ page }: AboutPageViewProps) {
       <Reveal as="section" className="v-svc-block v-svc-block-ink" id="story" style={{ '--accent': '#C8E64B' } as CSSProperties}>
         <div className="v-svc-block-marker">
           <span className="v-svc-block-n">01</span>
-          <span className="v-svc-block-tag">{story.ctaLabel || '2018'}</span>
+          <span className="v-svc-block-tag">{story.ctaLabel || t('storyTag')}</span>
         </div>
         <div className="v-svc-block-head">
           <h2>{story.heading}</h2>
-          <span className="v-svc-block-sub">{story.ctaHref || 'Founded in Indonesia'}</span>
+          <span className="v-svc-block-sub">{story.ctaHref || t('storySub')}</span>
         </div>
         <p className="v-svc-lede">{storyParts[0] || story.body}</p>
         <div className="v-svc-deliverables">
@@ -215,11 +217,11 @@ export function AboutPageView({ page }: AboutPageViewProps) {
       <Reveal as="section" className="v-svc-block v-svc-block-cream" id="direction" style={{ '--accent': '#0033FF' } as CSSProperties}>
         <div className="v-svc-block-marker">
           <span className="v-svc-block-n">02</span>
-          <span className="v-svc-block-tag">Direction</span>
+          <span className="v-svc-block-tag">{t('directionTag')}</span>
         </div>
         <div className="v-svc-block-head">
-          <h2>What we are building toward.</h2>
-          <span className="v-svc-block-sub">Vision / Mission</span>
+          <h2>{t('directionHeading')}</h2>
+          <span className="v-svc-block-sub">{t('directionSub')}</span>
         </div>
         <div className="v-svc-deliverables">
           {[vision, mission].map((item, index) => (
@@ -237,11 +239,11 @@ export function AboutPageView({ page }: AboutPageViewProps) {
 
       <Reveal as="section" className="v-svc-why" id="values">
         <div className="v-svc-why-head">
-          <span className="v-svc-why-eyebrow">[ 03 ] {pillarsIntro.ctaLabel || 'Principles'}</span>
+          <span className="v-svc-why-eyebrow">[ 03 ] {pillarsIntro.ctaLabel || t('pillarsEyebrowLabel')}</span>
           <h2>
             {pillarsIntro.heading}
             <br />
-            <em>in practice.</em>
+            <em>{t('pillarsAccent')}</em>
           </h2>
         </div>
         <div className="v-svc-why-grid">
@@ -261,11 +263,11 @@ export function AboutPageView({ page }: AboutPageViewProps) {
       <Reveal as="section" className="v-svc-block v-svc-block-blue" style={{ '--accent': '#C8E64B' } as CSSProperties}>
         <div className="v-svc-block-marker">
           <span className="v-svc-block-n">04</span>
-          <span className="v-svc-block-tag">{quote.ctaLabel || 'Founder Note'}</span>
+          <span className="v-svc-block-tag">{quote.ctaLabel || t('quoteTag')}</span>
         </div>
         <div className="v-svc-block-head">
           <h2>{quote.heading.replace(/"/g, '').trim()}</h2>
-          <span className="v-svc-block-sub">Build with care.</span>
+          <span className="v-svc-block-sub">{t('quoteSub')}</span>
         </div>
         <p className="v-svc-lede">{quote.body}</p>
       </Reveal>
@@ -291,7 +293,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>{cta.ctaLabel || 'Claim free consultation'}</span>
+              <span>{cta.ctaLabel || t('ctaButton')}</span>
               <span>-&gt;</span>
             </Link>
           </div>

@@ -1,9 +1,10 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { type FormEvent, useState } from 'react';
 
 import { useCursorMode } from '@/components/CustomCursor';
+import { Link } from '@/i18n/navigation';
 import { trackClientAnalyticsEvent } from '@/lib/analyticsClient';
 import { csrfFetch } from '@/lib/clientCsrf';
 import type { LandingPage, SiteSettings } from '@/features/cms/types';
@@ -29,6 +30,7 @@ const SERVICES = [
 
 export function ContactPageView({ settings, initialInterest, initialOverview }: ContactPageViewProps) {
   const { setMode } = useCursorMode();
+  const t = useTranslations('contact');
   const c = settings?.contact;
 
   const emailValue = c?.emailValue || 'care@vanaila.com';
@@ -73,14 +75,14 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
       if (!res.ok) {
         const payload = (await res.json().catch(() => null)) as { error?: string } | null;
         setStatus('error');
-        setErrorMsg(payload?.error || 'Failed to submit. Please try again.');
+        setErrorMsg(payload?.error || t('submitError'));
         return;
       }
       setStatus('success');
       void trackClientAnalyticsEvent('contact_submit', interests.join(', ') || 'Contact brief');
     } catch {
       setStatus('error');
-      setErrorMsg('Failed to submit. Please try again.');
+      setErrorMsg(t('submitError'));
     }
   };
 
@@ -102,23 +104,20 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
 
         <div className="v-contact-hero-meta">
           <span>[ CONTACT / BRIEF ]</span>
-          <span>RESPONSE WITHIN 24 BUSINESS HOURS</span>
-          <span className="v-svc-status">● BOOKING NEW PROJECTS</span>
+          <span>{t('metaResponse')}</span>
+          <span className="v-svc-status">{t('metaStatus')}</span>
         </div>
 
         <h1 className="v-contact-h1">
-          Build your
+          {t('h1Line1')}
           <br />
-          <em>competitive edge</em>
+          <em>{t('h1Accent1')}</em>
           <br />
-          —&nbsp;<del>offline.</del>&nbsp;<em>online.</em>
+          —&nbsp;<del>{t('h1Strike')}</del>&nbsp;<em>{t('h1Accent2')}</em>
         </h1>
 
         <div className="v-contact-hero-foot">
-          <p>
-            From lightning-fast React web apps to scalable WordPress stores — Vanaila Digital turns
-            your idea into a product that actually performs.
-          </p>
+          <p>{t('heroBody')}</p>
           <div className="v-home-actions">
             <a
               href="#brief"
@@ -128,7 +127,7 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              Submit a project brief <span>↓</span>
+              {t('heroBriefCta')} <span>↓</span>
             </a>
             <a
               href="#meet"
@@ -138,7 +137,7 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              Or book a Google Meet
+              {t('heroMeetCta')}
             </a>
           </div>
         </div>
@@ -149,34 +148,31 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
         {/* FORM SIDE */}
         <div className="v-contact-form-side">
           <div className="v-contact-form-head">
-            <span className="v-contact-eyebrow">[ 01 ] LEAD QUALIFIER</span>
+            <span className="v-contact-eyebrow">{t('formEyebrow')}</span>
             <h2>
-              Start with a brief,
+              {t('formHeading')}
               <br />
-              not a <em>vendor request.</em>
+              <em>{t('formHeadingAccent')}</em>
             </h2>
-            <p>Tell us what you&apos;re building — we&apos;ll tell you how to make it work.</p>
+            <p>{t('formSubtitle')}</p>
           </div>
 
           {status === 'success' ? (
             <div className="v-contact-success">
               <span className="v-contact-success-mark">●</span>
-              <h3>Brief received.</h3>
-              <p>
-                A founder — not a bot — will read your brief and respond within 24 business hours.
-                Check <strong>{emailValue}</strong> in your inbox.
-              </p>
+              <h3>{t('successTitle')}</h3>
+              <p>{t('successBody', { email: emailValue })}</p>
             </div>
           ) : (
             <form className="v-contact-form" onSubmit={handleSubmit}>
               <div className="v-contact-row-2">
                 <label className="v-contact-field">
                   <span className="v-contact-label">
-                    Your name <em>*</em>
+                    {t('labelName')} <em>*</em>
                   </span>
                   <input
                     type="text"
-                    placeholder="Full name"
+                    placeholder={t('placeholderName')}
                     required
                     maxLength={120}
                     value={name}
@@ -184,10 +180,10 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
                   />
                 </label>
                 <label className="v-contact-field">
-                  <span className="v-contact-label">Company name</span>
+                  <span className="v-contact-label">{t('labelCompany')}</span>
                   <input
                     type="text"
-                    placeholder="Company / organization"
+                    placeholder={t('placeholderCompany')}
                     maxLength={160}
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
@@ -197,11 +193,11 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
 
               <label className="v-contact-field">
                 <span className="v-contact-label">
-                  Business email <em>*</em>
+                  {t('labelEmail')} <em>*</em>
                 </span>
                 <input
                   type="email"
-                  placeholder="you@company.com"
+                  placeholder={t('placeholderEmail')}
                   required
                   maxLength={254}
                   value={emailField}
@@ -211,7 +207,7 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
 
               <div className="v-contact-field">
                 <span className="v-contact-label">
-                  I&apos;m interested in <em>*</em>
+                  {t('labelInterest')} <em>*</em>
                 </span>
                 <div className="v-contact-chips">
                   {SERVICES.map((s) => (
@@ -232,14 +228,12 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
 
               <label className="v-contact-field">
                 <span className="v-contact-label">
-                  Project overview <em>*</em>
+                  {t('labelOverview')} <em>*</em>
                 </span>
-                <span className="v-contact-hint">
-                  What are you trying to achieve, and what&apos;s holding you back right now?
-                </span>
+                <span className="v-contact-hint">{t('overviewHint')}</span>
                 <textarea
                   rows={6}
-                  placeholder="A few honest paragraphs beat a 30-page RFP. Tell us the goal, the obstacle, and the timeline."
+                  placeholder={t('overviewPlaceholder')}
                   required
                   maxLength={5000}
                   value={overview}
@@ -259,12 +253,10 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
                   onMouseEnter={() => setMode('link')}
                   onMouseLeave={() => setMode('default')}
                 >
-                  {status === 'saving' ? 'Submitting…' : 'Submit my project brief →'}
+                  {status === 'saving' ? t('submitting') : t('submit')}
                 </button>
                 <span className="v-contact-form-note">
-                  {interests.length === 0
-                    ? 'Select at least one service above to submit.'
-                    : 'Reviewed by a human. No auto-replies.'}
+                  {interests.length === 0 ? t('noteSelectService') : t('noteHuman')}
                 </span>
               </div>
             </form>
@@ -276,19 +268,10 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
           {/* Priority Scheduling */}
           <div id="meet" className="v-contact-card v-contact-card-blue">
             <span className="v-contact-eyebrow v-contact-eyebrow-light">
-              [ 02 ] PRIORITY SCHEDULING
+              {t('scheduleEyebrow')}
             </span>
-            <h3>
-              Ready to talk
-              <br />
-              architecture
-              <br />
-              and <em>timelines?</em>
-            </h3>
-            <p>
-              Skip the form. If your project is defined and you&apos;re ready to move, book a
-              15-minute discovery call directly.
-            </p>
+            <h3>{t('scheduleHeading')}</h3>
+            <p>{t('scheduleBody')}</p>
             <a
               href={emailHref}
               className="v-contact-card-cta"
@@ -297,7 +280,7 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Invite us to a Google Meet</span>
+              <span>{t('scheduleCta')}</span>
               <span className="v-contact-card-arrow">→</span>
             </a>
             <a
@@ -312,31 +295,24 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
 
           {/* Promise */}
           <div className="v-contact-card v-contact-card-cream">
-            <span className="v-contact-eyebrow">[ 03 ] OUR PROMISE</span>
-            <h3>
-              Every brief, read by a <em>human.</em>
-            </h3>
-            <p>
-              We respond within 24 business hours — no auto-replies, no telephone game, no
-              runaround.
-            </p>
+            <span className="v-contact-eyebrow">{t('promiseEyebrow')}</span>
+            <h3>{t('promiseHeading')}</h3>
+            <p>{t('promiseBody')}</p>
             <div className="v-contact-promise-bar">
               <span className="v-contact-promise-dot" />
-              <span>Average response: under 9 hours</span>
+              <span>{t('promiseStat')}</span>
             </div>
           </div>
 
           {/* Direct Channels */}
           <div className="v-contact-card v-contact-card-ink">
             <span className="v-contact-eyebrow v-contact-eyebrow-light">
-              [ 04 ] DIRECT CHANNELS
+              {t('channelsEyebrow')}
             </span>
-            <h3>
-              Faster than <em>a form.</em>
-            </h3>
+            <h3>{t('channelsHeading')}</h3>
             <ul className="v-contact-channels">
               <li>
-                <span className="v-contact-channel-k">Email</span>
+                <span className="v-contact-channel-k">{t('channelEmail')}</span>
                 <a
                   href={emailHref}
                   className="v-contact-channel-v"
@@ -347,7 +323,7 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
                 </a>
               </li>
               <li>
-                <span className="v-contact-channel-k">WhatsApp</span>
+                <span className="v-contact-channel-k">{t('channelWhatsapp')}</span>
                 <a
                   href={whatsappHref}
                   className="v-contact-channel-v"
@@ -360,8 +336,8 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
                 </a>
               </li>
               <li>
-                <span className="v-contact-channel-k">Google Meet</span>
-                <span className="v-contact-channel-v">15-min discovery</span>
+                <span className="v-contact-channel-k">{t('channelMeet')}</span>
+                <span className="v-contact-channel-v">{t('channelMeetValue')}</span>
               </li>
             </ul>
           </div>
@@ -372,29 +348,29 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
       <section className="v-contact-global">
         <div className="v-contact-global-head">
           <span className="v-contact-eyebrow v-contact-eyebrow-light">
-            [ 05 ] GLOBAL REACH, LOCAL ROOTS
+            {t('globalEyebrow')}
           </span>
           <h2>
-            Bogor-built.
+            {t('globalHeading')}
             <br />
-            <em>Worldwide-shipped.</em>
+            <em>{t('globalHeadingAccent')}</em>
           </h2>
         </div>
         <div className="v-contact-global-grid">
           <div className="v-contact-global-cell">
-            <span className="v-contact-global-label">Legal Entity</span>
+            <span className="v-contact-global-label">{t('globalEntityLabel')}</span>
             <h4>{companyName}</h4>
-            <p>Registered in Indonesia as PT Vanaila Digital Vision. Serving SMEs and innovators worldwide.</p>
+            <p>{t('globalEntityBody')}</p>
           </div>
           <div className="v-contact-global-cell">
-            <span className="v-contact-global-label">Headquarters</span>
+            <span className="v-contact-global-label">{t('globalHqLabel')}</span>
             <h4>
               <span style={{ color: 'var(--v-blue-glow, #2D5FFF)' }}>◉</span> {addressLine1}
             </h4>
-            <p>West Java · GMT+7. Working remote across Southeast Asia, Europe, and the Americas.</p>
+            <p>{t('globalHqBody')}</p>
           </div>
           <div className="v-contact-global-cell v-contact-global-cta">
-            <span className="v-contact-global-label">Reach Us</span>
+            <span className="v-contact-global-label">{t('globalReachLabel')}</span>
             <a
               href={emailHref}
               className="v-contact-global-link"

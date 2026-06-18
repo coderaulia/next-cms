@@ -4,6 +4,204 @@
     "toggleId": "ID",
     "languageLabel": "Language"
   },
+  "about": {
+    "metaCulture": "ENGINEERING CULTURE / BUSINESS CLARITY",
+    "metaStatus": "BOOKING NEW PROJECTS",
+    "heroHeading": "A Decade of|Engineering Excellence",
+    "heroBody": "For 8+ years we have built websites, apps, and tools for businesses that need them to actually work — fast, secure, and built to grow. No jargon, no disappearing after launch.",
+    "h1Mid": "for brands that",
+    "h1Strike": "guess.",
+    "h1Accent": "grow.",
+    "readStory": "Read our story",
+    "exploreServices": "Explore services",
+    "storyTag": "2018",
+    "storySub": "Founded in Indonesia",
+    "storyHeading": "How we got here",
+    "storyBody": "Vanaila Digital started with one observation: too many businesses were forced to choose between a site that looked good and one that actually worked.\n\nFor 8+ years we've built both into the same product — and stuck around to maintain it long after launch.",
+    "stat1": "Years building and shipping software",
+    "stat2": "Projects across web, app, and commerce",
+    "stat3": "Standards we never cut: speed, security, scale",
+    "directionTag": "Direction",
+    "directionHeading": "What we are building toward.",
+    "directionSub": "Vision / Mission",
+    "visionHeading": "Our Vision",
+    "visionBody": "A web where fast, reliable, well-built software is normal for every business — not a luxury only big companies can afford.",
+    "missionHeading": "Our Mission",
+    "missionBody": "Give growing businesses software that scales without drama — clear pricing, plain-language updates, and code they fully own.",
+    "pillarsEyebrowLabel": "Principles",
+    "pillarsHeading": "What we stand for",
+    "pillarsAccent": "in practice.",
+    "pillar1Heading": "We build for next year, not just launch day",
+    "pillar1Body": "Every project is built to scale and stay easy to maintain — so you're not paying to rebuild it from scratch in 12 months.",
+    "pillar2Heading": "We treat your project like our own",
+    "pillar2Body": "From how it looks on a phone to how fast the database responds, the details get the same care we give our own products.",
+    "pillar3Heading": "We measure what actually matters",
+    "pillar3Body": "Success is your load times, your conversion rates, and your growth — not how clever the tech looks under the hood.",
+    "quoteTag": "Founder Note",
+    "quoteSub": "Build with care.",
+    "quoteHeading": "The best software disappears — your team just gets their time back, and your customers just get what they came for.",
+    "quoteBody": "Whether you are a startup finding your footing or an established company cleaning up years of patchwork tools, we turn the messy problem into software that quietly works.",
+    "ctaButton": "Start your project",
+    "ctaBody": "Work with a team that builds software like it has to last — because what we build, we maintain."
+  },
+  "service": {
+    "heroBody": "Six ways we help your business win more customers and waste less time online — from the website people judge you by to the internal tools your team runs on. We pick the right stack for your goal, build it, and keep it fast. No templates, no bloated retainers.",
+    "heroCta": "Get a free quote",
+    "h1Line1": "Built to grow",
+    "h1Accent1": "your business",
+    "h1Strike": "your tech.",
+    "h1Accent2": "your revenue.",
+    "heroSecondaryCta": "See selected work",
+    "discussLink": "Discuss this solution",
+    "learnMore": "Learn more",
+    "items": [
+      {
+        "title": "Website Development",
+        "sub": "React & WordPress",
+        "lede": "A fast, modern site that makes the right first impression — and loads before visitors lose patience and leave.",
+        "blocks": [
+          { "k": "Framework-Powered Sites", "v": "React-based builds for projects that demand maximum speed and SEO. We shift work from the browser to a build step — ultra-lightweight, instantly fast." },
+          { "k": "Custom WordPress Solutions", "v": "For teams that need an intuitive CMS, we build secure, custom-themed WordPress environments — content updates without technical friction." }
+        ]
+      },
+      {
+        "title": "Custom Business Tools",
+        "sub": "Python & React",
+        "lede": "Replace the spreadsheets and manual steps eating your team's week with software built around exactly how you work.",
+        "blocks": [
+          { "k": "Frontend", "v": "React and modern JavaScript for dynamic, responsive interfaces that hold up under real-world load." },
+          { "k": "Backend", "v": "Python for secure, scalable server-side logic and clean API design — built to integrate." },
+          { "k": "Ecosystem Integration", "v": "We connect your app with the CRMs, databases, and automation workflows you already rely on." }
+        ]
+      },
+      {
+        "title": "Secure Online Shops",
+        "sub": "WooCommerce & Custom Stores",
+        "lede": "Sell online without the headaches — checkout that converts, payments that clear, and stock that stays in sync.",
+        "blocks": [
+          { "k": "Payment Gateway Integration", "v": "Seamless Midtrans for the Indonesian market, Stripe for international transactions — checkout that just works." },
+          { "k": "Operational Stability", "v": "Architectures built to handle high-traffic sales events and complex multi-channel inventory without breaking." }
+        ]
+      },
+      {
+        "title": "High-Conversion Landing Pages",
+        "sub": "Marketing-led builds",
+        "lede": "Stop burning ad budget on pages that don't convert. Built to turn paid clicks into leads you can actually close.",
+        "blocks": [
+          { "k": "Performance Focused", "v": "Engineered for speed so paid clicks and social traffic don't bounce before the page paints." },
+          { "k": "Conversion Optimization", "v": "Structured around UX principles that lift lead generation, sign-ups, and engagement — measurable, iterable." }
+        ]
+      },
+      {
+        "title": "Mobile Business App",
+        "sub": "React Native",
+        "lede": "Put your business in your customers' pocket — one app on both iOS and Android, at a fraction of the two-team cost.",
+        "blocks": [
+          { "k": "Cross-Platform Efficiency", "v": "React Native delivers native-like performance with the cost-efficiency of one codebase — ship once, run everywhere." },
+          { "k": "Enterprise Features", "v": "Push notifications, location services, and offline data sync — your app keeps working anywhere your users are." }
+        ]
+      },
+      {
+        "title": "Official Business Email",
+        "sub": "Email · Domain · Workspace",
+        "lede": "Look credible from the first email. Professional addresses on your own domain, set up to land in inboxes — not spam.",
+        "blocks": [
+          { "k": "Company Email Setup", "v": "Professional Google Workspace deployment — enterprise-grade email, cloud storage, and collaboration on yourcompany.com." },
+          { "k": "Professional Mail Services", "v": "Reliable business email on your own domain, configured for high deliverability and security from day one." }
+        ]
+      }
+    ],
+    "trustHeadingLine1": "Eight years of",
+    "trustHeadingLine2": "engineering,",
+    "trustHeadingAccent": "compounding.",
+    "trustEyebrow": "[ TRUST ] WHY ORGANIZATIONS CHOOSE VANAILA",
+    "trust": [
+      { "k": "30+ projects shipped", "v": "SMEs, corporates, and non-profits across industries. You're not our practice run — we've solved problems like yours before." },
+      { "k": "Built for Indonesia", "v": "Midtrans, local logistics, WhatsApp-first workflows — your tools work with the providers your customers already use." },
+      { "k": "8+ years, still hands-on", "v": "Nearly a decade building and maintaining real software. We write code you won't have to rip out and rebuild in a year." }
+    ],
+    "productsTag": "PRODUCTS",
+    "productsHeading": "Our Products",
+    "productsSub": "Ready-to-deploy platforms built by Vanaila",
+    "productsLede": "Beyond custom development, we build and maintain standalone products that solve specific business challenges out of the box.",
+    "productsAllLink": "See all products",
+    "products": [
+      { "title": "Vanaila HRIS", "desc": "End-to-end HR management — attendance, payroll, KPI, and employee database for Indonesian organizations." },
+      { "title": "Psikotest", "desc": "Online assessment infrastructure for HR teams and psychologists. DISC, IQ, Big 5, and custom instruments with bilingual delivery." },
+      { "title": "Flowraze", "desc": "CRM & sales platform — leads, deals, campaigns, and team performance. WhatsApp-first, built for Indonesian SMB teams." },
+      { "title": "Vanaila Atelier", "desc": "Boutique design studio for brand identity, web experience, UI design, and creative direction — crafted with uncommon care." }
+    ],
+    "templatesTag": "TEMPLATES",
+    "templatesHeading": "Need a head start?",
+    "templatesSub": "Vanaila Atelier originals",
+    "templatesLede": "Production-ready websites built on the Vanaila design system — with full scroll animations, design tokens, and clean React + Tailwind code. Pick a template. Own it completely.",
+    "templatesAllLink": "Browse template collection",
+    "templates": [
+      { "title": "Design-first", "desc": "Every template ships with the full Vanaila token set — spacing, typography, motion, colour. Not a theme. A system." },
+      { "title": "Fully editable", "desc": "Plain React and Tailwind. No black-box theme system. Your devs can modify everything from day one." },
+      { "title": "Production-ready", "desc": "Not prototypes. Each template is built and verified to perform in real deployments — fast, accessible, and maintainable." }
+    ],
+    "ctaHeadingLine1": "Not sure which",
+    "ctaHeadingLine2": "you need?",
+    "ctaHeadingAccent": "Let's talk.",
+    "ctaBody": "Tell us what you're building — or just what's slowing you down. We'll come back within two business days with a recommended stack and an honest scope. Free, no commitment.",
+    "ctaButton": "Get a free quote",
+    "ctaEmail": "or email care@vanaila.com"
+  },
+  "contact": {
+    "metaResponse": "RESPONSE WITHIN 24 BUSINESS HOURS",
+    "metaStatus": "● BOOKING NEW PROJECTS",
+    "h1Line1": "Build your",
+    "h1Accent1": "competitive edge",
+    "h1Strike": "offline.",
+    "h1Accent2": "online.",
+    "heroBody": "From lightning-fast React web apps to scalable WordPress stores — Vanaila Digital turns your idea into a product that actually performs.",
+    "heroBriefCta": "Submit a project brief",
+    "heroMeetCta": "Or book a Google Meet",
+    "formEyebrow": "[ 01 ] LEAD QUALIFIER",
+    "formHeading": "Start with a brief,",
+    "formHeadingAccent": "not a vendor request.",
+    "formSubtitle": "Tell us what you're building — we'll tell you how to make it work.",
+    "successTitle": "Brief received.",
+    "successBody": "A founder — not a bot — will read your brief and respond within 24 business hours. Check {email} in your inbox.",
+    "labelName": "Your name",
+    "placeholderName": "Full name",
+    "labelCompany": "Company name",
+    "placeholderCompany": "Company / organization",
+    "labelEmail": "Business email",
+    "placeholderEmail": "you@company.com",
+    "labelInterest": "I'm interested in",
+    "labelOverview": "Project overview",
+    "overviewHint": "What are you trying to achieve, and what's holding you back right now?",
+    "overviewPlaceholder": "A few honest paragraphs beat a 30-page RFP. Tell us the goal, the obstacle, and the timeline.",
+    "submitError": "Failed to submit. Please try again.",
+    "submitting": "Submitting…",
+    "submit": "Submit my project brief →",
+    "noteSelectService": "Select at least one service above to submit.",
+    "noteHuman": "Reviewed by a human. No auto-replies.",
+    "scheduleEyebrow": "[ 02 ] PRIORITY SCHEDULING",
+    "scheduleHeading": "Ready to talk architecture and timelines?",
+    "scheduleBody": "Skip the form. If your project is defined and you're ready to move, book a 15-minute discovery call directly.",
+    "scheduleCta": "Invite us to a Google Meet",
+    "promiseEyebrow": "[ 03 ] OUR PROMISE",
+    "promiseHeading": "Every brief, read by a human.",
+    "promiseBody": "We respond within 24 business hours — no auto-replies, no telephone game, no runaround.",
+    "promiseStat": "Average response: under 9 hours",
+    "channelsEyebrow": "[ 04 ] DIRECT CHANNELS",
+    "channelsHeading": "Faster than a form.",
+    "channelEmail": "Email",
+    "channelWhatsapp": "WhatsApp",
+    "channelMeet": "Google Meet",
+    "channelMeetValue": "15-min discovery",
+    "globalEyebrow": "[ 05 ] GLOBAL REACH, LOCAL ROOTS",
+    "globalHeading": "Bogor-built.",
+    "globalHeadingAccent": "Worldwide-shipped.",
+    "globalEntityLabel": "Legal Entity",
+    "globalEntityBody": "Registered in Indonesia as PT Vanaila Digital Vision. Serving SMEs and innovators worldwide.",
+    "globalHqLabel": "Headquarters",
+    "globalHqBody": "West Java · GMT+7. Working remote across Southeast Asia, Europe, and the Americas.",
+    "globalReachLabel": "Reach Us"
+  },
   "footer": {
     "company": "Company",
     "solutions": "Solutions",
