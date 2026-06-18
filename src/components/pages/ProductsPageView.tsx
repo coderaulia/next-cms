@@ -319,7 +319,7 @@ export function ProductsPageView() {
               <span>Brief us on your workflow</span>
               <span className="prods-arrow">→</span>
             </Link>
-            <span className="prods-cta-mail">or email hi@vanaila.com</span>
+            <span className="prods-cta-mail">or email care@vanaila.com</span>
           </div>
         </div>
       </Reveal>

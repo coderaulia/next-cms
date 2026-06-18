@@ -14,9 +14,9 @@ type AboutPageViewProps = {
 };
 
 const storyStats = [
-  { k: '8+', v: 'Years shipping digital systems' },
-  { k: '50+', v: 'Projects across web, app, and commerce' },
-  { k: '3', v: 'Operating standards: speed, security, scale' }
+  { k: '8+', v: 'Years building and shipping software' },
+  { k: '30+', v: 'Projects across web, app, and commerce' },
+  { k: '3', v: 'Standards we never cut: speed, security, scale' }
 ];
 
 const pillarTones = ['ink', 'blue', 'lime'] as const;
@@ -27,7 +27,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const hero = sectionWithFallback(page, 0, {
     id: 'about-hero',
     heading: 'A Decade of|Engineering Excellence',
-    body: 'Founded on the principles of precision and scalability, we have spent over 8 years perfecting the digital infrastructure that powers ambitious brands.',
+    body: 'For 8+ years we have built websites, apps, and tools for businesses that need them to actually work — fast, secure, and built to grow. No jargon, no disappearing after launch.',
     ctaLabel: 'About Vanaila',
     ctaHref: '/about',
     mediaImage: '',
@@ -36,8 +36,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const story = sectionWithFallback(page, 1, {
     id: 'about-story',
-    heading: 'Our Technical DNA',
-    body: "Vanaila Digital was formed around a simple observation: many teams were forced to choose between visual polish and reliable engineering.\n\nFor over 8 years, we have cultivated a culture of architectural foresight, building not just for today's launch, but for next year's scale.",
+    heading: 'How we got here',
+    body: "Vanaila Digital started with one observation: too many businesses were forced to choose between a site that looked good and one that actually worked.\n\nFor 8+ years we've built both into the same product — and stuck around to maintain it long after launch.",
     ctaLabel: '2018',
     ctaHref: 'Founded in Indonesia',
     mediaImage: '',
@@ -47,7 +47,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const vision = sectionWithFallback(page, 2, {
     id: 'about-vision',
     heading: 'Our Vision',
-    body: 'To redefine the standard of digital craftsmanship by proving that high-performance engineering is the truest form of modern design.',
+    body: 'A web where fast, reliable, well-built software is normal for every business — not a luxury only big companies can afford.',
     ctaLabel: 'Vision',
     ctaHref: '',
     mediaImage: '',
@@ -57,7 +57,7 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const mission = sectionWithFallback(page, 3, {
     id: 'about-mission',
     heading: 'Our Mission',
-    body: 'To empower forward-thinking businesses with digital infrastructure that scales effortlessly, with transparency in code and clarity in communication.',
+    body: 'Give growing businesses software that scales without drama — clear pricing, plain-language updates, and code they fully own.',
     ctaLabel: 'Mission',
     ctaHref: '',
     mediaImage: '',
@@ -66,8 +66,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const pillarsIntro = sectionWithFallback(page, 4, {
     id: 'about-pillars-intro',
-    heading: 'The Pillars of Vanaila Digital',
-    body: 'Three core principles that guide our engineering decisions for every client, every sprint, and every launch.',
+    heading: 'What we stand for',
+    body: 'Three principles that guide every decision we make — for every client, every sprint, and every launch.',
     ctaLabel: 'Principles',
     ctaHref: '',
     mediaImage: '',
@@ -77,8 +77,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   const pillars = [
     sectionWithFallback(page, 5, {
       id: 'about-pillar-1',
-      heading: 'Architectural Foresight',
-      body: 'We architect for the future. Every line of code is written with scalability and maintenance in mind.',
+      heading: 'We build for next year, not just launch day',
+      body: "Every project is built to scale and stay easy to maintain — so you're not paying to rebuild it from scratch in 12 months.",
       ctaLabel: '01',
       ctaHref: '',
       mediaImage: '',
@@ -87,8 +87,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     }),
     sectionWithFallback(page, 6, {
       id: 'about-pillar-2',
-      heading: 'Precision & Care',
-      body: 'From pixel-perfect responsiveness to optimized database queries, we treat every project like our own product.',
+      heading: 'We treat your project like our own',
+      body: 'From how it looks on a phone to how fast the database responds, the details get the same care we give our own products.',
       ctaLabel: '02',
       ctaHref: '',
       mediaImage: '',
@@ -97,8 +97,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
     }),
     sectionWithFallback(page, 7, {
       id: 'about-pillar-3',
-      heading: 'Results-Driven Approach',
-      body: 'We measure success through load times, conversion rates, and the tangible growth of our partners.',
+      heading: 'We measure what actually matters',
+      body: 'Success is your load times, your conversion rates, and your growth — not how clever the tech looks under the hood.',
       ctaLabel: '03',
       ctaHref: '',
       mediaImage: '',
@@ -108,8 +108,8 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   ];
   const quote = sectionWithFallback(page, 8, {
     id: 'about-quote',
-    heading: 'We believe that true potential is unlocked when complex problems meet elegant engineering.',
-    body: 'Whether you are a startup looking to disrupt or an enterprise aiming to optimize, our team is ready to translate your vision into a digital reality that stands the test of time.',
+    heading: 'The best software disappears — your team just gets their time back, and your customers just get what they came for.',
+    body: 'Whether you are a startup finding your footing or an established company cleaning up years of patchwork tools, we turn the messy problem into software that quietly works.',
     ctaLabel: 'Founder Note',
     ctaHref: '',
     mediaImage: '',
@@ -118,9 +118,9 @@ export function AboutPageView({ page }: AboutPageViewProps) {
   });
   const cta = sectionWithFallback(page, 9, {
     id: 'about-cta',
-    heading: 'Unlock Your|Digital Potential',
-    body: 'Partner with an engineering team that understands the intersection of technology and business growth.',
-    ctaLabel: 'Claim free consultation',
+    heading: "Let's build|something that lasts",
+    body: 'Work with a team that builds software like it has to last — because what we build, we maintain.',
+    ctaLabel: 'Start your project',
     ctaHref: '/contact',
     mediaImage: '',
     mediaAlt: '',

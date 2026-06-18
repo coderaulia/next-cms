@@ -116,8 +116,8 @@ export function ContactPageView({ settings, initialInterest, initialOverview }: 
 
         <div className="v-contact-hero-foot">
           <p>
-            From lightning-fast Svelte web apps to scalable WordPress ecosystems — Vanaila Digital
-            turns your vision into a product that performs.
+            From lightning-fast React web apps to scalable WordPress stores — Vanaila Digital turns
+            your idea into a product that actually performs.
           </p>
           <div className="v-home-actions">
             <a

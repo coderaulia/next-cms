@@ -80,7 +80,7 @@ export function PortfolioPageView({ projects, query, activeTag, page, pageSize =
 
         <div className="v-svc-hero-meta">
           <span>[ PORTFOLIO / CASE STUDIES ]</span>
-          <span>{projects.length} CMS PROJECTS</span>
+          <span>{projects.length} PROJECTS DELIVERED</span>
           <span className="v-svc-status">RESULTS IN PRODUCTION</span>
         </div>
 
