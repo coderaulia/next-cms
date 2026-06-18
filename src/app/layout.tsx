@@ -98,7 +98,7 @@ export default async function RootLayout({
     <html lang={locale} className={`${fontBody.variable} ${fontAccent.variable} ${fontTight.variable} ${fontSerif.variable} ${fontMono.variable}`}>
       <body className="v2-site">
         <ChunkRecoveryScript nonce={nonce} />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider locale={locale}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
