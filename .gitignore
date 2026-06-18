@@ -34,3 +34,5 @@ data/*.local.json
 _design_import/
 drizzle/
 
+
+dev-server.log

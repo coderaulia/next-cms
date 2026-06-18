@@ -1,12 +1,13 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { siteProfile } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
 
 import { useCursorMode } from './CustomCursor';
+import { LanguageToggle } from './LanguageToggle';
 
 type NavItem = {
   href: string;
@@ -297,36 +298,39 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
           )}
         </nav>
 
-        {/* CTA pill (inline — hidden when collapsed) */}
+        {/* Language toggle + CTA pill (inline — hidden when collapsed) */}
         {!collapsed && (
-          <Link
-            ref={ctaRef}
-            href={settings.navigation.headerCtaHref || '/contact'}
-            className="no-underline inline-flex items-center"
-            style={{
-              background: '#0A0E1A',
-              color: '#F4F4F0',
-              padding: '10px 18px',
-              borderRadius: 999,
-              fontSize: 13,
-              gap: 10,
-              transition: 'background 0.2s',
-              whiteSpace: 'nowrap',
-            }}
-            data-analytics-event="cta_click"
-            data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = '#0033FF';
-              setMode('link');
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = '#0A0E1A';
-              setMode('default');
-            }}
-          >
-            {settings.navigation.headerCtaLabel || 'Free consultation'}
-            <span>→</span>
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <LanguageToggle />
+            <Link
+              ref={ctaRef}
+              href={settings.navigation.headerCtaHref || '/contact'}
+              className="no-underline inline-flex items-center"
+              style={{
+                background: '#0A0E1A',
+                color: '#F4F4F0',
+                padding: '10px 18px',
+                borderRadius: 999,
+                fontSize: 13,
+                gap: 10,
+                transition: 'background 0.2s',
+                whiteSpace: 'nowrap',
+              }}
+              data-analytics-event="cta_click"
+              data-analytics-label={settings.navigation.headerCtaLabel || 'Header CTA'}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = '#0033FF';
+                setMode('link');
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = '#0A0E1A';
+                setMode('default');
+              }}
+            >
+              {settings.navigation.headerCtaLabel || 'Free consultation'}
+              <span>→</span>
+            </Link>
+          </div>
         )}
 
         {/* Hamburger button (shown only when collapsed) */}
@@ -482,6 +486,10 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
           >
             {settings.navigation.headerCtaLabel || 'Free consultation'}
           </Link>
+
+          <div style={{ marginTop: 8 }}>
+            <LanguageToggle />
+          </div>
         </div>
       )}
     </>

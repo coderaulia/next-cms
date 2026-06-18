@@ -66,7 +66,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   const rawInterest = typeof params?.interest === 'string' ? params.interest : null;
   const mappedService = rawInterest ? (INTEREST_TO_SERVICE[rawInterest] ?? null) : null;
 
-  let initialInterest: string | undefined = mappedService ?? undefined;
+  const initialInterest: string | undefined = mappedService ?? undefined;
   let initialOverview: string | undefined;
 
   if (rawInterest === 'template') {

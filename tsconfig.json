@@ -35,7 +35,6 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "next.config.mjs",
-    "middleware.ts",
     "vitest.setup.ts",
     ".next/dev/types/**/*.ts"
   ],

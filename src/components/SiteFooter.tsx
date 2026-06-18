@@ -1,6 +1,7 @@
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 import { siteProfile } from '@/config/site-profile';
+import { Link } from '@/i18n/navigation';
 import type { SiteSettings } from '@/features/cms/types';
 
 type NavLink = {
@@ -16,6 +17,7 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ siteName, settings }: SiteFooterProps) {
+  const t = useTranslations('footer');
   const brandName = siteName.endsWith('.') ? siteName.slice(0, -1) : siteName;
   const footerLogo = settings.branding.footerLogo || settings.branding.headerLogo || settings.organizationLogo;
 
@@ -75,8 +77,8 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
 
         <div className="v-footer-links-grid">
           {[
-            { title: 'Company', items: footerNavigator as NavLink[] },
-            { title: 'Solutions', items: footerServices as NavLink[] },
+            { title: t('company'), items: footerNavigator as NavLink[] },
+            { title: t('solutions'), items: footerServices as NavLink[] },
           ].map(({ title, items }) => (
             <div key={title}>
               <h5
@@ -117,7 +119,7 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
                 fontWeight: 500,
               }}
             >
-              Connect
+              {t('connect')}
             </h5>
             {[
               { href: settings.social.instagramHref, label: 'Instagram' },
@@ -152,21 +154,21 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
             className="no-underline"
             style={{ fontSize: 12, color: 'rgba(244,244,240,0.45)' }}
           >
-            Privacy Policy
+            {t('privacyPolicy')}
           </Link>
           <Link
             href="/terms"
             className="no-underline"
             style={{ fontSize: 12, color: 'rgba(244,244,240,0.45)' }}
           >
-            Terms of Service
+            {t('termsOfService')}
           </Link>
           <Link
             href="/data-collection"
             className="no-underline"
             style={{ fontSize: 12, color: 'rgba(244,244,240,0.45)' }}
           >
-            Data Collection
+            {t('dataCollection')}
           </Link>
         </div>
       </div>

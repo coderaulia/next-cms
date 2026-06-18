@@ -1,7 +1,22 @@
+import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+import { routing } from '@/i18n/routing';
 import { CSRF_COOKIE_NAME } from '@/services/securityConstants';
+
+const intlMiddleware = createMiddleware(routing);
+
+// Routes that must NOT be locale-routed: admin UI, API, Next internals, and
+// any file with an extension (sitemap.xml, robots.txt, feed.xml, favicon.ico).
+function isNonLocalizedPath(pathname: string): boolean {
+  return (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.includes('.')
+  );
+}
 
 const contentSecurityPolicyBase = [
   "default-src 'self'",
@@ -42,8 +57,11 @@ export function middleware(request: NextRequest) {
     .join('; ')
     .replace(/REPLACE_ME_NONCE/g, nonce);
 
-  const response = NextResponse.next();
   const pathname = request.nextUrl.pathname;
+
+  // Public pages go through next-intl routing; everything else passes through.
+  // Security headers + CSRF below are applied to whichever response we return.
+  const response = isNonLocalizedPath(pathname) ? NextResponse.next() : intlMiddleware(request);
 
   response.headers.set('Content-Security-Policy', csp);
   response.headers.set('x-nonce', nonce);
