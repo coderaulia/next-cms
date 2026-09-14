@@ -157,6 +157,7 @@ npm run start
 
 ## Operational Notes
 
+- **Hostinger Build OS & SWC WASM**: Hostinger build containers use an older glibc (< 2.29). Next.js detects this and safely falls back to `@next/swc-wasm-nodejs`. Any `GLIBC_2.29 not found` messages in Hostinger logs are non-fatal warnings as Next.js automatically proceeds with WebAssembly compilation.
 - If `db:push` works only through the session pooler from your local environment, that is acceptable.
 - The runtime app should still prefer the stable pooled URL on constrained hosting.
 - The app now includes one-time chunk recovery for stale deploy asset races, but you should still prefer clean rollouts and consistent caching.

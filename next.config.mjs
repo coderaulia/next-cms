@@ -16,6 +16,17 @@ const nextConfig = {
     // Inline CSS into the HTML to remove the render-blocking stylesheet
     // request (~1.3s on mobile). CSP already allows style-src unsafe-inline.
     inlineCss: true
+  },
+  webpack: (config) => {
+    // Suppress dynamic ESM cache invalidation warnings inside next-intl's format extractor
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      /Parsing of .*next-intl.* for build dependencies failed/,
+      {
+        message: /Build dependencies behind this expression are ignored/
+      }
+    ];
+    return config;
   }
 };
 

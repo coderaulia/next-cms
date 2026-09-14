@@ -51,7 +51,7 @@ function generateCsrfToken() {
   }
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const nonce = generateNonce();
   const csp = contentSecurityPolicyBase
     .join('; ')
