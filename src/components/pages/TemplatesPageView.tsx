@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 
 import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
@@ -15,10 +15,21 @@ type TemplatesPageViewProps = {
 const CATEGORY_ACCENT: Record<string, string> = {
   landing: '#0033FF',
   portfolio: '#C8E64B',
-  saas: '#FF5B22',
+  saas: '#8B5CF6',
   blog: '#8B5CF6',
+  'e-commerce': '#06B6D4',
   ecommerce: '#06B6D4',
   corporate: '#1a2d4c',
+  'law firm': '#C5A880',
+  fmcg: '#EC4899',
+  'real estate': '#D97706',
+  streetwear: '#EF4444',
+  transportation: '#2563EB',
+  restaurant: '#F59E0B',
+  automotive: '#DC2626',
+  furniture: '#78350F',
+  'travel agency': '#FF5B22',
+  catering: '#F97316',
 };
 
 function categoryAccent(category: string) {
@@ -212,19 +223,21 @@ export function TemplatesPageView({ templates }: TemplatesPageViewProps) {
       </Reveal>
 
       {/* Collection grid */}
-      <Reveal as="section" className="v-svc-block v-svc-block-ink" id="collection">
-        <div className="v-svc-block-marker">
-          <span className="v-svc-block-n">02</span>
-          <span className="v-svc-block-tag">Collection</span>
-        </div>
-        <div className="v-svc-block-head">
-          <h2>
-            {templates.length === 0
-              ? 'The first drop is coming.'
-              : `${templates.length} template${templates.length === 1 ? '' : 's'} available.`}
-          </h2>
-          <span className="v-svc-block-sub">Vanaila Atelier originals</span>
-        </div>
+      <section className="v-svc-block v-svc-block-ink" id="collection">
+        <Reveal>
+          <div className="v-svc-block-marker">
+            <span className="v-svc-block-n">02</span>
+            <span className="v-svc-block-tag">Collection</span>
+          </div>
+          <div className="v-svc-block-head">
+            <h2>
+              {templates.length === 0
+                ? 'The first drop is coming.'
+                : `${templates.length} template${templates.length === 1 ? '' : 's'} available.`}
+            </h2>
+            <span className="v-svc-block-sub">Vanaila Atelier originals</span>
+          </div>
+        </Reveal>
 
         {templates.length > 0 && (
           <div className="v-tmpl-filters">
@@ -296,7 +309,7 @@ export function TemplatesPageView({ templates }: TemplatesPageViewProps) {
             ))}
           </StaggerGroup>
         )}
-      </Reveal>
+      </section>
 
       {/* CTA */}
       <Reveal as="section" className="v-svc-cta">

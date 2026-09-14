@@ -73,15 +73,15 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
   };
 
   return (
-    <div className="glass-panel p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-2xl shadow-blue-900/5">
-      <div className="flex items-center justify-between mb-12 gap-6">
-        <h2 className="text-3xl font-display font-black text-deepSlate italic">{heading}</h2>
-        <SymbolIcon className="text-slate-200 text-4xl" name="description" />
+    <div className="glass-panel p-6 sm:p-10 md:p-16 rounded-3xl md:rounded-[3rem] border border-white/60 shadow-2xl shadow-blue-900/5">
+      <div className="flex items-center justify-between mb-8 md:mb-12 gap-6">
+        <h2 className="text-2xl sm:text-3xl font-display font-black text-deepSlate italic">{heading}</h2>
+        <SymbolIcon className="text-slate-200 text-3xl sm:text-4xl" name="description" />
       </div>
-      <p className="text-slate-500 mb-12 font-light">{body}</p>
+      <p className="text-slate-500 mb-8 md:mb-12 font-light text-sm sm:text-base">{body}</p>
 
-      <form className="space-y-8" onSubmit={handleSubmit}>
-        <div className="grid md:grid-cols-2 gap-8">
+      <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div className="space-y-3">
             <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-4">Name / Company</label>
             <input
@@ -91,7 +91,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
               value={form.name}
               onChange={(event) => updateField('name', event.target.value)}
               placeholder="John Doe or Acme Inc."
-              className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate"
+              className="w-full px-5 py-4 sm:px-8 sm:py-5 text-base sm:text-sm bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate"
             />
           </div>
           <div className="space-y-3">
@@ -103,7 +103,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
               value={form.email}
               onChange={(event) => updateField('email', event.target.value)}
               placeholder="hello@yourbrand.com"
-              className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate"
+              className="w-full px-5 py-4 sm:px-8 sm:py-5 text-base sm:text-sm bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate"
             />
           </div>
         </div>
@@ -114,7 +114,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
             required
             value={form.serviceCategory}
             onChange={(event) => updateField('serviceCategory', event.target.value)}
-            className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate appearance-none"
+            className="w-full px-5 py-4 sm:px-8 sm:py-5 text-base sm:text-sm bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate appearance-none"
           >
             <option value="">Select a service category</option>
             {serviceOptions.map((option) => (
@@ -132,7 +132,7 @@ export function ContactBriefForm({ heading, body, submitLabel, helperText }: Con
             value={form.projectOverview}
             onChange={(event) => updateField('projectOverview', event.target.value)}
             placeholder="Tell us about your project goals, timeline, and current pain points..."
-            className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate resize-none"
+            className="w-full px-5 py-4 sm:px-8 sm:py-5 text-base sm:text-sm bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-electricBlue/20 focus:bg-white transition-all font-medium text-deepSlate resize-none"
           />
         </div>
 

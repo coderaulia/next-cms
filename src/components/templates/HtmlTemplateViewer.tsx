@@ -10,7 +10,13 @@ export function HtmlTemplateViewer({ src, title = 'Template Preview' }: Props) {
     <iframe
       src={src}
       title={title}
-      style={{ width: '100%', height: 'calc(100vh - 48px)', border: 'none', display: 'block' }}
+      style={{
+        width: '100%',
+        height: 'calc(100dvh - 56px)',
+        minHeight: 'calc(100vh - 56px)',
+        border: 'none',
+        display: 'block'
+      }}
       loading="lazy"
     />
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { TemplateMetadata } from '@/components/templates/registry';
 
 type TemplatePreviewShellProps = {

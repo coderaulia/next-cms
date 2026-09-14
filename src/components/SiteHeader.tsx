@@ -404,10 +404,15 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            gap: 32,
+            justifyContent: 'flex-start',
+            gap: 28,
             fontFamily: 'var(--font-tight, sans-serif)',
-            paddingTop: 80,
+            paddingTop: 96,
+            paddingBottom: 48,
+            paddingLeft: 24,
+            paddingRight: 24,
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           <nav

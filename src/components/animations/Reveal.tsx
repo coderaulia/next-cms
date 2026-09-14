@@ -49,6 +49,10 @@ export function Reveal({
       return undefined;
     }
 
+    const isTall = typeof window !== 'undefined' && node.offsetHeight > window.innerHeight;
+    const threshold = isTall ? 0 : amount;
+    const rootMargin = isTall ? '0px 0px -40px 0px' : '0px';
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         const nextVisible = Boolean(entry?.isIntersecting);
@@ -57,7 +61,7 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: amount }
+      { threshold, rootMargin }
     );
 
     observer.observe(node);

@@ -30,7 +30,7 @@ const contentSecurityPolicyBase = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' https://fonts.gstatic.com data:",
   "connect-src 'self' https:",
-  "frame-src 'none'",
+  "frame-src 'self'",
   "worker-src 'self' blob:",
   'upgrade-insecure-requests'
 ];

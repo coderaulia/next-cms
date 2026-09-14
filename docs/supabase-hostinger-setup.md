@@ -132,7 +132,7 @@ MEDIA_PUBLIC_BASE_URL=https://your-project.supabase.co/storage/v1/object/public/
 
 1. Push the repo to your Git provider.
 2. Create a Node.js Web App in Hostinger.
-3. Select Node `20.x`.
+3. Select Node `20.x` or `22.x`.
 4. Set build command:
 
 ```bash
