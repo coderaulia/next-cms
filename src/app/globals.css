@@ -4545,6 +4545,30 @@ button:disabled {
   gap: 8px;
 }
 
+@media (max-width: 640px) {
+  .v-blog-tags {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+
+  .v-blog-tags::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .v-blog-tags::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  .v-blog-tag {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
 .v-blog-tag {
   display: inline-flex;
   min-height: 38px;
@@ -4577,7 +4601,7 @@ button:disabled {
   padding: 12px 0;
   color: var(--v-ink);
   font-family: var(--font-tight), sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   outline: none;
 }
 

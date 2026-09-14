@@ -1,7 +1,6 @@
-import Link from 'next/link';
-
 import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { PortfolioProject } from '@/features/cms/types';
+import { Link } from '@/i18n/navigation';
 
 import { Reveal } from '@/components/animations/Reveal';
 
@@ -55,7 +54,7 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
         </div>
       </Reveal>
 
-      <Reveal as="section" className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-24">
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-24">
         <div className="grid lg:grid-cols-3 gap-8">
           <article className="admin-card lg:col-span-2">
             <h2>Challenge</h2>
@@ -90,7 +89,7 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
             <p>{project.outcome || 'No outcome details provided yet.'}</p>
           </article>
         </div>
-      </Reveal>
+      </section>
 
       {gallery.length > 0 ? (
         <Reveal as="section" className="pb-24">

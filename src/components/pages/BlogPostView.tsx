@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
 import { SymbolIcon } from '@/components/ui/symbol-icon';
 import type { BlogPost } from '@/features/cms/types';
+import { Link } from '@/i18n/navigation';
 
 import { formatDateLabel } from './sectionContent';
 import { Reveal } from '@/components/animations/Reveal';
@@ -54,7 +54,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
         </div>
       </Reveal>
 
-      <Reveal as="section" className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-32">
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-32">
         <div className="flex flex-col lg:flex-row gap-16">
           <aside className="hidden lg:block w-64 shrink-0">
             <div className="sticky top-32 space-y-12">
@@ -101,7 +101,7 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
             </div>
           </div>
         </div>
-      </Reveal>
+      </section>
 
       {related.length > 0 ? (
         <Reveal as="section" className="bg-white border-t border-slate-100 py-32">

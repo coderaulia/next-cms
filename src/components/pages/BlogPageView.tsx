@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import type { CSSProperties } from 'react';
 
 import { Reveal } from '@/components/animations/Reveal';
 import { useCursorMode } from '@/components/CustomCursor';
 import type { BlogPost } from '@/features/cms/types';
+import { Link } from '@/i18n/navigation';
 
 import { formatDateLabel } from './sectionContent';
 
@@ -154,15 +154,17 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
         </Reveal>
       ) : null}
 
-      <Reveal as="section" className="v-svc-block v-svc-block-cream" id="feed" style={{ '--accent': '#0033FF' } as CSSProperties}>
-        <div className="v-svc-block-marker">
-          <span className="v-svc-block-n">02</span>
-          <span className="v-svc-block-tag">Archive</span>
-        </div>
-        <div className="v-svc-block-head">
-          <h2>Latest thinking, filtered.</h2>
-          <span className="v-svc-block-sub">{filtered.length} results</span>
-        </div>
+      <section className="v-svc-block v-svc-block-cream" id="feed" style={{ '--accent': '#0033FF' } as CSSProperties}>
+        <Reveal>
+          <div className="v-svc-block-marker">
+            <span className="v-svc-block-n">02</span>
+            <span className="v-svc-block-tag">Archive</span>
+          </div>
+          <div className="v-svc-block-head">
+            <h2>Latest thinking, filtered.</h2>
+            <span className="v-svc-block-sub">{filtered.length} results</span>
+          </div>
+        </Reveal>
 
         <div className="v-blog-filter-row">
           <div className="v-blog-tags" aria-label="Blog categories">
@@ -267,7 +269,7 @@ export function BlogPageView({ posts, query, activeTag, page, pageSize = default
             </Link>
           </div>
         ) : null}
-      </Reveal>
+      </section>
 
       <Reveal as="section" className="v-svc-cta">
         <div className="v-svc-grid" aria-hidden>
