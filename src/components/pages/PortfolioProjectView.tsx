@@ -156,6 +156,44 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
           </div>
         </Reveal>
       ) : null}
+
+      <Reveal as="section" className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ BUILD WITH US ]</span>
+        <h2>
+          Have a similar project
+          <br />
+          <span className="v-svc-cta-blue">in mind?</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>
+            From custom web applications to scalable digital infrastructure, we deliver production-ready code with guaranteed milestones and 100% IP ownership.
+          </p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href="/contact?interest=portfolio"
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              data-analytics-event="cta_click"
+              data-analytics-label="Portfolio detail footer primary CTA"
+            >
+              <span>Start your project brief</span>
+              <span>-&gt;</span>
+            </Link>
+            <Link
+              href="/services"
+              className="v-svc-btn-ghost"
+              data-analytics-event="cta_click"
+              data-analytics-label="Portfolio detail footer services CTA"
+            >
+              Explore services
+            </Link>
+          </div>
+        </div>
+      </Reveal>
     </main>
   );
 }

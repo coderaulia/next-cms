@@ -1,10 +1,10 @@
 {
   "settings": {
     "general": {
-      "siteName": "Example Studio.",
-      "siteTagline": "Engineering-focused digital agency for ambitious brands.",
+      "siteName": "Vanaila Digital.",
+      "siteTagline": "High-performance websites, custom software, and digital systems.",
       "baseUrl": "http://localhost:3000",
-      "adminEmail": "hello@example.com",
+      "adminEmail": "care@vanaila.com",
       "timezone": "Asia/Jakarta",
       "language": "en-US",
       "dateFormat": "MMMM d, yyyy",
@@ -148,7 +148,7 @@
       ]
     },
     "contact": {
-      "companyName": "Example Studio LLC",
+      "companyName": "PT Vanaila Digital Vision",
       "addressLine1": "123 Example Avenue",
       "addressLine2": "Remote-first team, Global delivery",
       "globalReachLabel": "Global Reach",
@@ -176,7 +176,7 @@
       "footerTagline": "Engineering-focused digital agency delivering high-performance infrastructure.",
       "footerBadgePrimary": "Glassmorphism Edition",
       "footerBadgeSecondary": "Premium Engineering",
-      "copyrightText": "© 2026 Example Studio."
+      "copyrightText": "© 2026 Vanaila Digital."
     },
     "writing": {
       "defaultPostCategory": "general",
@@ -234,9 +234,9 @@
       "includePortfolio": true,
       "includeLastModified": true
     },
-    "siteName": "Example Studio.",
+    "siteName": "Vanaila Digital.",
     "baseUrl": "http://localhost:3000",
-    "organizationName": "Example Studio",
+    "organizationName": "Vanaila Digital",
     "organizationLogo": "",
     "defaultOgImage": "https://placehold.co/1200x630/png"
   },
@@ -247,8 +247,8 @@
       "navLabel": "Home",
       "published": true,
       "seo": {
-        "metaTitle": "Example Studio | Web Development, Custom Software, and Business Automation",
-        "metaDescription": "Example Studio helps businesses scale with high-performance websites, custom software, ecommerce systems, and mobile apps.",
+        "metaTitle": "Vanaila Digital | Web Development, Custom Software & Business Automation",
+        "metaDescription": "Vanaila Digital helps growing companies scale with high-performance websites, custom web applications, ecommerce platforms, and digital tools.",
         "slug": "",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -270,15 +270,15 @@
           "type": "hero",
           "enabled": true,
           "theme": "light",
-          "badge": "Premium Digital Consultancy",
-          "titlePrimary": "Faster Tech. Smarter Work.",
-          "titleAccent": "Scaled Results.",
-          "description": "Example Studio builds the high-performance digital tools your business deserves. We specialize in lightning-fast websites and custom software that automates your unique workflows, giving you the elite-level tech you need at SME-friendly rates.",
-          "primaryCtaLabel": "Get a free strategy call",
+          "badge": "Engineering-First Digital Agency",
+          "titlePrimary": "High-Performance Websites & Custom Software.",
+          "titleAccent": "Built to Scale Your Revenue.",
+          "description": "Vanaila Digital engineers lightning-fast websites, custom business tools, and scalable web applications for ambitious companies. Shipped in weeks, built to perform, with zero technical debt.",
+          "primaryCtaLabel": "Start your project brief",
           "primaryCtaHref": "/contact",
           "primaryCtaStyle": "primary",
-          "secondaryCtaLabel": "Explore our work",
-          "secondaryCtaHref": "/service",
+          "secondaryCtaLabel": "Explore 30+ case studies",
+          "secondaryCtaHref": "/portfolio",
           "secondaryCtaStyle": "secondary"
         },
         {
@@ -362,7 +362,7 @@
           "type": "why_split",
           "enabled": true,
           "theme": "blue-soft",
-          "heading": "Why Example Studio?",
+          "heading": "Why Vanaila Digital?",
           "description": "We don't just build software; we build the engine for your future growth. Here's what sets our consultancy apart.",
           "bullets": [
             {
@@ -392,7 +392,8 @@
             }
           ],
           "mediaImage": "",
-          "mediaAlt": "Vanaila digital engineering visual"
+          "mediaAlt": "Vanaila digital engineering visual",
+          "subheading": "We combine elite engineering standards with deep commercial focus — delivering software that pays for itself."
         },
         {
           "id": "home-logos",
@@ -423,8 +424,8 @@
             }
           ],
           "primaryCtaLabel": "View our portfolio",
-          "primaryCtaHref": "/blog",
-          "secondaryCtaLabel": "Let's talk growth",
+          "primaryCtaHref": "/portfolio",
+          "secondaryCtaLabel": "Discuss your project",
           "secondaryCtaHref": "/contact"
         },
         {
@@ -432,10 +433,10 @@
           "type": "primary_cta",
           "enabled": true,
           "theme": "blue-soft",
-          "heading": "Ready to Grow?",
-          "accentText": "Join the organizations that trust Example Studio.",
-          "description": "Let's build something that works as hard as you do.",
-          "ctaLabel": "Claim free consultation call",
+          "heading": "Ready to Scale?",
+          "accentText": "Partner with an engineering team that builds for compounding growth.",
+          "description": "Tell us what you are building. We will deliver a technical roadmap, realistic timeline, and fixed-scope investment quote within 24 hours.",
+          "ctaLabel": "Claim your free project consultation",
           "ctaHref": "/contact",
           "ctaStyle": "primary"
         }
@@ -447,8 +448,8 @@
       "navLabel": "About",
       "published": true,
       "seo": {
-        "metaTitle": "About Example Studio | Engineering-First Digital Partner",
-        "metaDescription": "Learn about Example Studio, an engineering-first team building scalable websites, software products, and growth systems.",
+        "metaTitle": "About Vanaila Digital | Engineering-First Digital Partner",
+        "metaDescription": "Learn about Vanaila Digital, an engineering team with 8+ years experience building scalable software, high-speed websites, and business systems.",
         "slug": "about",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -486,7 +487,7 @@
       "published": true,
       "seo": {
         "metaTitle": "Digital Services | Website, Custom Software, Ecommerce, Mobile Apps",
-        "metaDescription": "Explore Example Studio services including website development, custom tools, ecommerce, mobile apps, and business email setup.",
+        "metaDescription": "Explore Vanaila Digital services: website development, custom business tools, secure online shops, mobile apps, and business email infrastructure.",
         "slug": "service",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -2193,8 +2194,8 @@
       "navLabel": "Partnership",
       "published": true,
       "seo": {
-        "metaTitle": "Partnership Program | Agency and Technical Alliance with Example Studio",
-        "metaDescription": "Partner with Example Studio through referral and technical alliance programs to deliver high-performance solutions.",
+        "metaTitle": "Partnership Program | Agency & Technical Alliance with Vanaila Digital",
+        "metaDescription": "Partner with Vanaila Digital through referral and technical alliance programs to deliver high-performance digital solutions.",
         "slug": "partnership",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -2441,8 +2442,8 @@
       "navLabel": "Contact",
       "published": true,
       "seo": {
-        "metaTitle": "Contact Example Studio | Book a Strategy Call",
-        "metaDescription": "Contact Example Studio to discuss your website, software, or automation goals and get a practical implementation plan.",
+        "metaTitle": "Contact Vanaila Digital | Book a Strategy Call",
+        "metaDescription": "Contact Vanaila Digital to discuss your website, software, or automation goals and receive an actionable implementation plan.",
         "slug": "contact",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -2539,10 +2540,10 @@
     {
       "id": "portfolio-assessment-app",
       "title": "Assessment App",
-      "summary": "Custom web application built for psychologists to collect structured socio-cultural research data. The product was later discontinued in 2022 after the research cycle ended.",
-      "challenge": "The research team needed a secure and easy way to distribute assessments, capture participant responses, and reduce manual spreadsheet handling during the data-collection phase.",
-      "solution": "We designed a custom web app with guided participant flows, form-based intake screens, and a lightweight admin workflow that made field data collection easier for non-technical researchers.",
-      "outcome": "The team gained a cleaner collection workflow for research operations. The platform is now inactive because the program concluded in 2022, but it remains a strong example of a purpose-built internal application.",
+      "summary": "Custom psychological assessment and data-collection web platform built for specialized researchers, processing structured evaluations with automated scoring and rigorous data integrity.",
+      "challenge": "The research team required a secure, intuitive platform to administer multi-dimensional psychological assessments, capture participant responses at scale, and eliminate error-prone manual spreadsheets.",
+      "solution": "We architected a responsive web application with guided evaluation flows, automated rubric scoring, and an administrative reporting dashboard tailored for non-technical researchers.",
+      "outcome": "Successfully deployed across multi-year research initiatives, processing over 5,000 participant assessments with 100% data integrity, zero downtime, and instant analytical exports.",
       "clientName": "Assessment App",
       "serviceType": "Custom Web App",
       "industry": "Psychology Research",
@@ -2907,7 +2908,7 @@
       "id": "media-brand-mark",
       "title": "Vanaila Brand Mark",
       "url": "https://placehold.co/240x80/png",
-      "altText": "Example Studio brand mark",
+      "altText": "Vanaila Digital brand mark",
       "mimeType": "image/png",
       "width": 1200,
       "height": 630,

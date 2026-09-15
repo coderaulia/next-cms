@@ -39,6 +39,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
   const why = findBlock<WhySplitBlock>(page, 'why_split');
   const cta = findBlock<PrimaryCtaBlock>(page, 'primary_cta');
   const featuredProjects = projects.slice(0, 4);
+  const spotlightProject = projects.find((project) => project.featured) || projects[0] || null;
   const clientNames =
     projects.length > 0
       ? projects.slice(0, 8).map((project) => project.clientName || project.title)
@@ -58,40 +59,108 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
           <span>{t('metaStats')}</span>
           <span className="v-home-status">{t('metaStatus')}</span>
         </div>
-        <h1 className="v-home-hero-title">
-          <span>{t('h1Line1')}</span>
-          <br />
-          <del>{t('h1Strike')}</del>
-          <br />
-          <span>{t('h1Line3')}</span>
-        </h1>
-        <div className="v-home-hero-foot">
-          <p>{hero?.description || t('heroDescription')}</p>
-          <div className="v-home-actions">
-            <Link
-              className="v-home-btn v-home-btn-primary"
-              href={hero?.primaryCtaHref || '/contact'}
-              data-analytics-event="cta_click"
-              data-analytics-label="Home hero primary CTA"
-              onMouseEnter={() => setMode('link')}
-              onMouseLeave={() => setMode('default')}
-            >
-              {hero?.primaryCtaLabel || t('heroPrimaryCta')}
-              <span>-&gt;</span>
-            </Link>
-            <Link
-              className="v-home-btn v-home-btn-ghost"
-              href={hero?.secondaryCtaHref || '/portfolio'}
-              data-analytics-event="cta_click"
-              data-analytics-label="Home hero secondary CTA"
-              onMouseEnter={() => setMode('link')}
-              onMouseLeave={() => setMode('default')}
-            >
-              {hero?.secondaryCtaLabel || t('heroSecondaryCta')}
-            </Link>
+
+        <div className="v-home-hero-body">
+          <div className="v-home-hero-main">
+            <h1 className="v-home-hero-title">
+              {t('h1Line1')}
+              <br />
+              <span>{t('h1Accent')}</span>
+            </h1>
+
+            <p className="v-home-hero-desc">{hero?.description || t('heroDescription')}</p>
+
+            <div className="v-home-actions">
+              <Link
+                className="v-home-btn v-home-btn-primary"
+                href={hero?.primaryCtaHref || '/contact'}
+                data-analytics-event="cta_click"
+                data-analytics-label="Home hero primary CTA"
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
+              >
+                {hero?.primaryCtaLabel || t('heroPrimaryCta')}
+                <span>-&gt;</span>
+              </Link>
+              <Link
+                className="v-home-btn v-home-btn-ghost"
+                href={hero?.secondaryCtaHref || '/portfolio'}
+                data-analytics-event="cta_click"
+                data-analytics-label="Home hero secondary CTA"
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
+              >
+                {hero?.secondaryCtaLabel || t('heroSecondaryCta')}
+              </Link>
+            </div>
+
+            <p className="v-home-trust">{t('heroTrust')}</p>
           </div>
-          <p className="v-home-trust">{t('heroTrust')}</p>
+
+          {spotlightProject ? (
+            <div className="v-home-hero-aside">
+              <Link
+                href={`/portfolio/${spotlightProject.seo.slug}`}
+                className="v-home-spotlight-card"
+                onMouseEnter={() => setMode('view')}
+                onMouseLeave={() => setMode('default')}
+                data-analytics-event="cta_click"
+                data-analytics-label="Hero spotlight case study"
+              >
+                <div className="v-home-spotlight-top">
+                  <span className="v-home-spotlight-tag">
+                    <span className="v-home-spotlight-pulse" aria-hidden />
+                    {t('spotlightEyebrow')}
+                  </span>
+                  <span className="v-home-spotlight-link">
+                    {t('spotlightAction')} <b>-&gt;</b>
+                  </span>
+                </div>
+                <div className="v-home-spotlight-visual">
+                  {spotlightProject.coverImage ? (
+                    <img
+                      src={spotlightProject.coverImage}
+                      alt={spotlightProject.title}
+                      className="v-home-spotlight-img"
+                      decoding="async"
+                      loading="eager"
+                    />
+                  ) : (
+                    <div className="v-home-spotlight-placeholder">
+                      <span>{spotlightProject.serviceType || 'Web Platform'}</span>
+                    </div>
+                  )}
+                  <div className="v-home-spotlight-gradient" />
+                </div>
+                <div className="v-home-spotlight-content">
+                  <div className="v-home-spotlight-meta">
+                    <span className="v-home-spotlight-type">{spotlightProject.serviceType || 'Custom System'}</span>
+                    {spotlightProject.clientName ? (
+                      <span className="v-home-spotlight-client">{spotlightProject.clientName}</span>
+                    ) : null}
+                  </div>
+                  <h3 className="v-home-spotlight-title">{spotlightProject.title}</h3>
+                  <p className="v-home-spotlight-summary">{spotlightProject.summary}</p>
+                  <div className="v-home-spotlight-metrics">
+                    <div className="v-home-spotlight-metric">
+                      <strong>⚡ {t('spotlightMetric1Val')}</strong>
+                      <small>{t('spotlightMetric1Lbl')}</small>
+                    </div>
+                    <div className="v-home-spotlight-metric">
+                      <strong>🔒 {t('spotlightMetric2Val')}</strong>
+                      <small>{t('spotlightMetric2Lbl')}</small>
+                    </div>
+                    <div className="v-home-spotlight-metric">
+                      <strong>🚀 {t('spotlightMetric3Val')}</strong>
+                      <small>{t('spotlightMetric3Lbl')}</small>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ) : null}
         </div>
+
         <div className="v-home-ticker">
           <div className="v-home-ticker-track">
             {Array.from({ length: 4 }).map((_, index) => (

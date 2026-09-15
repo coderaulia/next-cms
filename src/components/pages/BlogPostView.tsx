@@ -147,6 +147,44 @@ export function BlogPostView({ post, related }: BlogPostViewProps) {
           </div>
         </Reveal>
       ) : null}
+
+      <Reveal as="section" className="v-svc-cta">
+        <div className="v-svc-grid" aria-hidden>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <span className="v-svc-cta-eye">[ LET'S TALK ARCHITECTURE ]</span>
+        <h2>
+          Need engineering leadership
+          <br />
+          <span className="v-svc-cta-blue">on your team?</span>
+        </h2>
+        <div className="v-svc-cta-foot">
+          <p>
+            Whether you need a dedicated development team, an architectural review, or rapid custom software delivery, we build high-performance digital systems tailored to your goals.
+          </p>
+          <div className="v-svc-cta-actions">
+            <Link
+              href="/contact?interest=blog"
+              className="v-svc-btn-primary v-svc-btn-primary-lg"
+              data-analytics-event="cta_click"
+              data-analytics-label="Blog detail footer primary CTA"
+            >
+              <span>Book an engineering consultation</span>
+              <span>-&gt;</span>
+            </Link>
+            <Link
+              href="/portfolio"
+              className="v-svc-btn-ghost"
+              data-analytics-event="cta_click"
+              data-analytics-label="Blog detail footer portfolio CTA"
+            >
+              Explore our work
+            </Link>
+          </div>
+        </div>
+      </Reveal>
     </main>
   );
 }
