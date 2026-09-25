@@ -243,12 +243,12 @@
   "pages": {
     "home": {
       "id": "home",
-      "title": "Faster Tech. Smarter Work. Scaled Results.",
+      "title": "Websites and Business Tools for Growing Businesses",
       "navLabel": "Home",
       "published": true,
       "seo": {
-        "metaTitle": "Vanaila Digital | Web Development, Custom Software & Business Automation",
-        "metaDescription": "Vanaila Digital helps growing companies scale with high-performance websites, custom web applications, ecommerce platforms, and digital tools.",
+        "metaTitle": "Vanaila Digital | Websites, Online Shops & Business Tools for SMEs",
+        "metaDescription": "Vanaila Digital builds websites, online shops, and simple business tools for small and growing businesses. Clear pricing, regular updates, and you own everything.",
         "slug": "",
         "canonical": "",
         "socialImage": "https://placehold.co/1200x630/png",
@@ -270,14 +270,14 @@
           "type": "hero",
           "enabled": true,
           "theme": "light",
-          "badge": "Engineering-First Digital Agency",
-          "titlePrimary": "High-Performance Websites & Custom Software.",
-          "titleAccent": "Built to Scale Your Revenue.",
-          "description": "Vanaila Digital engineers lightning-fast websites, custom business tools, and scalable web applications for ambitious companies. Shipped in weeks, built to perform, with zero technical debt.",
-          "primaryCtaLabel": "Start your project brief",
+          "badge": "Web partner for growing businesses",
+          "titlePrimary": "Your business deserves a website",
+          "titleAccent": "that brings in customers.",
+          "description": "We build websites, online shops, and simple business tools for small and growing companies. You get a clear price up front, regular updates while we work, and a site you fully own.",
+          "primaryCtaLabel": "Tell us about your business",
           "primaryCtaHref": "/contact",
           "primaryCtaStyle": "primary",
-          "secondaryCtaLabel": "Explore 30+ case studies",
+          "secondaryCtaLabel": "See our work",
           "secondaryCtaHref": "/portfolio",
           "secondaryCtaStyle": "secondary"
         },
@@ -290,20 +290,20 @@
             {
               "id": "value-speed",
               "icon": "bolt",
-              "title": "Speed",
-              "text": "Lightning-fast performance that keeps your customers engaged and improves your search rankings."
+              "title": "Fast",
+              "text": "Pages that load quickly on any phone, so visitors stay and search engines can find you."
             },
             {
               "id": "value-simplicity",
               "icon": "check_circle",
-              "title": "Simplicity",
-              "text": "Complex technical problems solved with elegant, easy-to-use interfaces that your team will love."
+              "title": "Simple",
+              "text": "Easy for you and your team to update, with no technical skills needed."
             },
             {
               "id": "value-value",
               "icon": "savings",
-              "title": "Value",
-              "text": "Professional-grade solutions optimized for smart investment, without enterprise pricing."
+              "title": "Fair",
+              "text": "A clear, fixed price agreed before we start. No hidden costs later."
             }
           ]
         },
@@ -312,47 +312,47 @@
           "type": "solutions_grid",
           "enabled": true,
           "theme": "mist",
-          "heading": "Our Solutions",
-          "subheading": "Engineered solutions for modern business infrastructure. We build for performance, scale, and uncompromising quality.",
+          "heading": "How we can help",
+          "subheading": "Start with what your business needs today. We'll help you add more as you grow, without starting over.",
           "items": [
             {
               "id": "solution-01",
               "number": "01",
-              "title": "Professional Business Website",
-              "text": "Clean, fast-loading digital authority. We architect modern websites built to convert and scale.",
-              "ctaLabel": "Brand authority",
+              "title": "Business Website",
+              "text": "A professional site that explains what you do and turns visitors into enquiries.",
+              "ctaLabel": "Best for getting found",
               "ctaHref": "/website-development"
             },
             {
               "id": "solution-02",
               "number": "02",
               "title": "Custom Business Tools",
-              "text": "Bespoke automation systems engineered to streamline internal workflows and reduce operational friction.",
-              "ctaLabel": "Automation",
+              "text": "Replace spreadsheets and manual work with simple tools built around how your team works.",
+              "ctaLabel": "Best for saving time",
               "ctaHref": "/custom-business-tools"
             },
             {
               "id": "solution-03",
               "number": "03",
-              "title": "Secure Online Shops",
-              "text": "Robust commerce systems built for secure payments and performance-driven growth.",
-              "ctaLabel": "Revenue growth",
+              "title": "Online Shop",
+              "text": "Sell your products online with secure payments and an easy way to manage orders.",
+              "ctaLabel": "Best for selling online",
               "ctaHref": "/secure-online-shops"
             },
             {
               "id": "solution-04",
               "number": "04",
-              "title": "Mobile Business App",
-              "text": "Professional iOS and Android experiences with responsive architecture and native-feel interaction.",
-              "ctaLabel": "Custom access",
+              "title": "Mobile App",
+              "text": "An app for iPhone and Android that keeps your customers close.",
+              "ctaLabel": "Best for loyal customers",
               "ctaHref": "/mobile-business-app"
             },
             {
               "id": "solution-05",
               "number": "05",
-              "title": "Official Business Email",
-              "text": "Complete domain and email setup engineered for deliverability and professional trust.",
-              "ctaLabel": "Professionalization",
+              "title": "Business Email",
+              "text": "Email at your own domain, set up properly so your messages land in the inbox.",
+              "ctaLabel": "Best for looking professional",
               "ctaHref": "/official-business-email"
             }
           ]
@@ -362,45 +362,40 @@
           "type": "why_split",
           "enabled": true,
           "theme": "blue-soft",
-          "heading": "Why Vanaila Digital?",
-          "description": "We don't just build software; we build the engine for your future growth. Here's what sets our consultancy apart.",
+          "heading": "Why work with us",
+          "description": "We're a small team, and you'll talk to the people doing the work. There are no hand-offs and no fine print.",
           "bullets": [
             {
               "id": "why-1",
-              "title": "Innovation Focused on ROI",
-              "text": "We prioritize features that drive revenue and efficiency, ensuring your investment pays for itself."
+              "title": "8 years of building for businesses",
+              "text": "Since 2018 we've helped more than 30 businesses get online and work smarter."
             },
             {
               "id": "why-2",
-              "title": "8 Years of Hands-On Expertise",
-              "text": "Benefit from years of refined processes and technical mastery in digital delivery."
+              "title": "One team, start to finish",
+              "text": "The same people plan, design, build, and support your project."
             },
             {
               "id": "why-3",
-              "title": "Your External Technical Partner",
-              "text": "We act as your dedicated CTO extension, so you can focus on running your business."
+              "title": "Clear pricing",
+              "text": "You agree on a fixed price for each stage before any work begins."
             },
             {
               "id": "why-4",
-              "title": "Bespoke Strategy for Every Project",
-              "text": "No cookie-cutter templates. We design every strategy specifically for your unique goals."
-            },
-            {
-              "id": "why-5",
-              "title": "Premium Quality, Best-Price Guarantee",
-              "text": "Top-tier coding standards and design at a price point that makes sense for growing businesses."
+              "title": "Built around your goals",
+              "text": "No copy-paste templates. Every project starts with what your business needs."
             }
           ],
           "mediaImage": "",
           "mediaAlt": "Vanaila digital engineering visual",
-          "subheading": "We combine elite engineering standards with deep commercial focus — delivering software that pays for itself."
+          "subheading": "Practical help from people who care about your business."
         },
         {
           "id": "home-logos",
           "type": "logo_cloud",
           "enabled": true,
           "theme": "light",
-          "heading": "Trusted by Innovators",
+          "heading": "Businesses we've worked with",
           "logos": [
             {
               "id": "logo-1",
@@ -423,9 +418,9 @@
               "name": "Quantum"
             }
           ],
-          "primaryCtaLabel": "View our portfolio",
+          "primaryCtaLabel": "See their projects",
           "primaryCtaHref": "/portfolio",
-          "secondaryCtaLabel": "Discuss your project",
+          "secondaryCtaLabel": "Talk to us about yours",
           "secondaryCtaHref": "/contact"
         },
         {
@@ -433,10 +428,10 @@
           "type": "primary_cta",
           "enabled": true,
           "theme": "blue-soft",
-          "heading": "Ready to Scale?",
-          "accentText": "Partner with an engineering team that builds for compounding growth.",
-          "description": "Tell us what you are building. We will deliver a technical roadmap, realistic timeline, and fixed-scope investment quote within 24 hours.",
-          "ctaLabel": "Claim your free project consultation",
+          "heading": "Ready to grow your business",
+          "accentText": "online?",
+          "description": "Tell us a little about your business. Within 24 hours we'll reply with how we'd help, a price estimate, and a realistic timeline. It's free, with no obligation.",
+          "ctaLabel": "Get your free project plan",
           "ctaHref": "/contact",
           "ctaStyle": "primary"
         }

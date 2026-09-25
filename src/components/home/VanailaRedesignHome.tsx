@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import type { CSSProperties } from 'react';
 
 import type { HeroBlock, LandingPage, PortfolioProject, PrimaryCtaBlock, SolutionsGridBlock, ValueTripletBlock, WhySplitBlock } from '@/features/cms/types';
@@ -9,6 +9,7 @@ import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
 import { useCursorMode } from '@/components/CustomCursor';
 import { Link } from '@/i18n/navigation';
+import { defaultLocale } from '@/i18n/routing';
 
 type VanailaRedesignHomeProps = {
   page: LandingPage;
@@ -17,23 +18,20 @@ type VanailaRedesignHomeProps = {
 
 const serviceAccents = ['#0033FF', '#FF5B22', '#0A0E1A', '#C8E64B', '#2D5FFF'];
 const fallbackClients = ['Greenretech', 'Biliamind', 'Maza Adventure', 'Rumah Psikologi', 'HR Performance'];
-const whyTones = ['ink', 'blue', 'cream', 'lime', 'orange'] as const;
+const whyTones = ['ink', 'blue', 'lime', 'orange'] as const;
+const processSteps = [1, 2, 3, 4] as const;
 
 function findBlock<T extends { type: string }>(page: LandingPage, type: T['type']): T | null {
   return (page.homeBlocks?.find((block) => block.enabled && block.type === type) as T | undefined) ?? null;
 }
 
-function splitHeroTitle(page: LandingPage) {
-  const hero = findBlock<HeroBlock>(page, 'hero');
-  const primary = hero?.titlePrimary || 'Your business online.';
-  const accent = hero?.titleAccent || 'Faster, smarter, and built to scale.';
-  return { hero, primary, accent };
-}
-
 export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps) {
   const { setMode } = useCursorMode();
   const t = useTranslations('home');
-  const { hero } = splitHeroTitle(page);
+  const locale = useLocale();
+  // CMS copy is authored in the default locale only; other locales use translations.
+  const fromCms = (value?: string) => (locale === defaultLocale && value?.trim() ? value : null);
+  const hero = findBlock<HeroBlock>(page, 'hero');
   const values = findBlock<ValueTripletBlock>(page, 'value_triplet');
   const solutions = findBlock<SolutionsGridBlock>(page, 'solutions_grid');
   const why = findBlock<WhySplitBlock>(page, 'why_split');
@@ -63,12 +61,12 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         <div className="v-home-hero-body">
           <div className="v-home-hero-main">
             <h1 className="v-home-hero-title">
-              {t('h1Line1')}
+              {fromCms(hero?.titlePrimary) ?? t('h1Line1')}
               <br />
-              <span>{t('h1Accent')}</span>
+              <span>{fromCms(hero?.titleAccent) ?? t('h1Accent')}</span>
             </h1>
 
-            <p className="v-home-hero-desc">{hero?.description || t('heroDescription')}</p>
+            <p className="v-home-hero-desc">{fromCms(hero?.description) ?? t('heroDescription')}</p>
 
             <div className="v-home-actions">
               <Link
@@ -79,7 +77,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
                 onMouseEnter={() => setMode('link')}
                 onMouseLeave={() => setMode('default')}
               >
-                {hero?.primaryCtaLabel || t('heroPrimaryCta')}
+                {fromCms(hero?.primaryCtaLabel) ?? t('heroPrimaryCta')}
                 <span>-&gt;</span>
               </Link>
               <Link
@@ -90,7 +88,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
                 onMouseEnter={() => setMode('link')}
                 onMouseLeave={() => setMode('default')}
               >
-                {hero?.secondaryCtaLabel || t('heroSecondaryCta')}
+                {fromCms(hero?.secondaryCtaLabel) ?? t('heroSecondaryCta')}
               </Link>
             </div>
 
@@ -141,20 +139,6 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
                   </div>
                   <h3 className="v-home-spotlight-title">{spotlightProject.title}</h3>
                   <p className="v-home-spotlight-summary">{spotlightProject.summary}</p>
-                  <div className="v-home-spotlight-metrics">
-                    <div className="v-home-spotlight-metric">
-                      <strong>⚡ {t('spotlightMetric1Val')}</strong>
-                      <small>{t('spotlightMetric1Lbl')}</small>
-                    </div>
-                    <div className="v-home-spotlight-metric">
-                      <strong>🔒 {t('spotlightMetric2Val')}</strong>
-                      <small>{t('spotlightMetric2Lbl')}</small>
-                    </div>
-                    <div className="v-home-spotlight-metric">
-                      <strong>🚀 {t('spotlightMetric3Val')}</strong>
-                      <small>{t('spotlightMetric3Lbl')}</small>
-                    </div>
-                  </div>
                 </div>
               </Link>
             </div>
@@ -167,6 +151,32 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               <span key={index}>{t('ticker')}</span>
             ))}
           </div>
+        </div>
+      </Reveal>
+
+      {/* ── Logos ── */}
+      <Reveal as="section" className="v-home-logos">
+        <div className="v-home-logos-head">
+          <span>{t('logosEyebrow')}</span>
+          <span>{t('logosSegments')}</span>
+        </div>
+        <Reveal className="v-home-logo-marquee" preset="fadeIn">
+          <div className="v-home-logo-track">
+            {[...clientNames, ...clientNames].map((client, index) => (
+              <span key={`${client}-${index}`}>
+                {client}
+                <i aria-hidden />
+              </span>
+            ))}
+          </div>
+        </Reveal>
+        <div className="v-home-logo-actions">
+          <Link href="/portfolio" data-analytics-event="cta_click" data-analytics-label="Home logos portfolio link">
+            {t('logosPortfolioLink')} -&gt;
+          </Link>
+          <Link href="/contact?interest=website" data-analytics-event="cta_click" data-analytics-label="Home logos contact link">
+            {t('logosTalkLink')} -&gt;
+          </Link>
         </div>
       </Reveal>
 
@@ -199,7 +209,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               {t('servicesHeading')} <i>{t('servicesHeadingAccent')}</i>
             </h2>
           </div>
-          <p>{solutions?.subheading || t('servicesSubheading')}</p>
+          <p>{fromCms(solutions?.subheading) ?? t('servicesSubheading')}</p>
         </div>
         <StaggerGroup className="v-home-service-grid">
           {(solutions?.items ?? []).map((service, index) => (
@@ -286,13 +296,16 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
       {/* ── Why ── */}
       <Reveal as="section" className="v-home-why">
         <div className="v-home-section-head v-home-section-head-split">
-          <span>{t('whyEyebrow')}</span>
-          <h2>
-            {t('whyHeading')} <i>{t('whyHeadingAccent')}</i>
-          </h2>
+          <div>
+            <span>{t('whyEyebrow')}</span>
+            <h2>
+              {t('whyHeading')} <i>{t('whyHeadingAccent')}</i>
+            </h2>
+          </div>
+          <p>{fromCms(why?.description) ?? t('whyBody')}</p>
         </div>
         <StaggerGroup className="v-home-why-grid">
-          {(why?.bullets ?? []).slice(0, 5).map((item, index) => (
+          {(why?.bullets ?? []).slice(0, 4).map((item, index) => (
             <StaggerItem
               as="article"
               className={`v-home-why-card v-home-why-${whyTones[index % whyTones.length]}`}
@@ -307,30 +320,26 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </StaggerGroup>
       </Reveal>
 
-      {/* ── Logos ── */}
-      <Reveal as="section" className="v-home-logos">
-        <div className="v-home-logos-head">
-          <span>{t('logosEyebrow')}</span>
-          <span>{t('logosSegments')}</span>
-        </div>
-        <Reveal className="v-home-logo-marquee" preset="fadeIn">
-          <div className="v-home-logo-track">
-            {[...clientNames, ...clientNames].map((client, index) => (
-              <span key={`${client}-${index}`}>
-                {client}
-                <i aria-hidden />
-              </span>
-            ))}
+      {/* ── Process ── */}
+      <Reveal as="section" className="v-home-process">
+        <div className="v-home-section-head v-home-section-head-split">
+          <div>
+            <span>{t('processEyebrow')}</span>
+            <h2>
+              {t('processHeading')} <i>{t('processHeadingAccent')}</i>
+            </h2>
           </div>
-        </Reveal>
-        <div className="v-home-logo-actions">
-          <Link href="/portfolio" data-analytics-event="cta_click" data-analytics-label="Home logos portfolio link">
-            {t('logosPortfolioLink')} -&gt;
-          </Link>
-          <Link href="/contact?interest=website" data-analytics-event="cta_click" data-analytics-label="Home logos contact link">
-            {t('logosTalkLink')} -&gt;
-          </Link>
+          <p>{t('processBody')}</p>
         </div>
+        <StaggerGroup as="ul" className="v-home-process-grid">
+          {processSteps.map((step) => (
+            <StaggerItem as="li" className="v-home-process-step" key={step}>
+              <span>{String(step).padStart(2, '0')}</span>
+              <h3>{t(`processStep${step}Title`)}</h3>
+              <p>{t(`processStep${step}Text`)}</p>
+            </StaggerItem>
+          ))}
+        </StaggerGroup>
       </Reveal>
 
       {/* ── CTA ── */}
@@ -342,12 +351,12 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
         </div>
         <span className="v-home-cta-eye">{t('ctaEyebrow')}</span>
         <h2>
-          {cta?.heading || t('ctaHeading')}
+          {fromCms(cta?.heading) ?? t('ctaHeading')}
           <br />
-          <span>{cta?.description || t('ctaHeadingAccent')}</span>
+          <span>{fromCms(cta?.accentText) ?? t('ctaHeadingAccent')}</span>
         </h2>
         <div className="v-home-cta-foot">
-          <p>{cta?.accentText || t('ctaAccentText')}</p>
+          <p>{fromCms(cta?.description) ?? t('ctaAccentText')}</p>
           <div className="v-home-cta-actions">
             <Link
               className="v-home-btn v-home-btn-primary v-home-btn-large"
@@ -357,7 +366,7 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              {cta?.ctaLabel || t('ctaButton')}
+              {fromCms(cta?.ctaLabel) ?? t('ctaButton')}
               <span>-&gt;</span>
             </Link>
             <p className="v-home-trust v-home-trust-light">

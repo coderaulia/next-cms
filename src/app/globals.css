@@ -3267,36 +3267,6 @@ button:disabled {
   overflow: hidden;
 }
 
-.v-home-spotlight-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--v-line);
-}
-
-.v-home-spotlight-metric {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.v-home-spotlight-metric strong {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--v-ink);
-  white-space: nowrap;
-}
-
-.v-home-spotlight-metric small {
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--v-muted);
-}
-
 .v-home-hero-foot,
 .v-home-cta-foot {
   position: relative;
@@ -3657,6 +3627,7 @@ button:disabled {
 
 .v-home-work,
 .v-home-why,
+.v-home-process,
 .v-home-cta {
   padding: 120px 48px 100px;
 }
@@ -3789,7 +3760,7 @@ button:disabled {
 
 .v-home-why-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
@@ -3857,6 +3828,48 @@ button:disabled {
   border-left-color: transparent;
   border-radius: 999px;
   opacity: 0.55;
+}
+
+.v-home-process {
+  background: var(--v-paper);
+}
+
+.v-home-process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v-home-process-step {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 28px 0 0;
+  border-top: 1px solid var(--v-line);
+}
+
+.v-home-process-step > span {
+  color: var(--v-blue);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.v-home-process-step h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.v-home-process-step p {
+  margin: 0;
+  color: var(--v-muted);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .v-home-logos {
@@ -3940,7 +3953,8 @@ button:disabled {
 
 @media (max-width: 1180px) {
   .v-home-service-grid,
-  .v-home-why-grid {
+  .v-home-why-grid,
+  .v-home-process-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -3960,6 +3974,7 @@ button:disabled {
   .v-home-services,
   .v-home-work,
   .v-home-why,
+  .v-home-process,
   .v-home-cta {
     padding-right: 24px;
     padding-left: 24px;
@@ -4073,7 +4088,8 @@ button:disabled {
   }
 
   .v-home-service-grid,
-  .v-home-why-grid {
+  .v-home-why-grid,
+  .v-home-process-grid {
     grid-template-columns: 1fr;
   }
 
@@ -4088,11 +4104,6 @@ button:disabled {
 
   .v-home-hero-title {
     font-size: clamp(2.2rem, 9.5vw, 3.2rem);
-  }
-
-  .v-home-spotlight-metrics {
-    grid-template-columns: 1fr;
-    gap: 8px;
   }
 
   .v-home-hero-meta {
