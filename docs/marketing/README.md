@@ -7,8 +7,11 @@ Social media creatives for Vanaila Digital, built as HTML templates and rendered
 | 1 | `output/01-services.png` | Services |
 | 2 | `output/02-notable-projects.png` | Notable projects |
 | 3 | `output/03-products.png` | Products (HRIS, Flowraze, Psikotest) |
+| 4 | `output/04-spreadsheet-signs.png` | Soft-sell: outgrown the spreadsheet |
+| 5 | `output/05-business-email.png` | Soft-sell: business email trust |
+| 6 | `output/06-website-questions.png` | Soft-sell: 3 questions before a website |
 
-Captions: [`captions.md`](./captions.md).
+Captions: [`captions.md`](./captions.md). Services marketing brief: [`services-marketing.md`](./services-marketing.md).
 
 ## Setup
 

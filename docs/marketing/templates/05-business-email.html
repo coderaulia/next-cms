@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css">
+<style>
+.vs{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{border-radius:24px;padding:34px 30px;border:1px solid rgba(255,255,255,.12)}
+.bad{background:rgba(255,255,255,.04)}
+.good{background:linear-gradient(160deg,#2f6dff,#1a47c4);border-color:transparent}
+.addr{font-family:'JetBrains Mono',monospace;font-size:25px;margin-top:18px;word-break:break-all}
+.card ul{list-style:none;margin-top:26px;display:flex;flex-direction:column;gap:14px;font-size:22px;line-height:1.35}
+.bad ul{color:#9fb0cf}
+.k{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.trio{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.trio div{border-top:1px solid rgba(255,255,255,.18);padding-top:16px}
+.trio b{font-family:'JetBrains Mono',monospace;font-size:26px;color:#a3c0ff;font-weight:500}
+.check{margin-top:44px;background:rgba(163,192,255,.1);border:1px solid rgba(163,192,255,.25);border-radius:20px;padding:26px 30px;font-size:22px;line-height:1.45;color:#dbe5ff}
+.check span{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.08em;color:#a3c0ff;text-transform:uppercase;display:block;margin-bottom:8px}
+.trio p{font-size:19px;color:#9fb0cf;margin-top:8px;line-height:1.4}
+</style></head><body>
+<div class="post dark">
+  <div class="glow" style="width:620px;height:620px;background:#2f6dff;right:-280px;bottom:-300px;opacity:.3"></div>
+  <div class="top"><div class="brand"><div class="mark">V</div>vanaila.</div><div class="mono muted">First impressions</div></div>
+  <h1 class="h1" style="margin-top:60px;font-size:80px">Your email address<br>is <span class="serif">already</span> your<br>sales pitch.</h1>
+  <div class="vs">
+    <div class="card bad"><div class="k">Looks like</div><div class="addr">tokobudi.official<br>88@gmail.com</div>
+      <ul><li>✕ Easy to impersonate</li><li>✕ Often lands in spam</li><li>✕ Tied to one person</li></ul></div>
+    <div class="card good"><div class="k">Looks like</div><div class="addr">hello@<br>tokobudi.com</div>
+      <ul><li>✓ Instantly credible</li><li>✓ Better deliverability</li><li>✓ Owned by the company</li></ul></div>
+  </div>
+  <div class="trio">
+    <div><b>SPF</b><p>Tells inboxes which servers may send as you.</p></div>
+    <div><b>DKIM</b><p>Signs every email so it can't be forged.</p></div>
+    <div><b>DMARC</b><p>Blocks look-alike phishing from your domain.</p></div>
+  </div>
+  <div class="check"><span>60-second check</span>Send an email to any Gmail inbox → open it → ⋮ → "Show original". Look for <b>SPF, DKIM and DMARC: PASS</b>.</div>
+  <div class="foot"><div class="mono muted">Small detail. Big trust.</div><div class="mono muted">vanaila.com</div></div>
+</div></body></html>

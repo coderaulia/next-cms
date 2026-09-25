@@ -24,3 +24,4 @@ body{font-family:'Inter Tight',Helvetica,Arial,sans-serif;color:var(--ink);backg
 .dark .foot{border-color:rgba(255,255,255,.14)}
 .cta{background:var(--accent);color:#fff;padding:18px 30px;border-radius:999px;font-weight:600;font-size:24px}
 .glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none}
+.post>*:not(.glow){position:relative;z-index:1}
