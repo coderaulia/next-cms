@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "render": "node scripts/render.mjs",
-    "render:one": "node scripts/render.mjs --only"
+    "render:one": "node scripts/render.mjs --only",
+    "build:services": "node scripts/build-service-posts.mjs",
+    "render:services": "node scripts/build-service-posts.mjs && node scripts/render.mjs --only svc-"
   },
   "devDependencies": {
     "@fontsource/instrument-serif": "^5.3.0",

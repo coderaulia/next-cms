@@ -11,6 +11,8 @@ Social media creatives for Vanaila Digital, built as HTML templates and rendered
 | 5 | `output/05-business-email.png` | Soft-sell: business email trust |
 | 6 | `output/06-website-questions.png` | Soft-sell: 3 questions before a website |
 
+Service series (10 posts, one per offer): `output/svc-*.png`, captions and value propositions by customer type in [`service-series.md`](./service-series.md). Edit `data/services.json`, then run `npm run render:services`.
+
 Captions: [`captions.md`](./captions.md). Services marketing brief: [`services-marketing.md`](./services-marketing.md).
 
 ## Setup
