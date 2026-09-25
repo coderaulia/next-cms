@@ -1,0 +1,26 @@
+@import url('../node_modules/@fontsource/inter-tight/latin-400.css');
+@import url('../node_modules/@fontsource/inter-tight/latin-500.css');
+@import url('../node_modules/@fontsource/inter-tight/latin-600.css');
+@import url('../node_modules/@fontsource/inter-tight/latin-700.css');
+@import url('../node_modules/@fontsource/instrument-serif/latin-400-italic.css');
+@import url('../node_modules/@fontsource/jetbrains-mono/latin-400.css');
+@import url('../node_modules/@fontsource/jetbrains-mono/latin-500.css');
+:root{--bg:#f6f8fc;--ink:#0c1730;--muted:#637391;--line:#d6dfed;--navy:#1a2d4c;--navy-deep:#0e1a30;--accent:#2f6dff;--accent-soft:#a3c0ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1350px;overflow:hidden}
+body{font-family:'Inter Tight',Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+.post{position:relative;width:1080px;height:1350px;padding:64px 72px 56px;display:flex;flex-direction:column}
+.dark{background:var(--navy-deep);color:#fff}
+.mono{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+.top{display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:14px;font-weight:700;font-size:30px;letter-spacing:-.02em}
+.mark{width:48px;height:48px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:26px;font-weight:700}
+.dark .muted{color:#9fb0cf}.muted{color:var(--muted)}
+.h1{font-size:84px;line-height:.98;letter-spacing:-.03em;font-weight:600}
+.h1 .serif{color:var(--accent);font-size:1.08em;letter-spacing:-.01em}
+.dark .h1 .serif{color:var(--accent-soft)}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:28px;border-top:1px solid var(--line)}
+.dark .foot{border-color:rgba(255,255,255,.14)}
+.cta{background:var(--accent);color:#fff;padding:18px 30px;border-radius:999px;font-weight:600;font-size:24px}
+.glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none}
