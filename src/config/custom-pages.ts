@@ -38,18 +38,50 @@ export const customPageRegistry: CustomPageEntry[] = [
   {
     id: 'atelier',
     slug: 'atelier',
-    title: 'Atelier',
-    navLabel: 'Atelier',
+    title: 'Vanaila Studio',
+    navLabel: 'Vanaila Studio',
     seo: {
-      metaTitle: 'Atelier | Premium Creative Studio',
+      metaTitle: 'Vanaila Studio | In-Browser Document & Creator Suite',
       metaDescription:
-        'Atelier is a premium creative studio offering bespoke design services for brands that demand distinction.',
-      socialImage: '',
+        'Documents, CVs, image and PDF conversions, OCR, and social content — all running in your browser with 100% client-side privacy.',
+      socialImage: '/atelier/atelier-home.png',
       noIndex: false,
-      keywords: ['atelier', 'creative studio', 'bespoke design', 'brand design'],
+      keywords: ['vanaila studio', 'atelier', 'browser tools', 'pdf tools', 'client-side ocr', 'document studio', 'cv builder'],
     },
     loadView: () =>
       import('@/components/pages/AtelierPageView').then((m) => m.AtelierPageView),
+  },
+  {
+    id: 'lms',
+    slug: 'lms',
+    title: 'Vanaila LMS',
+    navLabel: 'Vanaila LMS',
+    seo: {
+      metaTitle: 'Vanaila LMS | Online Learning & Academy Platform',
+      metaDescription:
+        'Next-generation LMS for educators, training providers, and corporate academies. Deliver video courses, manage curricula, and award verifiable certificates.',
+      socialImage: '/lms/lms-marketing.png',
+      noIndex: false,
+      keywords: ['vanaila lms', 'learning management system', 'online academy', 'course platform', 'edtech indonesia'],
+    },
+    loadView: () =>
+      import('@/components/pages/LmsPageView').then((m) => m.LmsPageView),
+  },
+  {
+    id: 'muzikplayer',
+    slug: 'muzikplayer',
+    title: 'MuzikPlayer',
+    navLabel: 'MuzikPlayer',
+    seo: {
+      metaTitle: 'MuzikPlayer | Pure Hi-Fi Sound & Libadwaita Slate Design',
+      metaDescription:
+        'A modern desktop music player for local libraries, built with Compose Desktop (Kotlin/JVM). Features bit-perfect PipeWire direct streaming and synchronized lyrics.',
+      socialImage: '/muzikplayer/muzikplayer-hero.png',
+      noIndex: false,
+      keywords: ['muzikplayer', 'linux audio player', 'pipewire direct', 'compose desktop', 'hi-fi music player', 'flac player', 'bit-perfect audio'],
+    },
+    loadView: () =>
+      import('@/components/pages/MuzikPlayerPageView').then((m) => m.MuzikPlayerPageView),
   },
 ];
 

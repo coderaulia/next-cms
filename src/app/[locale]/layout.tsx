@@ -66,10 +66,13 @@ export default async function LocaleLayout({
     href: '#products',
     label: 'Products',
     children: [
+      { href: '/vanailachat', label: 'VanailaChat' },
       { href: '/hris', label: 'Vanaila HRIS' },
       { href: '/psikotest', label: 'Psikotest' },
       { href: '/flowraze', label: 'Flowraze' },
-      { href: '/atelier', label: 'Atelier Studio' }
+      { href: '/atelier', label: 'Vanaila Studio' },
+      { href: '/lms', label: 'Vanaila LMS (Coming Soon)' },
+      { href: '/muzikplayer', label: 'MuzikPlayer' }
     ]
   };
 

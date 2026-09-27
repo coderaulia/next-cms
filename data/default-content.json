@@ -106,9 +106,21 @@
           "label": "Portfolio",
           "href": "/portfolio",
           "enabled": true
+        },
+        {
+          "id": "footer-nav-products",
+          "label": "Products",
+          "href": "/products",
+          "enabled": true
         }
       ],
       "footerServiceLinks": [
+        {
+          "id": "footer-service-vanailachat",
+          "label": "VanailaChat",
+          "href": "/vanailachat",
+          "enabled": true
+        },
         {
           "id": "footer-service-hris",
           "label": "Vanaila HRIS",
@@ -116,9 +128,45 @@
           "enabled": true
         },
         {
+          "id": "footer-service-psikotest",
+          "label": "Psikotest",
+          "href": "/psikotest",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-flowraze",
+          "label": "Flowraze CRM",
+          "href": "/flowraze",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-atelier",
+          "label": "Vanaila Studio",
+          "href": "/atelier",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-lms",
+          "label": "Vanaila LMS",
+          "href": "/lms",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-muzikplayer",
+          "label": "MuzikPlayer",
+          "href": "/muzikplayer",
+          "enabled": true
+        },
+        {
           "id": "footer-service-web",
           "label": "Website Development",
           "href": "/website-development",
+          "enabled": true
+        },
+        {
+          "id": "footer-service-templates",
+          "label": "Templates",
+          "href": "/templates",
           "enabled": true
         },
         {
@@ -2538,44 +2586,272 @@
   ],
   "portfolioProjects": [
     {
-      "id": "portfolio-assessment-app",
-      "title": "Assessment App",
-      "summary": "Custom psychological assessment and data-collection web platform built for specialized researchers, processing structured evaluations with automated scoring and rigorous data integrity.",
-      "challenge": "The research team required a secure, intuitive platform to administer multi-dimensional psychological assessments, capture participant responses at scale, and eliminate error-prone manual spreadsheets.",
-      "solution": "We architected a responsive web application with guided evaluation flows, automated rubric scoring, and an administrative reporting dashboard tailored for non-technical researchers.",
-      "outcome": "Successfully deployed across multi-year research initiatives, processing over 5,000 participant assessments with 100% data integrity, zero downtime, and instant analytical exports.",
-      "clientName": "Assessment App",
+      "id": "portfolio-vanaila-psikotest",
+      "title": "Vanaila Psikotest",
+      "summary": "The complete psychometric hiring and talent assessment platform featuring automated rubric scoring, validated test instruments (DISC, IQ, Big 5), and institutional reporting.",
+      "challenge": "Organizations and psychologists needed an automated, tamper-proof testing platform to deliver multi-dimensional psychological assessments at scale without paper workflows.",
+      "solution": "We architected a secure assessment infrastructure with guided candidate evaluation flows, instant rubric scoring, fraud prevention mechanisms, and enterprise analytics dashboards.",
+      "outcome": "Successfully deployed across multi-year assessment initiatives, delivering sub-second test report generation, 100% data integrity, and institutional compliance.",
+      "clientName": "Vanaila Psikotest",
       "serviceType": "Custom Web App",
-      "industry": "Psychology Research",
-      "projectUrl": "/custom-business-tools",
+      "industry": "Psychometric Testing & HR",
+      "projectUrl": "/psikotest",
       "relatedServicePageIds": [
         "service-custom-business-tools"
       ],
-      "coverImage": "/portfolio/assessment-app.jpg",
+      "coverImage": "/psikotest/psikotest-saas.png",
       "gallery": [
-        "/portfolio/assessment-app.jpg"
+        "/psikotest/psikotest-saas.png",
+        "/psikotest/dashboard-assessment.png"
       ],
       "tags": [
-        "Custom App",
-        "Research",
-        "Psychology"
+        "SaaS",
+        "Psychology",
+        "Assessment",
+        "Custom App"
       ],
-      "featured": false,
+      "featured": true,
+      "status": "published",
+      "sortOrder": 1,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-09-27T12:00:00.000Z",
+      "seo": {
+        "metaTitle": "Vanaila Psikotest Case Study | Psychometric Assessment Platform",
+        "metaDescription": "Case study of Vanaila Psikotest, an automated psychometric talent assessment platform built for reliable hiring evaluations and academic research.",
+        "slug": "vanaila-psikotest",
+        "canonical": "",
+        "socialImage": "/psikotest/psikotest-saas.png",
+        "noIndex": false,
+        "keywords": [
+          "vanaila psikotest",
+          "assessment platform",
+          "psychometric testing",
+          "hr assessment software",
+          "custom web app"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-maza-adventure",
+      "title": "Maza Adventure",
+      "summary": "Company profile website for an event and tour organizer, featuring outdoor programs, travel packages, and a more energetic visual direction.",
+      "challenge": "The brand needed a modern web presence that could showcase experiences, build trust quickly, and make the core programs easier to understand online.",
+      "solution": "We built a tourism-focused company profile website with hero storytelling, program highlights, and clearer pathways for potential customers to explore activities.",
+      "outcome": "Maza Adventure gained a stronger promotional website that presents its event and tour services with more confidence and clearer conversion paths.",
+      "clientName": "Maza Adventure",
+      "serviceType": "Website Development",
+      "industry": "Tourism & Events",
+      "projectUrl": "/website-development",
+      "relatedServicePageIds": [
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/maza.jpg",
+      "gallery": [
+        "/portfolio/maza.jpg"
+      ],
+      "tags": [
+        "Tourism",
+        "Events",
+        "Website"
+      ],
+      "featured": true,
       "status": "published",
       "sortOrder": 2,
       "publishedAt": "2026-05-16T05:25:39.095Z",
       "updatedAt": "2026-05-16T05:25:39.095Z",
       "seo": {
-        "metaTitle": "Assessment App Case Study | Research Data Collection Web App",
-        "metaDescription": "Case study of a custom assessment web app built to help psychologists collect structured research data more efficiently.",
-        "slug": "assessment-app",
+        "metaTitle": "Maza Adventure Case Study | Tour Organizer Website",
+        "metaDescription": "Website case study for Maza Adventure, built to present event and tour programs with clearer storytelling and conversion-focused structure.",
+        "slug": "maza-adventure",
         "canonical": "",
-        "socialImage": "/portfolio/assessment-app.jpg",
+        "socialImage": "/portfolio/maza.jpg",
         "noIndex": false,
         "keywords": [
-          "assessment web app",
-          "research data collection",
-          "psychology app",
+          "tour website",
+          "event organizer website",
+          "travel company profile",
+          "website development"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-bdo-clth",
+      "title": "BDO.CLTH",
+      "summary": "High-energy streetwear ecommerce storefront with bold typography, smooth horizontal product strips, dynamic cart interactions, and high-conversion checkout for local fashion drops.",
+      "challenge": "The Bandung streetwear label required an online storefront that captured their bold brand identity, handled mobile-first shoppers during limited release drops, and eliminated checkout friction without heavy ecommerce bloat.",
+      "solution": "We engineered a performance-focused storefront featuring fluid horizontal product strips, high-contrast aesthetics, optimized mobile touch interactions, and frictionless checkout pathways.",
+      "outcome": "Delivered an ultra-fast ecommerce storefront with sub-second page loads, distinctive streetwear positioning, 99+ Core Web Vitals score, and an engaging mobile drop experience.",
+      "clientName": "BDO.CLTH",
+      "serviceType": "Online Shop Development",
+      "industry": "Streetwear & Fashion",
+      "projectUrl": "/templates/bdo-clth",
+      "relatedServicePageIds": [
+        "service-secure-online-shops"
+      ],
+      "coverImage": "/templates-static/previews/bdo-clth.jpg",
+      "gallery": [
+        "/templates-static/previews/bdo-clth.jpg"
+      ],
+      "tags": [
+        "Online Shop",
+        "Ecommerce",
+        "Streetwear",
+        "Fashion"
+      ],
+      "featured": true,
+      "status": "published",
+      "sortOrder": 3,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "BDO.CLTH Case Study | Online Shop Development",
+        "metaDescription": "Case study of BDO.CLTH streetwear ecommerce store — high-contrast design, fluid product strips, and conversion-optimized checkout for apparel drops.",
+        "slug": "bdo-clth",
+        "canonical": "https://vanaila.com/templates/bdo-clth",
+        "socialImage": "/templates-static/previews/bdo-clth.jpg",
+        "noIndex": false,
+        "keywords": [
+          "online shop development",
+          "streetwear ecommerce",
+          "ecommerce website",
+          "bdo clth",
+          "clothing store"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-greenretech",
+      "title": "Greenretech",
+      "summary": "WooCommerce website created to sell wood pellet products to international buyers with a cleaner product showcase and export-oriented positioning.",
+      "challenge": "The business needed a professional ecommerce presence that could communicate product credibility, showcase catalog information, and support international buying interest.",
+      "solution": "We built a WooCommerce-based storefront with product sections, trust messaging, and a global-friendly presentation tailored to industrial export customers.",
+      "outcome": "Greenretech gained a more credible ecommerce channel for premium wood pellet sales and a stronger digital presentation for international inquiries.",
+      "clientName": "Greenretech",
+      "serviceType": "Secure Online Shops",
+      "industry": "Energy Export",
+      "projectUrl": "/secure-online-shops",
+      "relatedServicePageIds": [
+        "service-secure-online-shops"
+      ],
+      "coverImage": "/portfolio/Greenretech.jpg",
+      "gallery": [
+        "/portfolio/Greenretech.jpg"
+      ],
+      "tags": [
+        "WooCommerce",
+        "Ecommerce",
+        "Export"
+      ],
+      "featured": true,
+      "status": "published",
+      "sortOrder": 4,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "Greenretech Case Study | WooCommerce Export Website",
+        "metaDescription": "WooCommerce case study for Greenretech, built to sell wood pellet products for international customers with a professional ecommerce experience.",
+        "slug": "greenretech",
+        "canonical": "",
+        "socialImage": "/portfolio/Greenretech.jpg",
+        "noIndex": false,
+        "keywords": [
+          "woocommerce website",
+          "export ecommerce",
+          "wood pellet website",
+          "online shop"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-vanailachat",
+      "title": "VanailaChat",
+      "summary": "Privacy-first AI workstation and native Linux desktop client empowering developers to chat, research, write code, and run swappable coding harnesses locally with Ollama and cloud LLMs.",
+      "challenge": "Developers, engineers, and privacy-conscious organizations increasingly need modern AI coding assistance and conversational workspaces without leaking intellectual property, incurring runaway monthly cloud fees, or being trapped in proprietary walled gardens.",
+      "solution": "Architected a dual-target AI workstation using Tauri 2.0, Rust, and React 19 featuring swappable Pi and DeepSeek coding harnesses with real-time diff review and command feeds, persistent vector embeddings (nomic-embed-text) in local SQLite WAL storage, universal provider routing (Ollama, OpenRouter, 9Router, OpenAI), and native Linux packaging (.deb, .rpm, .AppImage, AUR).",
+      "outcome": "Shipped a high-performance, 100% open-source desktop and web client for the Indonesian and global developer community with 240+ automated Vitest tests, zero corporate telemetry, instant multi-workspace switching, and one-click safety branching.",
+      "clientName": "Vanaila Open Source / Indonesian AI Community",
+      "serviceType": "Desktop & AI Workstation",
+      "industry": "Artificial Intelligence & Developer Tooling",
+      "projectUrl": "/vanailachat",
+      "relatedServicePageIds": [
+        "service-custom-business-tools",
+        "service-website-development"
+      ],
+      "coverImage": "/portfolio/vanailachat-hero.png",
+      "gallery": [
+        "/portfolio/vanailachat-hero.png",
+        "/portfolio/vanailachat-workspaces.png",
+        "/portfolio/vanailachat-chat.png"
+      ],
+      "tags": [
+        "AI Workstation",
+        "Desktop App",
+        "Rust",
+        "Tauri 2.0",
+        "Local AI",
+        "Open Source"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 5,
+      "publishedAt": "2026-09-27T12:00:00.000Z",
+      "updatedAt": "2026-09-27T12:00:00.000Z",
+      "seo": {
+        "metaTitle": "VanailaChat Case Study | Privacy-First AI Workstation & Desktop Client",
+        "metaDescription": "Case study of VanailaChat: a privacy-first AI desktop workstation engineered with Rust, Tauri 2.0, and React 19 with local Ollama models and swappable coding harnesses.",
+        "slug": "vanailachat",
+        "canonical": "",
+        "socialImage": "/portfolio/vanailachat-hero.png",
+        "noIndex": false,
+        "keywords": [
+          "vanailachat",
+          "ai workstation",
+          "local llm",
+          "ollama desktop client",
+          "tauri 2.0",
+          "rust ai client"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-hr-performance",
+      "title": "HR Performance",
+      "summary": "Custom HR performance suite for KPI management, analytics dashboards, employee performance tracking, and training need analysis.",
+      "challenge": "The organization needed a centralized internal system to manage KPI measurement, reporting visibility, and competency tracking across teams.",
+      "solution": "We developed a custom web application with performance dashboards, KPI management modules, records, and role-based operational views for HR workflows.",
+      "outcome": "HR teams received a dedicated internal platform to monitor performance and training priorities with clearer reporting and operational consistency.",
+      "clientName": "HR Performance",
+      "serviceType": "Custom Web App",
+      "industry": "Human Resources",
+      "projectUrl": "/custom-business-tools",
+      "relatedServicePageIds": [
+        "service-custom-business-tools"
+      ],
+      "coverImage": "/portfolio/hr-performance-cover.svg",
+      "gallery": [
+        "/portfolio/hr-performance-cover.svg"
+      ],
+      "tags": [
+        "HR System",
+        "Analytics",
+        "Custom App"
+      ],
+      "featured": false,
+      "status": "published",
+      "sortOrder": 6,
+      "publishedAt": "2026-05-16T05:25:39.095Z",
+      "updatedAt": "2026-05-16T05:25:39.095Z",
+      "seo": {
+        "metaTitle": "HR Performance Case Study | KPI and HR Analytics System",
+        "metaDescription": "Custom HR system case study covering KPI management, analytics dashboards, employee performance monitoring, and training need analysis.",
+        "slug": "hr-performance",
+        "canonical": "",
+        "socialImage": "/portfolio/hr-performance-cover.svg",
+        "noIndex": false,
+        "keywords": [
+          "hr system",
+          "kpi dashboard",
+          "performance management",
           "custom web app"
         ]
       }
@@ -2605,7 +2881,7 @@
       ],
       "featured": false,
       "status": "published",
-      "sortOrder": 3,
+      "sortOrder": 7,
       "publishedAt": "2026-05-16T05:25:39.095Z",
       "updatedAt": "2026-05-16T05:25:39.095Z",
       "seo": {
@@ -2620,92 +2896,6 @@
           "education website",
           "course platform",
           "website development"
-        ]
-      }
-    },
-    {
-      "id": "portfolio-greenretech",
-      "title": "Greenretech",
-      "summary": "WooCommerce website created to sell wood pellet products to international buyers with a cleaner product showcase and export-oriented positioning.",
-      "challenge": "The business needed a professional ecommerce presence that could communicate product credibility, showcase catalog information, and support international buying interest.",
-      "solution": "We built a WooCommerce-based storefront with product sections, trust messaging, and a global-friendly presentation tailored to industrial export customers.",
-      "outcome": "Greenretech gained a more credible ecommerce channel for premium wood pellet sales and a stronger digital presentation for international inquiries.",
-      "clientName": "Greenretech",
-      "serviceType": "Secure Online Shops",
-      "industry": "Energy Export",
-      "projectUrl": "/secure-online-shops",
-      "relatedServicePageIds": [
-        "service-secure-online-shops"
-      ],
-      "coverImage": "/portfolio/Greenretech.jpg",
-      "gallery": [
-        "/portfolio/Greenretech.jpg"
-      ],
-      "tags": [
-        "WooCommerce",
-        "Ecommerce",
-        "Export"
-      ],
-      "featured": false,
-      "status": "published",
-      "sortOrder": 4,
-      "publishedAt": "2026-05-16T05:25:39.095Z",
-      "updatedAt": "2026-05-16T05:25:39.095Z",
-      "seo": {
-        "metaTitle": "Greenretech Case Study | WooCommerce Export Website",
-        "metaDescription": "WooCommerce case study for Greenretech, built to sell wood pellet products for international customers with a professional ecommerce experience.",
-        "slug": "greenretech",
-        "canonical": "",
-        "socialImage": "/portfolio/Greenretech.jpg",
-        "noIndex": false,
-        "keywords": [
-          "woocommerce website",
-          "export ecommerce",
-          "wood pellet website",
-          "online shop"
-        ]
-      }
-    },
-    {
-      "id": "portfolio-hr-performance",
-      "title": "HR Performance",
-      "summary": "Custom HR performance suite for KPI management, analytics dashboards, employee performance tracking, and training need analysis.",
-      "challenge": "The organization needed a centralized internal system to manage KPI measurement, reporting visibility, and competency tracking across teams.",
-      "solution": "We developed a custom web application with performance dashboards, KPI management modules, records, and role-based operational views for HR workflows.",
-      "outcome": "HR teams received a dedicated internal platform to monitor performance and training priorities with clearer reporting and operational consistency.",
-      "clientName": "HR Performance",
-      "serviceType": "Custom Web App",
-      "industry": "Human Resources",
-      "projectUrl": "/custom-business-tools",
-      "relatedServicePageIds": [
-        "service-custom-business-tools"
-      ],
-      "coverImage": "/portfolio/hr-performance-cover.svg",
-      "gallery": [
-        "/portfolio/hr-performance-cover.svg"
-      ],
-      "tags": [
-        "HR System",
-        "Analytics",
-        "Custom App"
-      ],
-      "featured": true,
-      "status": "published",
-      "sortOrder": 1,
-      "publishedAt": "2026-05-16T05:25:39.095Z",
-      "updatedAt": "2026-05-16T05:25:39.095Z",
-      "seo": {
-        "metaTitle": "HR Performance Case Study | KPI and HR Analytics System",
-        "metaDescription": "Custom HR system case study covering KPI management, analytics dashboards, employee performance monitoring, and training need analysis.",
-        "slug": "hr-performance",
-        "canonical": "",
-        "socialImage": "/portfolio/hr-performance-cover.svg",
-        "noIndex": false,
-        "keywords": [
-          "hr system",
-          "kpi dashboard",
-          "performance management",
-          "custom web app"
         ]
       }
     },
@@ -2734,7 +2924,7 @@
       ],
       "featured": false,
       "status": "published",
-      "sortOrder": 5,
+      "sortOrder": 8,
       "publishedAt": "2026-05-16T05:25:39.095Z",
       "updatedAt": "2026-05-16T05:25:39.095Z",
       "seo": {
@@ -2748,49 +2938,6 @@
           "company profile website",
           "manufacturing website",
           "corporate website",
-          "website development"
-        ]
-      }
-    },
-    {
-      "id": "portfolio-maza-adventure",
-      "title": "Maza Adventure",
-      "summary": "Company profile website for an event and tour organizer, featuring outdoor programs, travel packages, and a more energetic visual direction.",
-      "challenge": "The brand needed a modern web presence that could showcase experiences, build trust quickly, and make the core programs easier to understand online.",
-      "solution": "We built a tourism-focused company profile website with hero storytelling, program highlights, and clearer pathways for potential customers to explore activities.",
-      "outcome": "Maza Adventure gained a stronger promotional website that presents its event and tour services with more confidence and clearer conversion paths.",
-      "clientName": "Maza Adventure",
-      "serviceType": "Website Development",
-      "industry": "Tourism & Events",
-      "projectUrl": "/website-development",
-      "relatedServicePageIds": [
-        "service-website-development"
-      ],
-      "coverImage": "/portfolio/maza.jpg",
-      "gallery": [
-        "/portfolio/maza.jpg"
-      ],
-      "tags": [
-        "Tourism",
-        "Events",
-        "Website"
-      ],
-      "featured": false,
-      "status": "published",
-      "sortOrder": 6,
-      "publishedAt": "2026-05-16T05:25:39.095Z",
-      "updatedAt": "2026-05-16T05:25:39.095Z",
-      "seo": {
-        "metaTitle": "Maza Adventure Case Study | Tour Organizer Website",
-        "metaDescription": "Website case study for Maza Adventure, built to present event and tour programs with clearer storytelling and conversion-focused structure.",
-        "slug": "maza-adventure",
-        "canonical": "",
-        "socialImage": "/portfolio/maza.jpg",
-        "noIndex": false,
-        "keywords": [
-          "tour website",
-          "event organizer website",
-          "travel company profile",
           "website development"
         ]
       }
@@ -2820,7 +2967,7 @@
       ],
       "featured": false,
       "status": "published",
-      "sortOrder": 7,
+      "sortOrder": 9,
       "publishedAt": "2026-05-16T05:25:39.095Z",
       "updatedAt": "2026-05-16T05:25:39.095Z",
       "seo": {

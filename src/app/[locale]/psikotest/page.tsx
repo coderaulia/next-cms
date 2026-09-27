@@ -3,13 +3,13 @@ import type { Metadata } from 'next';
 import { PsikotestPageView } from '@/components/pages/PsikotestPageView';
 
 export const metadata: Metadata = {
-  title: 'Psikotest — Assessment Delivery, Scoring & Interpretation',
+  title: 'Psikotest — The Complete Psychometric Hiring & Talent Assessment Platform',
   description:
-    'Online assessment infrastructure for HR teams and licensed psychologists. Run DISC, IQ, Big 5, Workload, and custom assessments with bilingual delivery and reviewer-written interpretations.',
+    'Deploy 21 pre-built psychometric tests (DISC, IQ, Kraepelin) or import custom CSV instruments. Screen candidates on an interactive ATS Kanban pipeline, save 80% on admin time, and generate SIPP-compliant branded PDF reports.',
   openGraph: {
-    title: 'Psikotest — Assessment Delivery, Scoring & Interpretation',
+    title: 'Psikotest — The Complete Psychometric Hiring & Talent Assessment Platform',
     description:
-      'Online assessment infrastructure for HR teams and licensed psychologists. Run DISC, IQ, Big 5, Workload, and custom assessments with bilingual delivery and reviewer-written interpretations.',
+      'Deploy 21 pre-built psychometric tests (DISC, IQ, Kraepelin) or import custom CSV instruments. Screen candidates on an interactive ATS Kanban pipeline, save 80% on admin time, and generate SIPP-compliant branded PDF reports.',
   },
 };
 

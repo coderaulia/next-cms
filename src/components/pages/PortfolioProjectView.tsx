@@ -70,13 +70,13 @@ export function PortfolioProjectView({ project, related, relatedServiceLink = nu
                 View {relatedServiceLink.label}
               </Link>
             ) : null}
-            {project.projectUrl && (!relatedServiceLink || !project.projectUrl.startsWith('/')) ? (
+            {project.projectUrl && (!relatedServiceLink || project.projectUrl !== relatedServiceLink.href) ? (
               <Link
                 href={project.projectUrl}
                 className="v2-btn v2-btn-secondary"
                 {...(project.projectUrl.startsWith('/') ? {} : { target: '_blank', rel: 'noreferrer' })}
               >
-                {project.projectUrl.startsWith('/') ? 'Open Project Link' : 'Visit Project'}
+                {project.projectUrl.includes('/templates/') ? 'View Live Template' : project.projectUrl.startsWith('/') ? 'Open Project Link' : 'Visit Project'}
               </Link>
             ) : null}
           </article>

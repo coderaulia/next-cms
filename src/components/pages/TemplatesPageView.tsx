@@ -188,7 +188,7 @@ export function TemplatesPageView({ templates }: TemplatesPageViewProps) {
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              About Atelier
+              Vanaila Studio
             </Link>
           </div>
         </div>

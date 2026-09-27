@@ -16,7 +16,7 @@ type VanailaRedesignHomeProps = {
 };
 
 const serviceAccents = ['#0033FF', '#FF5B22', '#0A0E1A', '#C8E64B', '#2D5FFF'];
-const fallbackClients = ['Greenretech', 'Biliamind', 'Maza Adventure', 'Rumah Psikologi', 'HR Performance'];
+const fallbackClients = ['Vanaila Psikotest', 'Maza Adventure', 'BDO.CLTH', 'Greenretech', 'VanailaChat', 'HR Performance'];
 const whyTones = ['ink', 'blue', 'cream', 'lime', 'orange'] as const;
 
 function findBlock<T extends { type: string }>(page: LandingPage, type: T['type']): T | null {
@@ -30,6 +30,24 @@ function splitHeroTitle(page: LandingPage) {
   return { hero, primary, accent };
 }
 
+const TOP_FEATURED_ORDER = [
+  'vanaila-psikotest',
+  'maza-adventure',
+  'bdo-clth',
+  'greenretech',
+];
+
+function getProjectRank(project: PortfolioProject): number {
+  const slug = (project.seo?.slug || '').toLowerCase();
+  const title = (project.title || '').toLowerCase();
+  const id = (project.id || '').toLowerCase();
+
+  const idx = TOP_FEATURED_ORDER.findIndex(
+    (key) => slug.includes(key) || title.includes(key.replace('-', ' ')) || id.includes(key)
+  );
+  return idx !== -1 ? idx : 999;
+}
+
 export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps) {
   const { setMode } = useCursorMode();
   const t = useTranslations('home');
@@ -38,11 +56,22 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
   const solutions = findBlock<SolutionsGridBlock>(page, 'solutions_grid');
   const why = findBlock<WhySplitBlock>(page, 'why_split');
   const cta = findBlock<PrimaryCtaBlock>(page, 'primary_cta');
-  const featuredProjects = projects.slice(0, 4);
-  const spotlightProject = projects.find((project) => project.featured) || projects[0] || null;
+
+  const sortedProjects = [...projects].sort((a, b) => {
+    const rankA = getProjectRank(a);
+    const rankB = getProjectRank(b);
+    if (rankA !== rankB) return rankA - rankB;
+
+    if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
+    if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+    return a.updatedAt < b.updatedAt ? 1 : -1;
+  });
+
+  const featuredProjects = sortedProjects.slice(0, 4);
+  const spotlightProject = sortedProjects.find((project) => project.featured) || sortedProjects[0] || null;
   const clientNames =
-    projects.length > 0
-      ? projects.slice(0, 8).map((project) => project.clientName || project.title)
+    sortedProjects.length > 0
+      ? sortedProjects.slice(0, 8).map((project) => project.clientName || project.title)
       : fallbackClients;
 
   return (

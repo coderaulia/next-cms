@@ -9,17 +9,17 @@ import { useCursorMode } from '@/components/CustomCursor';
 const products = [
   {
     n: 'PRODUCT 01',
-    pill: 'Assessment',
+    pill: 'Assessment & Hiring',
     name: 'Psikotest',
     tagline: (
       <>
-        Assessment delivery, scoring, and <em>interpretation</em> — in one workspace.
+        The Complete <em>Psychometric Hiring</em> &amp; Talent Assessment Platform.
       </>
     ),
-    desc: 'The assessment infrastructure your HR team and licensed psychologists actually want to use. Invite by link, run DISC · IQ · Big 5 · Workload · Custom, and release reports with reviewer-written interpretation.',
-    features: ['DISC', 'IQ', 'Big 5', 'Workload', 'Custom', 'Live Quiz', 'Bilingual', 'PDF Export'],
-    img: '/psikotest/dashboard-assessment.png',
-    shotLabel: 'WORKSPACE',
+    desc: 'Deploy 21 pre-built psychometric tests (DISC, IQ, Kraepelin) or import your proprietary instruments via CSV. Screen candidates on an interactive ATS Kanban pipeline, save 80% on admin time, and generate SIPP-compliant branded PDF reports automatically.',
+    features: ['21 Instruments & CSV', 'ATS Kanban Pipeline', 'Multi-Test Batteries', 'SIPP Psychologist Sign-Off', 'DISC', 'IQ Screening', 'Live Quizzes', 'White-label'],
+    img: '/psikotest/psikotest-saas.png',
+    shotLabel: 'HIRING PIPELINE',
     tone: 'blue',
     dotColor: '#C8E64B',
     href: '/psikotest',
@@ -60,6 +60,78 @@ const products = [
     dotColor: '#FF5B22',
     href: '/flowraze',
     cta: 'Explore Flowraze',
+  },
+  {
+    n: 'PRODUCT 04',
+    pill: 'Browser Studio',
+    name: 'Vanaila Studio',
+    tagline: (
+      <>
+        One tab. Every <em>creative &amp; document tool</em> you actually use.
+      </>
+    ),
+    desc: '18 in-browser utilities including Document Studio, CV & Resume Builder, Social Content Generator, Client-Side PDF Merge, and WASM OCR. Zero server uploads, zero accounts needed, 100% client-side privacy.',
+    features: ['Document Studio', 'ATS Resume Builder', 'Social Content', 'PDF Merge & Split', 'PDF to Image', 'WASM OCR', 'Zero Server Uploads'],
+    img: '/atelier/atelier-home.png',
+    shotLabel: 'CREATOR SUITE',
+    tone: 'orange',
+    dotColor: '#C8581A',
+    href: '/atelier',
+    cta: 'Explore Vanaila Studio',
+  },
+  {
+    n: 'PRODUCT 05',
+    pill: 'Online Learning · Coming Soon',
+    name: 'Vanaila LMS',
+    tagline: (
+      <>
+        Learn skills that open doors — <em>managed in one unified LMS</em>.
+      </>
+    ),
+    desc: 'Complete learning management system for academies, corporate training, and online educators. Feature-packed course catalog, video lesson player, curriculum builder, quiz engine, and automated verifiable certificates.',
+    features: ['Course Catalog', 'Curriculum Authoring', 'Video Lessons', 'Quiz Engine', 'Automated Certs', 'Multi-Tenant', 'Indonesian Gateways'],
+    img: '/lms/lms-marketing.png',
+    shotLabel: 'LMS PLATFORM',
+    tone: 'blue',
+    dotColor: '#06B6D4',
+    href: '/lms',
+    cta: 'Explore Vanaila LMS (Coming Soon)',
+  },
+  {
+    n: 'PRODUCT 06',
+    pill: 'Desktop Audio',
+    name: 'MuzikPlayer',
+    tagline: (
+      <>
+        Pure Hi-Fi sound, <em>Libadwaita Slate design</em> — for Linux audiophiles.
+      </>
+    ),
+    desc: 'A modern desktop music player for local libraries, built with Compose Desktop (Kotlin/JVM). Features bit-perfect PipeWire direct streaming, LRC synchronized lyrics, peak waveform rendering, and instant library navigation.',
+    features: ['PipeWire Direct', '1:1 Bit-Perfect', 'LRC Lyrics', 'Waveform Cache', 'FLAC / ALAC / DSD', 'Compose Desktop', 'MPRIS', 'ListenBrainz'],
+    img: '/muzikplayer/muzikplayer-hero.png',
+    shotLabel: 'AUDIO ENGINE',
+    tone: 'slate',
+    dotColor: '#00E5FF',
+    href: '/muzikplayer',
+    cta: 'Explore MuzikPlayer',
+  },
+  {
+    n: 'PRODUCT 07',
+    pill: 'AI Workstation',
+    name: 'VanailaChat',
+    tagline: (
+      <>
+        Privacy-first AI workspace &amp; native desktop client for <em>local and cloud LLMs</em>.
+      </>
+    ),
+    desc: 'Brings ChatGPT, Claude, and GitHub Copilot directly into your local machine and web workstation with zero telemetry. 100% offline with Ollama, swappable Pi and DeepSeek live coding harnesses, persistent vector memory, and native Linux desktop support.',
+    features: ['100% Free & Local AI', 'Pi & DeepSeek Coding Harnesses', 'Native Linux Edition', 'Zero Telemetry & Local SQLite', 'Multi-Model Cloud', 'Persistent Memory'],
+    img: '/vanailachat/hero-mockup.png',
+    shotLabel: 'AI WORKSTATION',
+    tone: 'blue',
+    dotColor: '#0033FF',
+    href: '/vanailachat',
+    cta: 'Explore VanailaChat',
   },
 ];
 
@@ -141,7 +213,7 @@ export function ProductsPageView() {
         <div className="prods-hero-meta">
           <span>[ PRODUCTS ]</span>
           <span>MULTI-TENANT · ENGINEERED · INDONESIA-FIRST</span>
-          <span className="prods-hero-status">● 3 PRODUCTS LIVE</span>
+          <span className="prods-hero-status">● 6 PRODUCTS LIVE · 1 COMING SOON</span>
         </div>
         <h1 className="prods-hero-h1">
           Software that
@@ -152,18 +224,18 @@ export function ProductsPageView() {
         </h1>
         <div className="prods-hero-foot">
           <p>
-            Three products, one engineering bar. Each one built to solve a specific operational
-            problem for growing Indonesian businesses — assessment delivery, performance management,
-            and revenue growth.
+            Dedicated software platforms and creative utilities, one engineering bar. Built to solve
+            specific operational bottlenecks or empower creative workflows — psychometric assessments,
+            workforce management, revenue CRM, in-browser document tools, online learning academies, and privacy-first AI.
           </p>
           <div className="prods-hero-counts">
             <div className="prods-hero-count">
-              <span className="prods-hero-count-n">3</span>
+              <span className="prods-hero-count-n">6</span>
               <span className="prods-hero-count-label">Live products</span>
             </div>
             <div className="prods-hero-count">
-              <span className="prods-hero-count-n">2+</span>
-              <span className="prods-hero-count-label">In development</span>
+              <span className="prods-hero-count-n">1</span>
+              <span className="prods-hero-count-label">Coming soon</span>
             </div>
           </div>
         </div>
@@ -171,9 +243,8 @@ export function ProductsPageView() {
           <div className="prods-ticker-track">
             {Array.from({ length: 4 }).map((_, i) => (
               <span key={i}>
-                PSIKOTEST &nbsp;◆&nbsp; HR SUITE &nbsp;◆&nbsp; FLOWRAZE &nbsp;◆&nbsp; ASSESSMENT
-                &nbsp;◆&nbsp; PERFORMANCE &nbsp;◆&nbsp; CRM &nbsp;◆&nbsp; MULTI-TENANT &nbsp;◆&nbsp;
-                ENGINEERED &nbsp;◆&nbsp;
+                PSIKOTEST &nbsp;◆&nbsp; HR SUITE &nbsp;◆&nbsp; FLOWRAZE &nbsp;◆&nbsp; VANAILA STUDIO &nbsp;◆&nbsp;
+                VANAILA LMS &nbsp;◆&nbsp; MUZIKPLAYER &nbsp;◆&nbsp; VANAILACHAT &nbsp;◆&nbsp;
               </span>
             ))}
           </div>
@@ -185,7 +256,7 @@ export function ProductsPageView() {
         <Reveal className="prods-products-head">
           <span className="prods-eyebrow">[ 01 ] OUR PRODUCTS</span>
           <h2>
-            Three products.
+            Purpose-built software.
             <br />
             One engineering <em>bar.</em>
           </h2>

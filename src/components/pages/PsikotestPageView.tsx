@@ -10,96 +10,110 @@ import { useCursorMode } from '@/components/CustomCursor';
 const assessmentTypes = [
   {
     n: '01',
-    name: 'DISC Personality',
-    desc: 'Forced-choice behavioural profiling with normalized D, I, S, C dimensions and report-ready interpretations.',
+    name: 'DISC Personality Assessment',
+    desc: 'Forced-choice behavioural profiling with normalized D, I, S, C dimensions, team fit insights, and report-ready interpretations.',
     tags: ['Personality', 'Bundled', 'Auto-score'],
   },
   {
     n: '02',
-    name: 'IQ Cognitive',
-    desc: 'Timed multiple-choice cognitive screening with anti-cheating delivery — questions load one page at a time.',
-    tags: ['Cognitive', 'Timed', 'Anti-copy'],
+    name: 'Cognitive & IQ Screening (ICAR)',
+    desc: 'Timed 60-item cognitive test with anti-cheating delivery — randomized item presentation and strict timer control.',
+    tags: ['Cognitive', 'Timed', 'Anti-cheat'],
   },
   {
     n: '03',
-    name: 'Big 5 (OCEAN)',
-    desc: 'Five-trait personality model with normalized scores across openness, conscientiousness, extraversion, agreeableness, neuroticism.',
-    tags: ['OCEAN', 'Normalized', 'Trait'],
+    name: 'Kraepelin Concentration & Speed',
+    desc: 'Continuous calculation endurance test assessing mental pace, error stability, and work resilience under pressure.',
+    tags: ['Speed', 'Accuracy', 'Endurance'],
   },
   {
     n: '04',
-    name: 'Workload / Stress',
-    desc: 'Structured workload and wellbeing monitoring designed for teams and ongoing employee programs.',
-    tags: ['Wellbeing', 'Longitudinal', 'Team'],
+    name: 'Big 5 Personality (OCEAN)',
+    desc: 'Five-trait personality model with normalized scores across openness, conscientiousness, extraversion, agreeableness, and neuroticism.',
+    tags: ['OCEAN', 'Normative Bands', 'Psychometric'],
   },
   {
     n: '05',
-    name: 'Custom Assessment',
-    desc: 'Upload your own instrument. Psikotest handles delivery, scoring rubrics, and reviewer-written interpretations.',
-    tags: ['Custom', 'Reviewer', 'Multi-scale'],
+    name: '16PF Personality Factors',
+    desc: 'Comprehensive multi-factor inventory mapping 16 primary personality traits and career orientation dynamics.',
+    tags: ['16PF', 'Deep Profile', 'Workplace'],
   },
   {
     n: '06',
-    name: 'Live Quiz',
-    desc: 'Real-time quiz sessions with a room code, animated leaderboard, generated avatars, and optional team mode.',
-    tags: ['Real-time', 'Leaderboard', 'Team mode'],
+    name: 'Proprietary CSV Import & Custom',
+    desc: 'Upload your company’s proprietary questionnaires via CSV. Psikotest automatically sets delivery rubrics, subscales, and review keys.',
+    tags: ['CSV Import', 'Proprietary', 'Custom Rubrics'],
+  },
+  {
+    n: '07',
+    name: 'Interactive Live Quizzes',
+    desc: 'Real-time quiz sessions with room codes, live animated leaderboards, avatar generation, and team competition modes.',
+    tags: ['Real-time', 'Leaderboard', 'Team Mode'],
   },
 ];
 
 const deepDives = [
   {
-    eyebrow: '[ A ] WORKSPACE',
-    kicker: 'One workspace, every cohort.',
-    title: ['See every assessment ', <em key="em">in motion</em>, ' — at a glance.'],
-    desc: 'Active, draft, closed. Participant counts, capacity, and a recent activity feed. A control surface designed for HR and people-ops who run rolling cohorts, not one-shot tests.',
+    eyebrow: '[ A ] ATS HIRING KANBAN',
+    kicker: 'Interactive candidate pipeline.',
+    title: ['Screen candidates across ', <em key="em">6 hiring stages</em>, ' — seamlessly.'],
+    desc: 'Track candidate flow through Applied, Screened, Tested, Review, Interview, and Offered. Instant score snapshots, subscale percentiles, and bulk progression cut 80% off HR administrative time.',
     bullets: [
-      'Filter by status, capacity, owner',
-      'Plan & usage with seat and record limits',
-      'Real-time activity feed across reviewers',
+      'Interactive drag-and-drop Kanban candidate pipeline',
+      'Continuous multi-test batteries (/b/:token) in one unified candidate link',
+      'Automated status updates, stage tracking, and candidate screening tags',
     ],
-    img: '/psikotest/dashboard-assessment.png',
+    img: '/psikotest/psikotest-saas.png',
+    link: 'https://psikotest.vanaila.com/saas#hiring-pipeline',
+    linkLabel: 'Explore Kanban Demo',
     side: 'right' as const,
     tone: 'cream' as const,
   },
   {
-    eyebrow: '[ B ] GUIDED CREATION',
-    kicker: 'Compliance-aware from step one.',
-    title: ['A wizard that ', <em key="em">protects</em>, ' participants and your org.'],
-    desc: 'Five-step guided flow with pre-filled compliance defaults — purpose statements, consent copy, identity fields, and visibility rules. Bundled templates for DISC, IQ, Big 5, and Workload come ready to publish.',
+    eyebrow: '[ B ] 21-INSTRUMENT TEST CATALOG',
+    kicker: 'Scientifically validated & ready to deploy.',
+    title: ['The most complete psychometric ', <em key="em">library in Indonesia</em>, '.'],
+    desc: 'Deploy 21 ready-to-use instruments or upload proprietary instruments via CSV. Covers personality (DISC, 16PF, Big 5), cognitive (IQ 60 items), concentration (Kraepelin), and workplace safety culture (COPSOQ III, NOSACQ-50).',
     bullets: [
-      'Five-step guided flow with progress tracking',
-      'Pre-filled consent and privacy defaults',
-      'Bundled templates: DISC · IQ · Big 5 · Workload',
+      '21 pre-built instruments spanning personality, cognitive, and HSE',
+      'CSV importer for proprietary company scales and customized rubrics',
+      'Scientifically backed normative bands, percentiles, and automatic scoring',
     ],
-    img: '/psikotest/new-assessment.png',
+    img: '/psikotest/psikotest-catalog.png',
+    link: 'https://psikotest.vanaila.com/tests',
+    linkLabel: 'Browse 21-Test Catalog',
     side: 'left' as const,
     tone: 'ink' as const,
   },
   {
-    eyebrow: '[ C ] PARTICIPANT EXPERIENCE',
-    kicker: 'Calm, clinical, bilingual.',
-    title: ['A participant flow that ', <em key="em">earns</em>, ' consent — not just collects it.'],
-    desc: 'Every participant sees purpose, administration mode, interpretation use, and contact info before they begin. Switch EN ↔ ID with one click. No account required — a single link is all you send.',
+    eyebrow: '[ C ] CANDIDATE EXPERIENCE',
+    kicker: 'Zero friction, mobile-first, bilingual.',
+    title: ['A test experience candidates ', <em key="em">actually finish</em>, '.'],
+    desc: 'Candidates receive a single tokenized link (/b/:token). No app download or forced account creation. Transparent consent terms, strict anti-cheating protections, and effortless Indonesian ↔ English toggling.',
     bullets: [
-      'Explicit purpose · administration · interpretation panels',
-      'Bilingual: English & Indonesian, per-link',
-      'No participant accounts — link or QR is enough',
+      'Tokenized continuous multi-test batteries in a single sitting',
+      'Bilingual interface: English & Indonesian per candidate link',
+      'Anti-cheating protections: page-by-page delivery and copy lock',
     ],
-    img: '/psikotest/assessment.png',
+    img: '/psikotest/psikotest-landing.png',
+    link: 'https://psikotest.vanaila.com/',
+    linkLabel: 'Try Candidate Experience',
     side: 'right' as const,
     tone: 'cream' as const,
   },
   {
-    eyebrow: '[ D ] LIVE QUIZ',
-    kicker: 'Room code in, leaderboard out.',
-    title: ['Real-time sessions for ', <em key="em">training rooms</em>, ' and onboarding.'],
-    desc: 'Per-question timer, shuffled order per participant, and an optional team mode with shared leaderboards. Built for live training, induction, and certification — not just async assessments.',
+    eyebrow: '[ D ] SIPP PSYCHOLOGIST SIGN-OFF',
+    kicker: 'Legally compliant, fully branded.',
+    title: ['Generate SIPP-compliant ', <em key="em">branded PDF reports</em>, ' automatically.'],
+    desc: 'Licensed psychologists (SIPP/SIKIP) review auto-scored findings and attach signed interpretations. Export custom-branded PDF reports or white-label the entire portal with your company branding and domain.',
     bullets: [
-      'Per-question and default timers',
-      'Optional shuffled-order anti-collusion',
-      'Team mode with shared leaderboard · CSV export',
+      'Psychologist review queue with draft interpretation editor',
+      'SIPP-licensed sign-off meeting Indonesian UU PLP No. 23/2022 standards',
+      'White-label portal with custom branding, logo, and domain',
     ],
-    img: '/psikotest/newquiz.png',
+    img: '/psikotest/dashboard-assessment.png',
+    link: 'https://psikotest.vanaila.com/white-label',
+    linkLabel: 'Explore White-label',
     side: 'left' as const,
     tone: 'ink' as const,
   },
@@ -108,83 +122,89 @@ const deepDives = [
 const flowSteps = [
   {
     n: '01',
-    t: 'Create session',
-    d: 'HR drafts an assessment with the five-step wizard. Bundled template or custom upload.',
-    actor: 'HR · Owner',
+    t: 'Assemble test battery',
+    d: 'Select from 21 pre-built instruments or import via CSV. Configure timer rules, subscales, and norm bands.',
+    actor: 'HR · Recruiter',
   },
   {
     n: '02',
-    t: 'Invite participants',
-    d: 'Share one link or a QR code. No participant accounts. Capacity tracked in your plan.',
-    actor: 'HR · Owner',
+    t: 'Generate tokenized link',
+    d: 'Deploy continuous multi-test batteries via /b/:token. One single link per candidate or cohort batch.',
+    actor: 'HR · Recruiter',
   },
   {
     n: '03',
-    t: 'Participant completes',
-    d: 'Bilingual consent, identity form, then a paged-protected assessment delivery.',
-    actor: 'Participant',
+    t: 'Candidate completes test',
+    d: 'Bilingual consent, anti-cheating sequential delivery, and automated page-by-page responses.',
+    actor: 'Candidate',
   },
   {
     n: '04',
-    t: 'Reviewer interprets',
-    d: 'Licensed psychologist writes interpretation before the report is released. Auto-score where appropriate.',
-    actor: 'Reviewer',
+    t: 'Screen on ATS Kanban',
+    d: 'Review candidates across 6 pipeline stages. Real-time scores, dimension percentiles, and tags.',
+    actor: 'HR Team',
   },
   {
     n: '05',
-    t: 'Release & export',
-    d: 'Choose visibility — HR only, participant summary, or both. PDF report or CSV for analysis.',
-    actor: 'HR · Owner',
+    t: 'SIPP Sign-Off & Branded PDF',
+    d: 'Licensed psychologists finalize interpretation. Download SIPP-compliant branded PDF reports.',
+    actor: 'Psychologist · HR',
   },
 ];
 
 const roles = [
   {
     tag: '[ ROLE 01 ]',
-    t: 'HR · Owner',
-    d: 'Run the full lifecycle from one workspace.',
-    items: ['Create assessments', 'Invite participants', 'Export reports', 'Manage team seats'],
+    t: 'HR & Talent Acquisition',
+    d: 'Run hiring pipelines and screening from one interactive workspace.',
+    items: ['21 test catalog & CSV import', 'Interactive ATS Kanban pipeline', 'Continuous test batteries (/b/:token)', 'Branded PDF export'],
     tone: 'pk-tone-cream',
   },
   {
     tag: '[ ROLE 02 ]',
-    t: 'Participant',
-    d: 'No account. No friction. A single guided flow.',
-    items: ['Open link', 'Review consent', 'Complete in 1 sitting', 'Get summary if shared'],
+    t: 'Candidate & Participant',
+    d: 'Frictionless, mobile-optimized assessment flow with zero app installs.',
+    items: ['Single tokenized link', 'Transparent consent & privacy', 'Anti-cheating timed flow', 'Instant profile snapshot'],
     tone: 'pk-tone-ink',
   },
   {
     tag: '[ ROLE 03 ]',
-    t: 'Reviewer',
-    d: 'Licensed psychologists write the interpretation.',
-    items: ['Reviewer queue', 'Auto-scored draft', 'Interpretation editor', 'Release control'],
+    t: 'Licensed Psychologist',
+    d: 'Clinical review, normative scoring validation, and SIPP sign-off.',
+    items: ['Psychologist review queue', 'Auto-calculated norm scores', 'Interpretation editor', 'SIPP compliance sign-off'],
     tone: 'pk-tone-blue',
   },
   {
     tag: '[ ROLE 04 ]',
-    t: 'Platform admin',
-    d: 'Operate the multi-tenant platform itself.',
-    items: ['Customer accounts', 'Manual payment approval', 'Monitoring', 'Notifications'],
+    t: 'Organization Admin',
+    d: 'Enterprise control, multi-tenancy, and complete white-labeling.',
+    items: ['Custom domain & white-label', 'Branded certificates & reports', 'Team seats & role permissions', 'Audit logs & analytics'],
     tone: 'pk-tone-orange',
   },
 ];
 
 const tickerItems = [
-  'DISC',
+  '21 READY-TO-USE INSTRUMENTS',
   '◆',
-  'IQ',
+  'CSV INSTRUMENT IMPORT',
   '◆',
-  'BIG 5 (OCEAN)',
+  'INTERACTIVE ATS HIRING KANBAN',
   '◆',
-  'WORKLOAD',
+  'CONTINUOUS MULTI-TEST BATTERIES (/B/:TOKEN)',
   '◆',
-  'CUSTOM',
+  'SIPP-LICENSED PSYCHOLOGIST SIGN-OFF',
   '◆',
-  'LIVE QUIZ',
+  'DISC PERSONALITY',
   '◆',
-  'REVIEWER QUEUE',
+  'COGNITIVE & IQ SCREENING',
   '◆',
-  'PDF · CSV EXPORT',
+  'KRAEPELIN CONCENTRATION',
+  '◆',
+  'INTERACTIVE LIVE QUIZZES',
+  '◆',
+  'WHITE-LABEL HR WORKSPACE',
+  '◆',
+  'BRANDED PDF REPORTS',
   '◆',
 ];
 
@@ -204,7 +224,7 @@ export function PsikotestPageView() {
         <div className="pk-hero-meta">
           <span className="pk-product-pill">
             <span className="pk-product-mark">◉</span>
-            PSIKOTEST · ASSESSMENT INFRASTRUCTURE
+            VANILA PSIKOTEST · SAAS ASSESSMENT PLATFORM
           </span>
           <span
             style={{
@@ -214,48 +234,62 @@ export function PsikotestPageView() {
               color: '#0033FF',
             }}
           >
-            ● MULTI-TENANT · BILINGUAL · v1.0
+            ● 21 INSTRUMENTS · ATS KANBAN · SIPP COMPLIANT
           </span>
         </div>
 
         <h1 className="pk-hero-h1">
-          Assessment
+          The Complete
           <br />
-          delivery, scoring,
+          <em>Psychometric Hiring</em>
           <br />
-          and <em>interpretation —</em>
+          &amp; Talent Assessment
           <br />
-          <span className="pk-underline">in one workspace.</span>
+          <span className="pk-underline">Platform.</span>
         </h1>
 
         <div className="pk-hero-foot">
           <p>
-            Psikotest is the assessment infrastructure your HR team and licensed psychologists
-            actually want to use. Invite by link, run DISC · IQ · Workload · Custom, and release
-            reports with reviewer-written interpretation.
+            Deploy 21 pre-built psychometric tests (DISC, IQ, Kraepelin) or import your proprietary
+            instruments via CSV. Screen candidates on an interactive ATS Kanban pipeline, save 80% on
+            admin time, and generate SIPP-compliant branded PDF reports automatically.
           </p>
           <div className="pk-hero-actions">
-            <Link
-              href="/contact?interest=psikotest"
+            <a
+              href="https://psikotest.vanaila.com/signup"
+              target="_blank"
+              rel="noopener noreferrer"
               className="pk-btn-primary"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Start free — no card required</span>
+              <span>Start Free HR Workspace</span>
               <span className="pk-btn-arrow">→</span>
-            </Link>
-            <Link
-              href="/contact?interest=psikotest"
+            </a>
+            <a
+              href="https://psikotest.vanaila.com/saas#hiring-pipeline"
+              target="_blank"
+              rel="noopener noreferrer"
               className="pk-btn-ghost"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              ▶ Book a 20-min walkthrough
-            </Link>
+              ▶ Explore Kanban Demo
+            </a>
+            <a
+              href="https://psikotest.vanaila.com/white-label"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pk-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Explore White-label
+            </a>
           </div>
           <div className="pk-hero-credits">
             <span className="pk-credit-dot">●</span>
-            <span>For HR teams · Licensed psychologists · Org-wide cohorts</span>
+            <span>21 Ready Instruments &amp; CSV Import · ATS Kanban · SIPP-Compliant</span>
           </div>
         </div>
 
@@ -263,10 +297,10 @@ export function PsikotestPageView() {
         <div className="pk-hero-shot">
           <div className="pk-hero-shot-frame">
             <Image
-              src="/psikotest/dashboard-assessment.png"
-              alt="Psikotest workspace dashboard"
-              width={1200}
-              height={800}
+              src="/psikotest/psikotest-saas.png"
+              alt="Vanaila Psikotest - The Complete Psychometric Hiring & Talent Assessment Platform"
+              width={1024}
+              height={640}
               priority
               style={{ display: 'block', width: '100%', height: 'auto' }}
             />
@@ -274,22 +308,22 @@ export function PsikotestPageView() {
           <div className="pk-anno pk-anno-1">
             <span className="pk-anno-dot" />
             <div>
-              <span className="pk-anno-k">Active session</span>
-              <span className="pk-anno-v">Capacity tracked in real time</span>
+              <span className="pk-anno-k">Assessment Builder</span>
+              <span className="pk-anno-v">21 Pre-built Tests or Custom CSV</span>
             </div>
           </div>
           <div className="pk-anno pk-anno-2">
             <span className="pk-anno-dot pk-anno-dot-blue" />
             <div>
-              <span className="pk-anno-k">Plan &amp; usage</span>
-              <span className="pk-anno-v">Seats, records, and capacity</span>
+              <span className="pk-anno-k">Tokenized Battery</span>
+              <span className="pk-anno-v">Single Link /b/hiring-batch-2026</span>
             </div>
           </div>
           <div className="pk-anno pk-anno-3">
             <span className="pk-anno-dot pk-anno-dot-orange" />
             <div>
-              <span className="pk-anno-k">Compliance banner</span>
-              <span className="pk-anno-v">Templates are demos — not validated</span>
+              <span className="pk-anno-k">ATS Kanban Pipeline</span>
+              <span className="pk-anno-v">Screen across 6 hiring stages</span>
             </div>
           </div>
         </div>
@@ -309,26 +343,26 @@ export function PsikotestPageView() {
         <div className="pk-stats-head">
           <span className="pk-eyebrow">[ WHY PSIKOTEST ]</span>
           <h2>
-            One platform.
+            Purpose-built for hiring.
             <br />
-            <em>Four</em> roles. <em>Six</em> formats.
+            <em>Engineered</em> for psychometrics.
           </h2>
         </div>
         <StaggerGroup className="pk-stats-grid">
           <StaggerItem className="pk-stat-card">
-            <span className="pk-stat-n">6</span>
-            <h3>Assessment formats</h3>
-            <p>DISC, IQ, Big 5, Workload, Custom, Live Quiz</p>
+            <span className="pk-stat-n">21</span>
+            <h3>Ready instruments &amp; CSV</h3>
+            <p>DISC, IQ ICAR, Kraepelin, Big 5, 16PF, and proprietary uploads</p>
           </StaggerItem>
           <StaggerItem className="pk-stat-card pk-stat-ink">
-            <span className="pk-stat-n">4</span>
-            <h3>Distinct roles</h3>
-            <p>HR · Participant · Reviewer · Platform admin</p>
+            <span className="pk-stat-n">80%</span>
+            <h3>Admin time saved</h3>
+            <p>Automated test scoring, ATS stage progression &amp; PDF reports</p>
           </StaggerItem>
           <StaggerItem className="pk-stat-card pk-stat-blue">
-            <span className="pk-stat-n">2</span>
-            <h3>Languages out of box</h3>
-            <p>English and Indonesian — per assessment link</p>
+            <span className="pk-stat-n">100%</span>
+            <h3>SIPP-compliant reports</h3>
+            <p>Licensed psychologist sign-off matching Indonesian UU PLP No. 23/2022</p>
           </StaggerItem>
         </StaggerGroup>
       </Reveal>
@@ -337,17 +371,34 @@ export function PsikotestPageView() {
       <Reveal as="section" className="pk-types">
         <div className="pk-types-head">
           <div>
-            <span className="pk-eyebrow pk-eyebrow-light">[ ASSESSMENT FORMATS ]</span>
+            <span className="pk-eyebrow pk-eyebrow-light">[ ASSESSMENT LIBRARY ]</span>
             <h2>
-              Six formats.
+              21 Ready instruments.
               <br />
-              One <em>delivery engine.</em>
+              Plus <em>proprietary CSV import.</em>
             </h2>
           </div>
-          <p>
-            Bundled templates ship ready to publish for demos and pilots. Bring your own validated
-            instrument when you go to production — Psikotest handles the rest.
-          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <p>
+              Deploy scientifically validated psychometric instruments out of the box, or import your
+              organization&apos;s custom questionnaires. Screen candidates in unified continuous test
+              batteries or run live interactive sessions.
+            </p>
+            <div>
+              <a
+                href="https://psikotest.vanaila.com/tests"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pk-btn-primary"
+                style={{ display: 'inline-flex' }}
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
+              >
+                <span>Browse All 21 Tests in Catalog</span>
+                <span className="pk-btn-arrow">→</span>
+              </a>
+            </div>
+          </div>
         </div>
         <div className="pk-types-table">
           {assessmentTypes.map((t) => (
@@ -391,14 +442,16 @@ export function PsikotestPageView() {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/contact?interest=psikotest"
+            <a
+              href={d.link}
+              target="_blank"
+              rel="noopener noreferrer"
               className="pk-deep-link"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              See it in action <span>→</span>
-            </Link>
+              {d.linkLabel} <span>→</span>
+            </a>
           </div>
           <div className="pk-deep-shot">
             <div className="pk-shot-label">
@@ -408,8 +461,8 @@ export function PsikotestPageView() {
             <Image
               src={d.img}
               alt={d.kicker}
-              width={1200}
-              height={900}
+              width={1024}
+              height={640}
               style={{ display: 'block', width: '100%', height: 'auto' }}
             />
           </div>
@@ -427,7 +480,7 @@ export function PsikotestPageView() {
           </h2>
           <p>
             Every assessment moves through the same auditable path. Psychologists own
-            interpretation; HR owns visibility; participants never need an account.
+            interpretation; HR owns candidate screening; candidates never need an account.
           </p>
         </div>
         <StaggerGroup className="pk-flow-steps">
@@ -475,36 +528,49 @@ export function PsikotestPageView() {
             <div key={i} className="pk-grid-col" />
           ))}
         </div>
-        <span className="pk-eyebrow pk-cta-eye">[ READY ]</span>
+        <span className="pk-eyebrow pk-cta-eye">[ READY TO SCALE HIRING ]</span>
         <h2>
-          Launch your first
+          Launch your psychometric
           <br />
-          <span className="pk-cta-blue">assessment cohort —</span>
+          <span className="pk-cta-blue">hiring pipeline —</span>
           <br />
-          before next Monday.
+          in less than 5 minutes.
         </h2>
         <div className="pk-cta-foot">
           <p>
-            Free to start. No credit card. Bundled DISC, IQ, Big 5, and Workload templates are
-            ready for demo runs the moment your workspace is provisioned.
+            Start with your free HR workspace. Deploy DISC, IQ, and Kraepelin tests or import
+            proprietary instruments via CSV. Save 80% admin time with automated ATS screening and
+            SIPP-compliant reports.
           </p>
           <div className="pk-cta-actions">
-            <Link
-              href="/contact?interest=psikotest"
+            <a
+              href="https://psikotest.vanaila.com/signup"
+              target="_blank"
+              rel="noopener noreferrer"
               className="pk-btn-primary pk-btn-lg"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              <span>Start free — no card required</span>
+              <span>Start Free HR Workspace</span>
               <span className="pk-btn-arrow">→</span>
-            </Link>
+            </a>
+            <a
+              href="https://psikotest.vanaila.com/white-label"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pk-btn-ghost"
+              onMouseEnter={() => setMode('link')}
+              onMouseLeave={() => setMode('default')}
+            >
+              Explore White-label
+            </a>
             <Link
               href="/contact?interest=psikotest"
               className="pk-cta-mail"
               onMouseEnter={() => setMode('link')}
               onMouseLeave={() => setMode('default')}
             >
-              or talk to a founder
+              or contact enterprise sales
             </Link>
           </div>
         </div>

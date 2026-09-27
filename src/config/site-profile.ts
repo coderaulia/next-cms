@@ -17,10 +17,13 @@ export const siteProfile = {
       { href: '/contact', label: 'Contact' }
     ],
     fallbackServices: [
+      { href: '/vanailachat', label: 'VanailaChat' },
       { href: '/hris', label: 'Vanaila HRIS' },
       { href: '/flowraze', label: 'Flowraze CRM' },
       { href: '/psikotest', label: 'Psikotest' },
-      { href: '/atelier', label: 'Vanaila Atelier' },
+      { href: '/atelier', label: 'Vanaila Studio' },
+      { href: '/lms', label: 'Vanaila LMS' },
+      { href: '/muzikplayer', label: 'MuzikPlayer' },
       { href: '/templates', label: 'Templates' },
       { href: '/website-development', label: 'Website Development' },
       { href: '/secure-online-shops', label: 'Secure Online Shops' },
@@ -30,7 +33,7 @@ export const siteProfile = {
     ]
   },
   routing: {
-    reservedSlugs: ['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt', 'portfolio', 'privacy-policy', 'terms', 'data-collection', 'products', 'atelier', 'templates'] as const,
+    reservedSlugs: ['admin', 'api', 'blog', 'sitemap.xml', 'robots.txt', 'portfolio', 'privacy-policy', 'terms', 'data-collection', 'products', 'atelier', 'lms', 'templates', 'muzikplayer', 'vanailachat', 'vanaila-chat'] as const,
     serviceDetailPageIds: [
       'service-website-development',
       'service-custom-business-tools',

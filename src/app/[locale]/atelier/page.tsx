@@ -3,13 +3,13 @@ import type { Metadata } from 'next';
 import { AtelierPageView } from '@/components/pages/AtelierPageView';
 
 export const metadata: Metadata = {
-  title: 'Vanaila Atelier — Design Studio',
+  title: 'Vanaila Studio — In-Browser Document & Creator Suite',
   description:
-    'Vanaila Atelier is a boutique design studio creating brand identities, digital experiences, and visual systems for brands that want to be remembered.',
+    'Documents, CVs, image and PDF conversions, OCR, and social content — all running in your browser with 100% client-side privacy. Zero uploads, no accounts needed.',
   openGraph: {
-    title: 'Vanaila Atelier — Design Studio',
+    title: 'Vanaila Studio — In-Browser Document & Creator Suite',
     description:
-      'Brand identity, web experience, UI design, creative direction, motion, and print — crafted with uncommon care.',
+      'Documents, CVs, image and PDF conversions, OCR, and social content — all running in your browser with 100% client-side privacy.',
   },
 };
 

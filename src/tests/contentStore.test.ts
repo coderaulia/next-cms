@@ -49,3 +49,48 @@ describe('blog querying', () => {
     expect(result.posts.some((post) => post.title.toLowerCase().includes('editorial'))).toBe(true);
   });
 });
+
+describe('portfolio and template wiring', () => {
+  it('includes BDO.CLTH in portfolio with Online Shop Development category', () => {
+    const defaults = getDefaultContent();
+    const bdo = defaults.portfolioProjects.find((p) => p.seo.slug === 'bdo-clth');
+    expect(bdo).toBeDefined();
+    expect(bdo?.serviceType).toBe('Online Shop Development');
+    expect(bdo?.projectUrl).toBe('/templates/bdo-clth');
+    expect(bdo?.relatedServicePageIds).toContain('service-secure-online-shops');
+    expect(bdo?.featured).toBe(true);
+  });
+
+  it('includes templates in footer service links', () => {
+    const defaults = getDefaultContent();
+    const hasTemplates = defaults.settings.navigation.footerServiceLinks.some(
+      (link) => link.href === '/templates' && link.enabled
+    );
+    expect(hasTemplates).toBe(true);
+  });
+
+  it('orders top featured projects: Vanaila Psikotest, Maza Adventure, BDO.CLTH, Greenretech', () => {
+    const defaults = getDefaultContent();
+    const featured = defaults.portfolioProjects
+      .filter((p) => p.featured)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
+    expect(featured.map((p) => p.title)).toEqual([
+      'Vanaila Psikotest',
+      'Maza Adventure',
+      'BDO.CLTH',
+      'Greenretech'
+    ]);
+  });
+
+  it('includes products, atelier, and lms in footer navigation links', () => {
+    const defaults = getDefaultContent();
+    const serviceHrefs = defaults.settings.navigation.footerServiceLinks.map((l) => l.href);
+    const navHrefs = defaults.settings.navigation.footerNavigatorLinks.map((l) => l.href);
+
+    expect(serviceHrefs).toContain('/atelier');
+    expect(serviceHrefs).toContain('/lms');
+    expect(serviceHrefs).toContain('/psikotest');
+    expect(serviceHrefs).toContain('/flowraze');
+    expect(navHrefs).toContain('/products');
+  });
+});

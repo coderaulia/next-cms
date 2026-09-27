@@ -63,6 +63,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticEntries: MetadataRoute.Sitemap = [
     { url: `${settings.baseUrl}/products`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${settings.baseUrl}/atelier`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${settings.baseUrl}/lms`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${settings.baseUrl}/muzikplayer`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${settings.baseUrl}/vanailachat`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${settings.baseUrl}/templates`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${settings.baseUrl}/blog`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${settings.baseUrl}/portfolio`, changeFrequency: 'weekly', priority: 0.7 }

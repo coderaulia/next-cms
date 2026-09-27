@@ -7206,6 +7206,10 @@ button:disabled {
 .prods-card-orange .prods-card-shot { background: var(--pp-orange); }
 .prods-card-orange .prods-card-cta { color: var(--pp-ink); }
 
+.prods-card-slate .prods-card-info { background: #161B24; color: #F4F4F0; }
+.prods-card-slate .prods-card-shot { background: #0E1218; }
+.prods-card-slate .prods-card-cta { color: #00E5FF; }
+
 /* APPROACH */
 .prods-approach {
   background: var(--pp-ink);

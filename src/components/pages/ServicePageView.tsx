@@ -29,10 +29,11 @@ const SERVICE_META: Array<{
   tag: string;
   tags: string[];
   href?: string;
+  templateHref?: string;
 }> = [
-  { n: '01', accent: '#0033FF', tone: 'cream', tag: 'WEB', tags: ['React', 'Next.js', 'WordPress', 'Headless CMS'], href: '/website-development' },
-  { n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP', tags: ['Python', 'React', 'PostgreSQL', 'REST', 'CRM'], href: '/custom-business-tools' },
-  { n: '03', accent: '#C8E64B', tone: 'blue', tag: 'COMMERCE', tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'], href: '/secure-online-shops' },
+  { n: '01', accent: '#0033FF', tone: 'cream', tag: 'WEB', tags: ['React', 'Next.js', 'WordPress', 'Headless CMS'], href: '/website-development', templateHref: '/templates' },
+  { n: '02', accent: '#FF5B22', tone: 'ink', tag: 'WEB-APP', tags: ['Python', 'React', 'PostgreSQL', 'REST', 'CRM'], href: '/custom-business-tools', templateHref: '/templates' },
+  { n: '03', accent: '#C8E64B', tone: 'blue', tag: 'COMMERCE', tags: ['WooCommerce', 'Midtrans', 'Stripe', 'Inventory'], href: '/secure-online-shops', templateHref: '/templates' },
   { n: '04', accent: '#0033FF', tone: 'lime', tag: 'GROWTH', tags: ['A/B testing', 'Analytics', 'Lead capture', 'SEO'] },
   { n: '05', accent: '#FF5B22', tone: 'ink', tag: 'MOBILE', tags: ['React Native', 'iOS', 'Android'], href: '/mobile-business-app' },
   { n: '06', accent: '#0A0E1A', tone: 'cream', tag: 'INFRASTRUCTURE', tags: ['Google Workspace', 'M365', 'DNS', 'Deliverability'], href: '/official-business-email' },
@@ -49,6 +50,8 @@ const PRODUCT_META = [
   { n: '02', href: '/psikotest' },
   { n: '03', href: '/flowraze' },
   { n: '04', href: '/atelier' },
+  { n: '05', href: '/lms' },
+  { n: '06', href: '/muzikplayer' },
 ];
 
 export function ServicePageView({ page }: ServicePageViewProps) {
@@ -196,6 +199,16 @@ export function ServicePageView({ page }: ServicePageViewProps) {
                     onMouseLeave={() => setMode('default')}
                   >
                     {t('learnMore')} <span>→</span>
+                  </Link>
+                )}
+                {svc.templateHref && (
+                  <Link
+                    href={svc.templateHref}
+                    className="v-svc-discuss-link"
+                    onMouseEnter={() => setMode('link')}
+                    onMouseLeave={() => setMode('default')}
+                  >
+                    Templates <span>→</span>
                   </Link>
                 )}
                 <Link

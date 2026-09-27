@@ -127,9 +127,11 @@
     "productsAllLink": "See all products",
     "products": [
       { "title": "Vanaila HRIS", "desc": "End-to-end HR management — attendance, payroll, KPI, and employee database for Indonesian organizations." },
-      { "title": "Psikotest", "desc": "Online assessment infrastructure for HR teams and psychologists. DISC, IQ, Big 5, and custom instruments with bilingual delivery." },
+      { "title": "Psikotest", "desc": "The complete psychometric hiring platform. Deploy 21 pre-built tests (DISC, IQ, Kraepelin) or custom CSV, screen on ATS Kanban, and export SIPP-compliant reports." },
       { "title": "Flowraze", "desc": "CRM & sales platform — leads, deals, campaigns, and team performance. WhatsApp-first, built for Indonesian SMB teams." },
-      { "title": "Vanaila Atelier", "desc": "Boutique design studio for brand identity, web experience, UI design, and creative direction — crafted with uncommon care." }
+      { "title": "Vanaila Studio", "desc": "18 in-browser creator & document tools — Document Studio, CV Builder, Social Content, and WASM OCR with 100% client-side privacy." },
+      { "title": "Vanaila LMS", "desc": "Complete learning management system for online academies, educators, and enterprise training with automated verifiable certification." },
+      { "title": "MuzikPlayer", "desc": "Modern desktop music player for local Hi-Fi libraries — bit-perfect PipeWire direct streaming, synchronized lyrics, and Libadwaita Slate UI." }
     ],
     "templatesTag": "TEMPLATES",
     "templatesHeading": "Need a head start?",

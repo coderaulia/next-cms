@@ -180,15 +180,23 @@
       },
       {
         "title": "Psikotest",
-        "desc": "Infrastruktur asesmen online untuk tim HR dan psikolog. DISC, IQ, Big 5, dan instrumen kustom dengan laporan otomatis."
+        "desc": "Platform asesmen psikometrik & rekrutmen terlengkap. 21 instrumen siap pakai (DISC, IQ, Kraepelin), ATS Kanban pipeline, dan laporan psikologi berizin SIPP."
       },
       {
         "title": "Flowraze",
         "desc": "Platform CRM dan pipeline penjualan — kelola leads, deals, kampanye, dan kinerja tim penjualan berbasis WhatsApp."
       },
       {
-        "title": "Vanaila Atelier",
-        "desc": "Studio desain digital untuk identitas merek, desain antarmuka (UI/UX), dan arahan kreatif berkelas premium."
+        "title": "Vanaila Studio",
+        "desc": "18 tool dokumen dan konten kreatif di browser — Document Studio, CV Builder, Konten Sosial, dan WASM OCR dengan privasi 100% sisi klien."
+      },
+      {
+        "title": "Vanaila LMS",
+        "desc": "Sistem manajemen pembelajaran (LMS) terpadu untuk akademi online, edukator, dan pelatihan korporat dengan sertifikasi digital otomatis."
+      },
+      {
+        "title": "MuzikPlayer",
+        "desc": "Pemutar musik desktop modern untuk pustaka Hi-Fi lokal — streaming bit-perfect PipeWire direct, lirik tersinkronisasi, dan antarmuka Libadwaita Slate."
       }
     ],
     "templatesTag": "TEMPLAT RESMI",

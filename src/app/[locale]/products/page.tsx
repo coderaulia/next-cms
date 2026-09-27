@@ -3,13 +3,13 @@ import type { Metadata } from 'next';
 import { ProductsPageView } from '@/components/pages/ProductsPageView';
 
 export const metadata: Metadata = {
-  title: 'Products — Psikotest, HR Suite & Flowraze | Vanaila Digital',
+  title: 'Products — VanailaChat, Psikotest, HR Suite, Flowraze & MuzikPlayer | Vanaila Digital',
   description:
-    'Three SaaS products built for growing Indonesian businesses. Assessment delivery with Psikotest, performance management with HR Suite, and revenue growth with Flowraze.',
+    'Five products built and operated by Vanaila Digital. Privacy-first AI workstation with VanailaChat, assessment delivery with Psikotest, performance management with HR Suite, CRM with Flowraze, and bit-perfect desktop audio with MuzikPlayer.',
   openGraph: {
-    title: 'Products — Psikotest, HR Suite & Flowraze | Vanaila Digital',
+    title: 'Products — VanailaChat, Psikotest, HR Suite, Flowraze & MuzikPlayer | Vanaila Digital',
     description:
-      'Three SaaS products built for growing Indonesian businesses. Assessment delivery with Psikotest, performance management with HR Suite, and revenue growth with Flowraze.',
+      'Five products built and operated by Vanaila Digital. Privacy-first AI workstation with VanailaChat, assessment delivery with Psikotest, performance management with HR Suite, CRM with Flowraze, and bit-perfect desktop audio with MuzikPlayer.',
   },
 };
 
