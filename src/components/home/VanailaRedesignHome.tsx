@@ -9,6 +9,7 @@ import { Reveal } from '@/components/animations/Reveal';
 import { StaggerGroup, StaggerItem } from '@/components/animations/StaggerGroup';
 import { useCursorMode } from '@/components/CustomCursor';
 import { Link } from '@/i18n/navigation';
+import { siteProfile } from '@/config/site-profile';
 
 type VanailaRedesignHomeProps = {
   page: LandingPage;
@@ -16,6 +17,7 @@ type VanailaRedesignHomeProps = {
 };
 
 const serviceAccents = ['#0033FF', '#FF5B22', '#0A0E1A', '#C8E64B', '#2D5FFF'];
+const productAccents = ['#2D5FFF', '#FF5B22', '#C8E64B', '#F4F4F0'];
 const fallbackClients = ['Vanaila Psikotest', 'Maza Adventure', 'BDO.CLTH', 'Greenretech', 'VanailaChat', 'HR Performance'];
 const whyTones = ['ink', 'blue', 'cream', 'lime', 'orange'] as const;
 
@@ -51,6 +53,8 @@ function getProjectRank(project: PortfolioProject): number {
 export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps) {
   const { setMode } = useCursorMode();
   const t = useTranslations('home');
+  const tService = useTranslations('service');
+  const productCopy = tService.raw('products') as Array<{ title: string; desc: string }>;
   const { hero } = splitHeroTitle(page);
   const values = findBlock<ValueTripletBlock>(page, 'value_triplet');
   const solutions = findBlock<SolutionsGridBlock>(page, 'solutions_grid');
@@ -260,6 +264,51 @@ export function VanailaRedesignHome({ page, projects }: VanailaRedesignHomeProps
             data-analytics-label="Home explore all solutions"
           >
             {t('servicesAllLink')} <span>-&gt;</span>
+          </Link>
+        </Reveal>
+      </Reveal>
+
+      {/* ── Products ── */}
+      <Reveal as="section" className="v-home-services v-home-products" id="products">
+        <div className="v-home-section-head v-home-section-head-light v-home-section-head-split">
+          <div>
+            <span>{t('productsEyebrow')}</span>
+            <h2>
+              {t('productsHeading')} <i>{t('productsHeadingAccent')}</i>
+            </h2>
+          </div>
+          <p>{t('productsSubheading')}</p>
+        </div>
+        <StaggerGroup className="v-home-service-grid v-home-product-grid">
+          {siteProfile.navigation.productLinks.map((product, index) => (
+            <StaggerItem key={product.href}>
+              <Link
+                className="v-home-service-card"
+                href={product.href}
+                style={{ '--accent': productAccents[index % productAccents.length] } as CSSProperties}
+                onMouseEnter={() => setMode('link')}
+                onMouseLeave={() => setMode('default')}
+              >
+                <span className="v-home-service-top">
+                  <small>{String(index + 1).padStart(2, '0')}</small>
+                  <b>-&gt;</b>
+                </span>
+                <h3>{productCopy[index]?.title ?? product.label}</h3>
+                <p>{productCopy[index]?.desc}</p>
+                <span className="v-home-service-label">{tService('learnMore')}</span>
+                <span className="v-home-service-bar" />
+              </Link>
+            </StaggerItem>
+          ))}
+        </StaggerGroup>
+        <Reveal>
+          <Link
+            className="v-home-text-link v-home-text-link-light"
+            href="/products"
+            data-analytics-event="cta_click"
+            data-analytics-label="Home explore all products"
+          >
+            {t('productsAllLink')} <span>-&gt;</span>
           </Link>
         </Reveal>
       </Reveal>

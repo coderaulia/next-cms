@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
-import { siteProfile } from '@/config/site-profile';
+import { siteProfile, withProductsMenu } from '@/config/site-profile';
 import type { SiteSettings } from '@/features/cms/types';
 
 import { useCursorMode } from './CustomCursor';
@@ -41,8 +41,10 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
     children: link.children?.filter((c) => c.enabled !== false).map(mapLink),
   });
 
-  const configuredLinks = settings.navigation.headerLinks.filter((l) => l.enabled).map(mapLink);
-  const links = configuredLinks.length > 0 ? configuredLinks : navItems;
+  const headerLinks = settings.navigation.headerLinks;
+  const links = headerLinks.some((l) => l.enabled)
+    ? withProductsMenu(headerLinks).filter((l) => l.enabled !== false).map(mapLink)
+    : withProductsMenu(navItems);
 
   const handleDropdownEnter = (label: string) => {
     if (dropdownTimeoutRef.current) {

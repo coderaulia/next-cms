@@ -3544,6 +3544,14 @@ button:disabled {
   gap: 16px;
 }
 
+.v-home-products {
+  background: var(--v-ink-2);
+}
+
+.v-home-product-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .v-home-service-card {
   position: relative;
   display: flex;

@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { siteProfile } from '@/config/site-profile';
+import { siteProfile, withProductLinks } from '@/config/site-profile';
 import { Link } from '@/i18n/navigation';
 import type { SiteSettings } from '@/features/cms/types';
 
@@ -32,7 +32,9 @@ export function SiteFooter({ siteName, settings }: SiteFooterProps) {
   const footerNavigator =
     navigatorLinks.length > 0 ? navigatorLinks.map(mapLink) : siteProfile.navigation.fallbackNavigator;
   const footerServices =
-    serviceLinks.length > 0 ? serviceLinks.map(mapLink) : siteProfile.navigation.fallbackServices;
+    serviceLinks.length > 0
+      ? withProductLinks(settings.navigation.footerServiceLinks).filter((l) => l.enabled !== false).map(mapLink)
+      : withProductLinks(siteProfile.navigation.fallbackServices);
 
   const copyright =
     settings.branding.copyrightText.trim() || `© ${new Date().getFullYear()} ${brandName}.`;

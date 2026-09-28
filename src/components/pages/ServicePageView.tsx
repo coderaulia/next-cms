@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import type { CSSProperties } from 'react';
 
 import { useCursorMode } from '@/components/CustomCursor';
+import { siteProfile } from '@/config/site-profile';
 import { Link } from '@/i18n/navigation';
 import type { LandingPage } from '@/features/cms/types';
 
@@ -45,15 +46,10 @@ const TRUST_META = [
   { tone: 'lime', glyph: '◒' },
 ];
 
-const PRODUCT_META = [
-  { n: '01', href: '/hris' },
-  { n: '02', href: '/psikotest' },
-  { n: '03', href: '/flowraze' },
-  { n: '04', href: '/atelier' },
-  { n: '05', href: '/lms' },
-  { n: '06', href: '/muzikplayer' },
-];
-
+const PRODUCT_META = siteProfile.navigation.productLinks.map((product, index) => ({
+  n: String(index + 1).padStart(2, '0'),
+  href: product.href,
+}));
 export function ServicePageView({ page }: ServicePageViewProps) {
   const { setMode } = useCursorMode();
   const t = useTranslations('service');
