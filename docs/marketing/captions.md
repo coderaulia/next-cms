@@ -175,3 +175,61 @@ The best website briefs we get aren't long. They answer three questions:
 3. Which numbers define success: leads, calls, bookings, or sales?
 
 Get those right and design, copy, and tech decisions get much easier. Save this for your next website project.
+
+---
+
+# Instagram education series (soft-sell)
+
+These posts teach first and sell last. The only mention of an offer is the final line of the caption.
+
+## Post 7: Why is my website so slow? (`output/07-slow-website.png`)
+
+Why is my website so slow? 🐢
+
+Usually it's one of these 4:
+1️⃣ Huge images: photos uploaded straight from a phone. Fix: compress and use WebP/AVIF.
+2️⃣ Too many plugins: each one loads its own scripts. Fix: remove what you don't use.
+3️⃣ Overloaded hosting: cheap shared servers slow down at peak times. Fix: right-size your hosting and add a CDN.
+4️⃣ No caching: every page is rebuilt for every visitor. Fix: turn on page and browser caching.
+
+🔍 Free check: run your site on Google PageSpeed Insights and look at the mobile score first.
+
+Save this for your next website review, and tag someone whose site takes forever to load 😅
+Want us to look at yours? DM "SPEED".
+
+#TipsWebsite #WebsiteLemot #WebPerformance #SEOTips #UMKMGoDigital #VanailaDigital
+
+## Post 8: Marketplace or your own store? (`output/08-marketplace-vs-store.png`)
+
+Marketplace or your own online store? 🛍️
+
+Quick comparison:
+• Traffic: marketplace has built-in buyers; with your own store, you bring them
+• Fees: commission on every sale vs a fixed running cost
+• Customer data: stays with the platform vs yours to keep
+• Brand: listed next to competitors vs your look, your rules
+• Repeat buyers: hard to reach vs email, WhatsApp, loyalty
+
+Our take: it's not either/or. Use marketplaces to be found, and your own store to be remembered. 💡
+
+Which one do you sell on now? Tell us in the comments 👇
+Planning your own store? Our DMs are open.
+
+#TokoOnline #JualanOnline #Marketplace #Ecommerce #TipsBisnis #VanailaDigital
+
+## Post 9: KPI vs Competency (`output/09-kpi-vs-competency.png`)
+
+KPI vs Competency: same thing? No. 📊
+
+📈 KPI = the result. "What did they achieve?" Measurable targets, reviewed monthly or quarterly.
+🧠 Competency = the capability. "How do they work?" Skills and behaviours per role, scored against a rubric, and used for training plans (TNA).
+
+Read them together:
+→ Missed KPI + low competency = train
+→ Missed KPI + high competency = fix the process
+→ Hit KPI + low competency = coach before promoting
+
+Save this for your next performance review, and share it with your HR team. 🙌
+(Tracking both in one place is exactly what we built Vanaila HRIS for.)
+
+#HRTips #KPI #ManajemenKinerja #PenilaianKaryawan #HRIndonesia #VanailaHRIS

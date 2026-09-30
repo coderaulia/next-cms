@@ -10,6 +10,9 @@ Social media creatives for Vanaila Digital, built as HTML templates and rendered
 | 4 | `output/04-spreadsheet-signs.png` | Soft-sell: outgrown the spreadsheet |
 | 5 | `output/05-business-email.png` | Soft-sell: business email trust |
 | 6 | `output/06-website-questions.png` | Soft-sell: 3 questions before a website |
+| 7 | `output/07-slow-website.png` | Education: why is my website slow |
+| 8 | `output/08-marketplace-vs-store.png` | Education: marketplace vs own store |
+| 9 | `output/09-kpi-vs-competency.png` | Education: KPI vs competency |
 
 Service series (10 posts, one per offer): `output/svc-*.png`, captions and value propositions by customer type in [`service-series.md`](./service-series.md). Edit `data/services.json`, then run `npm run render:services`.
 

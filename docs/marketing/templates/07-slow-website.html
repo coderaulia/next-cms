@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css">
+<style>
+.grid{margin-top:44px;margin-bottom:32px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.c{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px 30px;display:flex;flex-direction:column;gap:14px}
+.c .n{font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--accent);letter-spacing:.06em}
+.c b{font-size:34px;letter-spacing:-.02em;font-weight:600;line-height:1.1}
+.c p{font-size:21px;color:var(--muted);line-height:1.4}
+.c .fix{margin-top:auto;padding-top:14px;border-top:1px dashed var(--line);font-size:19px;color:var(--navy);line-height:1.35}
+.c .fix span{font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.08em;color:var(--accent);margin-right:8px}
+.tip{margin-top:auto;display:flex;justify-content:space-between;align-items:center;background:var(--navy);color:#fff;border-radius:22px;padding:26px 32px;font-size:23px;line-height:1.35}
+.tip span{display:block;font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.08em;color:#a3c0ff;text-transform:uppercase;margin-bottom:6px}
+</style></head><body>
+<div class="post">
+  <div class="glow" style="width:520px;height:520px;background:#a3c0ff;right:-200px;top:-200px"></div>
+  <div class="top"><div class="brand"><div class="mark">V</div>vanaila.</div><div class="mono muted">Web 101 · Save this</div></div>
+  <h1 class="h1" style="margin-top:56px;font-size:80px">Why is my website<br><span class="serif">so</span> slow?</h1>
+  <p style="margin-top:22px;font-size:24px;color:var(--muted);line-height:1.4">4 common culprits, and what to ask your developer.</p>
+  <div class="grid">
+    <div class="c"><div class="n">01</div><b>Huge images</b><p>Photos uploaded straight from a camera or phone, several MB each.</p><div class="fix"><span>FIX</span>Compress & serve WebP / AVIF.</div></div>
+    <div class="c"><div class="n">02</div><b>Too many plugins</b><p>Every add-on loads its own scripts — even on pages that don't use it.</p><div class="fix"><span>FIX</span>Audit & remove what you don't need.</div></div>
+    <div class="c"><div class="n">03</div><b>Overloaded hosting</b><p>Cheap shared servers slow down when neighbours get busy.</p><div class="fix"><span>FIX</span>Right-size hosting + use a CDN.</div></div>
+    <div class="c"><div class="n">04</div><b>No caching</b><p>The server rebuilds every page from scratch for every visitor.</p><div class="fix"><span>FIX</span>Turn on page & browser caching.</div></div>
+  </div>
+  <div class="tip" style="margin-top:auto"><div><span>Free check</span>Test your site on Google PageSpeed Insights.<br>Look at the mobile score first.</div><div class="mono" style="color:#a3c0ff">Save ↓</div></div>
+  <div class="foot" style="margin-top:24px;border:none;padding-top:0"><div class="mono muted">vanaila.com</div><div class="mono muted">Tag someone with a slow site</div></div>
+</div></body></html>
