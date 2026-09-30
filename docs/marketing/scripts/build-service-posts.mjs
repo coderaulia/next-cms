@@ -44,7 +44,7 @@ services.forEach((s, i) => {
   const html = `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css"><style>${css}</style></head><body>
 <div class="post${s.dark ? ' dark' : ''}${s.shot ? ' withshot' : ''}">
   <div class="glow" style="width:560px;height:560px;background:${s.dark ? '#2f6dff' : '#a3c0ff'};${i % 2 ? 'left:-240px;bottom:-260px' : 'right:-220px;top:-220px'};opacity:${s.dark ? .3 : .55}"></div>
-  <div class="top"><div class="brand"><div class="mark">V</div>vanaila.</div><div class="mono ${muted}">${s.kicker} · ${n}/${total}</div></div>
+  <div class="top"><div class="brand" aria-label="Vanaila"><span class="lm"></span><span class="lw"></span></div><div class="mono ${muted}">${s.kicker} · ${n}/${total}</div></div>
   <div class="hook"><div class="mono ${muted}">${s.name}</div><h1 class="h1" style="margin-top:16px;font-size:${s.hook.replace(/<[^>]+>/g, '').length > 40 ? 68 : 80}px">${s.hook}</h1></div>
   <p class="for"><b>For</b>${s.for}</p>
   <div class="vals">${s.values.map(([t, d], k) => `<div class="v"><div class="ic">${['✓', '↗', '★'][k]}</div><div><b>${t}</b><p class="${muted}">${d}</p></div></div>`).join('')}</div>

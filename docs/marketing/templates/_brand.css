@@ -14,8 +14,11 @@ body{font-family:'Inter Tight',Helvetica,Arial,sans-serif;color:var(--ink);backg
 .mono{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
 .serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
 .top{display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:14px;font-weight:700;font-size:30px;letter-spacing:-.02em}
-.mark{width:48px;height:48px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:26px;font-weight:700}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .lm{width:56px;height:56px;background:url(../assets/brand/mark.png) center/contain no-repeat;border-radius:13px}
+.brand .lw{width:143px;height:31px;margin-top:4px;background:url(../assets/brand/wordmark.png) left center/contain no-repeat}
+.dark .brand .lm{box-shadow:0 0 0 2px rgba(255,255,255,.18)}
+.dark .brand .lw{background-image:url(../assets/brand/wordmark-white.png)}
 .dark .muted{color:#9fb0cf}.muted{color:var(--muted)}
 .h1{font-size:84px;line-height:.98;letter-spacing:-.03em;font-weight:600}
 .h1 .serif{color:var(--accent);font-size:1.08em;letter-spacing:-.01em}

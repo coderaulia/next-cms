@@ -29,5 +29,6 @@ npm run render:one -- 02  # render one template by name match
 
 - Uses `playwright-core` with the Chromium at `/opt/pw-browsers` (override with `CHROMIUM_PATH`).
 - Fonts come from local `@fontsource` packages (no network needed).
+- Logo: `assets/brand/` (`vanaila-logo.png` original, `mark.png`, `wordmark.png`, `wordmark-white.png` for dark posts). Use `<div class="brand"><span class="lm"></span><span class="lw"></span></div>` in templates.
 - Files starting with `_` in `templates/` are partials, not rendered.
 - Workflow skill: `skills/social-post/SKILL.md` (copy into `.claude/skills/` to use it with Claude Code; `.claude` is gitignored).
