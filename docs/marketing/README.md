@@ -13,6 +13,9 @@ Social media creatives for Vanaila Digital, built as HTML templates and rendered
 | 7 | `output/07-slow-website.png` | Education: why is my website slow |
 | 8 | `output/08-marketplace-vs-store.png` | Education: marketplace vs own store |
 | 9 | `output/09-kpi-vs-competency.png` | Education: KPI vs competency |
+| 10 | `output/10-hero-website.png` | Hard-sell hero: website |
+| 11 | `output/11-hero-flowraze.png` | Hard-sell hero: Flowraze |
+| 12 | `output/12-hero-hris.png` | Hard-sell hero: HRIS |
 
 Service series (10 posts, one per offer): `output/svc-*.png`, captions and value propositions by customer type in [`service-series.md`](./service-series.md). Edit `data/services.json`, then run `npm run render:services`.
 
@@ -30,5 +33,5 @@ npm run render:one -- 02  # render one template by name match
 - Uses `playwright-core` with the Chromium at `/opt/pw-browsers` (override with `CHROMIUM_PATH`).
 - Fonts come from local `@fontsource` packages (no network needed).
 - Logo: `assets/brand/` (`vanaila-logo.png` original, `mark.png`, `wordmark.png`, `wordmark-white.png` for dark posts). Use `<div class="brand"><span class="lm"></span><span class="lw"></span></div>` in templates.
-- Files starting with `_` in `templates/` are partials, not rendered.
+- Files starting with `_` in `templates/` are partials, not rendered (`_brand.css` shared tokens, `_hero.css` jumbotron layout).
 - Workflow skill: `skills/social-post/SKILL.md` (copy into `.claude/skills/` to use it with Claude Code; `.claude` is gitignored).

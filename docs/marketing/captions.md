@@ -233,3 +233,53 @@ Save this for your next performance review, and share it with your HR team. 🙌
 (Tracking both in one place is exactly what we built Vanaila HRIS for.)
 
 #HRTips #KPI #ManajemenKinerja #PenilaianKaryawan #HRIndonesia #VanailaHRIS
+
+---
+
+# Hard-sell hero series
+
+These are jumbotron-style offer posts: a big promise, a direct call to action, and a real product screenshot. Use them sparingly, about 1 in every 4 posts, and put the link in bio and the WhatsApp CTA right at the top of the caption.
+
+## Post 10: Your website should sell (`output/10-hero-website.png`)
+
+Your website should sell. Not just sit there. 💼
+
+We build fast, SEO-ready websites designed around one goal: turning visitors into enquiries.
+✅ Mobile-first design
+✅ Core Web Vitals optimized
+✅ CMS included, so you can update it yourself
+✅ Packages from 5 pages to fully custom
+
+📅 We're booking new projects now. Book your consultation today (link in bio) or DM "WEBSITE".
+
+#JasaPembuatanWebsite #WebsiteBisnis #WebDevelopment #WebsiteCompanyProfile #VanailaDigital
+
+## Post 11: Close more deals, lose zero leads (`output/11-hero-flowraze.png`)
+
+Close more deals. Lose zero leads. 🚀
+
+Flowraze is the CRM built for Indonesian SMB sales teams:
+✅ Every lead captured and assigned
+✅ Visual deal pipeline with real pipeline value
+✅ Team and campaign analytics
+✅ Zero learning curve: your team is productive on day one
+
+Stop chasing spreadsheets and start closing.
+👉 Request your Flowraze demo: vanaila.com/flowraze or DM "DEMO".
+
+#CRM #CRMIndonesia #SalesPipeline #TimSales #Flowraze #VanailaDigital
+
+## Post 12: Stop running HR on spreadsheets (`output/12-hero-hris.png`)
+
+Stop running HR on spreadsheets. 🛑📊
+
+Vanaila HRIS puts everything in one employee record:
+✅ KPI management with manager-approval workflow
+✅ Competency assessment and TNA
+✅ HR letters (PKWT, PKWTT, SK, certificates) generated to A4 PDF
+✅ Probation and PIP tied to real KPI scores
+
+One record. One approval flow. One audit trail.
+👉 Book a live demo: vanaila.com/hris or DM "HRIS".
+
+#HRIS #HRISIndonesia #AplikasiHR #ManajemenSDM #HRTech #VanailaHRIS

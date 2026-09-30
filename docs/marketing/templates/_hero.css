@@ -1,0 +1,30 @@
+.hero{align-items:center;text-align:center;padding-bottom:0;overflow:hidden}
+.hero .top{width:100%}
+.pill{margin-top:64px;display:inline-flex;align-items:center;gap:10px;padding:10px 20px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:.08em;text-transform:uppercase;background:#eaf0ff;color:var(--accent)}
+.dark .pill,.blue .pill{background:rgba(255,255,255,.12);color:#dbe5ff}
+.pill i{width:9px;height:9px;border-radius:50%;background:currentColor;display:block}
+.big{margin-top:28px;font-size:112px;line-height:.95;letter-spacing:-.04em;font-weight:700}
+.big .serif{font-weight:400;letter-spacing:-.01em;color:var(--accent)}
+.dark .big .serif{color:var(--accent-soft)}.blue .big .serif{color:#fff;opacity:.85}
+.sub{margin-top:28px;font-size:27px;line-height:1.4;max-width:820px;color:var(--muted)}
+.dark .sub{color:#b8c6e0}.blue .sub{color:#dbe5ff}
+.ctas{margin-top:40px;display:flex;gap:16px;justify-content:center}
+.btn{padding:22px 38px;border-radius:999px;font-size:26px;font-weight:600}
+.btn.p{background:var(--accent);color:#fff;box-shadow:0 18px 40px rgba(47,109,255,.35)}
+.blue .btn.p{background:#fff;color:var(--accent);box-shadow:0 18px 40px rgba(8,15,30,.25)}
+.btn.s{border:1.5px solid var(--line);color:var(--navy)}
+.dark .btn.s,.blue .btn.s{border-color:rgba(255,255,255,.35);color:#fff}
+.trust{margin-top:26px;display:flex;gap:28px;justify-content:center;font-size:19px;color:var(--muted)}
+.dark .trust{color:#9fb0cf}.blue .trust{color:#dbe5ff}
+.trust span::before{content:'✓ ';color:var(--accent);font-weight:700}
+.dark .trust span::before{color:var(--accent-soft)}.blue .trust span::before{color:#fff}
+.browser{margin-top:56px;flex:1;min-height:0;width:940px;border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 60px rgba(17,37,73,.22);overflow:hidden;border:1px solid var(--line);border-bottom:none;display:flex;flex-direction:column}
+.dark .browser,.blue .browser{border-color:rgba(255,255,255,.2)}
+.bar{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;background:#eef2f9;border-bottom:1px solid var(--line)}
+.bar i{width:12px;height:12px;border-radius:50%;background:#c9d3e4;display:block}
+.bar .url{margin-left:14px;flex:1;height:26px;border-radius:8px;background:#fff;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);display:flex;align-items:center;padding-left:12px;text-align:left}
+.browser img{width:100%;flex:1;min-height:0;object-fit:cover;object-position:top}
+.blue{background:linear-gradient(165deg,#2f6dff 0%,#1a47c4 60%,#14306f 100%);color:#fff}
+.blue .brand .lw{background-image:url(../assets/brand/wordmark-white.png)}
+.blue .brand .lm{box-shadow:0 0 0 2px rgba(255,255,255,.3)}
+.blue .muted{color:#dbe5ff}
