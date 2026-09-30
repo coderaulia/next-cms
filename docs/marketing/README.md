@@ -16,6 +16,7 @@ Social media creatives for Vanaila Digital, built as HTML templates and rendered
 | 10 | `output/10-hero-website.png` | Hard-sell hero: website |
 | 11 | `output/11-hero-flowraze.png` | Hard-sell hero: Flowraze |
 | 12 | `output/12-hero-hris.png` | Hard-sell hero: HRIS |
+| 13 | `output/13-hero-psikotest.png` | Hard-sell hero: Psikotest |
 
 Service series (10 posts, one per offer): `output/svc-*.png`, captions and value propositions by customer type in [`service-series.md`](./service-series.md). Edit `data/services.json`, then run `npm run render:services`.
 

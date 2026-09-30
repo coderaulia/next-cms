@@ -283,3 +283,18 @@ One record. One approval flow. One audit trail.
 👉 Book a live demo: vanaila.com/hris or DM "HRIS".
 
 #HRIS #HRISIndonesia #AplikasiHR #ManajemenSDM #HRTech #VanailaHRIS
+
+## Post 13: Psychotests, without the paper (`output/13-hero-psikotest.png`)
+
+Psychotests, without the paper. 🧠📝
+
+Psikotest is the assessment workspace for HR teams and licensed psychologists:
+✅ Deliver assessments online: share a link or QR code, no paper and no forms
+✅ Automatic rubric-based scoring the moment a test is submitted
+✅ Reviewer-written interpretations by licensed psychologists
+✅ Upload your own instrument; Psikotest handles delivery, scoring and reporting
+
+Faster recruitment screening, cleaner data, consistent reports.
+👉 Request a demo: vanaila.com/psikotest or DM "PSIKOTEST".
+
+#Psikotes #PsikotesOnline #Rekrutmen #AsesmenPsikologi #HRTech #Psikotest
