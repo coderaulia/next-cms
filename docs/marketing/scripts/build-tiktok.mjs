@@ -43,6 +43,14 @@ html,body{width:1080px;height:1920px}
 .dark .chip::before{color:var(--accent-soft)}.blue .chip::before{color:#fff}
 .cta{margin-top:48px;display:inline-block;align-self:flex-start;padding:28px 44px;border-radius:999px;background:var(--accent);color:#fff;font-size:38px;font-weight:700;box-shadow:0 18px 40px rgba(47,109,255,.4)}
 .blue .cta{background:#fff;color:var(--accent)}
+.vs{margin-top:36px;display:flex;flex-direction:column;gap:22px}
+.side{padding:34px 34px;border-radius:28px;font-size:50px;line-height:1.15;font-weight:700;letter-spacing:-.02em}
+.side small{display:block;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase;font-weight:400;margin-bottom:14px;opacity:.75}
+.side.l{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.dark .side.l,.blue .side.l{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff}
+.side.r{background:var(--accent);color:#fff}
+.blue .side.r{background:#fff;color:var(--accent)}
+.arrow{font-size:56px;line-height:1;text-align:center;opacity:.6}
 .swipe{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
 `;
 
@@ -52,6 +60,7 @@ const render = (sl) => {
     case 'point': return `<div class="num">${sl.n}</div><h2 class="pt">${sl.title}</h2><p class="pb">${sl.body}</p>${sl.fix ? `<div class="fix"><span>SOLUSI</span>${sl.fix}</div>` : ''}`;
     case 'check': return `<h2 class="pt">${sl.title}</h2><div class="list">${sl.items.map((x, i) => `<div class="li"><b>${i + 1}</b><span>${x}</span></div>`).join('')}</div>`;
     case 'shot': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="shot"><img src="${sl.img}"></div><div class="chips">${sl.items.map((x) => `<div class="chip">${x}</div>`).join('')}</div>`;
+    case 'vs': return `<div class="num" style="font-size:110px">${sl.n}</div><div class="vs"><div class="side l"><small>${sl.lt}</small>${sl.l}</div><div class="arrow">↓</div><div class="side r"><small>${sl.rt}</small>${sl.r}</div></div>`;
     case 'cta': return `<h2 class="t" style="font-size:96px">${sl.title}</h2><p class="s">${sl.sub}</p><div class="cta">${sl.handle}</div>`;
   }
 };

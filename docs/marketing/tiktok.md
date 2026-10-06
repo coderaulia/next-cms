@@ -1,12 +1,15 @@
 # TikTok Content
 
-There are 3 posts. Each one is built as a **Photo Mode carousel** (6 slides, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 6 posts. Each one is built as a **Photo Mode carousel** (6–7 slides, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
 | 1 | 3 tanda website-mu bikin pelanggan kabur | `output/tt-01-website-kabur-s1…s6.png` | Education → website leads |
 | 2 | POV: HR masih pakai Excel | `output/tt-02-pov-hr-excel-s1…s6.png` | Relatable humor → HRIS demo |
 | 3 | Behind the scenes: website dari nol | `output/tt-03-behind-website-s1…s6.png` | Trust / process → consultations |
+| 4 | 5 red flag pas cari jasa website 🚩 | `output/tt-04-red-flag-jasa-website-s1…s7.png` | Viral: save & share → trust |
+| 5 | Klien bilang vs maksudnya 😂 | `output/tt-05-klien-vs-maksudnya-s1…s6.png` | Viral: relatable humor → reach |
+| 6 | 5 hal yang bikin bisnis kelihatan amatir | `output/tt-06-bisnis-kelihatan-amatir-s1…s7.png` | Viral: self-check → comments |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -133,6 +136,106 @@ How a business website is built from scratch: the 4 stages we follow on every pr
 | 10–18s | "02 Desain" | Screen recording of the design file, then the Aura template |
 | 18–26s | "03 Build" | Code editor, then the CMS editing a page |
 | 26–35s | "04 Launch & ukur" | Site on a phone + "Bisnismu tahap mana?" |
+
+---
+
+# Viral series (posts 4–6)
+
+**Why these formats spread**
+- **Red flags / checklists** get *saved* and *shared* ("send this to a friend"), and TikTok weights saves and shares heavily.
+- **"X says vs what they mean"** is relatable humor. People tag coworkers, which brings in new viewers. It also pokes fun at **ourselves** (the "developer bilang" slide), so it doesn't read as mocking clients.
+- **"Kamu banget nomor berapa?"** invites a one-word comment (a number). That's an easy, meaningful reply rather than empty engagement bait.
+- Each hook leaves a gap ("Nomor 1 paling sering…", "Nomor 4 bikin tim kami tertawa…") so people swipe to the end.
+
+**Viral playbook**
+- Post at your audience's active hours (check TikTok Analytics → Followers), then stay online for the first hour to reply.
+- When a comment asks a good question, **reply with a video**. It's a ready-made next post.
+- If a post takes off, make a **part 2** within 48 hours ("5 red flag lagi…").
+- Turn on **Stitch & Duet**. Other creators reacting to "klien vs maksudnya" is free reach.
+
+---
+
+## Post 4: 5 red flag pas cari jasa website 🚩
+
+**Format:** Photo Mode, 7 slides · **Sound:** dramatic/suspense track from the CML
+
+**Caption (ID)**
+```
+5 red flag pas cari jasa website 🚩 Save sebelum bayar DP! Kamu pernah kena nomor berapa?
+
+#jasawebsite #tipsbisnis #umkm #redflag #websitebisnis
+```
+
+**Caption (EN, optional)**
+```
+5 red flags when hiring a web developer 🚩 Save this before you pay the deposit. Which one happened to you?
+
+#webdesign #smallbusinesstips #redflags #businessowner
+```
+
+**Pinned comment:** `Bonus: minta semua akses (domain, hosting, CMS) dikirim ke email bisnismu sendiri 🔑`
+
+**Video script (alternative, ~30s)**
+| Time | On screen | Action |
+| --- | --- | --- |
+| 0–3s | "5 RED FLAG jasa website 🚩" | Face to camera, holding a red flag (or a 🚩 sticker) |
+| 3–24s | One red flag every ~4s | Green-screen over each slide and react to each one |
+| 24–30s | "Save sebelum bayar DP!" | Point at the save button |
+
+---
+
+## Post 5: Klien bilang vs maksudnya 😂
+
+**Format:** Photo Mode, 6 slides · **Sound:** trending *comedic* sound from the CML
+
+**Caption (ID)**
+```
+Yang klien bilang vs yang sebenarnya dimaksud 😂 (nomor 4 itu kami sendiri sih) Paling relate nomor berapa?
+
+#agencylife #desainer #programmer #kerjakantoran #relate
+```
+
+**Caption (EN, optional)**
+```
+What clients say vs what they actually mean 😂 (#4 is us, to be fair). Which one is most relatable?
+
+#agencylife #designer #developer #worklife
+```
+
+**Pinned comment:** `Tim klien atau tim developer? 👀 Jawab di sini`
+
+**Video script (alternative, ~20s):** two-person skit. One plays "Klien", the other "Tim". Use a text overlay for each line, and cut fast between the "bilang" and "maksudnya" lines. End on the developer twist.
+
+> Tone check: keep it light and self-deprecating. Never use real client names, chats or projects.
+
+---
+
+## Post 6: 5 hal kecil yang bikin bisnismu kelihatan amatir
+
+**Format:** Photo Mode, 7 slides · **Sound:** upbeat track from the CML
+
+**Caption (ID)**
+```
+5 hal kecil yang bikin bisnis kelihatan amatir 😬 Semua bisa dibenerin hari ini. Jujur, kamu banget nomor berapa?
+
+#tipsbisnis #umkm #bisnisonline #brandingbisnis #pengusahamuda
+```
+
+**Caption (EN, optional)**
+```
+5 small things that make your business look amateur 😬 All fixable today. Be honest, which number is you?
+
+#smallbusinesstips #branding #entrepreneur #businessowner
+```
+
+**Pinned comment:** `Nomor 1 paling cepat dibenerin: email @namabisnis bisa aktif hari ini 💼`
+
+**Video script (alternative, ~30s)**
+| Time | On screen | Action |
+| --- | --- | --- |
+| 0–3s | "Bisnismu kelihatan amatir karena…" | Face to camera, a slight cringe |
+| 3–27s | Items 1–5, each with "❌ → ✅" | Before/after split-screen for each item |
+| 27–30s | "Kamu nomor berapa? 😂" | Laugh, then point at the comments |
 
 ---
 
