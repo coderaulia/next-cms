@@ -369,5 +369,137 @@
     "handle": "Follow untuk insight AI & sistem bisnis"
    }
   ]
+ },
+ {
+  "slug": "rate-website",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "collage",
+    "kicker": "Rate dong 👀",
+    "title": "Kasih nilai <i>1–10</i> untuk website ini",
+    "imgs": [
+     "../../../public/templates-static/previews/aura-property.jpg",
+     "../../../public/templates-static/previews/toko-meubel-rahayu.png",
+     "../../../public/templates-static/previews/po-bus-bahari-alam.png"
+    ],
+    "sub": "Jujur aja, kami kuat kok 😅"
+   },
+   {
+    "type": "img",
+    "kicker": "#1 · Properti",
+    "title": "Elegan & mewah",
+    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "ask": "Nilai berapa? 1–10"
+   },
+   {
+    "type": "img",
+    "kicker": "#2 · Toko mebel",
+    "title": "Hangat & premium",
+    "img": "../../../public/templates-static/previews/toko-meubel-rahayu.png",
+    "ask": "Nilai berapa? 1–10"
+   },
+   {
+    "type": "img",
+    "kicker": "#3 · PO Bus",
+    "title": "Bold & meyakinkan",
+    "img": "../../../public/templates-static/previews/po-bus-bahari-alam.png",
+    "ask": "Nilai berapa? 1–10"
+   },
+   {
+    "type": "cta",
+    "title": "Tulis nilaimu: <i>#1, #2, #3</i> 👇",
+    "sub": "Semua ini template Vanaila — bisa disesuaikan untuk usahamu.",
+    "handle": "Follow untuk contoh website lainnya"
+   }
+  ]
+ },
+ {
+  "slug": "pilih-a-atau-b",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "split",
+    "kicker": "Pilih satu!",
+    "title": "Usaha kuliner. <i>Website</i> mana yang bikin kamu pesan?",
+    "imgA": "../../../public/templates-static/previews/nusa-jaya-modern.png",
+    "imgB": "../../../public/templates-static/previews/catering-mama-fadil.png",
+    "labelA": "A · Gelap & eksklusif",
+    "labelB": "B · Hangat & ramah"
+   },
+   {
+    "type": "img",
+    "kicker": "A",
+    "title": "Gelap & eksklusif",
+    "img": "../../../public/templates-static/previews/nusa-jaya-modern.png",
+    "ask": "Kesan: fine dining, premium"
+   },
+   {
+    "type": "img",
+    "kicker": "B",
+    "title": "Hangat & ramah",
+    "img": "../../../public/templates-static/previews/catering-mama-fadil.png",
+    "ask": "Kesan: rumahan, dekat, terpercaya"
+   },
+   {
+    "type": "check",
+    "title": "Tidak ada yang salah. Yang penting <i>cocok</i>:",
+    "items": [
+     "Target premium & eksklusif → A",
+     "Keluarga & acara kantor → B",
+     "Ragu? Lihat siapa pelanggan terbaikmu"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Kamu tim <i>A</i> atau <i>B</i>?",
+    "sub": "Komen hurufnya 👇 Kami tebak jenis usahamu.",
+    "handle": "Follow untuk inspirasi desain website"
+   }
+  ]
+ },
+ {
+  "slug": "umkm-website-keren",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "collage",
+    "kicker": "Siapa bilang?",
+    "title": "UMKM nggak bisa punya website <i>sekeren</i> brand besar?",
+    "imgs": [
+     "../../../public/templates-static/previews/budi-mobil.png",
+     "../../../public/templates-static/previews/javanesa.jpg",
+     "../../../public/templates-static/previews/bdo-clth.jpg"
+    ],
+    "sub": "Geser, lihat buktinya →"
+   },
+   {
+    "type": "img",
+    "kicker": "Bengkel",
+    "title": "Bengkel lokal, kesan profesional",
+    "img": "../../../public/templates-static/previews/budi-mobil.png",
+    "ask": "Booking servis langsung dari website"
+   },
+   {
+    "type": "img",
+    "kicker": "Skincare lokal",
+    "title": "Brand lokal, rasa premium",
+    "img": "../../../public/templates-static/previews/javanesa.jpg",
+    "ask": "Cerita brand + toko online"
+   },
+   {
+    "type": "img",
+    "kicker": "Clothing",
+    "title": "Distro rasa flagship store",
+    "img": "../../../public/templates-static/previews/bdo-clth.jpg",
+    "ask": "Koleksi baru tampil seperti lookbook"
+   },
+   {
+    "type": "cta",
+    "title": "Usahamu bidang <i>apa</i>?",
+    "sub": "Komen di bawah — kami tunjukkan contoh template yang cocok.",
+    "handle": "Follow untuk contoh website UMKM"
+   }
+  ]
  }
 ]

@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 9 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 12 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -13,6 +13,9 @@ There are 9 posts. Each one is built as a **Photo Mode carousel** (**max 5 slide
 | 7 | 3 cara pakai AI di bisnismu minggu ini | `output/tt-07-ai-untuk-umkm-s1…s5.png` | AI education → saves |
 | 8 | 3 salah kaprah soal AI di bisnis | `output/tt-08-mitos-fakta-ai-s1…s5.png` | AI myth-busting → shares |
 | 9 | AI paling berguna justru yang tidak terlihat | `output/tt-09-ai-dalam-sistem-s1…s5.png` | AI in systems → custom-tools leads |
+| 10 | Rate website ini 1–10 👀 | `output/tt-10-rate-website-s1…s5.png` | Viral (image): comment a score → reach |
+| 11 | Pilih A atau B? (website kuliner) | `output/tt-11-pilih-a-atau-b-s1…s5.png` | Viral (image): poll in comments → reach |
+| 12 | UMKM bisa punya website sekeren brand besar | `output/tt-12-umkm-website-keren-s1…s5.png` | Viral (image): proof → template leads |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -316,6 +319,89 @@ AI in business is more than a chatbot 🤖 The most useful AI works quietly insi
 **Video script (alternative, ~30s):** before/after screen. A messy inbox and spreadsheet ("sebelum"), then a dashboard with auto-sorted leads and a summary card ("sesudah"). Use mock or demo data only.
 
 > Note: these are examples of what can be **built** (Custom Business Tools → AI integration). Don't present them as existing features of Vanaila HRIS, Flowraze or Psikotest unless they are.
+
+---
+
+# Image-led viral series (posts 10–12)
+
+These slides are **picture-first**: full-screen Vanaila template previews on a blurred background of the same image, with short text on top. Images stop the scroll, and the text gives people a reason to comment.
+
+**Honesty rule:** every image is a **Vanaila template** with a fictional brand (Aura, Nusa Jaya, Catering Mama Fadil, Budi Mobil, Javanesa, BDO.CLTH, etc.). Each frame is labelled "Template Vanaila". Never call them client projects or real businesses.
+
+**Why they spread**
+- **Rate 1–10**: a one-number comment is the easiest reply on TikTok. Disagreeing scores in the comments create replies on replies.
+- **A or B**: a binary choice people defend in the comments. Our follow-up reply ("tim A biasanya usaha …") gives them a reason to come back.
+- **"Siapa bilang UMKM…"**: pride and aspiration for local businesses. Owners share it ("ini kayak usaha kita").
+
+## Post 10: Rate website ini 1–10 👀
+
+**Format:** Photo Mode, 5 slides · **Sound:** trending upbeat track from the CML
+
+**Caption (ID)**
+```
+Rate website ini 1–10 👀 Jujur aja, kami kuat kok 😅 Tulis nilaimu untuk #1, #2, #3 di komentar!
+
+#ratewebsite #webdesign #desainwebsite #websitebisnis #umkm
+```
+
+**Caption (EN, optional)**
+```
+Rate these websites 1–10 👀 Be honest, we can take it 😅 Drop your score for #1, #2, #3!
+
+#ratemywebsite #webdesign #websiteinspo #smallbusiness
+```
+
+**Pinned comment:** `Yang dapat nilai tertinggi kami bikin video breakdown desainnya 🔍`
+
+**Video script (alternative, ~20s):** screen recording scrolling each template on a phone, ~5s each, with a big "?/10" overlay. End with "Komen nilaimu 👇".
+
+---
+
+## Post 11: Pilih A atau B? (website kuliner)
+
+**Format:** Photo Mode, 5 slides · **Sound:** "this or that" style track from the CML
+
+**Caption (ID)**
+```
+Usaha kuliner: website A atau B yang bikin kamu langsung pesan? 🍽️ Komen hurufnya, kami tebak jenis usahamu!
+
+#pilihmana #websitekuliner #bisniskuliner #desainwebsite #umkm
+```
+
+**Caption (EN, optional)**
+```
+Restaurant websites: A or B, which one makes you order? 🍽️ Comment the letter and we'll guess your business type!
+
+#thisorthat #restaurantwebsite #webdesign #foodbusiness
+```
+
+**Pinned comment:** `Hasil sementara: tim A biasanya usaha premium/fine dining, tim B usaha keluarga & catering. Kamu yang mana? 👀`
+
+**Video script (alternative, ~15s):** split-screen A/B with a 3-2-1 countdown, then "Komen A atau B!" Use the "Pilih satu" sticker if one is available.
+
+---
+
+## Post 12: UMKM bisa punya website sekeren brand besar
+
+**Format:** Photo Mode, 5 slides · **Sound:** empowering/upbeat Indonesian track from the CML
+
+**Caption (ID)**
+```
+Siapa bilang UMKM nggak bisa punya website sekeren brand besar? 💪 Bengkel, skincare lokal, distro, semua bisa. Usahamu bidang apa? Komen, kami tunjukkan contohnya!
+
+#umkm #umkmnaikkelas #websiteumkm #banggabuatanindonesia #bisnislokal
+```
+
+**Caption (EN, optional)**
+```
+Who says small businesses can't have websites as good as big brands? 💪 Garages, local skincare, clothing brands, all possible. What's your business? Comment and we'll show you an example!
+
+#smallbusiness #supportlocal #websitedesign #localbrand
+```
+
+**Pinned comment:** `Ada 14 contoh template per industri, sebut bidang usahamu dan kami kirimkan yang paling cocok 🙌`
+
+**Video script (alternative, ~25s):** "Siapa bilang…?" face to camera. Fast cuts through 3–5 templates on a phone screen, each labelled with its industry. End on "Usahamu bidang apa?"
 
 ---
 
