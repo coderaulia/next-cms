@@ -57,7 +57,7 @@ html,body{width:1080px;height:1920px}
 const render = (sl) => {
   switch (sl.type) {
     case 'hook': return `<div class="k">${sl.kicker}</div><h1 class="t">${sl.title}</h1><p class="s">${sl.sub}</p>`;
-    case 'point': return `<div class="num">${sl.n}</div><h2 class="pt">${sl.title}</h2><p class="pb">${sl.body}</p>${sl.fix ? `<div class="fix"><span>SOLUSI</span>${sl.fix}</div>` : ''}`;
+    case 'point': return `<div class="num">${sl.n}</div><h2 class="pt">${sl.title}</h2><p class="pb">${sl.body}</p>${sl.fix ? `<div class="fix"><span>${sl.fixLabel || 'SOLUSI'}</span>${sl.fix}</div>` : ''}`;
     case 'check': return `<h2 class="pt">${sl.title}</h2><div class="list">${sl.items.map((x, i) => `<div class="li"><b>${i + 1}</b><span>${x}</span></div>`).join('')}</div>`;
     case 'shot': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="shot"><img src="${sl.img}"></div><div class="chips">${sl.items.map((x) => `<div class="chip">${x}</div>`).join('')}</div>`;
     case 'vs': return `<div class="num" style="font-size:110px">${sl.n}</div><div class="vs"><div class="side l"><small>${sl.lt}</small>${sl.l}</div><div class="arrow">↓</div><div class="side r"><small>${sl.rt}</small>${sl.r}</div></div>`;

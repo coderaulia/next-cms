@@ -31,15 +31,6 @@
     "fix": "Satu tombol aksi yang jelas di tiap halaman"
    },
    {
-    "type": "check",
-    "title": "Cek website-mu sekarang",
-    "items": [
-     "Buka di HP, hitung berapa detik loading-nya",
-     "Coba pesan dari HP — gampang atau ribet?",
-     "Tanya teman: \"habis lihat ini, kamu harus ngapain?\""
-    ]
-   },
-   {
     "type": "cta",
     "title": "Mau kami cek <i>gratis</i>?",
     "sub": "Komen \"CEK\" dan kami bantu lihat website-mu.",
@@ -72,13 +63,6 @@
     "fix": ""
    },
    {
-    "type": "point",
-    "n": "📊",
-    "title": "Akhir bulan = lembur",
-    "body": "Rekap penilaian kinerja manual dari puluhan file. Training plan? Pakai feeling.",
-    "fix": ""
-   },
-   {
     "type": "shot",
     "kicker": "Plot twist",
     "title": "Semua bisa ada di <i>satu</i> data karyawan",
@@ -105,7 +89,7 @@
     "type": "hook",
     "kicker": "Behind the scenes",
     "title": "Gimana website bisnis dibuat <i>dari nol</i>?",
-    "sub": "4 tahap yang kami lalui di setiap proyek"
+    "sub": "3 tahap yang kami lalui di setiap proyek"
    },
    {
     "type": "point",
@@ -128,15 +112,8 @@
    {
     "type": "point",
     "n": "03",
-    "title": "Build: cepat & SEO-ready",
-    "body": "Dibangun dengan CMS supaya kamu bisa update sendiri. Dioptimasi kecepatan dan struktur SEO dari awal.",
-    "fix": ""
-   },
-   {
-    "type": "point",
-    "n": "04",
-    "title": "Launch & ukur",
-    "body": "Domain, email bisnis, Google Business Profile — lalu kita pantau: leads, telepon, penjualan.",
+    "title": "Build, launch & ukur",
+    "body": "Dibangun dengan CMS & SEO-ready, lalu live dengan domain, email bisnis & Google Business Profile. Setelah itu kita pantau: leads, telepon, penjualan.",
     "fix": ""
    },
    {
@@ -154,7 +131,7 @@
    {
     "type": "hook",
     "kicker": "Save sebelum bayar DP",
-    "title": "5 <i>red flag</i> pas cari jasa website 🚩",
+    "title": "3 <i>red flag</i> pas cari jasa website 🚩",
     "sub": "Nomor 1 paling sering bikin bisnis rugi"
    },
    {
@@ -174,23 +151,9 @@
    {
     "type": "point",
     "n": "🚩",
-    "title": "Harga tanpa rincian",
-    "body": "Murah di awal, tapi revisi, hosting, atau update ternyata ditagih terpisah.",
-    "fix": "Tanya: apa saja yang termasuk?"
-   },
-   {
-    "type": "point",
-    "n": "🚩",
     "title": "Tidak mau kasih akses admin",
     "body": "Mau ganti satu kalimat saja harus chat vendor dulu.",
     "fix": "Pastikan kamu pegang akses CMS"
-   },
-   {
-    "type": "point",
-    "n": "🚩",
-    "title": "Portofolio tidak bisa dicek",
-    "body": "Cuma kirim screenshot, tapi tidak ada satu pun website live yang bisa kamu buka.",
-    "fix": "Minta link proyek yang sudah live"
    },
    {
     "type": "cta",
@@ -208,7 +171,7 @@
     "type": "hook",
     "kicker": "Agency life",
     "title": "Yang klien bilang vs yang <i>sebenarnya</i> dimaksud 😂",
-    "sub": "Nomor 4 bikin tim kami tertawa (dan menangis)"
+    "sub": "Yang terakhir bikin tim kami tertawa (dan menangis)"
    },
    {
     "type": "vs",
@@ -222,21 +185,13 @@
     "type": "vs",
     "n": "2",
     "lt": "Klien bilang",
-    "l": "\"Logonya digedein dikit.\"",
-    "rt": "Maksudnya",
-    "r": "\"Lebih gede. Lagi. Lagi.\""
-   },
-   {
-    "type": "vs",
-    "n": "3",
-    "lt": "Klien bilang",
     "l": "\"Revisi dikit kok.\"",
     "rt": "Maksudnya",
     "r": "\"Ganti konsep dari awal.\""
    },
    {
     "type": "vs",
-    "n": "4",
+    "n": "3",
     "lt": "Developer bilang",
     "l": "\"Tinggal sedikit lagi.\"",
     "rt": "Maksudnya",
@@ -257,7 +212,7 @@
    {
     "type": "hook",
     "kicker": "Jujur-jujuran",
-    "title": "5 hal kecil yang bikin bisnismu kelihatan <i>amatir</i>",
+    "title": "3 hal kecil yang bikin bisnismu kelihatan <i>amatir</i>",
     "sub": "Gratis dibenerin, efeknya besar"
    },
    {
@@ -270,36 +225,148 @@
    {
     "type": "point",
     "n": "2",
-    "title": "Website \"coming soon\" bertahun-tahun",
-    "body": "Lebih baik satu halaman sederhana yang jelas daripada janji yang tidak jadi.",
-    "fix": "Live dulu, sempurnakan kemudian"
-   },
-   {
-    "type": "point",
-    "n": "3",
     "title": "Info kontak beda-beda",
     "body": "Jam buka & nomor di Instagram, Google, dan website tidak sama.",
     "fix": "Samakan di semua platform"
    },
    {
     "type": "point",
-    "n": "4",
+    "n": "3",
     "title": "Balas chat berhari-hari",
     "body": "Pelanggan yang bertanya hari ini sudah beli di tempat lain besok.",
     "fix": "Pakai auto-reply & jam respons jelas"
-   },
-   {
-    "type": "point",
-    "n": "5",
-    "title": "Foto produk gelap & buram",
-    "body": "Pelanggan menilai kualitas produk dari fotonya.",
-    "fix": "Cahaya alami + latar polos — cukup pakai HP"
    },
    {
     "type": "cta",
     "title": "Kamu banget <i>nomor berapa</i>? 😂",
     "sub": "Jujur di komentar — kami juga pernah.",
     "handle": "Follow untuk tips bisnis digital"
+   }
+  ]
+ },
+ {
+  "slug": "ai-untuk-umkm",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "AI untuk bisnis",
+    "title": "3 cara pakai <i>AI</i> di bisnismu minggu ini",
+    "sub": "Tanpa coding. Bisa mulai hari ini."
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Balas chat lebih cepat",
+    "body": "Minta AI menyusun draft jawaban untuk pertanyaan yang sering muncul: harga, ongkir, jam buka.",
+    "fix": "Simpan jadi template balasan cepat",
+    "fixLabel": "COBA"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Tulis deskripsi & caption",
+    "body": "Kasih info produk, minta 3 versi deskripsi. Pilih, lalu edit dengan gaya bahasamu sendiri.",
+    "fix": "\"Tulis 3 deskripsi untuk [produk], target [pembeli]\"",
+    "fixLabel": "PROMPT"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Rangkum yang panjang",
+    "body": "Notulen rapat, ulasan pelanggan, atau laporan — minta AI merangkum poin pentingnya.",
+    "fix": "Selalu cek ulang angka & faktanya",
+    "fixLabel": "INGAT"
+   },
+   {
+    "type": "cta",
+    "title": "Sudah pakai AI untuk <i>apa</i>?",
+    "sub": "Share di komentar — kita saling belajar.",
+    "handle": "Follow untuk tips AI & bisnis digital"
+   }
+  ]
+ },
+ {
+  "slug": "mitos-fakta-ai",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Mitos vs fakta",
+    "title": "3 salah kaprah soal <i>AI</i> di bisnis",
+    "sub": "Nomor 2 paling berisiko 👀"
+   },
+   {
+    "type": "vs",
+    "n": "1",
+    "lt": "Mitos",
+    "l": "\"Jawaban AI pasti benar.\"",
+    "rt": "Fakta",
+    "r": "AI bisa salah dengan sangat yakin. Cek fakta & angkanya."
+   },
+   {
+    "type": "vs",
+    "n": "2",
+    "lt": "Mitos",
+    "l": "\"Data apa pun aman dimasukkan ke AI.\"",
+    "rt": "Fakta",
+    "r": "Jangan masukkan data pelanggan atau rahasia bisnis ke AI publik."
+   },
+   {
+    "type": "vs",
+    "n": "3",
+    "lt": "Mitos",
+    "l": "\"AI cuma buat perusahaan besar.\"",
+    "rt": "Fakta",
+    "r": "Banyak tools bisa dicoba gratis. Mulai dari satu tugas kecil."
+   },
+   {
+    "type": "cta",
+    "title": "Mitos mana yang kamu <i>percaya</i>?",
+    "sub": "Jujur di komentar 👇 Share ke tim kantormu.",
+    "handle": "Follow untuk tips AI yang aman"
+   }
+  ]
+ },
+ {
+  "slug": "ai-dalam-sistem",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Lebih dari chatbot",
+    "title": "AI paling berguna justru yang <i>tidak terlihat</i>",
+    "sub": "Contoh AI di dalam sistem bisnis →"
+   },
+   {
+    "type": "point",
+    "n": "01",
+    "title": "Sortir otomatis",
+    "body": "Pesan & leads masuk langsung dikategorikan dan diteruskan ke orang yang tepat.",
+    "fix": "Tim sales tidak perlu memilah manual",
+    "fixLabel": "HASILNYA"
+   },
+   {
+    "type": "point",
+    "n": "02",
+    "title": "Ringkasan instan",
+    "body": "Data penilaian, laporan, atau riwayat pelanggan dirangkum jadi poin penting untuk manajer.",
+    "fix": "Keputusan lebih cepat",
+    "fixLabel": "HASILNYA"
+   },
+   {
+    "type": "point",
+    "n": "03",
+    "title": "Cari pakai bahasa biasa",
+    "body": "\"Tampilkan kontrak yang habis bulan depan\" — tanpa filter rumit.",
+    "fix": "Data lama jadi berguna lagi",
+    "fixLabel": "HASILNYA"
+   },
+   {
+    "type": "cta",
+    "title": "Mau tahu AI cocok untuk <i>bisnismu</i>?",
+    "sub": "Komen \"AI\" + bidang usahamu, kami kasih ide use case.",
+    "handle": "Follow untuk insight AI & sistem bisnis"
    }
   ]
  }
