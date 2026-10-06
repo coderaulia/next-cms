@@ -1,0 +1,20 @@
+[
+  {"slug":"presence","pillar":"Pillar 01 · Online Presence","theme":"light",
+   "hook":"Your customers are searching right now.",
+   "headline":"Be the business they <i>find</i> — and trust.",
+   "benefits":["SEO-ready website","Secure online shop","Official @yourbrand email"],
+   "offer":"Free consultation · Website, shop & email","cta":"Book now →",
+   "visual":"<div class='frame main'><div class='bar'><i></i><i></i><i></i><span>yourbrand.com</span></div><img src='../../../public/templates-static/previews/aura-property.jpg'></div><div class='frame side'><div class='bar'><i></i><i></i><i></i><span>shop.yourbrand.com</span></div><img src='../../../public/templates-static/previews/bdo-clth.jpg' style='object-position:left top'></div><div class='chip c1'>✉️ hello@yourbrand.com<small>SPF · DKIM · DMARC ✓</small></div>"},
+  {"slug":"systems","pillar":"Pillar 02 · Business Systems","theme":"dark",
+   "hook":"Still running operations on spreadsheets & chats?",
+   "headline":"Software built around <i>your</i> process.",
+   "benefits":["Dashboards & portals","Approvals with audit trail","Web & mobile apps"],
+   "offer":"Free workflow mapping call","cta":"Book a call →",
+   "visual":"<div class='frame main'><div class='bar'><i></i><i></i><i></i><span>ops.yourcompany.com</span></div><img src='../../../public/portfolio/hris/kpi-records.jpeg' style='object-position:left top'></div><div class='frame side'><div class='bar'><i></i><i></i><i></i><span>assessment portal</span></div><img src='../../../public/portfolio/assessment-app.jpg'></div><div class='chip c1'>✓ Approved by HR<small>Logged to audit trail</small></div>"},
+  {"slug":"products","pillar":"Pillar 03 · Products","theme":"blue",
+   "hook":"Ready-to-use software for growing teams.",
+   "headline":"Hire, manage & sell — <i>smarter.</i>",
+   "benefits":["Vanaila HRIS · HR suite","Flowraze · Sales CRM","Psikotest · Assessments"],
+   "offer":"Live demo for your team","cta":"Request demo →",
+   "visual":"<div class='frame p1'><div class='bar'><i></i><i></i><i></i><span>Psikotest</span></div><img src='../../../public/psikotest/new-assessment.png' style='object-position:left top'></div><div class='frame p2'><div class='bar'><i></i><i></i><i></i><span>Flowraze CRM</span></div><img src='../../../public/flowraze/dashboard.png' style='object-position:left top'></div><div class='frame p3'><div class='bar'><i></i><i></i><i></i><span>Vanaila HRIS</span></div><img src='../../../public/hris/hris-kpi-management.jpeg' style='object-position:left top'></div>"}
+]

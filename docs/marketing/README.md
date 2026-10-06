@@ -23,6 +23,8 @@ Social media creatives for Vanaila Digital, built as HTML templates and rendered
 
 Service series (10 posts, one per offer): `output/svc-*.png`, captions and value propositions by customer type in [`service-series.md`](./service-series.md). Edit `data/services.json`, then run `npm run render:services`.
 
+Ads (3 content pillars, feed + story): `output/ad-*.png`, copy and campaign setup in [`ads-pillars.md`](./ads-pillars.md). Edit `data/ads.json`, then run `npm run render:ads`.
+
 Captions: [`captions.md`](./captions.md). Services marketing brief: [`services-marketing.md`](./services-marketing.md).
 
 ## Setup
