@@ -1,0 +1,26 @@
+[
+  {"slug":"website-kabur","theme":"light","slides":[
+    {"type":"hook","kicker":"Pemilik bisnis wajib tahu","title":"3 tanda website-mu bikin pelanggan <i>kabur</i>","sub":"Nomor 3 paling sering terjadi 👀"},
+    {"type":"point","n":"1","title":"Loading-nya lama","body":"Pengunjung tidak mau menunggu. Halaman yang lambat bikin mereka balik ke Google — dan klik kompetitor.","fix":"Kompres gambar & aktifkan caching"},
+    {"type":"point","n":"2","title":"Berantakan di HP","body":"Tulisan kecil, tombol susah dipencet, harus zoom. Padahal kebanyakan pelanggan buka dari ponsel.","fix":"Desain mobile-first"},
+    {"type":"point","n":"3","title":"Tidak jelas harus ngapain","body":"Tidak ada tombol WhatsApp, tidak ada harga, tidak ada cara pesan. Pengunjung bingung, lalu pergi.","fix":"Satu tombol aksi yang jelas di tiap halaman"},
+    {"type":"check","title":"Cek website-mu sekarang","items":["Buka di HP, hitung berapa detik loading-nya","Coba pesan dari HP — gampang atau ribet?","Tanya teman: \"habis lihat ini, kamu harus ngapain?\""]},
+    {"type":"cta","title":"Mau kami cek <i>gratis</i>?","sub":"Komen \"CEK\" dan kami bantu lihat website-mu.","handle":"Follow untuk tips bisnis digital tiap minggu"}
+  ]},
+  {"slug":"pov-hr-excel","theme":"dark","slides":[
+    {"type":"hook","kicker":"POV","title":"Kamu HR, dan semua data karyawan ada di <i>Excel</i> 😵","sub":"Relate? Geser →"},
+    {"type":"point","n":"😩","title":"File \"KPI_final_v3_REVISI\"","body":"Ada 4 versi. Tidak ada yang tahu mana yang terbaru. Manajer edit sendiri-sendiri.","fix":""},
+    {"type":"point","n":"📝","title":"Bikin PKWT copy-paste","body":"Surat kontrak dibuat dari template kuartal lalu. Nama lupa diganti? Pernah.","fix":""},
+    {"type":"point","n":"📊","title":"Akhir bulan = lembur","body":"Rekap penilaian kinerja manual dari puluhan file. Training plan? Pakai feeling.","fix":""},
+    {"type":"shot","kicker":"Plot twist","title":"Semua bisa ada di <i>satu</i> data karyawan","img":"../../../public/hris/hris-kpi-management.jpeg","items":["KPI + approval manajer","Asesmen kompetensi & TNA","PKWT, PKWTT, SK → PDF"]},
+    {"type":"cta","title":"Tag HR yang butuh ini 👇","sub":"Vanaila HRIS — request demo, link di profil.","handle":"Follow untuk tips HR & bisnis"}
+  ]},
+  {"slug":"behind-website","theme":"blue","slides":[
+    {"type":"hook","kicker":"Behind the scenes","title":"Gimana website bisnis dibuat <i>dari nol</i>?","sub":"4 tahap yang kami lalui di setiap proyek"},
+    {"type":"point","n":"01","title":"Riset dulu, desain kemudian","body":"Kami pelajari bisnismu, pelanggan, dan kompetitor. Tujuannya: satu aksi utama yang harus dilakukan pengunjung.","fix":""},
+    {"type":"shot","kicker":"02 · Desain","title":"Desain yang <i>jelas</i>, bukan cuma cantik","img":"../../../public/templates-static/previews/aura-property.jpg","items":["Layout per halaman","Nyaman di HP","Tombol aksi yang menonjol"]},
+    {"type":"point","n":"03","title":"Build: cepat & SEO-ready","body":"Dibangun dengan CMS supaya kamu bisa update sendiri. Dioptimasi kecepatan dan struktur SEO dari awal.","fix":""},
+    {"type":"point","n":"04","title":"Launch & ukur","body":"Domain, email bisnis, Google Business Profile — lalu kita pantau: leads, telepon, penjualan.","fix":""},
+    {"type":"cta","title":"Bisnismu tahap <i>mana</i>?","sub":"Tulis di komentar — kami jawab satu per satu.","handle":"Follow untuk behind the scenes lainnya"}
+  ]}
+]

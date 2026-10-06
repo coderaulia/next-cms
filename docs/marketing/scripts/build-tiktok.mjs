@@ -1,0 +1,75 @@
+// Generates TikTok Photo Mode slides (1080x1920) from data/tiktok.json into templates/tt-XX-<slug>-sN.html.
+// Safe zones: content stays clear of the top 160px, bottom 440px and right 140px (TikTok UI overlays).
+import { readFileSync, writeFileSync, readdirSync, unlinkSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+
+const root = resolve(import.meta.dirname, '..');
+const sets = JSON.parse(readFileSync(join(root, 'data/tiktok.json'), 'utf8'));
+for (const f of readdirSync(join(root, 'templates'))) if (f.startsWith('tt-')) unlinkSync(join(root, 'templates', f));
+
+const css = `
+html,body{width:1080px;height:1920px}
+.post{width:1080px;height:1920px;padding:170px 150px 440px 72px}
+.blue{background:linear-gradient(165deg,#2f6dff 0%,#1a47c4 55%,#14306f 100%);color:#fff}
+.blue .muted{color:#dbe5ff}
+.blue .brand .lw{background-image:url(../assets/brand/wordmark-white.png)}
+.dark .brand .lm,.blue .brand .lm{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
+.count{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.08em}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+.k{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.dark .k{color:var(--accent-soft)}.blue .k{color:#dbe5ff}
+.t{font-size:104px;line-height:1;letter-spacing:-.035em;font-weight:700;margin-top:22px}
+.t i{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.01em;color:var(--accent)}
+.dark .t i{color:var(--accent-soft)}.blue .t i{color:#fff;opacity:.85}
+.s{font-size:38px;line-height:1.35;margin-top:34px;color:var(--muted)}
+.dark .s{color:#b8c6e0}.blue .s{color:#dbe5ff}
+.num{font-size:150px;line-height:1;font-weight:700;color:var(--accent);letter-spacing:-.04em}
+.dark .num{color:var(--accent-soft)}.blue .num{color:#fff}
+.pt{font-size:80px;line-height:1.02;letter-spacing:-.03em;font-weight:700;margin-top:24px}
+.pb{font-size:38px;line-height:1.4;margin-top:30px;color:var(--muted)}
+.dark .pb{color:#b8c6e0}.blue .pb{color:#dbe5ff}
+.fix{margin-top:44px;padding:26px 30px;border-radius:24px;background:#eaf0ff;color:var(--navy);font-size:32px;line-height:1.3;font-weight:600}
+.fix span{display:block;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;font-weight:400}
+.list{margin-top:40px;display:flex;flex-direction:column;gap:20px}
+.li{display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:center;font-size:36px;line-height:1.3;font-weight:500;padding:26px 28px;border-radius:24px;background:#fff;border:1px solid var(--line)}
+.dark .li,.blue .li{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.li b{width:64px;height:64px;border-radius:18px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:30px}
+.blue .li b{background:#fff;color:var(--accent)}
+.shot{margin-top:40px;border-radius:24px;overflow:hidden;height:520px;border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 70px rgba(8,15,30,.35);background:#fff}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:left top;display:block}
+.chips{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.chip{font-size:34px;font-weight:600}
+.chip::before{content:'✓  ';color:var(--accent)}
+.dark .chip::before{color:var(--accent-soft)}.blue .chip::before{color:#fff}
+.cta{margin-top:48px;display:inline-block;align-self:flex-start;padding:28px 44px;border-radius:999px;background:var(--accent);color:#fff;font-size:38px;font-weight:700;box-shadow:0 18px 40px rgba(47,109,255,.4)}
+.blue .cta{background:#fff;color:var(--accent)}
+.swipe{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+`;
+
+const render = (sl) => {
+  switch (sl.type) {
+    case 'hook': return `<div class="k">${sl.kicker}</div><h1 class="t">${sl.title}</h1><p class="s">${sl.sub}</p>`;
+    case 'point': return `<div class="num">${sl.n}</div><h2 class="pt">${sl.title}</h2><p class="pb">${sl.body}</p>${sl.fix ? `<div class="fix"><span>SOLUSI</span>${sl.fix}</div>` : ''}`;
+    case 'check': return `<h2 class="pt">${sl.title}</h2><div class="list">${sl.items.map((x, i) => `<div class="li"><b>${i + 1}</b><span>${x}</span></div>`).join('')}</div>`;
+    case 'shot': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="shot"><img src="${sl.img}"></div><div class="chips">${sl.items.map((x) => `<div class="chip">${x}</div>`).join('')}</div>`;
+    case 'cta': return `<h2 class="t" style="font-size:96px">${sl.title}</h2><p class="s">${sl.sub}</p><div class="cta">${sl.handle}</div>`;
+  }
+};
+
+sets.forEach((set, i) => {
+  const n = String(i + 1).padStart(2, '0');
+  set.slides.forEach((sl, j) => {
+    const total = set.slides.length;
+    const cls = set.theme === 'light' ? '' : ` ${set.theme}`;
+    const last = j === total - 1;
+    const html = `<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="size" content="1080x1920"><link rel="stylesheet" href="_brand.css"><style>${css}</style></head><body>
+<div class="post${cls}">
+  <div class="glow" style="width:700px;height:700px;background:${set.theme === 'light' ? '#a3c0ff' : '#2f6dff'};${j % 2 ? 'left:-300px;bottom:-200px' : 'right:-280px;top:-260px'};opacity:${set.theme === 'light' ? .55 : .3}"></div>
+  <div class="top"><div class="brand" aria-label="Vanaila"><span class="lm"></span><span class="lw"></span></div><div class="count muted">${j + 1}/${total}</div></div>
+  <div class="body">${render(sl)}</div>
+  ${last ? '' : '<div class="swipe">Geser →</div>'}
+</div></body></html>`;
+    writeFileSync(join(root, 'templates', `tt-${n}-${set.slug}-s${j + 1}.html`), html);
+  });
+  console.log('built', `tt-${n}-${set.slug}`, set.slides.length, 'slides');
+});

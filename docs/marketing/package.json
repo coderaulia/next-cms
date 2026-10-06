@@ -10,7 +10,9 @@
     "build:services": "node scripts/build-service-posts.mjs",
     "render:services": "node scripts/build-service-posts.mjs && node scripts/render.mjs --only svc-",
     "build:ads": "node scripts/build-ads.mjs",
-    "render:ads": "node scripts/build-ads.mjs && node scripts/render.mjs --only ad-"
+    "render:ads": "node scripts/build-ads.mjs && node scripts/render.mjs --only ad-",
+    "build:tiktok": "node scripts/build-tiktok.mjs",
+    "render:tiktok": "node scripts/build-tiktok.mjs && node scripts/render.mjs --only tt-"
   },
   "devDependencies": {
     "@fontsource/instrument-serif": "^5.3.0",

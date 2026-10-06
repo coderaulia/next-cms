@@ -25,6 +25,8 @@ Service series (10 posts, one per offer): `output/svc-*.png`, captions and value
 
 Ads (3 content pillars, feed + story): `output/ad-*.png`, copy and campaign setup in [`ads-pillars.md`](./ads-pillars.md). Edit `data/ads.json`, then run `npm run render:ads`.
 
+TikTok (3 Photo Mode carousels, 6 slides each): `output/tt-*.png`, captions, scripts and TikTok best practices in [`tiktok.md`](./tiktok.md). Edit `data/tiktok.json`, then run `npm run render:tiktok`.
+
 Captions: [`captions.md`](./captions.md). Services marketing brief: [`services-marketing.md`](./services-marketing.md).
 
 ## Setup
