@@ -298,3 +298,66 @@ Faster recruitment screening, cleaner data, consistent reports.
 👉 Request a demo: vanaila.com/psikotest or DM "PSIKOTEST".
 
 #Psikotes #PsikotesOnline #Rekrutmen #AsesmenPsikologi #HRTech #Psikotest
+
+---
+
+# Seri edukasi Bahasa Indonesia (soft-sell)
+
+## Post 14 — Domain, hosting, website: bedanya apa? (`output/14-domain-hosting.png`)
+
+Domain, hosting, website… sering dengar tapi masih bingung bedanya? 🤔
+
+Gampangnya, bayangkan kamu mau buka toko:
+📍 Domain = alamat toko (misalnya tokobudi.com)
+🏗️ Hosting = tanah & bangunannya, tempat semua file website disimpan
+🛍️ Website = isi & etalase toko yang dilihat pelanggan
+
+Ketiganya harus ada supaya bisnismu bisa ditemukan online.
+⚠️ Tips penting: pastikan domain terdaftar atas nama bisnismu sendiri, bukan atas nama vendor, supaya tetap jadi milikmu.
+
+Simpan postingan ini & bagikan ke teman yang lagi mau bikin website 🙌
+Masih bingung mulai dari mana? DM kami aja.
+
+#TipsWebsite #BikinWebsite #DomainDanHosting #UMKMGoDigital #BisnisOnline #VanailaDigital
+
+## Post 15 — 5 langkah SEO dasar untuk UMKM (`output/15-seo-umkm.png`)
+
+Mau bisnismu muncul di Google tanpa langsung pasang iklan? Mulai dari 5 langkah ini 👇
+
+1️⃣ Daftar Google Business Profile (gratis!), supaya bisnismu muncul di Google Maps
+2️⃣ Buat judul halaman yang jelas: layanan + kota, contoh "Catering Nasi Box di Bandung"
+3️⃣ Pastikan website nyaman dibuka di HP
+4️⃣ Jawab pertanyaan pelanggan lewat halaman FAQ: harga, area layanan, cara pesan
+5️⃣ Minta ulasan dari pelanggan asli
+
+SEO itu maraton, bukan sprint. Konsisten lebih penting daripada sempurna. 🏃
+
+Langkah mana yang belum kamu lakukan? Tulis di komentar ya 👇
+Butuh website yang SEO-ready dari awal? Ngobrol dulu yuk, DM kami.
+
+#SEO #TipsSEO #SEOUMKM #GoogleBusinessProfile #UMKMIndonesia #VanailaDigital
+
+## Post 16 — PKWT vs PKWTT (`output/16-pkwt-pkwtt.png`)
+
+PKWT vs PKWTT: jangan sampai tertukar! 📋
+
+📄 PKWT (karyawan kontrak)
+• Ada batas waktu
+• Wajib dibuat tertulis
+• Tidak boleh ada masa percobaan
+• Saat berakhir: uang kompensasi
+
+📄 PKWTT (karyawan tetap)
+• Jangka waktu tidak ditentukan
+• Bisa tertulis atau lisan (jika lisan, wajib ada surat pengangkatan)
+• Boleh masa percobaan, maks. 3 bulan
+• Jika PHK: pesangon sesuai ketentuan
+
+💡 Tips: simpan setiap perjanjian kerja secara tertulis dan terhubung ke data karyawan, jangan tercecer di folder.
+
+Rujukan umum: UU Ketenagakerjaan & PP 35/2021 beserta perubahannya. Untuk kasus spesifik, konsultasikan dengan konsultan hukum ketenagakerjaan.
+
+Bagikan ke tim HR-mu 🙌
+(Generate PKWT, PKWTT & SK langsung dari data karyawan? Itu salah satu fitur Vanaila HRIS.)
+
+#PKWT #PKWTT #HRIndonesia #Ketenagakerjaan #TipsHR #VanailaHRIS
