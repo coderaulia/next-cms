@@ -628,5 +628,131 @@
     "handle": "Follow untuk glow up website lainnya"
    }
   ]
+ },
+ {
+  "slug": "prompt-ai-kantoran",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Simpan untuk besok",
+    "title": "3 prompt <i>AI</i> yang bikin kerjaan kantor lebih ringan",
+    "sub": "Tinggal copy, ganti yang di dalam [kurung]"
+   },
+   {
+    "type": "point",
+    "n": "📧",
+    "title": "Email yang sopan & jelas",
+    "body": "Buntu mau balas email klien atau atasan? Minta AI bikin draft, lalu sesuaikan.",
+    "fix": "\"Tulis email sopan untuk [tujuan], ke [penerima], maksimal 5 kalimat\"",
+    "fixLabel": "PROMPT"
+   },
+   {
+    "type": "point",
+    "n": "📝",
+    "title": "Notulen jadi action items",
+    "body": "Tempel catatan rapat, minta AI pisahkan: keputusan, tugas, PIC, dan deadline.",
+    "fix": "\"Ubah notulen ini jadi tabel: tugas, PIC, deadline\"",
+    "fixLabel": "PROMPT"
+   },
+   {
+    "type": "point",
+    "n": "📊",
+    "title": "Rumus Excel tanpa pusing",
+    "body": "Jelaskan apa yang mau dihitung pakai bahasa biasa, minta rumus + cara pakainya.",
+    "fix": "\"Rumus Excel untuk [hitung apa], data di kolom [A–C]\"",
+    "fixLabel": "PROMPT"
+   },
+   {
+    "type": "cta",
+    "title": "Prompt mana yang <i>paling</i> kepake?",
+    "sub": "Ingat: jangan masukkan data rahasia kantor ke AI publik 🔒",
+    "handle": "Follow untuk prompt AI kerja lainnya"
+   }
+  ]
+ },
+ {
+  "slug": "ai-untuk-hr",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk tim HR",
+    "title": "3 tugas HR yang jadi lebih cepat dengan <i>AI</i>",
+    "sub": "Keputusannya tetap di tangan manusia 🤝"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Draft job description",
+    "body": "Masukkan posisi, tanggung jawab, dan kualifikasi — AI menyusun draft lowongan yang rapi.",
+    "fix": "Review agar bahasa tetap inklusif & akurat",
+    "fixLabel": "CATATAN"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Bank pertanyaan interview",
+    "body": "Minta pertanyaan berbasis perilaku untuk kompetensi tertentu, misalnya kerja tim atau problem solving.",
+    "fix": "Sesuaikan dengan kompetensi di posisi itu",
+    "fixLabel": "CATATAN"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Rangkum catatan penilaian",
+    "body": "Catatan manajer yang panjang dirangkum jadi poin kekuatan & area pengembangan.",
+    "fix": "Hapus nama & data pribadi sebelum pakai AI publik",
+    "fixLabel": "PENTING"
+   },
+   {
+    "type": "cta",
+    "title": "Tim HR-mu sudah pakai <i>AI</i>?",
+    "sub": "Share pengalamanmu di komentar 👇 Tag rekan HR.",
+    "handle": "Follow untuk tips HR & AI"
+   }
+  ]
+ },
+ {
+  "slug": "tanpa-vs-dengan-ai",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Relate nggak?",
+    "title": "Kerja <i>tanpa</i> AI vs dengan AI 😅",
+    "sub": "Nomor 3 paling kerasa bedanya"
+   },
+   {
+    "type": "vs",
+    "n": "1",
+    "lt": "Tanpa AI",
+    "l": "Bengong 30 menit depan halaman kosong.",
+    "rt": "Dengan AI",
+    "r": "Mulai dari draft, tinggal diedit."
+   },
+   {
+    "type": "vs",
+    "n": "2",
+    "lt": "Tanpa AI",
+    "l": "Baca ulang 40 halaman laporan.",
+    "rt": "Dengan AI",
+    "r": "Dapat ringkasan, lalu cek bagian penting."
+   },
+   {
+    "type": "vs",
+    "n": "3",
+    "lt": "Tanpa AI",
+    "l": "Googling rumus Excel satu per satu.",
+    "rt": "Dengan AI",
+    "r": "Jelaskan maumu, dapat rumus + penjelasan."
+   },
+   {
+    "type": "cta",
+    "title": "AI bantu <i>mulai</i>. Kamu yang menyelesaikan.",
+    "sub": "Kamu paling sering pakai AI untuk apa? Komen 👇",
+    "handle": "Follow untuk tips kerja cerdas pakai AI"
+   }
+  ]
  }
 ]

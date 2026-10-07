@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 15 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 18 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -19,6 +19,9 @@ There are 15 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 13 | Kamu tipe bos yang mana? 🤔 | `output/tt-13-tipe-bos-s1…s5.png` | Viral: identity quiz → tags |
 | 14 | Unpopular opinion: UMKM belum butuh aplikasi | `output/tt-14-unpopular-opinion-app-s1…s5.png` | Viral: hot take → debate + trust |
 | 15 | Website bisnis 2010 vs 2026 | `output/tt-15-website-2010-vs-2026-s1…s5.png` | Viral (image): nostalgia glow-up → shares |
+| 16 | 3 prompt AI untuk kerjaan kantor | `output/tt-16-prompt-ai-kantoran-s1…s5.png` | AI at work: saves → follows |
+| 17 | 3 tugas HR lebih cepat dengan AI | `output/tt-17-ai-untuk-hr-s1…s5.png` | AI for HR → HRIS audience |
+| 18 | Kerja tanpa AI vs dengan AI 😅 | `output/tt-18-tanpa-vs-dengan-ai-s1…s5.png` | Relatable AI → comments |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -486,6 +489,84 @@ Business websites: 2010 vs 2026 😭📈 Anyone still "Under Construction"? Whic
 **Pinned comment:** `Siapa yang dulu punya visitor counter di website-nya? 🙋 Ngaku!`
 
 **Video script (alternative, ~15s):** "Website 2010" with a dial-up sound effect (from the CML or royalty-free), scrolling the retro mock. A transition (swipe or flash) to the 2026 template scrolling smoothly on a phone. End on "Kamu era berapa?"
+
+---
+
+# AI series 2: AI for work & business (posts 16–18)
+
+Same accuracy rules as the first AI series: AI **helps you start**, and people check and decide. Never put confidential or personal data into public AI tools. Every prompt is tool-agnostic, so it works in any AI chat tool.
+
+## Post 16: 3 prompt AI yang bikin kerjaan kantor lebih ringan
+
+**Format:** Photo Mode, 5 slides · **Sound:** chill productivity/lo-fi track from the CML
+
+**Caption (ID)**
+```
+3 prompt AI untuk kerjaan kantor 📧📝📊 Email, notulen rapat & rumus Excel. Simpan, besok langsung pakai! Prompt mana yang paling kepake?
+
+#promptai #ai #kerjakantoran #tipskerja #produktivitas
+```
+
+**Caption (EN, optional)**
+```
+3 AI prompts that make office work easier 📧📝📊 Emails, meeting notes & Excel formulas. Save it for tomorrow! Which one will you use most?
+
+#aiprompts #ai #officetips #productivity
+```
+
+**Pinned comment:** `Bonus prompt: "Jelaskan dokumen ini dengan bahasa sederhana dalam 5 poin" 📄 (hapus data rahasia dulu ya)`
+
+**Video script (alternative, ~30s):** screen recording on a laptop. Paste each prompt into an AI chat, show the result, then a quick human edit. Use **dummy data only** on screen.
+
+---
+
+## Post 17: 3 tugas HR yang jadi lebih cepat dengan AI
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm/professional track from the CML
+
+**Caption (ID)**
+```
+3 tugas HR yang jadi lebih cepat dengan AI 🤖 Job description, pertanyaan interview & rangkuman penilaian. Keputusan tetap di tangan manusia ya! Tim HR-mu sudah pakai AI untuk apa?
+
+#hrd #hrindonesia #ai #rekrutmen #tipshr
+```
+
+**Caption (EN, optional)**
+```
+3 HR tasks AI can speed up 🤖 Job descriptions, interview questions & performance summaries. People still make the decisions! What does your HR team use AI for?
+
+#hrtok #humanresources #ai #recruiting
+```
+
+**Pinned comment:** `Aturan emas: hapus nama, NIK & data pribadi karyawan sebelum pakai AI publik 🔒`
+
+**Video script (alternative, ~30s):** HR person at a desk. "Dulu…" (stack of papers), then "Sekarang…" (draft job description on screen), then a quick edit, then "Keputusan tetap di kita." Dummy data only.
+
+> Note: this is general AI usage advice, not a feature of Vanaila HRIS. Don't imply HRIS has these AI features unless it does.
+
+---
+
+## Post 18: Kerja tanpa AI vs dengan AI 😅
+
+**Format:** Photo Mode, 5 slides · **Sound:** trending comedic "before/after" track from the CML
+
+**Caption (ID)**
+```
+Kerja tanpa AI vs dengan AI 😅 Nomor 3 paling kerasa bedanya! AI bantu mulai, kamu yang menyelesaikan. Kamu paling sering pakai AI untuk apa?
+
+#ai #kerjacerdas #kerjakantoran #relate #produktivitas
+```
+
+**Caption (EN, optional)**
+```
+Working without AI vs with AI 😅 #3 hits different! AI helps you start, you finish the job. What do you use AI for most?
+
+#ai #worksmarter #officelife #relatable
+```
+
+**Pinned comment:** `Tetap cek ulang hasil AI ya, dia bisa salah dengan sangat percaya diri 😂`
+
+**Video script (alternative, ~20s):** split-screen skit. Left side, "tanpa AI": a frustrated person facing a blank screen. Right side, "dengan AI": a relaxed person editing a draft. Three quick rounds, one per slide. End on "AI bantu mulai. Kamu yang menyelesaikan."
 
 ---
 
