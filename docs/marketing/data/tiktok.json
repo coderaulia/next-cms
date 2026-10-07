@@ -1652,5 +1652,131 @@
     "handle": "Follow untuk tips keamanan bisnis"
    }
   ]
+ },
+ {
+  "slug": "istilah-tech-part-2",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Tech 101 · Part 2",
+    "title": "Cloud, DNS, Cache — versi <i>bahasa warung</i> 🍜",
+    "sub": "Lanjutan part 1 — sekarang 3 istilah baru 🙌"
+   },
+   {
+    "type": "point",
+    "n": "Cloud",
+    "title": "= Sewa gudang bersama",
+    "body": "Nggak perlu bangun gudang sendiri. Sewa tempat di gudang besar, bayar sesuai yang dipakai, bisa tambah kapan saja.",
+    "fix": "Simpan file & jalankan aplikasi di server penyedia",
+    "fixLabel": "DI DUNIA NYATA"
+   },
+   {
+    "type": "point",
+    "n": "DNS",
+    "title": "= Tukang parkir yang hafal alamat",
+    "body": "Kamu bilang \"warung Bu Sri\", dia tunjukkan lokasinya. DNS menerjemahkan nama domain ke alamat server.",
+    "fix": "Ketik tokobudi.com → diarahkan ke server yang benar",
+    "fixLabel": "DI DUNIA NYATA"
+   },
+   {
+    "type": "point",
+    "n": "Cache",
+    "title": "= Lauk yang sudah siap di etalase",
+    "body": "Yang sering dipesan disiapkan duluan, jadi nggak masak dari nol tiap ada pembeli. Hasilnya: lebih cepat.",
+    "fix": "Website menyimpan halaman yang sering dibuka",
+    "fixLabel": "DI DUNIA NYATA"
+   },
+   {
+    "type": "cta",
+    "title": "Mau <i>part 3</i>? Istilah apa lagi?",
+    "sub": "Tulis di komentar 👇 Yang paling banyak, kami bahas berikutnya.",
+    "handle": "Follow untuk tech 101 bahasa sehari-hari"
+   }
+  ]
+ },
+ {
+  "slug": "tanda-penipuan-digital",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Awas!",
+    "title": "3 tanda chat atau email <i>penipuan</i> ke bisnismu 🚨",
+    "sub": "Nomor 3 paling sering bikin rugi"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Mendesak & bikin panik",
+    "body": "\"Akun Anda diblokir dalam 1 jam!\" Penipu ingin kamu bertindak sebelum sempat berpikir.",
+    "fix": "Tarik napas, cek lewat kanal resmi",
+    "fixLabel": "LAKUKAN"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Link atau file yang aneh",
+    "body": "Domain mirip tapi beda satu huruf, atau file .apk yang dikirim lewat chat (\"undangan\", \"resi\", \"surat tagihan\").",
+    "fix": "Jangan klik & jangan install file .apk dari chat",
+    "fixLabel": "LAKUKAN"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Minta OTP, PIN, atau transfer",
+    "body": "Pihak resmi tidak akan meminta kode OTP. Permintaan transfer \"darurat\" dari \"atasan\" juga wajib dicek ulang.",
+    "fix": "Konfirmasi lewat telepon ke nomor yang kamu kenal",
+    "fixLabel": "LAKUKAN"
+   },
+   {
+    "type": "cta",
+    "title": "Pernah hampir <i>kena</i>?",
+    "sub": "Cerita di komentar biar yang lain waspada 👇 Share ke grup kantor.",
+    "handle": "Follow untuk tips keamanan bisnis"
+   }
+  ]
+ },
+ {
+  "slug": "aturan-data-pelanggan",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk semua pemilik usaha",
+    "title": "3 aturan simpan <i>data pelanggan</i> biar aman 🔒",
+    "sub": "Nomor HP, alamat, KTP — itu tanggung jawabmu"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Kumpulkan seperlunya",
+    "body": "Butuh alamat untuk kirim barang? Oke. Butuh foto KTP untuk beli kaos? Mungkin tidak.",
+    "fix": "Tanya: data ini benar-benar dipakai untuk apa?",
+    "fixLabel": "ATURAN"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Batasi siapa yang bisa lihat",
+    "body": "Spreadsheet data pelanggan yang dibagikan ke semua orang = risiko bocor.",
+    "fix": "Akses sesuai peran, bukan semua karyawan",
+    "fixLabel": "ATURAN"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Hapus yang sudah tidak dipakai",
+    "body": "Data lama yang menumpuk tetap bisa bocor. Buat jadwal untuk merapikan & menghapus.",
+    "fix": "Review data setiap beberapa bulan",
+    "fixLabel": "ATURAN"
+   },
+   {
+    "type": "cta",
+    "title": "Data aman = pelanggan <i>percaya</i>.",
+    "sub": "Indonesia punya UU Pelindungan Data Pribadi (UU 27/2022). Share ke owner lain 👇",
+    "handle": "Follow untuk tips bisnis yang aman"
+   }
+  ]
  }
 ]

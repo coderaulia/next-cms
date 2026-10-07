@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 37 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 40 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -41,6 +41,9 @@ There are 37 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 35 | API, CMS, SSL pakai bahasa warung 🍜 | `output/tt-34-istilah-tech-bahasa-warung-s1…s5.png` | Tech 101: analogies → saves & part 2 |
 | 36 | Aturan backup 3-2-1 | `output/tt-35-backup-3-2-1-s1…s5.png` | Tech safety: fear of loss → shares |
 | 37 | 3 kebiasaan keamanan akun bisnis 🔐 | `output/tt-36-keamanan-akun-bisnis-s1…s5.png` | Security habits → saves |
+| 38 | Cloud, DNS, Cache pakai bahasa warung (part 2) 🍜 | `output/tt-37-istilah-tech-part-2-s1…s5.png` | Tech 101 series → follows |
+| 39 | 3 tanda chat/email penipuan ke bisnis 🚨 | `output/tt-38-tanda-penipuan-digital-s1…s5.png` | Scam awareness → shares |
+| 40 | 3 aturan simpan data pelanggan 🔒 | `output/tt-39-aturan-data-pelanggan-s1…s5.png` | Data protection basics → trust |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -1242,6 +1245,94 @@ Lost laptop, lost business files 😱 Prevent it with the 3-2-1 backup rule: 3 c
 **Pinned comment:** `Mulai dari akun paling penting: email bisnis. Kalau email jebol, akun lain bisa ikut di-reset 😬`
 
 **Video script (alternative):** a screen recording turning on 2FA in a generic account settings page (blur any personal data), then a password manager generating a password, then an admin panel removing a former employee's access.
+
+---
+
+# Tech & business education series 2 (posts 38–40)
+
+More pure education in the same style. Post 38 continues the "bahasa warung" series. **Post it after post 35**, and once comments ask for more, reply to one of them with a video to link the two.
+
+## Post 38: Cloud, DNS, Cache pakai bahasa warung (part 2) 🍜
+
+**Format:** Photo Mode, 5 slides · **Sound:** the same light/fun CML track as part 1, for series consistency  
+**Title (ID):** `Cloud, DNS, Cache Dijelasin Pakai Bahasa Warung (Part 2) 🍜`  
+**Title (EN):** `Cloud, DNS and Cache Explained Like a Food Stall (Part 2) 🍜`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Part 2! Cloud, DNS, Cache dijelasin pakai bahasa warung 🍜 Cloud = sewa gudang bersama, DNS = tukang parkir yang hafal alamat, Cache = lauk siap di etalase. Mau part 3? Tulis istilahnya!
+
+#belajarteknologi #tech101 #istilahit #cloud #umkm
+```
+
+**Caption (EN, optional)**
+```
+Part 2! Cloud, DNS and cache explained with a food-stall analogy 🍜 Cloud = a shared rented warehouse, DNS = the parking attendant who knows every address, cache = dishes ready in the display case. Want part 3?
+
+#tech101 #techexplained #cloud #learnontiktok
+```
+
+**Pinned comment:** `Kandidat part 3: server, database, bug, deploy… vote di sini 👇`
+
+**Video script (alternative):** film at the same warung as part 1 for continuity: a warehouse/storage shot (cloud), the parking attendant pointing the way (DNS), dishes in the display case (cache).
+> Tip: add posts 35 and 38 to a TikTok **playlist** called "Tech 101 bahasa warung" so viewers binge the series.
+
+---
+
+## Post 39: 3 tanda chat/email penipuan ke bisnis 🚨
+
+**Format:** Photo Mode, 5 slides · **Sound:** alert/suspense track from the CML  
+**Title (ID):** `3 Tanda Chat atau Email Penipuan ke Bisnismu 🚨`  
+**Title (EN):** `3 Signs a Chat or Email to Your Business Is a Scam 🚨`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+3 tanda chat atau email penipuan ke bisnismu 🚨 Mendesak, link/file aneh (termasuk .apk dari chat), dan minta OTP atau transfer. Pernah hampir kena? Cerita di komentar biar yang lain waspada!
+
+#penipuanonline #keamanandigital #waspada #umkm #tipsbisnis
+```
+
+**Caption (EN, optional)**
+```
+3 signs a chat or email to your business is a scam 🚨 Urgency, strange links or files, and requests for OTPs or transfers. Ever nearly fallen for one? Share it so others stay alert!
+
+#scamawareness #cybersecurity #phishing #smallbusiness
+```
+
+**Pinned comment:** `Aturan emas: OTP itu rahasia. Siapa pun yang minta, itu tanda bahaya 🚩`
+
+**Video script (alternative):** act out receiving a panicky "akun diblokir!" message (mock, no real brand logos), then freeze-frame with a red circle on each red flag, then show the right action.
+> Use **mock** messages only. Never show a real company's logo or name as the scammer, and never use real victims' chats.
+
+---
+
+## Post 40: 3 aturan simpan data pelanggan 🔒
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm/trustworthy track from the CML  
+**Title (ID):** `3 Aturan Simpan Data Pelanggan Biar Aman 🔒`  
+**Title (EN):** `3 Rules for Keeping Customer Data Safe 🔒`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+3 aturan simpan data pelanggan biar aman 🔒 Kumpulkan seperlunya, batasi siapa yang bisa lihat, hapus yang tidak dipakai. Data aman = pelanggan percaya. Share ke sesama owner!
+
+#datapribadi #keamanandata #umkm #tipsbisnis #pelindungandata
+```
+
+**Caption (EN, optional)**
+```
+3 rules for keeping customer data safe 🔒 Collect only what you need, limit who can see it, delete what you no longer use. Safe data = customer trust.
+
+#dataprivacy #datasecurity #smallbusiness #businesstips
+```
+
+**Pinned comment:** `Indonesia punya UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi. Untuk kewajiban spesifik bisnismu, konsultasikan dengan ahli hukum ya 🙏`
+
+**Video script (alternative):** an owner going through a spreadsheet: delete unneeded columns (rule 1), change the sharing settings to restricted (rule 2), set a calendar reminder to review the data (rule 3). Blur all data.
+> This post gives general good practice, not legal advice. The law reference is kept general on purpose.
 
 ---
 
