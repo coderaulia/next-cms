@@ -73,6 +73,14 @@ html,body{width:1080px;height:1920px}
 .splitw{margin-top:30px;display:flex;flex-direction:column;gap:18px}
 .splitw .lab{margin-top:10px;font-size:28px;font-weight:700}
 .photo .li{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+.retro{width:100%;aspect-ratio:16/10;background:#000080 url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ctext y=%2228%22 font-size=%2220%22 fill=%22%23ffffff22%22%3E%E2%98%85%3C/text%3E%3C/svg%3E');font-family:'Comic Sans MS','Comic Neue',cursive;color:#ffff00;padding:14px;display:flex;flex-direction:column;gap:10px}
+.rt-head{text-align:center;font-size:26px;font-weight:700;color:#ff00ff;text-shadow:2px 2px #00ffff}
+.rt-marq{background:#ffff00;color:#ff0000;font-size:18px;font-weight:700;padding:4px 8px;white-space:nowrap;overflow:hidden}
+.rt-body{flex:1;display:grid;grid-template-columns:150px 1fr;gap:12px}
+.rt-side{background:#c0c0c0;color:#0000ee;padding:10px;font-size:18px;line-height:1.7;border:3px outset #fff}
+.rt-main{background:#fff;color:#000;padding:14px;font-size:19px;border:3px inset #888}
+.rt-blink{color:#ff0000;font-weight:700;font-size:22px}
+.rt-count{font-family:'Courier New',monospace;background:#000;color:#00ff00;padding:2px 6px;font-size:16px}
 .swipe{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
 `;
 
@@ -83,9 +91,9 @@ const render = (sl) => {
     case 'check': return `<h2 class="pt">${sl.title}</h2><div class="list">${sl.items.map((x, i) => `<div class="li"><b>${i + 1}</b><span>${x}</span></div>`).join('')}</div>`;
     case 'shot': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="shot"><img src="${sl.img}"></div><div class="chips">${sl.items.map((x) => `<div class="chip">${x}</div>`).join('')}</div>`;
     case 'vs': return `<div class="num" style="font-size:110px">${sl.n}</div><div class="vs"><div class="side l"><small>${sl.lt}</small>${sl.l}</div><div class="arrow">↓</div><div class="side r"><small>${sl.rt}</small>${sl.r}</div></div>`;
-    case 'img': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="browser"><div class="bar"><i></i><i></i><i></i><span>Template Vanaila</span></div><img src="${sl.img}"></div><div class="ask">${sl.ask}</div>`;
+    case 'img': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="browser"><div class="bar"><i></i><i></i><i></i><span>${sl.html ? 'tokokami.blogspot.com' : 'Template Vanaila'}</span></div>${sl.html || `<img src="${sl.img}">`}</div><div class="ask">${sl.ask}</div>`;
     case 'collage': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:92px">${sl.title}</h1><div class="collage">${sl.imgs.map((x, i) => `<div class="browser c${i}"><div class="bar"><i></i><i></i><i></i></div><img src="${x}"></div>`).join('')}</div><p class="s" style="margin-top:20px">${sl.sub}</p>`;
-    case 'split': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:64px">${sl.title}</h1><div class="splitw">${[[sl.imgA, sl.labelA], [sl.imgB, sl.labelB]].map(([im, lb]) => `<div><div class="browser" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>Template Vanaila</span></div><img src="${im}" style="aspect-ratio:16/6.4"></div><div class="lab">${lb}</div></div>`).join('')}</div>`;
+    case 'split': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:64px">${sl.title}</h1><div class="splitw">${[[sl.imgA, sl.labelA, sl.htmlA], [sl.imgB, sl.labelB, sl.htmlB]].map(([im, lb, h]) => `<div><div class="browser" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>${h ? 'tokokami.blogspot.com' : 'Template Vanaila'}</span></div>${h ? h.replace("class='retro'", "class='retro' style='aspect-ratio:16/6.4;font-size:.8em'") : `<img src="${im}" style="aspect-ratio:16/6.4">`}</div><div class="lab">${lb}</div></div>`).join('')}</div>`;
     case 'cta': return `<h2 class="t" style="font-size:96px">${sl.title}</h2><p class="s">${sl.sub}</p><div class="cta">${sl.handle}</div>`;
   }
 };
@@ -98,7 +106,7 @@ sets.forEach((set, i) => {
     const last = j === total - 1;
     const html = `<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="size" content="1080x1920"><link rel="stylesheet" href="_brand.css"><style>${css}</style></head><body>
 <div class="post${cls}">
-  ${set.theme === 'photo' ? `<div class="bgimg" style="background-image:url('${sl.img || sl.imgA || (sl.imgs && sl.imgs[0]) || set.slides[0].imgs?.[0] || ''}')"></div>` : ''}
+  ${set.theme === 'photo' ? `<div class="bgimg" style="background-image:url('${sl.img || sl.imgA || sl.imgB || (sl.imgs && sl.imgs[0]) || set.slides[0].imgs?.[0] || ''}')"></div>` : ''}
   <div class="glow" style="width:700px;height:700px;background:${set.theme === 'light' ? '#a3c0ff' : '#2f6dff'};${set.theme === 'photo' ? 'display:none' : ''};${j % 2 ? 'left:-300px;bottom:-200px' : 'right:-280px;top:-260px'};opacity:${set.theme === 'light' ? .55 : .3}"></div>
   <div class="top"><div class="brand" aria-label="Vanaila"><span class="lm"></span><span class="lw"></span></div><div class="count muted">${j + 1}/${total}</div></div>
   <div class="body">${render(sl)}</div>

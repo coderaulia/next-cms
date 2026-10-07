@@ -15,6 +15,7 @@
     "render:tiktok": "node scripts/build-tiktok.mjs && node scripts/render.mjs --only tt-"
   },
   "devDependencies": {
+    "@fontsource/comic-neue": "^5.3.0",
     "@fontsource/instrument-serif": "^5.3.0",
     "@fontsource/inter-tight": "^5.3.0",
     "@fontsource/jetbrains-mono": "^5.3.0",

@@ -501,5 +501,132 @@
     "handle": "Follow untuk contoh website UMKM"
    }
   ]
+ },
+ {
+  "slug": "tipe-bos",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Tes kepribadian",
+    "title": "Kamu tipe <i>bos</i> yang mana? 🤔",
+    "sub": "Jujur — lalu tag bosmu 👀"
+   },
+   {
+    "type": "point",
+    "n": "📊",
+    "title": "Bos Excel",
+    "body": "Semua ada di spreadsheet. Rumusnya cuma dia yang paham. Kalau laptopnya rusak, bisnis ikut libur.",
+    "fix": "Super detail, tapi semua bergantung padanya",
+    "fixLabel": "CIRI KHAS"
+   },
+   {
+    "type": "point",
+    "n": "💬",
+    "title": "Bos WhatsApp",
+    "body": "Approval lewat chat, laporan lewat voice note, file lewat grup. Cari pesan lama? Scroll 3 hari.",
+    "fix": "Super responsif, tapi semua tercecer",
+    "fixLabel": "CIRI KHAS"
+   },
+   {
+    "type": "point",
+    "n": "🖥️",
+    "title": "Bos Sistem",
+    "body": "Data di satu tempat, approval tercatat, laporan tinggal buka. Bisa liburan tanpa ditelepon tiap jam.",
+    "fix": "Tenang, karena timnya bisa jalan sendiri",
+    "fixLabel": "CIRI KHAS"
+   },
+   {
+    "type": "cta",
+    "title": "Kamu (atau bosmu) <i>tipe apa</i>? 😂",
+    "sub": "Komen Excel, WhatsApp, atau Sistem — lalu tag bosmu.",
+    "handle": "Follow untuk konten bisnis yang relate"
+   }
+  ]
+ },
+ {
+  "slug": "unpopular-opinion-app",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Unpopular opinion",
+    "title": "Kebanyakan UMKM <i>belum</i> butuh aplikasi mobile.",
+    "sub": "Iya, ini kata tim yang bikin aplikasi 😅"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Website dulu, app kemudian",
+    "body": "Pelanggan baru jarang mau download aplikasi. Website yang cepat & rapi di HP sudah cukup untuk mulai jualan.",
+    "fix": ""
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "App butuh perawatan",
+    "body": "Update untuk iOS & Android, review App Store, bug fix. Kalau belum ada yang pakai, biayanya terasa berat.",
+    "fix": ""
+   },
+   {
+    "type": "check",
+    "title": "Tapi kamu <i>butuh</i> app kalau:",
+    "items": [
+     "Pelanggan pakai berulang kali (order, booking, poin)",
+     "Tim lapangan butuh akses offline",
+     "Fitur HP wajib: notifikasi, kamera, lokasi"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Setuju atau <i>nggak</i>? 🔥",
+    "sub": "Debat sehat di komentar — kami baca semua.",
+    "handle": "Follow untuk opini jujur soal teknologi bisnis"
+   }
+  ]
+ },
+ {
+  "slug": "website-2010-vs-2026",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "split",
+    "kicker": "Glow up 📈",
+    "title": "Website bisnis: <i>2010</i> vs 2026",
+    "htmlA": "<div class='retro'><div class='rt-head'>~*~ SELAMAT DATANG DI WEBSITE TOKO KAMI ~*~</div><div class='rt-marq'>★ PROMO!!! ★ HUBUNGI KAMI ★ BEST VIEWED IN 800x600 ★</div><div class='rt-body'><div class='rt-side'><u>Home</u><br><u>Produk</u><br><u>Guestbook</u><br><u>Link</u></div><div class='rt-main'><b>Under Construction</b> 🚧<br>Website sedang dalam perbaikan.<br><br><span class='rt-blink'>KLIK DISINI!!!</span><br><br><span class='rt-count'>Pengunjung ke-000127</span></div></div></div>",
+    "imgB": "../../../public/templates-static/previews/aura-property.jpg",
+    "labelA": "2010 · \"Under construction\" 🚧",
+    "labelB": "2026 · Cepat, rapi, bikin percaya"
+   },
+   {
+    "type": "img",
+    "kicker": "Era 2010",
+    "title": "Ada yang masih <i>begini</i>? 👀",
+    "html": "<div class='retro'><div class='rt-head'>~*~ SELAMAT DATANG DI WEBSITE TOKO KAMI ~*~</div><div class='rt-marq'>★ PROMO!!! ★ HUBUNGI KAMI ★ BEST VIEWED IN 800x600 ★</div><div class='rt-body'><div class='rt-side'><u>Home</u><br><u>Produk</u><br><u>Guestbook</u><br><u>Link</u></div><div class='rt-main'><b>Under Construction</b> 🚧<br>Website sedang dalam perbaikan.<br><br><span class='rt-blink'>KLIK DISINI!!!</span><br><br><span class='rt-count'>Pengunjung ke-000127</span></div></div></div>",
+    "ask": "Pengunjung ke-000127 😭"
+   },
+   {
+    "type": "img",
+    "kicker": "Era 2026",
+    "title": "Sekarang standarnya <i>begini</i>",
+    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "ask": "Template Vanaila — bisa untuk usahamu"
+   },
+   {
+    "type": "check",
+    "title": "Yang berubah dalam 16 tahun:",
+    "items": [
+     "Dibuka di HP, bukan di PC warnet",
+     "Cepat — orang tak mau menunggu",
+     "Satu tombol aksi: WhatsApp / pesan / booking"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Website bisnismu masih era <i>berapa</i>? 😂",
+    "sub": "Jawab jujur di komentar 👇",
+    "handle": "Follow untuk glow up website lainnya"
+   }
+  ]
  }
 ]

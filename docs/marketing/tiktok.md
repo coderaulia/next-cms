@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 12 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 15 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -16,6 +16,9 @@ There are 12 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 10 | Rate website ini 1–10 👀 | `output/tt-10-rate-website-s1…s5.png` | Viral (image): comment a score → reach |
 | 11 | Pilih A atau B? (website kuliner) | `output/tt-11-pilih-a-atau-b-s1…s5.png` | Viral (image): poll in comments → reach |
 | 12 | UMKM bisa punya website sekeren brand besar | `output/tt-12-umkm-website-keren-s1…s5.png` | Viral (image): proof → template leads |
+| 13 | Kamu tipe bos yang mana? 🤔 | `output/tt-13-tipe-bos-s1…s5.png` | Viral: identity quiz → tags |
+| 14 | Unpopular opinion: UMKM belum butuh aplikasi | `output/tt-14-unpopular-opinion-app-s1…s5.png` | Viral: hot take → debate + trust |
+| 15 | Website bisnis 2010 vs 2026 | `output/tt-15-website-2010-vs-2026-s1…s5.png` | Viral (image): nostalgia glow-up → shares |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -402,6 +405,87 @@ Who says small businesses can't have websites as good as big brands? 💪 Garage
 **Pinned comment:** `Ada 14 contoh template per industri, sebut bidang usahamu dan kami kirimkan yang paling cocok 🙌`
 
 **Video script (alternative, ~25s):** "Siapa bilang…?" face to camera. Fast cuts through 3–5 templates on a phone screen, each labelled with its industry. End on "Usahamu bidang apa?"
+
+---
+
+# Viral series 3 (posts 13–15)
+
+**Why these formats spread**
+- **Identity quiz ("tipe bos")**: people love labelling themselves and others. "Tag bosmu" brings in new viewers through tags, and it stays light and playful rather than mocking anyone.
+- **Unpopular opinion**: a hot take gets debate in the comments, which drives distribution. It's also **honest** (we sell apps, yet we say most UMKM don't need one yet), which builds trust.
+- **2010 vs 2026 glow-up**: nostalgia and humor. The retro site is a **mock we built in code** (tokokami.blogspot.com, a fictional site), not a real business. The 2026 side is a labelled Vanaila template.
+
+## Post 13: Kamu tipe bos yang mana? 🤔
+
+**Format:** Photo Mode, 5 slides · **Sound:** playful/quiz track from the CML
+
+**Caption (ID)**
+```
+Kamu tipe bos yang mana? 🤔 Excel, WhatsApp, atau Sistem? Komen jawabanmu & tag bosmu 👀
+
+#bos #duniakerja #kerjakantoran #tipsbisnis #relate
+```
+
+**Caption (EN, optional)**
+```
+Which type of boss are you? 🤔 Excel, WhatsApp or Systems? Comment yours and tag your boss 👀
+
+#boss #worklife #officehumor #businesstips
+```
+
+**Pinned comment:** `Hasil sementara: tim WhatsApp paling banyak 😂 Kamu yang mana?`
+
+**Video script (alternative, ~25s):** one person plays all 3 bosses (costume change per type). Bos Excel squints at formulas, Bos WhatsApp sends voice note after voice note, Bos Sistem sips coffee on holiday. End with "Kamu tipe apa?"
+
+---
+
+## Post 14: Unpopular opinion: UMKM belum butuh aplikasi
+
+**Format:** Photo Mode, 5 slides · **Sound:** "hot take"/dramatic track from the CML
+
+**Caption (ID)**
+```
+Unpopular opinion: kebanyakan UMKM belum butuh aplikasi mobile 🔥 (iya, ini kata tim yang bikin aplikasi) Setuju atau nggak?
+
+#unpopularopinion #aplikasimobile #umkm #tipsbisnis #startup
+```
+
+**Caption (EN, optional)**
+```
+Unpopular opinion: most small businesses don't need a mobile app yet 🔥 (yes, coming from a team that builds apps) Agree or disagree?
+
+#unpopularopinion #mobileapp #smallbusiness #startuptips
+```
+
+**Pinned comment:** `Kalau masih ragu butuh app atau cukup website, komen bidang usahamu, kami kasih pendapat jujur 👇`
+
+**Video script (alternative, ~25s):** face to camera with an "UNPOPULAR OPINION" text overlay. Deliver it confidently, list the 2 reasons, then "tapi kamu BUTUH app kalau…" with the 3 conditions. End on "Setuju atau nggak?"
+
+> Tone check: keep it a fair argument, not a jab at competitors or at businesses that already have apps.
+
+---
+
+## Post 15: Website bisnis 2010 vs 2026
+
+**Format:** Photo Mode, 5 slides · **Sound:** nostalgic 2000s-style track from the CML
+
+**Caption (ID)**
+```
+Website bisnis: 2010 vs 2026 😭📈 Ada yang masih "Under Construction"? Website bisnismu masih era berapa? Jawab jujur!
+
+#glowup #website #nostalgia #websitebisnis #umkm
+```
+
+**Caption (EN, optional)**
+```
+Business websites: 2010 vs 2026 😭📈 Anyone still "Under Construction"? Which era is your website from? Be honest!
+
+#glowup #webdesign #nostalgia #throwback
+```
+
+**Pinned comment:** `Siapa yang dulu punya visitor counter di website-nya? 🙋 Ngaku!`
+
+**Video script (alternative, ~15s):** "Website 2010" with a dial-up sound effect (from the CML or royalty-free), scrolling the retro mock. A transition (swipe or flash) to the 2026 template scrolling smoothly on a phone. End on "Kamu era berapa?"
 
 ---
 
