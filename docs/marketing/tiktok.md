@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 40 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 52 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -44,6 +44,18 @@ There are 40 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 38 | Cloud, DNS, Cache pakai bahasa warung (part 2) 🍜 | `output/tt-37-istilah-tech-part-2-s1…s5.png` | Tech 101 series → follows |
 | 39 | 3 tanda chat/email penipuan ke bisnis 🚨 | `output/tt-38-tanda-penipuan-digital-s1…s5.png` | Scam awareness → shares |
 | 40 | 3 aturan simpan data pelanggan 🔒 | `output/tt-39-aturan-data-pelanggan-s1…s5.png` | Data protection basics → trust |
+| 41 | VanailaChat: AI gratis di laptopmu | `output/tt-40-vanailachat-ai-gratis-s1…s5.png` | Product soft-sell |
+| 42 | VanailaChat: chat AI per workspace | `output/tt-41-vanailachat-workspace-s1…s5.png` | Product soft-sell |
+| 43 | VanailaChat: AI coding yang aman | `output/tt-42-vanailachat-coding-aman-s1…s5.png` | Product soft-sell |
+| 44 | Vanaila Studio: one tab, semua tool | `output/tt-43-studio-satu-tab-s1…s5.png` | Product soft-sell |
+| 45 | Vanaila Studio: PDF tanpa upload | `output/tt-44-studio-pdf-tanpa-upload-s1…s5.png` | Product soft-sell |
+| 46 | Vanaila Studio: CV lolos ATS | `output/tt-45-studio-cv-ats-s1…s5.png` | Product soft-sell |
+| 47 | Vanaila LMS: akademi online sendiri | `output/tt-46-lms-akademi-online-s1…s5.png` | Product soft-sell |
+| 48 | Vanaila LMS: training karyawan | `output/tt-47-lms-training-karyawan-s1…s5.png` | Product soft-sell |
+| 49 | Vanaila LMS: jual kursus + QRIS | `output/tt-48-lms-jual-kursus-s1…s5.png` | Product soft-sell |
+| 50 | MuzikPlayer: hi-fi Linux player | `output/tt-49-muzikplayer-hifi-s1…s5.png` | Product soft-sell |
+| 51 | MuzikPlayer: bit-perfect itu apa? | `output/tt-50-muzikplayer-bit-perfect-s1…s5.png` | Product soft-sell |
+| 52 | MuzikPlayer: POV pengguna Linux | `output/tt-51-muzikplayer-pov-linux-s1…s5.png` | Product soft-sell |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -1333,6 +1345,317 @@ Part 2! Cloud, DNS and cache explained with a food-stall analogy 🍜 Cloud = a 
 
 **Video script (alternative):** an owner going through a spreadsheet: delete unneeded columns (rule 1), change the sharing settings to restricted (rule 2), set a calendar reminder to review the data (rule 3). Blur all data.
 > This post gives general good practice, not legal advice. The law reference is kept general on purpose.
+
+---
+
+# Product series: VanailaChat, Vanaila Studio, Vanaila LMS, MuzikPlayer (posts 41–52)
+
+All copy is based on the product pages on `main` (`/vanailachat`, `/atelier`, `/lms`, `/muzikplayer`). Screenshots come from `main` and are copied into `assets/products/`.
+
+**Accuracy rules for this series**
+- **`/atelier` is now Vanaila Studio** (an in-browser tool suite), not the design studio. These posts use the Studio product.
+- **Vanaila LMS isn't released yet (Q4 2026).** Every LMS post says "early access / waitlist". Never say "sudah tersedia" or "beli sekarang". The LMS screenshot shows a demo brand, labelled "demo".
+- **VanailaChat and MuzikPlayer are Linux desktop apps.** Say so clearly ("pengguna Linux") so non-Linux viewers aren't misled. VanailaChat is free and open-source. MuzikPlayer's price isn't stated on the page, so don't call it free.
+- **Specs** (24-bit/192kHz, 5.33 ms, 240+ tests, model names) are quoted from the product pages. Update them if the pages change.
+- **Suggested posting order:** mix products, e.g. Studio → VanailaChat → LMS → MuzikPlayer, and repeat.
+
+## Post 41: VanailaChat: AI gratis di laptopmu
+
+**Format:** Photo Mode, 5 slides · **Sound:** chill tech/lo-fi track from the CML  
+**Title (ID):** `AI Gratis yang Jalan di Laptopmu Sendiri — Tanpa Langganan`  
+**Title (EN):** `Free AI That Runs on Your Own Laptop — No Subscription`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+AI yang jalan di laptopmu sendiri, tanpa langganan 🤖 VanailaChat: model lokal via Ollama, zero telemetry, workspace per proyek. Gratis & open-source untuk Linux!
+
+#ailokal #ollama #linux #opensource #vanailachat
+```
+
+**Caption (EN, optional)**
+```
+AI that runs on your own laptop, no subscription 🤖 VanailaChat: local models via Ollama, zero telemetry, per-project workspaces. Free & open-source for Linux!
+
+#localai #ollama #linux #opensource
+```
+
+**Pinned comment:** `Download .deb / .rpm / .AppImage / AUR lewat link di profil 🐧 Model favoritmu apa?`
+
+---
+
+## Post 42: VanailaChat: chat AI per workspace
+
+**Format:** Photo Mode, 5 slides · **Sound:** relatable/comedic track from the CML  
+**Title (ID):** `Chat AI-mu Campur Aduk? Pisahkan per Workspace`  
+**Title (EN):** `Messy AI Chats? Split Them Into Workspaces`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Chat AI-mu campur aduk jadi satu daftar panjang? 😵 VanailaChat memisahkan chat per workspace + memori per proyek, dan bisa pakai model lokal maupun cloud. Chat AI-mu sekarang berapa banyak?
+
+#ai #produktivitas #linux #aitools #vanailachat
+```
+
+**Caption (EN, optional)**
+```
+Are your AI chats one endless messy list? 😵 VanailaChat splits them into workspaces with per-project memory, using local or cloud models.
+
+#ai #productivity #linux #aitools
+```
+
+**Pinned comment:** `Tim satu-chat-untuk-semua atau tim rapi per proyek? 👀`
+
+---
+
+## Post 43: VanailaChat: AI coding yang aman
+
+**Format:** Photo Mode, 5 slides · **Sound:** focused/coding track from the CML  
+**Title (ID):** `Ngoding Bareng AI Tapi Tetap Aman: 3 Pengaman di VanailaChat`  
+**Title (EN):** `Coding With AI, Safely: 3 Safeguards in VanailaChat`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Ngoding bareng AI tapi tetap aman 🛡️ Review diff dulu, peringatan branch production + safety branch, terminal sandbox & read-only mode. Open-source dengan 240+ automated tests.
+
+#programmer #aicoding #developer #linux #opensource
+```
+
+**Caption (EN, optional)**
+```
+Coding with AI, safely 🛡️ Diff review first, production-branch warnings + safety branch, sandboxed terminal & read-only mode. Open-source with 240+ automated tests.
+
+#programming #aicoding #developer #opensource
+```
+
+**Pinned comment:** `Kodenya terbuka di GitHub, cek & kontribusi lewat link di profil 👨‍💻`
+
+---
+
+## Post 44: Vanaila Studio: one tab, semua tool
+
+**Format:** Photo Mode, 5 slides · **Sound:** upbeat productivity track from the CML  
+**Title (ID):** `One Tab, Semua Tool Kerja: Vanaila Studio Gratis di Browser`  
+**Title (EN):** `One Tab, Every Work Tool: Vanaila Studio, Free in Your Browser`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+One tab. Semua tool yang beneran kamu pakai 🧰 Dokumen, CV, PDF, gambar, OCR & social post, langsung di browser. Tanpa install, tanpa akun, tanpa watermark. Tool mana yang paling sering kamu pakai?
+
+#toolskerja #pdf #produktivitas #freelancer #vanailastudio
+```
+
+**Caption (EN, optional)**
+```
+One tab. Every tool you actually use 🧰 Documents, CVs, PDFs, images, OCR & social posts, right in your browser. No installs, no accounts, no watermarks.
+
+#productivitytools #pdf #freelancer #worktools
+```
+
+**Pinned comment:** `Coba gratis di studio.vanaila.com (link di profil) 🔗`
+
+---
+
+## Post 45: Vanaila Studio: PDF tanpa upload
+
+**Format:** Photo Mode, 5 slides · **Sound:** alert → calm track from the CML  
+**Title (ID):** `Convert PDF Tanpa Upload File ke Server Orang`  
+**Title (EN):** `Convert PDFs Without Uploading Files to Someone Else's Server`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Masih upload KTP & kontrak ke situs convert PDF random? 😬 Di Vanaila Studio semua diproses 100% di browser: merge/split PDF, OCR, tanpa akun & watermark. Share ke rekan kantor!
+
+#pdf #keamanandata #tipskerja #privasi #vanailastudio
+```
+
+**Caption (EN, optional)**
+```
+Still uploading IDs and contracts to random PDF sites? 😬 Vanaila Studio processes everything 100% in your browser: merge/split PDF, OCR, no account, no watermark.
+
+#pdf #privacy #datasecurity #worktips
+```
+
+**Pinned comment:** `Cara cek: matikan internet setelah halaman terbuka, toolnya tetap jalan. Itu tandanya proses lokal 😉`
+
+---
+
+## Post 46: Vanaila Studio: CV lolos ATS
+
+**Format:** Photo Mode, 5 slides · **Sound:** motivational track from the CML  
+**Title (ID):** `CV-mu Lolos ATS Nggak? Bikin CV ATS-Friendly Gratis`  
+**Title (EN):** `Does Your CV Pass ATS? Build an ATS-Friendly CV for Free`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+CV-mu bagus, tapi lolos ATS nggak? 🤔 Bikin CV ATS-friendly di Vanaila Studio: inline editor, export DOCX & PDF, tanpa watermark. Gratis! Tag teman yang lagi job hunting 👇
+
+#cv #ats #carikerja #lokerindonesia #tipskarier
+```
+
+**Caption (EN, optional)**
+```
+Your CV looks great, but does it pass ATS? 🤔 Build an ATS-friendly CV in Vanaila Studio: inline editor, DOCX & PDF export, no watermark. Free!
+
+#cv #ats #jobsearch #careertips
+```
+
+**Pinned comment:** `Tips: hindari CV full gambar/infografis kalau melamar lewat portal rekrutmen 📄`
+
+---
+
+## Post 47: Vanaila LMS: akademi online sendiri
+
+**Format:** Photo Mode, 5 slides · **Sound:** inspiring/edu track from the CML  
+**Title (ID):** `Punya Ilmu? Bikin Akademi Online Sendiri — Vanaila LMS (Q4 2026)`  
+**Title (EN):** `Got Expertise? Build Your Own Online Academy — Vanaila LMS (Q4 2026)`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Punya ilmu? Bikin akademi online sendiri 🎓 Vanaila LMS: brand & domain sendiri, video self-paced, kuis & sertifikat otomatis. Rilis Q4 2026, gabung waitlist early access sekarang!
+
+#lms #kursusonline #edukasi #trainer #vanailalms
+```
+
+**Caption (EN, optional)**
+```
+Got expertise? Build your own online academy 🎓 Vanaila LMS: your own brand and domain, self-paced video, automatic quizzes & certificates. Launching Q4 2026, join the early-access waitlist!
+
+#lms #onlinecourse #edtech #creator
+```
+
+**Pinned comment:** `Waitlist early access dibuka, link di profil. Kamu mau ngajar topik apa? 👇`
+
+---
+
+## Post 48: Vanaila LMS: training karyawan
+
+**Format:** Photo Mode, 5 slides · **Sound:** relatable "before/after" track from the CML  
+**Title (ID):** `Training Karyawan Masih Pakai Zoom + Google Form + Excel?`  
+**Title (EN):** `Still Running Employee Training on Zoom + Google Forms + Excel?`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Training karyawan masih pakai Zoom + Google Form + Excel? 😵 Dengan LMS: materi di satu akademi, progres real-time, sertifikat otomatis. Vanaila LMS rilis Q4 2026, gabung waitlist!
+
+#hrd #learninganddevelopment #trainingkaryawan #lms #hrindonesia
+```
+
+**Caption (EN, optional)**
+```
+Still running employee training on Zoom + Google Forms + Excel? 😵 With an LMS: one academy, real-time progress, automatic certificates. Vanaila LMS launches Q4 2026.
+
+#hr #learninganddevelopment #lms #training
+```
+
+**Pinned comment:** `Tim L&D: tools training apa yang paling bikin pusing sekarang? 👇`
+
+---
+
+## Post 49: Vanaila LMS: jual kursus + QRIS
+
+**Format:** Photo Mode, 5 slides · **Sound:** upbeat creator track from the CML  
+**Title (ID):** `Jual Kursus Online dengan Pembayaran QRIS — Vanaila LMS`  
+**Title (EN):** `Sell Online Courses With QRIS Payments — Vanaila LMS`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Jual kursus online, pembayaran pakai QRIS 💸 Vanaila LMS mendukung Midtrans, Xendit & QRIS, katalog kursus rapi, sertifikat yang bisa dicek. Rilis Q4 2026, daftar waitlist!
+
+#jualkursus #kursusonline #qris #kreatorindonesia #vanailalms
+```
+
+**Caption (EN, optional)**
+```
+Sell online courses with QRIS payments 💸 Vanaila LMS supports Midtrans, Xendit & QRIS, a tidy course catalog and verifiable certificates. Launching Q4 2026!
+
+#onlinecourse #creator #edtech #indonesia
+```
+
+**Pinned comment:** `Kreator & trainer: kursus pertamamu tentang apa? Kami penasaran 👇`
+
+---
+
+## Post 50: MuzikPlayer: hi-fi Linux player
+
+**Format:** Photo Mode, 5 slides · **Sound:** hi-fi/ambient music from the CML (show off the audio)  
+**Title (ID):** `MuzikPlayer: Music Player Linux yang Serius Soal Suara 🎧`  
+**Title (EN):** `MuzikPlayer: A Linux Music Player That Takes Sound Seriously 🎧`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+Music player Linux yang serius soal suara 🎧 MuzikPlayer: bit-perfect PipeWire & ALSA (hingga 24-bit/192kHz + DSD), lirik sinkron, waveform, library super cepat. Tersedia RPM, DEB, Flatpak & portable!
+
+#linux #audiophile #musicplayer #hifi #opensourcesoftware
+```
+
+**Caption (EN, optional)**
+```
+A Linux music player that takes sound seriously 🎧 MuzikPlayer: bit-perfect PipeWire & ALSA (up to 24-bit/192kHz + DSD), synced lyrics, waveforms, a lightning-fast library.
+
+#linux #audiophile #musicplayer #hifi
+```
+
+**Pinned comment:** `Kamu dengar musik pakai player apa sekarang? 👇`
+
+---
+
+## Post 51: MuzikPlayer: bit-perfect itu apa?
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Bit-Perfect Itu Apa? Penjelasan 30 Detik 🎧`  
+**Title (EN):** `What Does Bit-Perfect Mean? A 30-Second Explainer 🎧`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+"Bit-perfect" itu apa sih? 🎧 Audio dikirim persis seperti di file, tanpa diubah sistem. Paling terasa dengan file lossless & DAC yang bagus. Di Linux? MuzikPlayer sudah bit-perfect. Tim lossless atau tim streaming?
+
+#audiophile #audio101 #linux #hifi #lossless
+```
+
+**Caption (EN, optional)**
+```
+What does "bit-perfect" mean? 🎧 Audio is sent exactly as it is in the file, untouched by the system. Most noticeable with lossless files and a good DAC.
+
+#audiophile #audio101 #linux #hifi
+```
+
+**Pinned comment:** `Jujur: dengan MP3 & earphone biasa, bedanya tipis. Tapi dengan FLAC + DAC? Beda cerita 😌`
+
+---
+
+## Post 52: MuzikPlayer: POV pengguna Linux
+
+**Format:** Photo Mode, 5 slides · **Sound:** nostalgic/indie track from the CML  
+**Title (ID):** `POV: Pengguna Linux yang Masih Koleksi File Musik 💿`  
+**Title (EN):** `POV: A Linux User Who Still Collects Music Files 💿`  
+**Content disclosure:** ON → *Your brand* (promotes a Vanaila product)
+
+**Caption (ID)**
+```
+POV: kamu pengguna Linux yang masih koleksi file musik 💿 MuzikPlayer: media key & lock screen jalan (MPRIS), scrobble ke ListenBrainz, desain ala GNOME. Distro apa yang kamu pakai?
+
+#linux #linuxdesktop #gnome #musicplayer #audiophile
+```
+
+**Caption (EN, optional)**
+```
+POV: you're a Linux user who still collects music files 💿 MuzikPlayer: media keys & lock screen controls (MPRIS), ListenBrainz scrobbling, GNOME-style design.
+
+#linux #linuxdesktop #gnome #musicplayer
+```
+
+**Pinned comment:** `Fedora, Ubuntu, Arch, atau lainnya? Absen distro di sini 🐧`
 
 ---
 

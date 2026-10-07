@@ -1778,5 +1778,518 @@
     "handle": "Follow untuk tips bisnis yang aman"
    }
   ]
+ },
+ {
+  "slug": "vanailachat-ai-gratis",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "img",
+    "kicker": "VanailaChat",
+    "title": "AI yang jalan di laptopmu sendiri — <i>tanpa langganan</i>",
+    "img": "../assets/products/vanailachat-hero-mockup.png",
+    "label": "VanailaChat",
+    "ask": "Gratis & open-source →"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Model AI lokal via Ollama",
+    "body": "Jalankan Llama 3.2, DeepSeek-R1, Qwen 2.5-Coder, Mistral, atau Phi-4 langsung di GPU/NPU-mu.",
+    "fix": "Tanpa biaya bulanan",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Zero telemetry",
+    "body": "Chat & data disimpan lokal di perangkatmu (SQLite). Tidak ada pelacakan.",
+    "fix": "Yang di laptopmu, tetap di laptopmu",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "img",
+    "kicker": "3",
+    "title": "Workspace per <i>proyek</i>",
+    "img": "../assets/products/vanailachat-workspace-chat.png",
+    "label": "VanailaChat · Workspace",
+    "ask": "Chat, instruksi & memori terpisah per proyek"
+   },
+   {
+    "type": "cta",
+    "title": "Pengguna <i>Linux</i>? Coba gratis.",
+    "sub": "Tersedia .deb, .rpm, .AppImage & AUR. Link di profil 🐧",
+    "handle": "Follow untuk tips AI lokal"
+   }
+  ]
+ },
+ {
+  "slug": "vanailachat-workspace",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Relate?",
+    "title": "Chat AI-mu campur aduk jadi <i>satu</i> daftar panjang 😵",
+    "sub": "Kerjaan, kuliah, side project — semua jadi satu"
+   },
+   {
+    "type": "img",
+    "kicker": "Solusinya",
+    "title": "Pisahkan per <i>workspace</i>",
+    "img": "../assets/products/vanailachat-workspaces-hub.png",
+    "label": "VanailaChat · Workspaces Hub",
+    "ask": "Satu proyek, satu ruang kerja"
+   },
+   {
+    "type": "point",
+    "n": "🧠",
+    "title": "Memori per proyek",
+    "body": "Memori vektor (RAG) mengingat gaya & konteks tiap proyek, jadi nggak perlu jelasin ulang tiap chat.",
+    "fix": "Konteks tersimpan otomatis",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "🔀",
+    "title": "Pilih model sesukamu",
+    "body": "Model lokal via Ollama, LM Studio, vLLM — atau cloud: OpenRouter, OpenAI, Claude.",
+    "fix": "Satu aplikasi, banyak model",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "cta",
+    "title": "Chat AI-mu sekarang <i>berapa</i> banyak? 😅",
+    "sub": "Komen jumlahnya 👇 VanailaChat gratis untuk Linux — link di profil.",
+    "handle": "Follow untuk tips produktivitas AI"
+   }
+  ]
+ },
+ {
+  "slug": "vanailachat-coding-aman",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk developer",
+    "title": "Ngoding bareng AI, tapi tetap <i>aman</i> 🛡️",
+    "sub": "3 pengaman di VanailaChat"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Review diff dulu",
+    "body": "Perubahan kode dari AI tampil sebagai diff. Kamu setujui dulu sebelum diterapkan.",
+    "fix": "Live diff + approval prompt",
+    "fixLabel": "PENGAMAN"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Peringatan branch production",
+    "body": "Badge peringatan di branch production + buat safety branch 1 klik sebelum generate kode.",
+    "fix": "Main branch tetap bersih",
+    "fixLabel": "PENGAMAN"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Terminal sandbox & read-only",
+    "body": "Eksekusi terminal dalam sandbox, plus mode read-only kalau cuma mau AI membaca.",
+    "fix": "Kendali tetap di tanganmu",
+    "fixLabel": "PENGAMAN"
+   },
+   {
+    "type": "cta",
+    "title": "Open-source, <i>240+</i> automated tests.",
+    "sub": "Cek kodenya & download gratis — link di profil 🐧",
+    "handle": "Follow untuk tips AI coding"
+   }
+  ]
+ },
+ {
+  "slug": "studio-satu-tab",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "img",
+    "kicker": "Vanaila Studio",
+    "title": "One tab. Semua tool yang <i>beneran</i> kamu pakai.",
+    "img": "../assets/products/atelier-atelier-home.png",
+    "label": "Vanaila Studio",
+    "ask": "Gratis, langsung di browser →"
+   },
+   {
+    "type": "check",
+    "title": "Isinya apa <i>aja</i>?",
+    "items": [
+     "Document Studio: invoice, kontrak, proposal → PDF",
+     "CV & Resume Builder (ATS-friendly)",
+     "PDF, gambar, OCR & social post generator"
+    ]
+   },
+   {
+    "type": "img",
+    "kicker": "Dashboard",
+    "title": "Semua dari <i>satu</i> tempat",
+    "img": "../assets/products/atelier-atelier-user.png",
+    "label": "Vanaila Studio · Dashboard",
+    "ask": "Pilih tool, kerjakan, selesai"
+   },
+   {
+    "type": "point",
+    "n": "🔒",
+    "title": "Tanpa install, tanpa upload",
+    "body": "Semua diproses di browser-mu sendiri. File tidak dikirim ke server.",
+    "fix": "No installs · No accounts · No watermarks",
+    "fixLabel": "BONUS"
+   },
+   {
+    "type": "cta",
+    "title": "Berhenti langganan <i>5 tools</i> berbeda.",
+    "sub": "Coba Vanaila Studio gratis — link di profil 🧰",
+    "handle": "Follow untuk tips tools kerja"
+   }
+  ]
+ },
+ {
+  "slug": "studio-pdf-tanpa-upload",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Pernah kepikiran?",
+    "title": "Kamu upload KTP & kontrak ke situs convert PDF <i>random</i>? 😬",
+    "sub": "Ada cara yang lebih aman"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Proses 100% di browser",
+    "body": "Merge, split, convert PDF ke gambar — dikerjakan di perangkatmu, bukan di server orang.",
+    "fix": "File tidak pernah di-upload",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "OCR tanpa kirim file",
+    "body": "Ambil teks dari gambar/scan pakai OCR berbasis WebAssembly, langsung di browser.",
+    "fix": "Copy teksnya instan",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Tanpa akun & watermark",
+    "body": "Nggak perlu daftar untuk mulai, hasilnya bersih tanpa watermark.",
+    "fix": "Pro hanya kalau kamu mau",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "cta",
+    "title": "Dokumen penting, tetap <i>di tanganmu</i>.",
+    "sub": "Vanaila Studio — gratis, link di profil. Share ke rekan kantor 👇",
+    "handle": "Follow untuk tips digital yang aman"
+   }
+  ]
+ },
+ {
+  "slug": "studio-cv-ats",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Lagi cari kerja?",
+    "title": "CV-mu bagus, tapi lolos <i>ATS</i> nggak? 🤔",
+    "sub": "Banyak perusahaan menyaring CV pakai sistem dulu"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Format yang terbaca sistem",
+    "body": "Struktur jelas & teks yang bisa dibaca mesin — bukan CV full gambar.",
+    "fix": "Template ATS-compliant",
+    "fixLabel": "DI VANAILA STUDIO"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Edit langsung di halaman",
+    "body": "Ketik & atur langsung di CV-nya, lihat hasil akhirnya saat itu juga.",
+    "fix": "Inline editor",
+    "fixLabel": "DI VANAILA STUDIO"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Export DOCX & PDF",
+    "body": "Kirim sesuai permintaan rekruter — dua format siap pakai, tanpa watermark.",
+    "fix": "Layout desainer, rapi dicetak",
+    "fixLabel": "DI VANAILA STUDIO"
+   },
+   {
+    "type": "cta",
+    "title": "Bikin CV-mu <i>sekarang</i>, gratis.",
+    "sub": "Vanaila Studio — link di profil. Tag teman yang lagi job hunting 👇",
+    "handle": "Follow untuk tips karier & tools"
+   }
+  ]
+ },
+ {
+  "slug": "lms-akademi-online",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "img",
+    "kicker": "Segera hadir · Q4 2026",
+    "title": "Punya ilmu? Bikin <i>akademi online</i> sendiri.",
+    "img": "../assets/products/lms-lms-marketing.png",
+    "label": "Vanaila LMS · preview",
+    "ask": "Early access dibuka →"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Brand-mu sendiri",
+    "body": "White-label dengan domain sendiri, tampilan sesuai brand, database siswa terpisah.",
+    "fix": "Akademi privat atau marketplace kursus",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Video lancar",
+    "body": "Pasang video dari YouTube, Vimeo, atau penyimpanan privat — siswa belajar sesuai kecepatannya.",
+    "fix": "Kursus self-paced",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Kuis & sertifikat otomatis",
+    "body": "Uji pemahaman, lalu terbitkan sertifikat digital yang bisa diverifikasi.",
+    "fix": "Progres siswa terpantau real-time",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "cta",
+    "title": "Mau jadi yang <i>pertama</i> coba?",
+    "sub": "Gabung waitlist early access Vanaila LMS — link di profil 🎓",
+    "handle": "Follow untuk update rilisnya"
+   }
+  ]
+ },
+ {
+  "slug": "lms-training-karyawan",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk HR & L&D",
+    "title": "Training karyawan masih pakai Zoom + Google Form + Excel? 😵",
+    "sub": "Begini bedanya kalau pakai LMS"
+   },
+   {
+    "type": "vs",
+    "n": "1",
+    "lt": "Cara lama",
+    "l": "Link Zoom tersebar di grup, rekaman entah di mana.",
+    "rt": "Dengan LMS",
+    "r": "Semua materi & video di satu akademi."
+   },
+   {
+    "type": "vs",
+    "n": "2",
+    "lt": "Cara lama",
+    "l": "Rekap kehadiran & nilai kuis manual di Excel.",
+    "rt": "Dengan LMS",
+    "r": "Progres & nilai tiap karyawan terlihat real-time."
+   },
+   {
+    "type": "vs",
+    "n": "3",
+    "lt": "Cara lama",
+    "l": "Sertifikat dibuat satu per satu.",
+    "rt": "Dengan LMS",
+    "r": "Sertifikat otomatis + terhubung ke data karyawan."
+   },
+   {
+    "type": "cta",
+    "title": "Vanaila LMS — rilis <i>Q4 2026</i>.",
+    "sub": "Gabung waitlist early access lewat link di profil. Tag tim HR-mu 👇",
+    "handle": "Follow untuk update & tips L&D"
+   }
+  ]
+ },
+ {
+  "slug": "lms-jual-kursus",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk kreator & trainer",
+    "title": "Jual kursus online, pembayaran pakai <i>QRIS</i> 💸",
+    "sub": "Infrastruktur yang dibuat untuk Indonesia"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Payment gateway lokal",
+    "body": "Dukungan Midtrans, Xendit, dan QRIS — siswa bayar dengan cara yang mereka pakai sehari-hari.",
+    "fix": "Tanpa ribet konfirmasi transfer manual",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "img",
+    "kicker": "2",
+    "title": "Katalog kursus yang <i>rapi</i>",
+    "img": "../assets/products/lms-lms-homepage.png",
+    "label": "Vanaila LMS · demo",
+    "ask": "Cari kursus, daftar, langsung belajar"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Sertifikat yang bisa dicek",
+    "body": "Setiap kelulusan menghasilkan sertifikat digital yang tahan pemalsuan.",
+    "fix": "Nilai jual kursusmu naik",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "cta",
+    "title": "Siap buka <i>kelas</i> pertamamu?",
+    "sub": "Vanaila LMS rilis Q4 2026 — daftar waitlist lewat link di profil 🎓",
+    "handle": "Follow untuk tips jualan kursus"
+   }
+  ]
+ },
+ {
+  "slug": "muzikplayer-hifi",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "img",
+    "kicker": "MuzikPlayer",
+    "title": "Music player Linux yang <i>serius</i> soal suara 🎧",
+    "img": "../assets/products/muzikplayer-muzikplayer-hero.png",
+    "label": "MuzikPlayer",
+    "ask": "Untuk koleksi musik lokalmu →"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Bit-perfect PipeWire & ALSA",
+    "body": "Suara dikirim 1:1 ke perangkat audio. Mendukung hingga 24-bit/192kHz PCM dan DSD native.",
+    "fix": "Latensi buffer 5.33 ms",
+    "fixLabel": "SPEK"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Lirik sinkron & waveform",
+    "body": "Lirik LRC bergulir otomatis + waveform audio, lengkap dengan A-B loop.",
+    "fix": "Enak buat nyanyi atau belajar lagu",
+    "fixLabel": "SPEK"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Library ngebut",
+    "body": "Scan ribuan lagu dalam hitungan detik. Cari instan dengan Ctrl+K.",
+    "fix": "Tag lengkap via FFmpeg",
+    "fixLabel": "SPEK"
+   },
+   {
+    "type": "cta",
+    "title": "Tersedia <i>RPM, DEB, Flatpak</i> & portable.",
+    "sub": "Download lewat link di profil 🐧 Kamu dengar musik pakai player apa?",
+    "handle": "Follow untuk tips audio di Linux"
+   }
+  ]
+ },
+ {
+  "slug": "muzikplayer-bit-perfect",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Audio 101",
+    "title": "\"Bit-perfect\" itu <i>apa</i> sih? 🎧",
+    "sub": "Penjelasan 30 detik untuk yang penasaran"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Biasanya, suara diubah dulu",
+    "body": "Sistem operasi sering mencampur & mengubah sample rate audio sebelum sampai ke speaker.",
+    "fix": "Contoh: file 96kHz diputar di 48kHz",
+    "fixLabel": "MASALAHNYA"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Bit-perfect = apa adanya",
+    "body": "Data audio dikirim persis seperti di file, tanpa diubah, langsung ke DAC/perangkat audio.",
+    "fix": "1:1 dari file ke hardware",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Kapan terasa bedanya?",
+    "body": "Paling terasa dengan file lossless (FLAC/WAV) dan DAC/headphone yang bagus.",
+    "fix": "File MP3 kecil? Bedanya tipis",
+    "fixLabel": "JUJURNYA"
+   },
+   {
+    "type": "cta",
+    "title": "Di Linux? MuzikPlayer sudah <i>bit-perfect</i>.",
+    "sub": "PipeWire & ALSA direct — link di profil. Tim lossless atau tim streaming? 👇",
+    "handle": "Follow untuk audio 101"
+   }
+  ]
+ },
+ {
+  "slug": "muzikplayer-pov-linux",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "POV",
+    "title": "Kamu pengguna Linux yang masih <i>koleksi</i> file musik 💿",
+    "sub": "Kamu butuh player yang ngerti kamu"
+   },
+   {
+    "type": "point",
+    "n": "⌨️",
+    "title": "Media key & lock screen jalan",
+    "body": "Integrasi MPRIS: tombol media keyboard, kontrol di lock screen, dan notifikasi sistem.",
+    "fix": "Terasa native di desktop Linux",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "📊",
+    "title": "Scrobble ke ListenBrainz",
+    "body": "Riwayat dengar tercatat otomatis — buat kamu yang suka lihat statistik musik.",
+    "fix": "Open alternative untuk scrobbling",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "🎨",
+    "title": "Cantik ala GNOME",
+    "body": "Desain Libadwaita Slate, warna mengikuti cover album, piringan vinyl berputar, dark/light mode.",
+    "fix": "Dibangun dengan Compose Desktop",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "cta",
+    "title": "Distro <i>apa</i> yang kamu pakai?",
+    "sub": "Komen di bawah 🐧 MuzikPlayer tersedia untuk RPM, DEB & Flatpak — link di profil.",
+    "handle": "Follow untuk tips Linux & audio"
+   }
+  ]
  }
 ]
