@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 22 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 28 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -26,6 +26,12 @@ There are 22 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 20 | POV: Senin pagi HR yang sudah pakai sistem 😌 | `output/tt-19-pov-senin-hr-s1…s5.png` | Soft-sell HRIS (real screens) |
 | 21 | Leads hilang bukan karena sales-mu malas | `output/tt-20-leads-hilang-s1…s5.png` | Soft-sell Flowraze (real screens) |
 | 22 | 100 kandidat, 1 HR, psikotes pakai kertas | `output/tt-21-100-kandidat-1-hr-s1…s5.png` | Soft-sell Psikotest (real screens) |
+| 23 | Tebak usahanya dari websitenya 👀 | `output/tt-22-tebak-usaha-s1…s5.png` | Viral (image): guessing game → comments |
+| 24 | Jangan bikin website kalau… | `output/tt-23-jangan-bikin-website-s1…s5.png` | Viral: reverse psychology → trust |
+| 25 | Domain bisnisnya expired, dibeli orang lain 😱 | `output/tt-24-domain-expired-s1…s5.png` | Viral: cautionary tips → shares |
+| 26 | UMKM kamu level berapa? 🎮 | `output/tt-25-umkm-level-berapa-s1…s5.png` | Viral: identity ladder → comments |
+| 27 | Kenapa penawaranmu nggak dibalas? | `output/tt-26-penawaran-tak-dibalas-s1…s5.png` | Viral: B2B pain → saves |
+| 28 | POV: owner liburan, HP nggak berhenti bunyi 📱 | `output/tt-27-pov-owner-liburan-s1…s5.png` | Viral: chat comedy → systems |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -784,6 +790,179 @@ Lost leads usually aren't your sales team's fault. They're scattered everywhere 
 **Pinned comment:** `Psikotest bisa dicoba tim HR & biro psikologi, demo lewat link di profil 🧩`
 
 **Video script (alternative, ~25s):** a stack of paper tests and a tired HR person (0–8s), then a hard cut on the beat drop to a phone sending the test link (8–16s), then the results screen with a psychologist reviewing (16–25s).
+
+---
+
+# Viral series 4 (posts 23–28)
+
+**Why these formats spread**
+- **Guessing game**: every viewer wants to check if they were right, so watch-through is high, and "komen skormu" comments are effortless.
+- **Reverse psychology ("Jangan bikin website kalau…")**: a seller telling you *not* to buy is surprising and builds trust.
+- **Cautionary story**: fear of loss (losing the domain) gets shares ("kirim ke teman yang punya usaha").
+- **Level ladder**: people love placing themselves on a scale, and "komen levelmu" is an easy reply.
+- **Chat-bubble POV comedy**: instantly relatable for owners. The punchline reframes the problem as needing a system.
+
+**Honesty:** the guessing images are Vanaila templates (said on the last slide). The chat messages are **fictional examples**, not real customers or staff. Post 25 describes a common scenario, not a specific real case.
+
+## Post 23: Tebak usahanya dari websitenya 👀
+
+**Format:** Photo Mode, 5 slides · **Sound:** playful quiz/countdown track from the CML  
+**Title (ID):** `Tebak Usahanya dari Websitenya! Jawaban di Slide Terakhir 👀`  
+**Title (EN):** `Guess the Business From Its Website! Answers on the Last Slide 👀`  
+**Content disclosure:** ON → *Your brand* (the last slide says the designs are Vanaila templates)
+
+**Caption (ID)**
+```
+Tebak usahanya dari websitenya 👀 3 tebakan, jawaban di slide terakhir. Berapa yang kamu tebak benar? Komen skormu!
+
+#tebaktebakan #desainwebsite #websitebisnis #umkm #webdesign
+```
+
+**Caption (EN, optional)**
+```
+Guess the business from its website 👀 3 rounds, answers on the last slide. How many did you get right? Comment your score!
+
+#guessinggame #webdesign #websiteinspo #smallbusiness
+```
+
+**Pinned comment:** `Yang dapat 3/3, kamu jago baca desain 👀 Mau tebakan part 2?`
+
+**Video script (alternative):** zoom in slowly on each cropped website for ~4s with a ticking sound and A/B/C on screen, then reveal the answers with a "ding".
+
+---
+
+## Post 24: Jangan bikin website kalau…
+
+**Format:** Photo Mode, 5 slides · **Sound:** "serious talk" calm track from the CML  
+**Title (ID):** `Jangan Bikin Website Kalau… (Kata Tim Pembuat Website)`  
+**Title (EN):** `Don't Build a Website If… (From a Web Design Team)`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Jangan bikin website kalau… 3 hal ini belum siap. Iya, ini kata tim pembuat website 😅 Sudah lolos semua? Komen "SIAP"!
+
+#tipswebsite #bikinwebsite #websitebisnis #umkm #tipsbisnis
+```
+
+**Caption (EN, optional)**
+```
+Don't build a website if… these 3 things aren't ready yet. Yes, this is coming from a web design team 😅 Passed all three? Comment "READY"!
+
+#websitetips #webdesign #smallbusinesstips #entrepreneur
+```
+
+**Pinned comment:** `Paling sering kami temui: nomor 2. Website bagus tapi nggak pernah di-update 🥲`
+
+**Video script (alternative):** face to camera, arms crossed: "Saya pembuat website, dan saya bilang: jangan bikin website kalau…" Count 1–3 on your fingers. End: "Sudah siap? Baru kita ngobrol."
+
+---
+
+## Post 25: Domain bisnisnya expired, dibeli orang lain 😱
+
+**Format:** Photo Mode, 5 slides · **Sound:** suspenseful track from the CML  
+**Title (ID):** `Domain Bisnis Expired Lalu Dibeli Orang Lain? Cegah dengan 3 Cara Ini`  
+**Title (EN):** `Business Domain Expired and Someone Else Bought It? 3 Ways to Prevent It`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Domain bisnis expired, lalu dibeli orang lain 😱 Sering terjadi! Cegah dengan 3 cara ini: daftar atas nama bisnis, auto-renew, simpan akses dengan aman. Share ke teman yang punya usaha!
+
+#domain #websitebisnis #tipsbisnis #umkm #keamanandigital
+```
+
+**Caption (EN, optional)**
+```
+Business domain expired and someone else bought it 😱 It happens a lot! Prevent it in 3 ways: register it in the business's name, turn on auto-renew, keep access secure.
+
+#domain #websitetips #smallbusiness #cybersecurity
+```
+
+**Pinned comment:** `Cek sekarang: domain kamu terdaftar atas nama siapa & kapan expired-nya? 🔍`
+
+**Video script (alternative):** a dramatic reveal: type the business URL and get "This domain is for sale" (use a mock page, never a real business). Then the 3 tips, then "Cek domainmu hari ini."
+
+---
+
+## Post 26: UMKM kamu level berapa? 🎮
+
+**Format:** Photo Mode, 5 slides · **Sound:** game/level-up sound from the CML  
+**Title (ID):** `UMKM Kamu Level Berapa? Cek dari Level 1 Sampai 4 🎮`  
+**Title (EN):** `Which Level Is Your Small Business? Level 1 to 4 🎮`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+UMKM kamu sekarang level berapa? 🎮 Dari jualan lewat chat sampai bisnis jalan pakai sistem. Komen levelmu, kami bantu cari langkah berikutnya!
+
+#umkm #umkmnaikkelas #bisnisonline #tipsbisnis #pengusaha
+```
+
+**Caption (EN, optional)**
+```
+Which level is your small business at? 🎮 From selling via chat to running on systems. Comment your level and we'll suggest your next step!
+
+#smallbusiness #entrepreneur #businessgrowth #businesstips
+```
+
+**Pinned comment:** `Level 2 paling banyak sejauh ini 👀 Kamu di level mana?`
+
+**Video script (alternative):** a video-game style "LEVEL UP" sound effect between each level card, with b-roll for each (phone chats, marketplace app, website, dashboard).
+
+---
+
+## Post 27: Kenapa penawaranmu nggak dibalas?
+
+**Format:** Photo Mode, 5 slides · **Sound:** reflective/lo-fi track from the CML  
+**Title (ID):** `Kenapa Penawaran B2B Kamu Nggak Dibalas? 3 Alasannya`  
+**Title (EN):** `Why Your B2B Proposals Get No Reply: 3 Reasons`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Kenapa penawaran B2B kamu nggak dibalas? 🥲 Bukan karena produkmu jelek. Biasanya: terlalu panjang, nggak ada next step, dikirim dari email gratisan. Nomor berapa yang paling sering kamu alami?
+
+#b2b #penjualan #tipssales #emailbisnis #tipsbisnis
+```
+
+**Caption (EN, optional)**
+```
+Why your B2B proposals get no reply 🥲 It's not your product. Usually: too long, no next step, sent from a free email address. Which one happens to you most?
+
+#b2bsales #salestips #businessemail #smallbusiness
+```
+
+**Pinned comment:** `Bonus: follow-up sekali setelah 3 hari kerja, singkat & sopan. Sering justru dibalas di follow-up pertama 📩`
+
+**Video script (alternative):** split-screen of a 20-page PDF vs a one-page summary. Then an inbox where the free-email offer drops into the spam folder. End with the 3 fixes.
+
+---
+
+## Post 28: POV: owner liburan, HP nggak berhenti bunyi 📱
+
+**Format:** Photo Mode, 5 slides · **Sound:** beach/holiday CML track + notification sound effects  
+**Title (ID):** `POV: Owner Bisnis Liburan Tapi HP Nggak Berhenti Bunyi 📱😂`  
+**Title (EN):** `POV: Business Owner on Holiday but the Phone Won't Stop Buzzing 📱😂`  
+**Content disclosure:** ON → *Your brand* (the punchline points to business systems, a Vanaila service)
+
+**Caption (ID)**
+```
+POV: kamu owner, lagi liburan… dan HP nggak berhenti bunyi 📱😂 Bisnis yang bisa jalan tanpa kamu = sistem. Kamu tim yang mana: tim ditelepon terus atau tim tenang liburan?
+
+#owner #pengusaha #liburan #sistembisnis #umkm
+```
+
+**Caption (EN, optional)**
+```
+POV: you own a business, you're on holiday… and your phone won't stop buzzing 📱😂 A business that runs without you = systems. Which team are you?
+
+#businessowner #entrepreneur #vacation #businesssystems
+```
+
+**Pinned comment:** `Harga, approval, laporan, stok: kalau semua ada di satu sistem, liburan beneran jadi liburan 🏖️`
+
+**Video script (alternative):** the owner on a beach chair, with each notification sound cutting to a phone close-up of the (mock) chat. Relaxing → annoyed → defeated faces. End on the systems punchline.
 
 ---
 

@@ -81,6 +81,17 @@ html,body{width:1080px;height:1920px}
 .rt-main{background:#fff;color:#000;padding:14px;font-size:19px;border:3px inset #888}
 .rt-blink{color:#ff0000;font-weight:700;font-size:22px}
 .rt-count{font-family:'Courier New',monospace;background:#000;color:#00ff00;padding:2px 6px;font-size:16px}
+.guess{margin-top:40px;height:600px;border-radius:28px;overflow:hidden;border:2px solid rgba(255,255,255,.25);box-shadow:0 40px 90px rgba(0,0,0,.55);position:relative;flex:none}
+.guess img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.guess .q{position:absolute;right:20px;top:20px;width:84px;height:84px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:52px;font-weight:700}
+.opts{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.opt{padding:22px 28px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);font-size:34px;font-weight:600}
+.phone{margin-top:36px;border-radius:40px;background:#e9eef6;padding:26px 24px 30px;box-shadow:0 40px 90px rgba(0,0,0,.45);flex:none}
+.phone .who{display:flex;align-items:center;gap:16px;padding-bottom:18px;border-bottom:1px solid #d6dfed;color:#0c1730;font-size:28px;font-weight:700}
+.phone .who b{width:60px;height:60px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:26px}
+.phone .who small{display:block;font-size:20px;font-weight:400;color:#637391}
+.bub{margin-top:18px;max-width:86%;padding:20px 24px;border-radius:24px 24px 24px 6px;background:#fff;color:#0c1730;font-size:30px;line-height:1.35;box-shadow:0 4px 10px rgba(17,37,73,.08)}
+.bub time{display:block;text-align:right;font-size:18px;color:#8a97ad;margin-top:6px}
 .swipe{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
 `;
 
@@ -94,6 +105,8 @@ const render = (sl) => {
     case 'img': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="browser"><div class="bar"><i></i><i></i><i></i><span>${sl.label || (sl.html ? 'tokokami.blogspot.com' : 'Template Vanaila')}</span></div>${sl.html || `<img src="${sl.img}"${sl.label ? ' style="object-position:left top"' : ''}>`}</div><div class="ask">${sl.ask}</div>`;
     case 'collage': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:92px">${sl.title}</h1><div class="collage">${sl.imgs.map((x, i) => `<div class="browser c${i}"><div class="bar"><i></i><i></i><i></i></div><img src="${x}"></div>`).join('')}</div><p class="s" style="margin-top:20px">${sl.sub}</p>`;
     case 'split': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:64px">${sl.title}</h1><div class="splitw">${[[sl.imgA, sl.labelA, sl.htmlA], [sl.imgB, sl.labelB, sl.htmlB]].map(([im, lb, h]) => `<div><div class="browser" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>${h ? 'tokokami.blogspot.com' : 'Template Vanaila'}</span></div>${h ? h.replace("class='retro'", "class='retro' style='aspect-ratio:16/6.4;font-size:.8em'") : `<img src="${im}" style="aspect-ratio:16/6.4">`}</div><div class="lab">${lb}</div></div>`).join('')}</div>`;
+    case 'guess': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="guess"><img src="${sl.img}" style="object-position:${sl.pos};transform:scale(${sl.zoom});transform-origin:${sl.pos}"><div class="q">?</div></div><div class="opts">${sl.options.map((o) => `<div class="opt">${o}</div>`).join('')}</div>`;
+    case 'chat': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="phone"><div class="who"><b>${sl.initial}</b><div>${sl.sender}<small>online</small></div></div>${sl.msgs.map(([m, t]) => `<div class="bub">${m}<time>${t}</time></div>`).join('')}</div>`;
     case 'cta': return `<h2 class="t" style="font-size:96px">${sl.title}</h2><p class="s">${sl.sub}</p><div class="cta">${sl.handle}</div>`;
   }
 };

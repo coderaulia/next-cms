@@ -885,5 +885,299 @@
     "handle": "Follow untuk tips rekrutmen & HR"
    }
   ]
+ },
+ {
+  "slug": "tebak-usaha",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Main tebak-tebakan",
+    "title": "Tebak usahanya dari <i>websitenya</i> 👀",
+    "sub": "Jawaban di slide terakhir. Jangan curang!"
+   },
+   {
+    "type": "guess",
+    "kicker": "Tebakan #1",
+    "title": "Ini website usaha apa?",
+    "img": "../../../public/templates-static/previews/toko-meubel-rahayu.png",
+    "pos": "55% 60%",
+    "zoom": "1.9",
+    "options": [
+     "A · Hotel butik",
+     "B · Toko mebel",
+     "C · Kafe"
+    ]
+   },
+   {
+    "type": "guess",
+    "kicker": "Tebakan #2",
+    "title": "Kalau yang ini?",
+    "img": "../../../public/templates-static/previews/catering-mama-fadil.png",
+    "pos": "85% 70%",
+    "zoom": "2.1",
+    "options": [
+     "A · Catering",
+     "B · Restoran padang",
+     "C · Toko bumbu"
+    ]
+   },
+   {
+    "type": "guess",
+    "kicker": "Tebakan #3",
+    "title": "Terakhir, yang ini?",
+    "img": "../../../public/templates-static/previews/po-bus-bahari-alam.png",
+    "pos": "55% 55%",
+    "zoom": "1.7",
+    "options": [
+     "A · Rental mobil",
+     "B · Logistik",
+     "C · PO bus"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Jawaban: <i>1B · 2A · 3C</i>",
+    "sub": "Berapa yang benar? Komen skormu 👇 Semua ini template Vanaila.",
+    "handle": "Follow untuk tebak-tebakan berikutnya"
+   }
+  ]
+ },
+ {
+  "slug": "jangan-bikin-website",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Dari tim pembuat website",
+    "title": "Jangan bikin website <i>kalau</i>…",
+    "sub": "Serius. Nomor 3 paling sering 😅"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Belum tahu mau dipakai untuk apa",
+    "body": "\"Biar keren aja\" bukan tujuan. Tentukan dulu: mau dapat leads, penjualan, atau kepercayaan?",
+    "fix": "Tulis 1 tujuan utama dulu",
+    "fixLabel": "SEBELUM MULAI"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Tidak ada yang mau update",
+    "body": "Website dengan promo tahun lalu malah bikin calon pelanggan ragu.",
+    "fix": "Tunjuk 1 orang & pilih CMS yang mudah",
+    "fixLabel": "SEBELUM MULAI"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Cuma ikut-ikutan kompetitor",
+    "body": "Copy desain orang lain tanpa paham pelangganmu sendiri = hasil yang sama-sama biasa.",
+    "fix": "Mulai dari apa yang pelangganmu cari",
+    "fixLabel": "SEBELUM MULAI"
+   },
+   {
+    "type": "cta",
+    "title": "Sudah <i>siap</i> semua?",
+    "sub": "Baru deh kita ngobrol 😉 Komen \"SIAP\" kalau kamu sudah lolos 3 poin ini.",
+    "handle": "Follow untuk tips sebelum bikin website"
+   }
+  ]
+ },
+ {
+  "slug": "domain-expired",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Sering terjadi",
+    "title": "Domain bisnisnya <i>expired</i>… lalu dibeli orang lain 😱",
+    "sub": "3 cara supaya ini nggak kejadian ke kamu"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Daftar atas nama bisnismu",
+    "body": "Bukan atas nama vendor, karyawan, atau keponakan yang dulu bantu bikin website.",
+    "fix": "Email pemilik domain = email bisnis",
+    "fixLabel": "CEK"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Nyalakan perpanjangan otomatis",
+    "body": "Domain disewa per tahun. Lupa bayar sekali, alamatmu bisa hilang setelah masa tenggang.",
+    "fix": "Auto-renew + kartu/pembayaran yang aktif",
+    "fixLabel": "CEK"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Simpan akses di tempat aman",
+    "body": "Login registrar, hosting, dan DNS dicatat & bisa diakses lebih dari satu orang.",
+    "fix": "Password manager tim",
+    "fixLabel": "CEK"
+   },
+   {
+    "type": "cta",
+    "title": "Sudah cek domain bisnismu <i>hari ini</i>?",
+    "sub": "Share ke teman yang punya usaha — bisa menyelamatkan bisnisnya.",
+    "handle": "Follow untuk tips digital yang aman"
+   }
+  ]
+ },
+ {
+  "slug": "umkm-level-berapa",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Cek level bisnismu",
+    "title": "UMKM kamu sekarang <i>level berapa</i>? 🎮",
+    "sub": "Jujur ya. Geser sampai level 4 →"
+   },
+   {
+    "type": "point",
+    "n": "LV 1",
+    "title": "Jualan lewat chat",
+    "body": "Semua order masuk WhatsApp. Catatan di kepala & buku tulis.",
+    "fix": "Mulai tercatat: pakai satu daftar order",
+    "fixLabel": "NAIK LEVEL"
+   },
+   {
+    "type": "point",
+    "n": "LV 2",
+    "title": "Sosmed + marketplace",
+    "body": "Mulai dikenal, tapi pelanggan & datanya milik platform.",
+    "fix": "Punya website & email bisnis sendiri",
+    "fixLabel": "NAIK LEVEL"
+   },
+   {
+    "type": "point",
+    "n": "LV 3",
+    "title": "Punya website sendiri",
+    "body": "Kredibel & mudah ditemukan. Tapi operasional masih manual.",
+    "fix": "Sistem: order, stok, tim, laporan",
+    "fixLabel": "NAIK LEVEL"
+   },
+   {
+    "type": "cta",
+    "title": "LV 4: bisnis jalan <i>pakai sistem</i>",
+    "sub": "Komen levelmu sekarang 👇 Kami bantu cari langkah berikutnya.",
+    "handle": "Follow untuk naik level bareng"
+   }
+  ]
+ },
+ {
+  "slug": "penawaran-tak-dibalas",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk yang jualan B2B",
+    "title": "Kenapa penawaranmu <i>nggak dibalas</i>? 🥲",
+    "sub": "Bukan karena produkmu jelek"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Terlalu panjang",
+    "body": "20 halaman profil perusahaan sebelum sampai ke inti. Calon klien berhenti di halaman 3.",
+    "fix": "1 halaman ringkasan di depan",
+    "fixLabel": "PERBAIKI"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Tidak ada langkah berikutnya",
+    "body": "Tidak jelas harus balas apa, ke siapa, dan kapan.",
+    "fix": "Tutup dengan 1 ajakan: \"Jadwalkan call 15 menit?\"",
+    "fixLabel": "PERBAIKI"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Dikirim dari email gratisan",
+    "body": "Lampiran dari alamat pribadi sering dicurigai — bahkan masuk spam.",
+    "fix": "Email @namabisnis + SPF/DKIM/DMARC",
+    "fixLabel": "PERBAIKI"
+   },
+   {
+    "type": "cta",
+    "title": "Nomor berapa yang paling <i>sering</i> kamu alami?",
+    "sub": "Komen di bawah. Share ke tim sales-mu 👇",
+    "handle": "Follow untuk tips jualan B2B"
+   }
+  ]
+ },
+ {
+  "slug": "pov-owner-liburan",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "POV",
+    "title": "Kamu owner, lagi liburan… dan HP <i>nggak berhenti</i> bunyi 📱",
+    "sub": "Geser kalau relate 😂"
+   },
+   {
+    "type": "chat",
+    "kicker": "08.12",
+    "title": "Baru sampai pantai…",
+    "initial": "A",
+    "sender": "Admin Toko",
+    "msgs": [
+     [
+      "Bu, klien minta harga paket B, berapa ya? 🙏",
+      "08.12"
+     ],
+     [
+      "Filenya ada di laptop Ibu",
+      "08.13"
+     ]
+    ]
+   },
+   {
+    "type": "chat",
+    "kicker": "10.47",
+    "title": "Baru buka kelapa muda…",
+    "initial": "S",
+    "sender": "Supervisor",
+    "msgs": [
+     [
+      "Pak, approval cuti Rina gimana?",
+      "10.47"
+     ],
+     [
+      "Sama laporan bulan lalu di folder mana ya Pak?",
+      "10.48"
+     ]
+    ]
+   },
+   {
+    "type": "chat",
+    "kicker": "15.30",
+    "title": "Baru mau foto sunset…",
+    "initial": "K",
+    "sender": "Kasir",
+    "msgs": [
+     [
+      "Bu stok kardus tinggal 3, order ke mana ya?",
+      "15.30"
+     ],
+     [
+      "Nomor supplier-nya Ibu yang simpan 😅",
+      "15.31"
+     ]
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Bisnis yang bisa jalan <i>tanpa kamu</i> = sistem.",
+    "sub": "Harga, approval, laporan, stok — di satu tempat yang bisa diakses tim. Kamu tim yang mana? 👇",
+    "handle": "Follow untuk tips bisnis yang bisa ditinggal liburan"
+   }
+  ]
  }
 ]
