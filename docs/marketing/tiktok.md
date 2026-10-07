@@ -34,7 +34,9 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 **Account & compliance**
 - Post from a **TikTok Business Account**. Business accounts can only use sounds from the **Commercial Music Library (CML)**, not trending copyrighted songs.
 - Don't make misleading claims: no fake prices, fake results or fake testimonials. Every offer in these posts has to be real.
-- Use the **branded content** toggle only when a creator or partner is paid to post. Posts on our own account don't need it.
+- **Content disclosure:** when a post promotes Vanaila's own services or products (offers, demos, templates), turn on *Content disclosure → Your brand*. TikTok then shows a "Promotional content" label. Use *Branded content* only when a creator or partner is paid to post for us. Each post below says which setting to use. Check the current setting names in the TikTok app before posting.
+- **AI-generated content:** if any slide, image or voice-over is made with AI, turn on the *AI-generated content* label. The current slides are designed in HTML with real screenshots, so they don't need it.
+- **FYP eligibility:** no misleading claims, no "like/follow untuk…" style engagement bait or false incentives, no stolen or copyrighted media, and no personal data on screen. Posts that break these rules can be left out of the For You feed even if they aren't removed.
 - Don't put personal data on screen. The screenshots use demo data only.
 
 **Format**
@@ -44,11 +46,17 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 - Use one idea per slide, few words, and large text.
 - For video: aim for 15–45 seconds, use auto-captions or on-screen text (many people watch with the sound off), and keep a fast pace.
 
+**Title (Photo Mode)**
+- Photo posts have a separate **title** field (up to 90 characters). Every post below has one in ID and EN.
+- Put the **search keyword first** ("3 Red Flag Saat Cari Jasa Pembuatan Website") and match it to the hook on slide 1.
+- For videos, there's no separate title, so the first line of the caption does the same job.
+
 **Captions**
 - Lead with **search keywords** in the first line, because TikTok search indexes the caption and on-screen text. TikTok captions allow up to about 4,000 characters, but **short works better**: 1–3 lines, then hashtags.
 - Use **3–5 relevant hashtags**: a mix of niche tags (#tipsbisnis) and topic tags (#hrd). Avoid generic tags like #fyp #viral spam. They don't help, and irrelevant tags can hurt distribution.
 - External links aren't clickable in captions. Say **"link di profil"** and keep the bio link updated.
-- End with **one** clear action: comment, save, share or follow. Ask for a meaningful comment ("komen CEK"), not empty engagement bait ("like kalau setuju").
+- End with **one** clear action: comment, save, share or follow. Ask for a meaningful comment ("komen CEK", "komen nomornya"), not empty engagement bait ("like kalau setuju", "follow biar dapat…").
+- Asking people to tag someone the post is *useful* to ("tag rekan HR") is fine. Never promise a reward for likes or follows.
 
 **After posting**
 - Pin a comment that repeats the CTA.
@@ -60,6 +68,10 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 ## Post 1: 3 tanda website-mu bikin pelanggan kabur
 
 **Format:** Photo Mode, 5 slides · **Sound:** upbeat track from the Commercial Music Library, low volume
+
+**Title (ID):** `3 Tanda Website Bisnis Bikin Pelanggan Kabur (Nomor 3 Paling Sering!)`  
+**Title (EN):** `3 Signs Your Business Website Is Driving Customers Away`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
 
 **Caption (ID)**
 ```
@@ -94,6 +106,10 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 
 **Format:** Photo Mode, 5 slides · **Sound:** relatable/comedic track from the CML
 
+**Title (ID):** `POV: HR Masih Pakai Excel untuk Semua Data Karyawan 😵`  
+**Title (EN):** `POV: HR Still Runs Everything in Excel 😵`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
+
 **Caption (ID)**
 ```
 POV: kamu HR dan semua data karyawan masih di Excel 😵 Siapa yang relate? Tag rekan HR kamu 👇
@@ -116,13 +132,17 @@ POV: you're in HR and every employee record still lives in Excel 😵 Tag an HR 
 | 0–3s | "POV: kamu HR & semua data di Excel" | Person staring at a laptop, sighing |
 | 3–8s | "KPI_final_v3_REVISI.xlsx" | Scroll through 4 near-identical file names |
 | 8–13s | "Bikin PKWT copy-paste" | Copy-paste motion, "lupa ganti nama" sticker |
-| 18–25s | "Plot twist: semua di satu data karyawan" | Screen recording of Vanaila HRIS (KPI Management → HR Documents) |
+| 13–20s | "Plot twist: semua di satu data karyawan" | Screen recording of Vanaila HRIS (KPI Management → HR Documents) |
 
 ---
 
 ## Post 3: Behind the scenes: website bisnis dari nol
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm lo-fi track from the CML
+
+**Title (ID):** `Cara Website Bisnis Dibuat dari Nol: 3 Tahap`  
+**Title (EN):** `How a Business Website Is Built From Scratch: 3 Stages`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
 
 **Caption (ID)**
 ```
@@ -170,6 +190,10 @@ How a business website is built from scratch: the 3 stages we follow on every pr
 
 **Format:** Photo Mode, 5 slides · **Sound:** dramatic/suspense track from the CML
 
+**Title (ID):** `3 Red Flag Saat Cari Jasa Pembuatan Website 🚩`  
+**Title (EN):** `3 Red Flags When Hiring a Web Developer 🚩`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 3 red flag pas cari jasa website 🚩 Save sebelum bayar DP! Kamu pernah kena nomor berapa?
@@ -199,11 +223,15 @@ How a business website is built from scratch: the 3 stages we follow on every pr
 
 **Format:** Photo Mode, 5 slides · **Sound:** trending *comedic* sound from the CML
 
+**Title (ID):** `Yang Klien Bilang vs Maksudnya (Versi Agency) 😂`  
+**Title (EN):** `What Clients Say vs What They Actually Mean 😂`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 Yang klien bilang vs yang sebenarnya dimaksud 😂 (nomor 3 itu kami sendiri sih) Paling relate nomor berapa?
 
-#agencylife #desainer #programmer #kerjakantoran #relate
+#agencylife #desainer #programmer #kerjakantoran #webdeveloper
 ```
 
 **Caption (EN, optional)**
@@ -224,6 +252,10 @@ What clients say vs what they actually mean 😂 (#3 is us, to be fair). Which o
 ## Post 6: 3 hal kecil yang bikin bisnismu kelihatan amatir
 
 **Format:** Photo Mode, 5 slides · **Sound:** upbeat track from the CML
+
+**Title (ID):** `3 Hal Kecil yang Bikin Bisnis Kelihatan Amatir`  
+**Title (EN):** `3 Small Things That Make a Business Look Amateur`  
+**Content disclosure:** OFF (educational, no product promotion)
 
 **Caption (ID)**
 ```
@@ -258,6 +290,10 @@ What clients say vs what they actually mean 😂 (#3 is us, to be fair). Which o
 
 **Format:** Photo Mode, 5 slides · **Sound:** upbeat track from the CML
 
+**Title (ID):** `3 Cara Pakai AI untuk Bisnis Minggu Ini (Tanpa Coding)`  
+**Title (EN):** `3 Ways to Use AI in Your Business This Week`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 3 cara pakai AI di bisnis minggu ini, tanpa coding 🤖 Nomor 2 langsung bisa dicoba. Kamu sudah pakai AI untuk apa?
@@ -282,6 +318,10 @@ What clients say vs what they actually mean 😂 (#3 is us, to be fair). Which o
 
 **Format:** Photo Mode, 5 slides · **Sound:** suspense/"plot twist" track from the CML
 
+**Title (ID):** `3 Salah Kaprah soal AI di Bisnis: Mitos vs Fakta`  
+**Title (EN):** `3 AI Myths in Business: Myth vs Fact`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 3 salah kaprah soal AI di bisnis 👀 Nomor 2 paling berisiko buat data pelangganmu. Kamu pernah percaya yang mana?
@@ -305,6 +345,10 @@ What clients say vs what they actually mean 😂 (#3 is us, to be fair). Which o
 ## Post 9: AI paling berguna justru yang tidak terlihat
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm tech/lo-fi track from the CML
+
+**Title (ID):** `AI untuk Bisnis Bukan Cuma Chatbot: 3 Contoh Nyata`  
+**Title (EN):** `AI for Business Is More Than a Chatbot: 3 Examples`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
 
 **Caption (ID)**
 ```
@@ -343,6 +387,10 @@ These slides are **picture-first**: full-screen Vanaila template previews on a b
 
 **Format:** Photo Mode, 5 slides · **Sound:** trending upbeat track from the CML
 
+**Title (ID):** `Rate Desain Website Ini 1–10 👀`  
+**Title (EN):** `Rate These Website Designs 1–10 👀`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
+
 **Caption (ID)**
 ```
 Rate website ini 1–10 👀 Jujur aja, kami kuat kok 😅 Tulis nilaimu untuk #1, #2, #3 di komentar!
@@ -367,6 +415,10 @@ Rate these websites 1–10 👀 Be honest, we can take it 😅 Drop your score f
 
 **Format:** Photo Mode, 5 slides · **Sound:** "this or that" style track from the CML
 
+**Title (ID):** `Website Kuliner: Pilih Desain A atau B?`  
+**Title (EN):** `Restaurant Website Design: A or B?`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 Usaha kuliner: website A atau B yang bikin kamu langsung pesan? 🍽️ Komen hurufnya, kami tebak jenis usahamu!
@@ -390,6 +442,10 @@ Restaurant websites: A or B, which one makes you order? 🍽️ Comment the lett
 ## Post 12: UMKM bisa punya website sekeren brand besar
 
 **Format:** Photo Mode, 5 slides · **Sound:** empowering/upbeat Indonesian track from the CML
+
+**Title (ID):** `Website UMKM Bisa Sekeren Brand Besar`  
+**Title (EN):** `Small Business Websites Can Look Like Big Brands`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
 
 **Caption (ID)**
 ```
@@ -422,18 +478,22 @@ Who says small businesses can't have websites as good as big brands? 💪 Garage
 
 **Format:** Photo Mode, 5 slides · **Sound:** playful/quiz track from the CML
 
+**Title (ID):** `Kamu Tipe Bos yang Mana? Excel, WhatsApp, atau Sistem`  
+**Title (EN):** `Which Type of Boss Are You? Excel, WhatsApp or Systems`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 Kamu tipe bos yang mana? 🤔 Excel, WhatsApp, atau Sistem? Komen jawabanmu & tag bosmu 👀
 
-#bos #duniakerja #kerjakantoran #tipsbisnis #relate
+#atasan #duniakerja #kerjakantoran #tipsbisnis #manajemenbisnis
 ```
 
 **Caption (EN, optional)**
 ```
 Which type of boss are you? 🤔 Excel, WhatsApp or Systems? Comment yours and tag your boss 👀
 
-#boss #worklife #officehumor #businesstips
+#boss #worklife #officehumor #management
 ```
 
 **Pinned comment:** `Hasil sementara: tim WhatsApp paling banyak 😂 Kamu yang mana?`
@@ -445,6 +505,10 @@ Which type of boss are you? 🤔 Excel, WhatsApp or Systems? Comment yours and t
 ## Post 14: Unpopular opinion: UMKM belum butuh aplikasi
 
 **Format:** Photo Mode, 5 slides · **Sound:** "hot take"/dramatic track from the CML
+
+**Title (ID):** `Unpopular Opinion: UMKM Belum Butuh Aplikasi Mobile`  
+**Title (EN):** `Unpopular Opinion: Most Small Businesses Don't Need an App Yet`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
 
 **Caption (ID)**
 ```
@@ -471,6 +535,10 @@ Unpopular opinion: most small businesses don't need a mobile app yet 🔥 (yes, 
 ## Post 15: Website bisnis 2010 vs 2026
 
 **Format:** Photo Mode, 5 slides · **Sound:** nostalgic 2000s-style track from the CML
+
+**Title (ID):** `Website Bisnis 2010 vs 2026: Glow Up! 📈`  
+**Title (EN):** `Business Websites: 2010 vs 2026 Glow Up 📈`  
+**Content disclosure:** ON → *Your brand* (the post promotes Vanaila's own offer)
 
 **Caption (ID)**
 ```
@@ -500,6 +568,10 @@ Same accuracy rules as the first AI series: AI **helps you start**, and people c
 
 **Format:** Photo Mode, 5 slides · **Sound:** chill productivity/lo-fi track from the CML
 
+**Title (ID):** `3 Prompt AI untuk Kerjaan Kantor: Email, Notulen, Excel`  
+**Title (EN):** `3 AI Prompts for Office Work: Emails, Notes, Excel`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 3 prompt AI untuk kerjaan kantor 📧📝📊 Email, notulen rapat & rumus Excel. Simpan, besok langsung pakai! Prompt mana yang paling kepake?
@@ -523,6 +595,10 @@ Same accuracy rules as the first AI series: AI **helps you start**, and people c
 ## Post 17: 3 tugas HR yang jadi lebih cepat dengan AI
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm/professional track from the CML
+
+**Title (ID):** `3 Tugas HR yang Lebih Cepat dengan AI`  
+**Title (EN):** `3 HR Tasks AI Can Speed Up`  
+**Content disclosure:** OFF (educational, no product promotion)
 
 **Caption (ID)**
 ```
@@ -550,18 +626,22 @@ Same accuracy rules as the first AI series: AI **helps you start**, and people c
 
 **Format:** Photo Mode, 5 slides · **Sound:** trending comedic "before/after" track from the CML
 
+**Title (ID):** `Kerja Tanpa AI vs Dengan AI 😅`  
+**Title (EN):** `Working Without AI vs With AI 😅`  
+**Content disclosure:** OFF (educational, no product promotion)
+
 **Caption (ID)**
 ```
 Kerja tanpa AI vs dengan AI 😅 Nomor 3 paling kerasa bedanya! AI bantu mulai, kamu yang menyelesaikan. Kamu paling sering pakai AI untuk apa?
 
-#ai #kerjacerdas #kerjakantoran #relate #produktivitas
+#ai #kerjacerdas #kerjakantoran #aitools #produktivitas
 ```
 
 **Caption (EN, optional)**
 ```
 Working without AI vs with AI 😅 #3 hits different! AI helps you start, you finish the job. What do you use AI for most?
 
-#ai #worksmarter #officelife #relatable
+#ai #worksmarter #officelife #aitools
 ```
 
 **Pinned comment:** `Tetap cek ulang hasil AI ya, dia bisa salah dengan sangat percaya diri 😂`
@@ -573,7 +653,10 @@ Working without AI vs with AI 😅 #3 hits different! AI helps you start, you fi
 ## Posting checklist
 - [ ] Posted from the Business Account, with a sound from the Commercial Music Library
 - [ ] Slides uploaded in order (s1 → s5, max 5)
-- [ ] Caption: keyword first line, one CTA, 3–5 hashtags
+- [ ] Title filled in (≤90 chars, keyword first)
+- [ ] Caption: keyword first line, one CTA, 3–5 relevant hashtags (no #fyp spam)
+- [ ] Content disclosure set as noted (Your brand ON/OFF)
+- [ ] AI-generated label ON if any AI imagery or voice was used
 - [ ] Bio link updated (contact / demo page)
 - [ ] CTA comment pinned
 - [ ] Replied to comments within the first hour
