@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 31 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 34 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -35,6 +35,9 @@ There are 31 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 29 | Rumus prompt AI 4 bagian 📌 | `output/tt-28-rumus-prompt-ai-s1…s5.png` | AI cheat sheet → saves |
 | 30 | Prompt asal vs prompt jelas 👀 | `output/tt-29-prompt-asal-vs-jelas-s1…s5.png` | AI before/after → comments |
 | 31 | 3 tanda bisnismu siap pakai AI | `output/tt-30-siap-pakai-ai-s1…s5.png` | AI readiness → AI integration leads |
+| 32 | Kenapa website ini kelihatan mahal? 💎 | `output/tt-31-website-kelihatan-mahal-s1…s5.png` | Visual: annotated design breakdown → saves |
+| 33 | Pilih vibe website usahamu 🎨 | `output/tt-32-pilih-vibe-website-s1…s5.png` | Visual: moodboard → comments |
+| 34 | Tur dashboard Flowraze 👀 | `output/tt-33-tur-flowraze-s1…s5.png` | Visual: annotated product tour → demo |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -1056,6 +1059,96 @@ Lazy prompt vs clear prompt 👀 One sentence, a completely different result. Dr
 **Pinned comment:** `Belum centang nomor 1? Mulai dari merapikan data ke satu sistem. AI-nya menyusul 😉`
 
 **Video script (alternative):** a checklist on a whiteboard. Tick each item while explaining it in 5 seconds, then turn to camera: "Sudah centang berapa?"
+
+---
+
+# Visual series (posts 32–34)
+
+These are **visual-first**: real screenshots with yellow **numbered callouts** drawn on top, like a designer's markup. Viewers learn by looking, so these get a high save rate. Templates are labelled "Template Vanaila", and Flowraze screens use demo data.
+
+**Why these formats spread**
+- **Design breakdown ("kenapa kelihatan mahal?")**: people love learning the secret behind something that looks expensive, and they save it as a reference.
+- **Moodboard / pick a vibe**: an easy aesthetic choice ("komen 1, 2, 3") that also shows our range.
+- **Annotated product tour**: shows the product honestly in 30 seconds, with nothing hidden, which builds trust before a demo.
+
+## Post 32: Kenapa website ini kelihatan mahal? 💎
+
+**Format:** Photo Mode, 5 slides · **Sound:** elegant/luxury track from the CML  
+**Title (ID):** `Kenapa Website Ini Kelihatan Mahal? 3 Rahasia Desain 💎`  
+**Title (EN):** `Why Does This Website Look Expensive? 3 Design Secrets 💎`  
+**Content disclosure:** ON → *Your brand* (the designs shown are Vanaila templates)
+
+**Caption (ID)**
+```
+Kenapa website ini kelihatan mahal? 💎 Kita bedah 3 rahasianya: foto besar, huruf besar & ruang kosong, cuma satu tombol utama. Website-mu lolos berapa?
+
+#desainwebsite #webdesign #websitebisnis #tipsdesain #umkm
+```
+
+**Caption (EN, optional)**
+```
+Why does this website look expensive? 💎 We break down 3 secrets: one big photo, large type with white space, and a single main button. How many does your site pass?
+
+#webdesign #designtips #websitedesign #branding
+```
+
+**Pinned comment:** `Rahasia paling murah untuk diterapkan: nomor 3, hapus tombol yang nggak perlu 😉`
+
+**Video script (alternative):** screen recording of the template, zooming into each area while a yellow box draws around it (use the CapCut/TikTok "highlight" effect), with a voice-over for each secret.
+
+---
+
+## Post 33: Pilih vibe website usahamu 🎨
+
+**Format:** Photo Mode, 5 slides · **Sound:** aesthetic/moodboard track from the CML  
+**Title (ID):** `Pilih Vibe Website Usahamu: Mewah, Hangat, atau Natural? 🎨`  
+**Title (EN):** `Pick Your Website Vibe: Luxe, Warm or Natural? 🎨`  
+**Content disclosure:** ON → *Your brand* (the examples are Vanaila templates)
+
+**Caption (ID)**
+```
+Pilih vibe website usahamu 🎨 Mewah & elegan, hangat & mengundang, atau natural & lembut? Komen nomornya + bidang usahamu!
+
+#desainwebsite #moodboard #branding #websitebisnis #umkm
+```
+
+**Caption (EN, optional)**
+```
+Pick your website vibe 🎨 Luxe & elegant, warm & inviting, or natural & soft? Comment the number and your industry!
+
+#webdesign #moodboard #branding #smallbusiness
+```
+
+**Pinned comment:** `Kami bisa tebak vibe yang cocok dari bidang usahamu. Tulis di komentar 👇`
+
+**Video script (alternative):** a moodboard-style transition: 2 templates per vibe slide in with a matching colour swatch, then "Kamu vibe nomor berapa?"
+
+---
+
+## Post 34: Tur dashboard Flowraze 👀
+
+**Format:** Photo Mode, 5 slides · **Sound:** upbeat tech/product track from the CML  
+**Title (ID):** `Tur 30 Detik CRM Flowraze untuk Tim Sales UMKM 👀`  
+**Title (EN):** `30-Second Tour of the Flowraze CRM for Small Sales Teams 👀`  
+**Content disclosure:** ON → *Your brand* (shows Flowraze, a Vanaila product)
+
+**Caption (ID)**
+```
+Tur 30 detik CRM Flowraze 👀 Dashboard, leads dengan tombol WhatsApp, dan funnel untuk lihat di mana deal tersangkut. Komen "TUR" untuk demo lengkap!
+
+#crm #timsales #salespipeline #aplikasibisnis #flowraze
+```
+
+**Caption (EN, optional)**
+```
+30-second tour of the Flowraze CRM 👀 Dashboard, leads with a WhatsApp button, and a funnel that shows where deals get stuck. Comment "TOUR" for the full demo!
+
+#crm #salesteam #salespipeline #smallbusiness
+```
+
+**Pinned comment:** `Semua data di video ini data demo ya 🙂 Demo lengkap Flowraze lewat link di profil`
+
+**Video script (alternative):** a real screen recording of Flowraze (demo account), clicking Dashboard → Leads → Analytics, with a yellow highlight box on each feature as it's mentioned.
 
 ---
 

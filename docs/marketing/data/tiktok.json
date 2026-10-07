@@ -1305,5 +1305,226 @@
     "handle": "Follow untuk insight AI & sistem bisnis"
    }
   ]
+ },
+ {
+  "slug": "website-kelihatan-mahal",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "img",
+    "kicker": "Bedah desain 🔍",
+    "title": "Kenapa website ini kelihatan <i>mahal</i>? 💎",
+    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "ask": "Geser, kita bedah satu per satu →"
+   },
+   {
+    "type": "annot",
+    "kicker": "Rahasia #1",
+    "title": "Satu foto besar yang <i>berbicara</i>",
+    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "label": "Template Vanaila",
+    "boxes": [
+     [
+      1,
+      10,
+      98,
+      88
+     ]
+    ],
+    "notes": [
+     "Foto penuh layar, tajam, satu fokus — bukan kolase 10 foto kecil"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Rahasia #2",
+    "title": "Huruf besar & <i>ruang kosong</i>",
+    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "label": "Template Vanaila",
+    "boxes": [
+     [
+      26,
+      24,
+      48,
+      43
+     ]
+    ],
+    "notes": [
+     "Judul serif besar, sedikit kata, banyak ruang bernapas = kesan premium"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Rahasia #3",
+    "title": "Cuma <i>satu</i> tombol utama",
+    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "label": "Template Vanaila",
+    "boxes": [
+     [
+      37,
+      66,
+      26,
+      9.5
+     ],
+     [
+      1,
+      1,
+      98,
+      8
+     ]
+    ],
+    "notes": [
+     "Satu ajakan yang jelas, warna kontras",
+     "Menu minimal — tidak ramai"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Mahal itu soal <i>fokus</i>, bukan fitur.",
+    "sub": "Website-mu sudah lolos berapa rahasia? Komen 1, 2, atau 3 👇",
+    "handle": "Follow untuk bedah desain berikutnya"
+   }
+  ]
+ },
+ {
+  "slug": "pilih-vibe-website",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "collage",
+    "kicker": "Moodboard",
+    "title": "Pilih <i>vibe</i> website usahamu 🎨",
+    "imgs": [
+     "../../../public/templates-static/previews/aura-property.jpg",
+     "../../../public/templates-static/previews/catering-mama-fadil.png",
+     "../../../public/templates-static/previews/javanesa.jpg"
+    ],
+    "sub": "3 vibe, 6 contoh nyata →"
+   },
+   {
+    "type": "split",
+    "kicker": "Vibe 1",
+    "title": "Mewah & <i>elegan</i>",
+    "imgA": "../../../public/templates-static/previews/aura-property.jpg",
+    "imgB": "../../../public/templates-static/previews/kantor-hukum.jpg",
+    "labelA": "Properti · warna gelap, foto megah",
+    "labelB": "Firma hukum · navy & emas, serif tegas"
+   },
+   {
+    "type": "split",
+    "kicker": "Vibe 2",
+    "title": "Hangat & <i>mengundang</i>",
+    "imgA": "../../../public/templates-static/previews/catering-mama-fadil.png",
+    "imgB": "../../../public/templates-static/previews/toko-meubel-rahayu.png",
+    "labelA": "Catering · krem & oranye, foto makanan",
+    "labelB": "Toko mebel · cahaya hangat, kayu"
+   },
+   {
+    "type": "split",
+    "kicker": "Vibe 3",
+    "title": "Natural & <i>lembut</i>",
+    "imgA": "../../../public/templates-static/previews/javanesa.jpg",
+    "imgB": "../../../public/templates-static/previews/dcosta.jpg",
+    "labelA": "Skincare lokal · tone tanah, hijau",
+    "labelB": "Beauty · gradasi pastel, halus"
+   },
+   {
+    "type": "cta",
+    "title": "Usahamu cocok <i>vibe</i> nomor berapa?",
+    "sub": "Komen 1, 2, atau 3 + bidang usahamu 👇 Semua contoh ini template Vanaila.",
+    "handle": "Follow untuk inspirasi desain website"
+   }
+  ]
+ },
+ {
+  "slug": "tur-flowraze",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "collage",
+    "kicker": "Tur 30 detik",
+    "title": "Isi CRM <i>Flowraze</i>, satu per satu 👀",
+    "imgs": [
+     "../../../public/flowraze/dashboard.png",
+     "../../../public/flowraze/leads.png",
+     "../../../public/flowraze/analytics.png"
+    ],
+    "sub": "Untuk tim sales UMKM →"
+   },
+   {
+    "type": "annot",
+    "kicker": "Dashboard",
+    "title": "Angka penting dalam <i>satu layar</i>",
+    "img": "../../../public/flowraze/dashboard.png",
+    "label": "Flowraze CRM · Dashboard",
+    "boxes": [
+     [
+      14.5,
+      19,
+      84,
+      27.5
+     ],
+     [
+      76.5,
+      11,
+      17,
+      5.5
+     ]
+    ],
+    "notes": [
+     "Revenue, leads baru, deals & conversion",
+     "Ganti periode: 7 hari sampai semua"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Leads",
+    "title": "Status jelas, follow-up <i>sekali klik</i>",
+    "img": "../../../public/flowraze/leads.png",
+    "label": "Flowraze CRM · Leads",
+    "boxes": [
+     [
+      66,
+      30,
+      6.5,
+      67
+     ],
+     [
+      86,
+      30,
+      7,
+      67
+     ]
+    ],
+    "notes": [
+     "Status: new → contacted → qualified",
+     "Tombol WhatsApp di setiap leads"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Analytics",
+    "title": "Lihat di mana deal <i>tersangkut</i>",
+    "img": "../../../public/flowraze/analytics.png",
+    "label": "Flowraze CRM · Analytics",
+    "boxes": [
+     [
+      14.5,
+      39,
+      84,
+      44
+     ]
+    ],
+    "notes": [
+     "Funnel per tahap: new sampai won"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Mau tur <i>lengkapnya</i>?",
+    "sub": "Komen \"TUR\" — demo Flowraze lewat link di profil 📈 (data di layar adalah data demo)",
+    "handle": "Follow untuk tips sales & CRM"
+   }
+  ]
  }
 ]

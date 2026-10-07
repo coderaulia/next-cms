@@ -92,6 +92,13 @@ html,body{width:1080px;height:1920px}
 .phone .who small{display:block;font-size:20px;font-weight:400;color:#637391}
 .bub{margin-top:18px;max-width:86%;padding:20px 24px;border-radius:24px 24px 24px 6px;background:#fff;color:#0c1730;font-size:30px;line-height:1.35;box-shadow:0 4px 10px rgba(17,37,73,.08)}
 .bub time{display:block;text-align:right;font-size:18px;color:#8a97ad;margin-top:6px}
+.annot{position:relative;line-height:0}
+.annot img{width:100%;display:block}
+.box{position:absolute;border:5px solid #ffd54a;border-radius:14px;box-shadow:0 0 0 9999px rgba(8,15,30,.0),0 0 30px rgba(255,213,74,.55)}
+.box b{position:absolute;left:-22px;top:-22px;width:52px;height:52px;border-radius:50%;background:#ffd54a;color:#0c1730;display:grid;place-items:center;font-size:28px;font-weight:800;line-height:1}
+.notes{margin-top:34px;display:flex;flex-direction:column;gap:16px}
+.note{display:grid;grid-template-columns:52px 1fr;gap:18px;align-items:start;font-size:32px;line-height:1.3;font-weight:500}
+.note b{width:52px;height:52px;border-radius:50%;background:#ffd54a;color:#0c1730;display:grid;place-items:center;font-size:28px;font-weight:800}
 .swipe{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
 `;
 
@@ -107,6 +114,7 @@ const render = (sl) => {
     case 'split': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:64px">${sl.title}</h1><div class="splitw">${[[sl.imgA, sl.labelA, sl.htmlA], [sl.imgB, sl.labelB, sl.htmlB]].map(([im, lb, h]) => `<div><div class="browser" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>${h ? 'tokokami.blogspot.com' : 'Template Vanaila'}</span></div>${h ? h.replace("class='retro'", "class='retro' style='aspect-ratio:16/6.4;font-size:.8em'") : `<img src="${im}" style="aspect-ratio:16/6.4">`}</div><div class="lab">${lb}</div></div>`).join('')}</div>`;
     case 'guess': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="guess"><img src="${sl.img}" style="object-position:${sl.pos};transform:scale(${sl.zoom});transform-origin:${sl.pos}"><div class="q">?</div></div><div class="opts">${sl.options.map((o) => `<div class="opt">${o}</div>`).join('')}</div>`;
     case 'chat': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="phone"><div class="who"><b>${sl.initial}</b><div>${sl.sender}<small>online</small></div></div>${sl.msgs.map(([m, t]) => `<div class="bub">${m}<time>${t}</time></div>`).join('')}</div>`;
+    case 'annot': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="browser"><div class="bar"><i></i><i></i><i></i><span>${sl.label}</span></div><div class="annot"><img src="${sl.img}">${sl.boxes.map(([x, y, w, h], i) => `<div class="box" style="left:${x}%;top:${y}%;width:${w}%;height:${h}%"><b>${i + 1}</b></div>`).join('')}</div></div><div class="notes">${sl.notes.map((n, i) => `<div class="note"><b>${i + 1}</b><span>${n}</span></div>`).join('')}</div>`;
     case 'cta': return `<h2 class="t" style="font-size:96px">${sl.title}</h2><p class="s">${sl.sub}</p><div class="cta">${sl.handle}</div>`;
   }
 };
