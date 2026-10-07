@@ -1526,5 +1526,131 @@
     "handle": "Follow untuk tips sales & CRM"
    }
   ]
+ },
+ {
+  "slug": "istilah-tech-bahasa-warung",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Tech 101",
+    "title": "API, CMS, SSL — dijelasin pakai <i>bahasa warung</i> 🍜",
+    "sub": "Biar nggak cuma ngangguk pas meeting 😅"
+   },
+   {
+    "type": "point",
+    "n": "API",
+    "title": "= Pelayan warung",
+    "body": "Kamu (aplikasi A) pesan ke pelayan, pelayan bawa ke dapur (aplikasi B), lalu antar makanannya balik. Kamu nggak perlu masuk dapur.",
+    "fix": "Contoh: website cek ongkir otomatis dari kurir",
+    "fixLabel": "DI DUNIA NYATA"
+   },
+   {
+    "type": "point",
+    "n": "CMS",
+    "title": "= Papan menu kapur",
+    "body": "Mau ganti harga atau menu hari ini? Tinggal hapus & tulis ulang sendiri — nggak perlu panggil tukang.",
+    "fix": "Edit teks & foto website tanpa developer",
+    "fixLabel": "DI DUNIA NYATA"
+   },
+   {
+    "type": "point",
+    "n": "SSL",
+    "title": "= Pesanan dibungkus rapat",
+    "body": "Data yang lewat (password, nomor kartu) dikunci, jadi orang di tengah jalan nggak bisa intip. Tandanya: https & ikon gembok.",
+    "fix": "Website tanpa https dianggap \"tidak aman\" oleh browser",
+    "fixLabel": "DI DUNIA NYATA"
+   },
+   {
+    "type": "cta",
+    "title": "Istilah tech apa lagi yang bikin <i>bingung</i>?",
+    "sub": "Tulis di komentar — kami jelaskan pakai bahasa warung di part 2 👇",
+    "handle": "Follow untuk tech 101 bahasa sehari-hari"
+   }
+  ]
+ },
+ {
+  "slug": "backup-3-2-1",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Sebelum terlambat",
+    "title": "Laptop hilang. File bisnis <i>ikut hilang</i>. 😱",
+    "sub": "Cegah dengan aturan backup 3-2-1"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Simpan 3 salinan",
+    "body": "File asli + 2 cadangan. Satu salinan saja = satu titik gagal.",
+    "fix": "Asli di laptop + 2 backup",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Di 2 jenis media",
+    "body": "Misalnya hard disk eksternal dan cloud. Kalau satu rusak, yang lain aman.",
+    "fix": "Jangan semua di perangkat yang sama",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "1 salinan di luar kantor",
+    "body": "Kebakaran, banjir, atau pencurian di kantor nggak ikut menghapus backup di cloud / lokasi lain.",
+    "fix": "Cloud atau disimpan di lokasi berbeda",
+    "fixLabel": "ARTINYA"
+   },
+   {
+    "type": "cta",
+    "title": "Kapan terakhir kamu <i>backup</i>?",
+    "sub": "Jujur di komentar 😅 Lalu share ke rekan yang file-nya cuma di satu laptop.",
+    "handle": "Follow untuk tips digital yang aman"
+   }
+  ]
+ },
+ {
+  "slug": "keamanan-akun-bisnis",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Keamanan digital",
+    "title": "3 kebiasaan biar akun bisnismu <i>nggak dibobol</i> 🔐",
+    "sub": "Gratis & bisa mulai hari ini"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Nyalakan 2FA",
+    "body": "Selain password, login butuh kode dari HP. Password bocor pun, akun tetap aman.",
+    "fix": "Email, sosmed, marketplace, bank",
+    "fixLabel": "PRIORITAS"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Pakai password manager",
+    "body": "Satu password kuat & beda untuk tiap akun — nggak perlu dihafal semua.",
+    "fix": "Stop pakai \"namatoko123\" di semua akun",
+    "fixLabel": "PRIORITAS"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Satu karyawan, satu akun",
+    "body": "Jangan berbagi satu login ramai-ramai. Saat karyawan keluar, cukup cabut aksesnya.",
+    "fix": "Akses sesuai peran, bisa dicabut kapan saja",
+    "fixLabel": "PRIORITAS"
+   },
+   {
+    "type": "cta",
+    "title": "Sudah jalan <i>berapa</i> dari 3?",
+    "sub": "Komen angkanya 👇 Share ke owner yang masih pakai satu password untuk semua.",
+    "handle": "Follow untuk tips keamanan bisnis"
+   }
+  ]
  }
 ]

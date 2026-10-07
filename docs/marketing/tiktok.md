@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 34 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 37 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -38,6 +38,9 @@ There are 34 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 32 | Kenapa website ini kelihatan mahal? 💎 | `output/tt-31-website-kelihatan-mahal-s1…s5.png` | Visual: annotated design breakdown → saves |
 | 33 | Pilih vibe website usahamu 🎨 | `output/tt-32-pilih-vibe-website-s1…s5.png` | Visual: moodboard → comments |
 | 34 | Tur dashboard Flowraze 👀 | `output/tt-33-tur-flowraze-s1…s5.png` | Visual: annotated product tour → demo |
+| 35 | API, CMS, SSL pakai bahasa warung 🍜 | `output/tt-34-istilah-tech-bahasa-warung-s1…s5.png` | Tech 101: analogies → saves & part 2 |
+| 36 | Aturan backup 3-2-1 | `output/tt-35-backup-3-2-1-s1…s5.png` | Tech safety: fear of loss → shares |
+| 37 | 3 kebiasaan keamanan akun bisnis 🔐 | `output/tt-36-keamanan-akun-bisnis-s1…s5.png` | Security habits → saves |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -1149,6 +1152,96 @@ Tur 30 detik CRM Flowraze 👀 Dashboard, leads dengan tombol WhatsApp, dan funn
 **Pinned comment:** `Semua data di video ini data demo ya 🙂 Demo lengkap Flowraze lewat link di profil`
 
 **Video script (alternative):** a real screen recording of Flowraze (demo account), clicking Dashboard → Leads → Analytics, with a yellow highlight box on each feature as it's mentioned.
+
+---
+
+# Tech & business education series (posts 35–37)
+
+Pure education with no product pitch. These build authority, so when a viewer later needs a website or system, Vanaila is the account that taught them. Every fact here is standard, tool-agnostic practice.
+
+**Why these formats spread**
+- **Jargon explained with everyday analogies**: makes people feel smart, gets saved, and "tulis istilah lain di komentar" sets up a part 2 series.
+- **Backup 3-2-1**: fear of losing files, a memorable number rule, and shareable ("kirim ke rekan yang file-nya cuma di satu laptop").
+- **Security habits**: easy wins anyone can do today. The "sudah jalan berapa?" self-score is an easy comment.
+
+## Post 35: API, CMS, SSL pakai bahasa warung 🍜
+
+**Format:** Photo Mode, 5 slides · **Sound:** light/fun track from the CML  
+**Title (ID):** `API, CMS, SSL Dijelasin Pakai Bahasa Warung 🍜`  
+**Title (EN):** `API, CMS and SSL Explained Like You're Ordering at a Food Stall 🍜`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+API, CMS, SSL dijelasin pakai bahasa warung 🍜 API = pelayan, CMS = papan menu kapur, SSL = pesanan dibungkus rapat. Istilah apa lagi yang bikin bingung? Tulis di komentar untuk part 2!
+
+#belajarteknologi #tech101 #istilahit #websitebisnis #umkm
+```
+
+**Caption (EN, optional)**
+```
+API, CMS and SSL explained with a food-stall analogy 🍜 API = the waiter, CMS = a chalkboard menu, SSL = a sealed takeaway bag. Which tech term should we explain next?
+
+#tech101 #techexplained #learnontiktok #smallbusiness
+```
+
+**Pinned comment:** `Part 2 kandidat: hosting, cloud, DNS, cache… vote di sini 👇`
+
+**Video script (alternative):** film at a real warung: point at the waiter (API), the chalkboard menu (CMS), and a sealed takeaway bag (SSL), with a text overlay for each term.
+
+---
+
+## Post 36: Aturan backup 3-2-1
+
+**Format:** Photo Mode, 5 slides · **Sound:** tense → relieved track from the CML  
+**Title (ID):** `Aturan Backup 3-2-1 Biar File Bisnis Nggak Hilang 😱`  
+**Title (EN):** `The 3-2-1 Backup Rule So Your Business Files Never Disappear 😱`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Laptop hilang, file bisnis ikut hilang 😱 Cegah dengan aturan backup 3-2-1: 3 salinan, 2 jenis media, 1 di luar kantor. Kapan terakhir kamu backup?
+
+#backupdata #tipsbisnis #keamanandata #umkm #tech101
+```
+
+**Caption (EN, optional)**
+```
+Lost laptop, lost business files 😱 Prevent it with the 3-2-1 backup rule: 3 copies, 2 types of media, 1 off-site. When did you last back up?
+
+#backup #databackup #businesstips #techtips
+```
+
+**Pinned comment:** `Mulai paling gampang: nyalakan backup otomatis ke cloud hari ini, lalu tambah hard disk eksternal ☁️💾`
+
+**Video script (alternative):** an empty desk where the laptop should be ("😱"), then the 3 / 2 / 1 rules counting down with props (laptop + hard drive + cloud icon), ending on a relieved face.
+
+---
+
+## Post 37: 3 kebiasaan keamanan akun bisnis 🔐
+
+**Format:** Photo Mode, 5 slides · **Sound:** confident/tech track from the CML  
+**Title (ID):** `3 Kebiasaan Biar Akun Bisnismu Nggak Dibobol 🔐`  
+**Title (EN):** `3 Habits to Keep Your Business Accounts From Being Hacked 🔐`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+3 kebiasaan biar akun bisnismu nggak dibobol 🔐 Nyalakan 2FA, pakai password manager, satu karyawan satu akun. Sudah jalan berapa dari 3? Komen angkanya!
+
+#keamanandigital #cybersecurity #tipsbisnis #umkm #2fa
+```
+
+**Caption (EN, optional)**
+```
+3 habits to keep your business accounts from being hacked 🔐 Turn on 2FA, use a password manager, one account per employee. How many do you already do?
+
+#cybersecurity #2fa #businesstips #smallbusiness
+```
+
+**Pinned comment:** `Mulai dari akun paling penting: email bisnis. Kalau email jebol, akun lain bisa ikut di-reset 😬`
+
+**Video script (alternative):** a screen recording turning on 2FA in a generic account settings page (blur any personal data), then a password manager generating a password, then an admin panel removing a former employee's access.
 
 ---
 
