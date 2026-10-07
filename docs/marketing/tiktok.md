@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 18 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 19 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -22,6 +22,7 @@ There are 18 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 16 | 3 prompt AI untuk kerjaan kantor | `output/tt-16-prompt-ai-kantoran-s1…s5.png` | AI at work: saves → follows |
 | 17 | 3 tugas HR lebih cepat dengan AI | `output/tt-17-ai-untuk-hr-s1…s5.png` | AI for HR → HRIS audience |
 | 18 | Kerja tanpa AI vs dengan AI 😅 | `output/tt-18-tanpa-vs-dengan-ai-s1…s5.png` | Relatable AI → comments |
+| 19 | "In this picture…" meme → she's looking at Vanaila | `output/meme-01-in-this-picture-s1…s5.png` | Trend meme → brand awareness |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -647,6 +648,49 @@ Working without AI vs with AI 😅 #3 hits different! AI helps you start, you fi
 **Pinned comment:** `Tetap cek ulang hasil AI ya, dia bisa salah dengan sangat percaya diri 😂`
 
 **Video script (alternative, ~20s):** split-screen skit. Left side, "tanpa AI": a frustrated person facing a blank screen. Right side, "dengan AI": a relaxed person editing a draft. Three quick rounds, one per slide. End on "AI bantu mulai. Kamu yang menyelesaikan."
+
+---
+
+# Trend meme (post 19)
+
+## Post 19: "In this picture…" → she's looking at Vanaila 😌
+
+**Format:** Photo Mode, 5 slides · **Sound:** use the **original trending sound** of this meme if it's in the Commercial Music Library. If it isn't, pick a dramatic/suspense CML track.
+
+**Title (ID):** `In This Picture… Dia Lagi Lihat Apa? 👀`  
+**Title (EN):** `In This Picture… She's Looking At 👀`  
+**Content disclosure:** ON → *Your brand* (the last slide promotes Vanaila)
+
+**Slides**
+1. "In this picture…" (original image)
+2. "He's looking at another woman" (original image)
+3. "He's looking at her" (original image)
+4. "And she's looking at" (original image)
+5. **Vanaila** (our slide: logo + "Website · Aplikasi · Sistem bisnis" + "Vanaila 😌")
+
+**Caption (ID)**
+```
+Plot twist di slide terakhir 😌 Semua orang lagi lihat sesuatu… dan dia lihat website yang bikin bisnis kelihatan premium. Meme template: @partyandtoolrentals
+
+#inthispicture #memebisnis #websitebisnis #umkm #vanaila
+```
+
+**Caption (EN, optional)**
+```
+Plot twist on the last slide 😌 Everyone's looking at someone… she's looking at the website that makes a business look premium. Meme format via @partyandtoolrentals
+
+#inthispicture #businessmeme #webdesign #smallbusiness
+```
+
+**Pinned comment:** `Kalau website bisnismu belum bikin orang "noleh", komen bidang usahamu 👀`
+
+> ⚠️ **Rights check before posting:** slides 1–4 are the original creator's images (watermark @partyandtoolrentals kept, credited in the caption). Reposting someone else's media in a **business** post can lead to a copyright takedown. TikTok may also treat it as unoriginal content and keep it out of the For You feed. Safest options, best first:
+> 1. Ask @partyandtoolrentals for permission (a DM is enough), or
+> 2. Swap slides 1–4 for a licensed stock photo with the same "everyone looking somewhere" setup, then add the text overlays. Slide 5 stays the same.
+>
+> Never remove or crop out the creator's watermark.
+
+**Video version (alternative, ~10s):** use TikTok's slideshow/photo template with the trending audio. Show each image for ~2s with the text, then hard-cut to the Vanaila slide on the beat drop.
 
 ---
 
