@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 28 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 31 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -32,6 +32,9 @@ There are 28 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 26 | UMKM kamu level berapa? 🎮 | `output/tt-25-umkm-level-berapa-s1…s5.png` | Viral: identity ladder → comments |
 | 27 | Kenapa penawaranmu nggak dibalas? | `output/tt-26-penawaran-tak-dibalas-s1…s5.png` | Viral: B2B pain → saves |
 | 28 | POV: owner liburan, HP nggak berhenti bunyi 📱 | `output/tt-27-pov-owner-liburan-s1…s5.png` | Viral: chat comedy → systems |
+| 29 | Rumus prompt AI 4 bagian 📌 | `output/tt-28-rumus-prompt-ai-s1…s5.png` | AI cheat sheet → saves |
+| 30 | Prompt asal vs prompt jelas 👀 | `output/tt-29-prompt-asal-vs-jelas-s1…s5.png` | AI before/after → comments |
+| 31 | 3 tanda bisnismu siap pakai AI | `output/tt-30-siap-pakai-ai-s1…s5.png` | AI readiness → AI integration leads |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -963,6 +966,96 @@ POV: you own a business, you're on holiday… and your phone won't stop buzzing 
 **Pinned comment:** `Harga, approval, laporan, stok: kalau semua ada di satu sistem, liburan beneran jadi liburan 🏖️`
 
 **Video script (alternative):** the owner on a beach chair, with each notification sound cutting to a phone close-up of the (mock) chat. Relaxing → annoyed → defeated faces. End on the systems punchline.
+
+---
+
+# AI series 3 (posts 29–31)
+
+Same AI rules as before: tool-agnostic, no hype, people review AI output, and no confidential data in public AI tools.
+
+**Why these formats spread**
+- **Formula / cheat sheet**: very high save rate. People come back to it, and that keeps it in circulation.
+- **Bad vs good prompt**: an instant "aha" for the reader, and inviting people to share their own prompt fills the comments.
+- **Readiness checklist**: a self-score ("sudah centang berapa?") gets easy comments, and it leads naturally to our AI integration service.
+
+## Post 29: Rumus prompt AI 4 bagian 📌
+
+**Format:** Photo Mode, 5 slides · **Sound:** clean/productive lo-fi track from the CML  
+**Title (ID):** `Rumus Prompt AI 4 Bagian: Peran, Tugas, Konteks, Format 📌`  
+**Title (EN):** `4-Part AI Prompt Formula: Role, Task, Context, Format 📌`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Rumus prompt AI 4 bagian biar hasilnya nggak ngawur 📌 Peran + Tugas + Konteks + Format. Simpan & coba hari ini!
+
+#promptai #ai #tipsai #produktivitas #kerjacerdas
+```
+
+**Caption (EN, optional)**
+```
+The 4-part AI prompt formula for better results 📌 Role + Task + Context + Format. Save it and try it today!
+
+#aiprompts #ai #aitips #productivity
+```
+
+**Pinned comment:** `Contoh lengkap: "Kamu admin toko kue. Tulis balasan untuk pelanggan yang komplain pesanan telat 1 hari karena hujan. Maks 3 kalimat, sopan, tawarkan voucher ongkir."`
+
+**Video script (alternative):** screen recording: type a vague prompt and show the weak result, then build the prompt piece by piece (role, task, context, format) and show the much better result. Use dummy data.
+
+---
+
+## Post 30: Prompt asal vs prompt jelas 👀
+
+**Format:** Photo Mode, 5 slides · **Sound:** "glow-up" before/after track from the CML  
+**Title (ID):** `Prompt AI Asal vs Prompt Jelas: Bedanya Cuma 1 Kalimat 👀`  
+**Title (EN):** `Lazy AI Prompt vs Clear AI Prompt: One Sentence Makes the Difference 👀`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Prompt asal vs prompt jelas 👀 Bedanya cuma 1 kalimat, hasilnya beda jauh. Tulis prompt andalanmu di komentar, kita saling contek!
+
+#promptai #ai #tipsai #kerjakantoran #aitools
+```
+
+**Caption (EN, optional)**
+```
+Lazy prompt vs clear prompt 👀 One sentence, a completely different result. Drop your go-to prompt in the comments!
+
+#aiprompts #ai #aitips #worksmarter
+```
+
+**Pinned comment:** `Prompt paling sering kami pakai: "Ringkas jadi 5 poin untuk [pembaca], fokus [hal penting]." Punyamu apa? 👇`
+
+**Video script (alternative):** split screen: left "prompt asal" typed fast with a meh result, right "prompt jelas" with a great result. Three rounds with a "ding" each time.
+
+---
+
+## Post 31: 3 tanda bisnismu siap pakai AI
+
+**Format:** Photo Mode, 5 slides · **Sound:** thoughtful/tech track from the CML  
+**Title (ID):** `3 Tanda Bisnismu Sudah Siap Pakai AI (Cek Sebelum Ikut-ikutan)`  
+**Title (EN):** `3 Signs Your Business Is Ready for AI (Check Before Jumping In)`  
+**Content disclosure:** ON → *Your brand* (the CTA offers Vanaila's help mapping AI use cases)
+
+**Caption (ID)**
+```
+3 tanda bisnismu sudah siap pakai AI 🤖 Data rapi, ada pekerjaan berulang, ada yang mengecek hasilnya. Sudah centang berapa? Komen 1, 2, atau 3!
+
+#ai #aiuntukbisnis #transformasidigital #umkm #sistembisnis
+```
+
+**Caption (EN, optional)**
+```
+3 signs your business is ready for AI 🤖 Tidy data, repetitive work, someone who reviews the output. How many can you tick? Comment 1, 2 or 3!
+
+#ai #aiforbusiness #digitaltransformation #smallbusiness
+```
+
+**Pinned comment:** `Belum centang nomor 1? Mulai dari merapikan data ke satu sistem. AI-nya menyusul 😉`
+
+**Video script (alternative):** a checklist on a whiteboard. Tick each item while explaining it in 5 seconds, then turn to camera: "Sudah centang berapa?"
 
 ---
 

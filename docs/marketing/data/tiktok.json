@@ -1179,5 +1179,131 @@
     "handle": "Follow untuk tips bisnis yang bisa ditinggal liburan"
    }
   ]
+ },
+ {
+  "slug": "rumus-prompt-ai",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Simpan ini 📌",
+    "title": "Rumus prompt <i>AI</i> 4 bagian yang bikin hasilnya nggak ngawur",
+    "sub": "Peran · Tugas · Konteks · Format"
+   },
+   {
+    "type": "point",
+    "n": "1+2",
+    "title": "Peran & Tugas",
+    "body": "Kasih tahu AI dia berperan sebagai siapa, dan apa yang harus dikerjakan.",
+    "fix": "\"Kamu admin toko kue. Tulis balasan untuk pelanggan…\"",
+    "fixLabel": "CONTOH"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Konteks",
+    "body": "Siapa pembacanya, situasinya apa, dan info penting yang AI tidak tahu.",
+    "fix": "\"…yang komplain pesanan telat 1 hari karena hujan.\"",
+    "fixLabel": "CONTOH"
+   },
+   {
+    "type": "point",
+    "n": "4",
+    "title": "Format",
+    "body": "Panjang, gaya bahasa, dan bentuk hasilnya: poin, tabel, atau paragraf.",
+    "fix": "\"Maks 3 kalimat, sopan, tawarkan voucher ongkir.\"",
+    "fixLabel": "CONTOH"
+   },
+   {
+    "type": "cta",
+    "title": "Peran + Tugas + Konteks + <i>Format</i>",
+    "sub": "Coba rumus ini hari ini & bandingkan hasilnya. Simpan biar nggak lupa 📌",
+    "handle": "Follow untuk tips AI kerja & bisnis"
+   }
+  ]
+ },
+ {
+  "slug": "prompt-asal-vs-jelas",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Kenapa hasil AI-mu biasa aja?",
+    "title": "Prompt <i>asal</i> vs prompt jelas 👀",
+    "sub": "Bedanya cuma 1 kalimat"
+   },
+   {
+    "type": "vs",
+    "n": "1",
+    "lt": "Prompt asal",
+    "l": "\"Bikinin caption.\"",
+    "rt": "Prompt jelas",
+    "r": "\"3 caption IG toko kue di Bandung, untuk ibu muda, gaya santai, maks 2 kalimat.\""
+   },
+   {
+    "type": "vs",
+    "n": "2",
+    "lt": "Prompt asal",
+    "l": "\"Rangkum ini.\"",
+    "rt": "Prompt jelas",
+    "r": "\"Rangkum jadi 5 poin untuk direktur, fokus angka & keputusan.\""
+   },
+   {
+    "type": "vs",
+    "n": "3",
+    "lt": "Prompt asal",
+    "l": "\"Balas email klien.\"",
+    "rt": "Prompt jelas",
+    "r": "\"Balas sopan, tolak diskon 20%, tawarkan bonus pengiriman, maks 4 kalimat.\""
+   },
+   {
+    "type": "cta",
+    "title": "Makin <i>jelas</i> prompt-nya, makin bagus hasilnya.",
+    "sub": "Tulis prompt andalanmu di komentar 👇 Kita saling contek.",
+    "handle": "Follow untuk prompt AI lainnya"
+   }
+  ]
+ },
+ {
+  "slug": "siap-pakai-ai",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Sebelum ikut-ikutan AI",
+    "title": "3 tanda bisnismu sudah <i>siap</i> pakai AI",
+    "sub": "Kalau belum, mulai dari sini dulu"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Datamu sudah rapi",
+    "body": "AI butuh bahan. Kalau data pelanggan & transaksi masih tercecer di chat, rapikan dulu ke satu sistem.",
+    "fix": "Satu tempat, format yang konsisten",
+    "fixLabel": "CEK"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Ada pekerjaan yang berulang",
+    "body": "Membalas pertanyaan yang sama, memilah leads, merangkum laporan — itu kandidat terbaik untuk AI.",
+    "fix": "Daftar 3 tugas paling repetitif timmu",
+    "fixLabel": "CEK"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Ada orang yang mengecek",
+    "body": "AI membantu, manusia memutuskan. Tentukan siapa yang review hasilnya sebelum dipakai.",
+    "fix": "PIC + aturan kapan AI boleh dipakai",
+    "fixLabel": "CEK"
+   },
+   {
+    "type": "cta",
+    "title": "Sudah centang <i>berapa</i>?",
+    "sub": "Komen 1, 2, atau 3 ✅ Kami bantu petakan langkah AI yang cocok untuk bisnismu.",
+    "handle": "Follow untuk insight AI & sistem bisnis"
+   }
+  ]
  }
 ]
