@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 19 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 22 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -23,6 +23,9 @@ There are 19 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 17 | 3 tugas HR lebih cepat dengan AI | `output/tt-17-ai-untuk-hr-s1…s5.png` | AI for HR → HRIS audience |
 | 18 | Kerja tanpa AI vs dengan AI 😅 | `output/tt-18-tanpa-vs-dengan-ai-s1…s5.png` | Relatable AI → comments |
 | 19 | "In this picture…" meme → she's looking at Vanaila | `output/meme-01-in-this-picture-s1…s5.png` | Trend meme → brand awareness |
+| 20 | POV: Senin pagi HR yang sudah pakai sistem 😌 | `output/tt-19-pov-senin-hr-s1…s5.png` | Soft-sell HRIS (real screens) |
+| 21 | Leads hilang bukan karena sales-mu malas | `output/tt-20-leads-hilang-s1…s5.png` | Soft-sell Flowraze (real screens) |
+| 22 | 100 kandidat, 1 HR, psikotes pakai kertas | `output/tt-21-100-kandidat-1-hr-s1…s5.png` | Soft-sell Psikotest (real screens) |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -691,6 +694,96 @@ Plot twist on the last slide 😌 Everyone's looking at someone… she's looking
 > Never remove or crop out the creator's watermark.
 
 **Video version (alternative, ~10s):** use TikTok's slideshow/photo template with the trending audio. Show each image for ~2s with the text, then hard-cut to the Vanaila slide on the beat drop.
+
+---
+
+# Product soft-sell series (posts 20–22)
+
+These lead with a relatable situation and show the product **as the natural answer**, not as an ad. Every screen is a real product screenshot labelled with the product name (Vanaila HRIS, Flowraze CRM, Psikotest). Screens use demo data only.
+
+**Why these formats spread**
+- **POV / day-in-the-life**: viewers picture themselves in it. "Tag rekan HR" spreads it to exactly the right audience.
+- **"Bukan salah X"**: defending a group (sales teams) earns agreement and shares from that group, and it reframes the problem as process rather than people.
+- **Story with numbers ("100 kandidat. 1 HR.")**: a concrete tension in the hook. The before/after resolution makes people swipe to the end.
+
+## Post 20: POV: Senin pagi HR yang sudah pakai sistem 😌
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm morning/lo-fi track from the CML  
+**Title (ID):** `POV: Senin Pagi HR yang Sudah Pakai Sistem 😌`  
+**Title (EN):** `POV: Monday Morning for an HR Team With a Real System 😌`  
+**Content disclosure:** ON → *Your brand* (shows Vanaila HRIS)
+
+**Caption (ID)**
+```
+POV: Senin pagi HR yang sudah pakai sistem 😌 KPI rapi, surat kontrak sekali klik, evaluasi probation pakai data. Senin HR-mu masih drama? Tag rekan HR kamu 👇
+
+#hrd #hrindonesia #aplikasihr #kpi #vanailahris
+```
+
+**Caption (EN, optional)**
+```
+POV: Monday morning for an HR team that runs on a system 😌 Tidy KPIs, contracts in one click, data-based probation reviews. Is your Monday still chaos?
+
+#hrtok #humanresources #hrsoftware #kpi
+```
+
+**Pinned comment:** `Mau lihat Vanaila HRIS langsung? Request demo lewat link di profil 🙌`
+
+**Video script (alternative, ~25s):** a time-stamped vlog (08.00 / 09.30 / 11.00). An HR person at a desk with a coffee, and a screen recording of each HRIS screen. End: "Senin HR-mu masih drama?"
+
+---
+
+## Post 21: Leads hilang bukan karena sales-mu malas
+
+**Format:** Photo Mode, 5 slides · **Sound:** confident/motivational track from the CML  
+**Title (ID):** `Leads Hilang Bukan Karena Sales-mu Malas`  
+**Title (EN):** `Lost Leads Aren't Your Sales Team's Fault`  
+**Content disclosure:** ON → *Your brand* (shows Flowraze CRM)
+
+**Caption (ID)**
+```
+Leads hilang bukan karena sales-mu malas. Biasanya karena leads tersebar di mana-mana & tidak jelas siapa yang follow-up. Tim sales-mu masih pakai apa: Excel, WhatsApp, atau CRM?
+
+#timsales #crm #leads #tipsbisnis #flowraze
+```
+
+**Caption (EN, optional)**
+```
+Lost leads usually aren't your sales team's fault. They're scattered everywhere and nobody knows who follows up. What does your team use: Excel, WhatsApp or a CRM?
+
+#sales #crm #salestips #smallbusiness
+```
+
+**Pinned comment:** `Flowraze dibuat untuk tim sales UMKM Indonesia, lihat demonya lewat link di profil 📈`
+
+**Video script (alternative, ~25s):** a sales manager defending the team to camera ("Bukan salah mereka…"), cutting to a chaotic phone full of chats, then the Flowraze pipeline screen. End with the comment question.
+
+---
+
+## Post 22: 100 kandidat. 1 HR. Psikotes pakai kertas.
+
+**Format:** Photo Mode, 5 slides · **Sound:** tense, then relieved (CML track with a beat drop)  
+**Title (ID):** `100 Kandidat, 1 HR, Psikotes Pakai Kertas 😵`  
+**Title (EN):** `100 Candidates, 1 HR Person, Paper Psych Tests 😵`  
+**Content disclosure:** ON → *Your brand* (shows Psikotest)
+
+**Caption (ID)**
+```
+100 kandidat. 1 HR. Psikotes masih pakai kertas 😵 Cara lama vs cara baru: kirim link, skor otomatis, psikolog fokus menilai. Tim HR-mu masih koreksi manual?
+
+#rekrutmen #psikotes #psikotesonline #hrd #psikotest
+```
+
+**Caption (EN, optional)**
+```
+100 candidates. 1 HR person. Psych tests still on paper 😵 Old way vs new way: send a link, automatic scoring, psychologists focus on interpreting.
+
+#recruiting #psychometrictest #hrtok #hiring
+```
+
+**Pinned comment:** `Psikotest bisa dicoba tim HR & biro psikologi, demo lewat link di profil 🧩`
+
+**Video script (alternative, ~25s):** a stack of paper tests and a tired HR person (0–8s), then a hard cut on the beat drop to a phone sending the test link (8–16s), then the results screen with a psychologist reviewing (16–25s).
 
 ---
 

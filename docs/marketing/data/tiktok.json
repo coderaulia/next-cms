@@ -754,5 +754,136 @@
     "handle": "Follow untuk tips kerja cerdas pakai AI"
    }
   ]
+ },
+ {
+  "slug": "pov-senin-hr",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "collage",
+    "kicker": "POV",
+    "title": "Senin pagi HR yang sudah pakai <i>sistem</i> 😌",
+    "imgs": [
+     "../../../public/hris/hris-kpi-management.jpeg",
+     "../../../public/hris/hris-documents.jpeg",
+     "../../../public/hris/hris-probation.jpeg"
+    ],
+    "sub": "Nggak ada drama \"file KPI yang mana?\""
+   },
+   {
+    "type": "img",
+    "kicker": "08.00",
+    "title": "KPI semua tim sudah <i>rapi</i>",
+    "img": "../../../public/hris/hris-kpi-management.jpeg",
+    "label": "Vanaila HRIS · KPI Management",
+    "ask": "Target & approval manajer di satu tempat"
+   },
+   {
+    "type": "img",
+    "kicker": "09.30",
+    "title": "Surat kontrak? <i>Sekali klik</i>",
+    "img": "../../../public/hris/hris-documents.jpeg",
+    "label": "Vanaila HRIS · HR Documents",
+    "ask": "PKWT, PKWTT, SK → PDF dari data karyawan"
+   },
+   {
+    "type": "img",
+    "kicker": "11.00",
+    "title": "Evaluasi probation <i>berbasis data</i>",
+    "img": "../../../public/hris/hris-probation.jpeg",
+    "label": "Vanaila HRIS · Probation & PIP",
+    "ask": "Keputusan pakai skor KPI, bukan feeling"
+   },
+   {
+    "type": "cta",
+    "title": "Senin HR-mu masih <i>drama</i>? 😅",
+    "sub": "Tag rekan HR yang butuh Senin setenang ini. Demo: link di profil.",
+    "handle": "Follow untuk tips HR & sistem kerja"
+   }
+  ]
+ },
+ {
+  "slug": "leads-hilang",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk owner & sales manager",
+    "title": "Leads hilang bukan karena sales-mu <i>malas</i>.",
+    "sub": "Biasanya karena 2 hal ini 👇"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Tidak ada satu tempat",
+    "body": "Leads tersebar di WhatsApp pribadi, DM, dan spreadsheet. Yang lupa dicatat, ya hilang.",
+    "fix": "Semua leads masuk ke satu daftar",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Tidak terlihat siapa pegang apa",
+    "body": "Follow-up jatuh di antara dua orang. Masing-masing mengira yang lain sudah menghubungi.",
+    "fix": "Setiap leads punya PIC & tahap yang jelas",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "img",
+    "kicker": "Seperti ini",
+    "title": "Pipeline yang <i>kelihatan</i>",
+    "img": "../../../public/flowraze/deals.png",
+    "label": "Flowraze CRM · Deals pipeline",
+    "ask": "Leads → deal → closing, satu layar"
+   },
+   {
+    "type": "cta",
+    "title": "Tim sales-mu masih <i>pakai apa</i>?",
+    "sub": "Komen: Excel, WhatsApp, atau CRM? Lihat Flowraze lewat link di profil.",
+    "handle": "Follow untuk tips sales & bisnis"
+   }
+  ]
+ },
+ {
+  "slug": "100-kandidat-1-hr",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Cerita rekrutmen",
+    "title": "100 kandidat. 1 HR. Psikotes pakai <i>kertas</i>. 😵",
+    "sub": "Gimana caranya selesai minggu ini?"
+   },
+   {
+    "type": "point",
+    "n": "📄",
+    "title": "Cara lama",
+    "body": "Cetak soal, jadwalkan ruangan, koreksi manual, ketik ulang hasil ke spreadsheet.",
+    "fix": "Berhari-hari, rawan salah hitung",
+    "fixLabel": "HASILNYA"
+   },
+   {
+    "type": "img",
+    "kicker": "Cara baru",
+    "title": "Kirim link, kandidat tes <i>online</i>",
+    "img": "../../../public/psikotest/new-assessment.png",
+    "label": "Psikotest · New assessment",
+    "ask": "Pilih format asesmen, bagikan link atau QR"
+   },
+   {
+    "type": "img",
+    "kicker": "Lalu",
+    "title": "Skor otomatis, interpretasi oleh <i>ahlinya</i>",
+    "img": "../../../public/psikotest/assessment.png",
+    "label": "Psikotest · Assessment",
+    "ask": "Psikolog fokus menilai, bukan mengoreksi"
+   },
+   {
+    "type": "cta",
+    "title": "Tim HR-mu masih <i>koreksi manual</i>?",
+    "sub": "Share ke rekan rekrutmen. Demo Psikotest: link di profil.",
+    "handle": "Follow untuk tips rekrutmen & HR"
+   }
+  ]
  }
 ]

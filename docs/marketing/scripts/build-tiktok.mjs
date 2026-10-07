@@ -57,7 +57,7 @@ html,body{width:1080px;height:1920px}
 .photo .brand .lm{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 .photo .k{color:var(--accent-soft)}.photo .t i,.photo .pt i{font-family:'Instrument Serif',Georgia,serif;font-weight:400;color:var(--accent-soft)}
 .photo .s,.photo .pb{color:#c9d4ea}
-.post>.bgimg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(36px) brightness(.38) saturate(1.2);transform:scale(1.1);z-index:0}
+.post>.bgimg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(36px) brightness(.22) saturate(1.2);transform:scale(1.1);z-index:0}
 .browser{margin-top:40px;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 40px 90px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25)}
 .browser .bar{height:40px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#eef2f9}
 .browser .bar i{width:11px;height:11px;border-radius:50%;background:#c9d3e4;display:block}
@@ -91,7 +91,7 @@ const render = (sl) => {
     case 'check': return `<h2 class="pt">${sl.title}</h2><div class="list">${sl.items.map((x, i) => `<div class="li"><b>${i + 1}</b><span>${x}</span></div>`).join('')}</div>`;
     case 'shot': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="shot"><img src="${sl.img}"></div><div class="chips">${sl.items.map((x) => `<div class="chip">${x}</div>`).join('')}</div>`;
     case 'vs': return `<div class="num" style="font-size:110px">${sl.n}</div><div class="vs"><div class="side l"><small>${sl.lt}</small>${sl.l}</div><div class="arrow">↓</div><div class="side r"><small>${sl.rt}</small>${sl.r}</div></div>`;
-    case 'img': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="browser"><div class="bar"><i></i><i></i><i></i><span>${sl.html ? 'tokokami.blogspot.com' : 'Template Vanaila'}</span></div>${sl.html || `<img src="${sl.img}">`}</div><div class="ask">${sl.ask}</div>`;
+    case 'img': return `<div class="k">${sl.kicker}</div><h2 class="pt">${sl.title}</h2><div class="browser"><div class="bar"><i></i><i></i><i></i><span>${sl.label || (sl.html ? 'tokokami.blogspot.com' : 'Template Vanaila')}</span></div>${sl.html || `<img src="${sl.img}"${sl.label ? ' style="object-position:left top"' : ''}>`}</div><div class="ask">${sl.ask}</div>`;
     case 'collage': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:92px">${sl.title}</h1><div class="collage">${sl.imgs.map((x, i) => `<div class="browser c${i}"><div class="bar"><i></i><i></i><i></i></div><img src="${x}"></div>`).join('')}</div><p class="s" style="margin-top:20px">${sl.sub}</p>`;
     case 'split': return `<div class="k">${sl.kicker}</div><h1 class="t" style="font-size:64px">${sl.title}</h1><div class="splitw">${[[sl.imgA, sl.labelA, sl.htmlA], [sl.imgB, sl.labelB, sl.htmlB]].map(([im, lb, h]) => `<div><div class="browser" style="margin:0"><div class="bar"><i></i><i></i><i></i><span>${h ? 'tokokami.blogspot.com' : 'Template Vanaila'}</span></div>${h ? h.replace("class='retro'", "class='retro' style='aspect-ratio:16/6.4;font-size:.8em'") : `<img src="${im}" style="aspect-ratio:16/6.4">`}</div><div class="lab">${lb}</div></div>`).join('')}</div>`;
     case 'cta': return `<h2 class="t" style="font-size:96px">${sl.title}</h2><p class="s">${sl.sub}</p><div class="cta">${sl.handle}</div>`;
