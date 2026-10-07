@@ -666,7 +666,7 @@ Working without AI vs with AI 😅 #3 hits different! AI helps you start, you fi
 2. "He's looking at another woman" (original image)
 3. "He's looking at her" (original image)
 4. "And she's looking at" (original image)
-5. **Vanaila** (our slide: logo + "Website · Aplikasi · Sistem bisnis" + "Vanaila 😌")
+5. **Vanaila** (our slide in the brand style: "…and she's looking at" → "Vanaila. Website yang bikin semua *menoleh*.", two template screenshots, Website · Aplikasi · Sistem bisnis, CTA "Konsultasi → link di profil")
 
 **Caption (ID)**
 ```
