@@ -258,44 +258,123 @@
   ]
  },
  {
-  "slug": "psikotest-live-quiz",
-  "theme": "light",
+  "slug": "psikotest-anti-contek",
+  "theme": "dark",
   "slides": [
    {
     "type": "hook",
-    "kicker": "Untuk training & induction",
-    "title": "Training karyawan bikin <i>ngantuk</i>? 😴",
-    "sub": "Coba live quiz ala game show"
+    "kicker": "Psikotest",
+    "title": "Psikotes online gampang <i>dicontek</i>? 🤔",
+    "sub": "Pertanyaan yang paling sering ditanya HR"
    },
    {
     "type": "point",
     "n": "1",
-    "title": "Gabung pakai kode ruangan",
-    "body": "Peserta masuk dari HP dengan room code. Avatar dibuat otomatis.",
-    "fix": "Tanpa install, tanpa akun",
-    "fixLabel": "FITUR"
+    "title": "Soal muncul satu per satu",
+    "body": "Pada tes kognitif, soal dimuat satu halaman per waktu — nggak bisa dilihat semua lalu dicari jawabannya.",
+    "fix": "Anti-cheating delivery",
+    "fixLabel": "CARANYA"
    },
    {
     "type": "point",
     "n": "2",
-    "title": "Leaderboard real-time",
-    "body": "Skor naik-turun langsung di layar. Bisa main per tim dengan leaderboard bersama.",
-    "fix": "Mode tim untuk sesi kelompok",
-    "fixLabel": "FITUR"
+    "title": "Ada batas waktu",
+    "body": "Tes kognitif berwaktu, jadi kandidat nggak punya waktu longgar untuk googling setiap soal.",
+    "fix": "Timed screening",
+    "fixLabel": "CARANYA"
    },
    {
     "type": "point",
     "n": "3",
-    "title": "Timer & soal diacak",
-    "body": "Timer per soal dan urutan soal acak per peserta — cocok juga untuk sertifikasi.",
-    "fix": "Bukan cuma asesmen async",
-    "fixLabel": "FITUR"
+    "title": "Dibaca reviewer, bukan cuma angka",
+    "body": "Hasil dilengkapi interpretasi tertulis dari reviewer — pola jawaban yang janggal lebih mudah dikenali.",
+    "fix": "Skor otomatis + penilaian manusia",
+    "fixLabel": "CARANYA"
    },
    {
     "type": "cta",
-    "title": "Bikin sesi training-mu <i>hidup</i>.",
-    "sub": "Live quiz ada di Psikotest — demo lewat link di profil.",
-    "handle": "Follow untuk ide training seru"
+    "title": "Psikotes online yang tetap <i>bisa dipercaya</i>.",
+    "sub": "Request demo Psikotest — link di profil. Share ke tim rekrutmen 👇",
+    "handle": "Follow untuk tips rekrutmen"
+   }
+  ]
+ },
+ {
+  "slug": "psikotest-consent-kandidat",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Etika asesmen",
+    "title": "Sebelum psikotes dimulai, kandidat wajib tahu <i>3 hal</i>",
+    "sub": "Bukan formalitas — ini soal kepercayaan"
+   },
+   {
+    "type": "annot",
+    "kicker": "1 · Tujuan & konteks",
+    "title": "Untuk apa tes ini <i>dipakai</i>?",
+    "img": "../assets/products/psikotest-consent-card.png",
+    "label": "Psikotest · Assessment consent",
+    "boxes": [
+     [
+      4,
+      22,
+      85,
+      9.5
+     ]
+    ],
+    "notes": [
+     "Tujuan, cara administrasi & penggunaan hasil ditampilkan di awal"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "2 · Kerahasiaan",
+    "title": "Siapa yang bisa <i>lihat</i> hasilnya?",
+    "img": "../assets/products/psikotest-consent-card.png",
+    "label": "Psikotest · Assessment consent",
+    "boxes": [
+     [
+      6,
+      47,
+      81,
+      10
+     ]
+    ],
+    "notes": [
+     "Data diperlakukan rahasia, hanya reviewer berwenang"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "3 · Persetujuan",
+    "title": "Setuju dulu, baru <i>mulai</i>",
+    "img": "../assets/products/psikotest-consent-card.png",
+    "label": "Psikotest · Assessment consent",
+    "boxes": [
+     [
+      4,
+      80,
+      85,
+      9.5
+     ],
+     [
+      86,
+      0.5,
+      13,
+      6
+     ]
+    ],
+    "notes": [
+     "Centang persetujuan sebelum lanjut",
+     "Bisa dibaca dalam EN atau ID"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Kandidat yang <i>paham</i> = hasil yang lebih jujur.",
+    "sub": "Psikotest menampilkan halaman persetujuan otomatis — demo lewat link di profil.",
+    "handle": "Follow untuk tips HR & etika asesmen"
    }
   ]
  }

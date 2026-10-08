@@ -1661,7 +1661,7 @@ POV: you're a Linux user who still collects music files 💿 MuzikPlayer: media 
 
 # Video-only posts: HRIS & Psikotest
 
-These 5 exist **only as videos** (no PNG carousel). Source: `data/videos.json` → Remotion compositions `vid-01…vid-05`. They cover features not used in any picture post: Probation & PIP, Division Insights, Competency Assessment with evidence, Psikotest assessment types, and Psikotest live quiz. All screens show demo data.
+These 6 exist **only as videos** (no PNG carousel). Source: `data/videos.json` → Remotion compositions `vid-01…vid-05`. They cover features not used in any picture post: Probation & PIP, Division Insights, Competency Assessment with evidence, Psikotest assessment types, anti-cheating delivery, and the candidate consent screen. All screens show demo data.
 
 ## vid-01-hris-probation-tanpa-drama: Keputusan probation tanpa drama ⚖️
 
@@ -1763,28 +1763,53 @@ One link, 5 assessment types 🧠 DISC, timed cognitive tests, Big Five, workloa
 
 ---
 
-## vid-05-psikotest-live-quiz: Training bikin ngantuk? Coba live quiz 😴
+## vid-05-psikotest-anti-contek: Psikotes online gampang dicontek? 🤔
 
-**Format:** Video, ~17–19s, `output/video/vid-05-psikotest-live-quiz.mp4` · **Sound:** add a CML track in-app  
-**Title (ID):** `Training Karyawan Bikin Ngantuk? Coba Live Quiz ala Game Show 😴`  
-**Title (EN):** `Boring Employee Training? Try a Game-Show Live Quiz 😴`  
+**Format:** Video, ~17–19s, `output/video/vid-05-psikotest-anti-contek.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Psikotes Online Gampang Dicontek? Begini Cara Mencegahnya 🤔`  
+**Title (EN):** `Are Online Psych Tests Easy to Cheat On? Here's How It's Prevented 🤔`  
 **Content disclosure:** ON → *Your brand*
 
 **Caption (ID)**
 ```
-Training karyawan bikin ngantuk? 😴 Coba live quiz ala game show: gabung pakai kode ruangan, leaderboard real-time, mode tim, timer & soal diacak. Ada di Psikotest!
+Psikotes online gampang dicontek? 🤔 Soal tes kognitif muncul satu per satu, ada batas waktu, dan hasil dibaca reviewer, bukan cuma angka. Share ke tim rekrutmen!
 
-#training #onboarding #hrd #gamification #psikotest
+#psikotes #psikotesonline #rekrutmen #hrd #psikotest
 ```
 
 **Caption (EN, optional)**
 ```
-Boring employee training? 😴 Try a game-show live quiz: join with a room code, real-time leaderboard, team mode, timers & shuffled questions. Built into Psikotest!
+Are online psych tests easy to cheat on? 🤔 Cognitive questions load one at a time, they're timed, and results are reviewed by people, not just scored.
 
-#training #onboarding #gamification #hr
+#psychometrictest #recruiting #hr #hiring
 ```
 
-**Pinned comment:** `Cocok untuk induction karyawan baru, refresh SOP, atau sertifikasi internal 🏆`
+**Pinned comment:** `Pertanyaan lain soal psikotes online? Tulis di komentar, kami jawab 👇`
+
+---
+
+## vid-06-psikotest-consent-kandidat: Sebelum psikotes dimulai, kandidat wajib tahu 3 hal
+
+**Format:** Video, ~17–19s, `output/video/vid-06-psikotest-consent-kandidat.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Sebelum Psikotes Dimulai, Kandidat Wajib Tahu 3 Hal Ini`  
+**Title (EN):** `Before a Psych Test Starts, Candidates Should Know These 3 Things`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Sebelum psikotes dimulai, kandidat wajib tahu 3 hal: untuk apa tes dipakai, siapa yang bisa lihat hasilnya, dan bahwa mereka setuju ikut. Psikotest menampilkan halaman persetujuan otomatis, bisa EN atau ID.
+
+#etikaasesmen #psikotes #rekrutmen #privasidata #psikotest
+```
+
+**Caption (EN, optional)**
+```
+Before a psych test starts, candidates should know 3 things: what it's for, who can see the results, and that they agree to take part. Psikotest shows a consent page automatically, in EN or ID.
+
+#assessmentethics #recruiting #dataprivacy #hr
+```
+
+**Pinned comment:** `Transparansi di awal bikin kandidat lebih tenang, dan hasilnya lebih jujur 🙌`
 
 ---
 

@@ -6,7 +6,7 @@ This folder holds animated 9:16 videos (1080×1920, 30 fps, H.264) of the TikTok
 | --- | --- | --- |
 | Animated carousel videos (52) | `tt-01-…` to `tt-52-…` | `../data/tiktok.json`, the same data as the PNG carousels |
 | Screen-recorded tours (5) | `tour-site-home`, `tour-site-hris`, `tour-site-flowraze`, `tour-site-psikotest`, `tour-site-templates` | `public/recordings/*.webm` + `src/tours.ts` |
-| Video-only posts (5) | `vid-01-…` to `vid-05-…` | `../data/videos.json`, HRIS & Psikotest topics with no PNG version |
+| Video-only posts (6) | `vid-01-…` to `vid-06-…` | `../data/videos.json`, HRIS & Psikotest topics with no PNG version |
 | Meme slideshow (1) | `meme-01-in-this-picture` | the rendered PNG slides in `../output/` |
 
 Rendered files go to `../output/video/<id>.mp4`.
