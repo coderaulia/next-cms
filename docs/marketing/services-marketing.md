@@ -23,7 +23,7 @@ Package names and features come from the live site content (`data/default-conten
 | Templates | Ready-made sites built on a full design system | Budget-conscious SMBs | Browse templates | `/templates` |
 | Vanaila HRIS | KPIs, competencies & HR letters in one record | HR managers, HRBP | Request demo | `/hris` |
 | Flowraze CRM | One clear pipeline for leads, deals & team performance | Sales managers | Request demo | `/flowraze` |
-| Psikotest | Assessment delivery, scoring & interpretation | HR recruiters, psychologists | Request demo | `/psikotest` |
+| Psikotest | 21 validated instruments, delivered by one link | HR recruiters, licensed practitioners | Request demo | `/psikotest` |
 
 ---
 
@@ -303,17 +303,34 @@ Package names and features come from the live site content (`data/default-conten
 
 ## 10. Psikotest
 
-**Positioning:** Assessment infrastructure for HR teams and licensed psychologists, covering delivery, scoring rubrics, and reviewer-written interpretations.
+**Positioning:** Assessment delivery and workflow infrastructure. It has a library of 21 validated instruments, and every candidate goes through a built-in consent and identity flow. Validity and interpretation remain the responsibility of the licensed practitioner (SIPP/STR). Psikotest is **not** a medical or clinical diagnosis.
+
+**What's in the product (latest screens)**
+- **Instrument library:** 21 batteries: Personality (6), Cognitive (2), Workplace & HSE (11), Wellbeing (2).
+  - IQ / Cognitive Ability (CHC model, 40 timed items, 25 min)
+  - DISC (15 min)
+  - Big 5 / OCEAN (IPIP, 12 min)
+  - 16PF, Jungian Type Preference, Salovey-Mayer Emotional Intelligence (20 min each)
+- **Two views:** "Practical HR & Recruitment View" by default. Registering a SIPP licence in workspace settings unlocks deep clinical psychometrics.
+- **Candidate flow:** consent page, then the identity form, then the test. There is no candidate account. The consent page covers:
+  - purpose, administration mode and interpretation type
+  - purpose and privacy statements, voluntary participation and a contact person
+  - age eligibility (17+ per KTP rules, or a parent/guardian)
+  - the platform disclaimer
+- **Workspace:** active assessments, templates, a Kahoot-style live quiz to warm up candidates, and plan & usage.
 
 **Target audience:** Recruitment teams, psychology bureaus, and research institutions.
 
-**Pain points:** paper or form-based tests · manual scoring · inconsistent interpretation reports.
+**Pain points:** paper or form-based tests · unclear which instrument to use · candidates not told how their data is used · manual admin.
 
 **Key messages / hooks**
-- "You design the assessment. Psikotest handles the rest."
-- "Automated scoring, human interpretation."
+- "21 instrumen. Satu link. Psikotest mengurus sisanya."
+- "Instrumen tervalidasi, alur kandidat yang etis."
+- "Psikotest mengurus pengiriman; interpretasi tetap oleh praktisi berlisensi."
 
-**Proof:** Assessment App (research-grade platform with automated scoring); product screenshots in `public/psikotest/`.
+**Do not claim:** that Psikotest diagnoses or interprets on its own, or that it is a clinical/medical tool.
+
+**Proof:** Assessment App (research-grade platform with automated scoring). Latest product screenshots are in `assets/products/psikotest-*.png` (dashboard, catalog, consent with names redacted, identity).
 
 **CTA:** Request a demo → `/psikotest`
 

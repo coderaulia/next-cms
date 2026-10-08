@@ -799,19 +799,19 @@ Lost leads usually aren't your sales team's fault. They're scattered everywhere 
 
 **Caption (ID)**
 ```
-100 kandidat. 1 HR. Psikotes masih pakai kertas 😵 Cara lama vs cara baru: kirim link, skor otomatis, psikolog fokus menilai. Tim HR-mu masih koreksi manual?
+100 kandidat. 1 HR. Psikotes masih pakai kertas 😵 Cara lama vs cara baru: kirim satu link, kandidat isi persetujuan & identitas, pilih dari 21 instrumen tervalidasi. Interpretasi tetap oleh praktisi berlisensi. Tim HR-mu masih koreksi manual?
 
 #rekrutmen #psikotes #psikotesonline #hrd #psikotest
 ```
 
 **Caption (EN, optional)**
 ```
-100 candidates. 1 HR person. Psych tests still on paper 😵 Old way vs new way: send a link, automatic scoring, psychologists focus on interpreting.
+100 candidates. 1 HR person. Psych tests still on paper 😵 Old way vs new way: send one link, candidates complete consent & identity, choose from 21 validated instruments. Interpretation stays with a licensed practitioner.
 
 #recruiting #psychometrictest #hrtok #hiring
 ```
 
-**Pinned comment:** `Psikotest bisa dicoba tim HR & biro psikologi, demo lewat link di profil 🧩`
+**Pinned comment:** `Psikotest = infrastruktur pengiriman asesmen, bukan diagnosis klinis. Demo lewat link di profil 🧩`
 
 **Video script (alternative, ~25s):** a stack of paper tests and a tired HR person (0–8s), then a hard cut on the beat drop to a phone sending the test link (8–16s), then the results screen with a psychologist reviewing (16–25s).
 
@@ -1661,7 +1661,7 @@ POV: you're a Linux user who still collects music files 💿 MuzikPlayer: media 
 
 # Video-only posts: HRIS & Psikotest
 
-These 6 exist **only as videos** (no PNG carousel). Source: `data/videos.json` → Remotion compositions `vid-01…vid-05`. They cover features not used in any picture post: Probation & PIP, Division Insights, Competency Assessment with evidence, Psikotest assessment types, anti-cheating delivery, and the candidate consent screen. All screens show demo data.
+These 6 exist **only as videos** (no PNG carousel). Source: `data/videos.json` → Remotion compositions `vid-01…vid-05`. They cover features not used in any picture post: Probation & PIP, Division Insights, Competency Assessment with evidence, Psikotest's 21-instrument library, timed cognitive tests, and the candidate consent → identity flow. All screens show demo data.
 
 ## vid-01-hris-probation-tanpa-drama: Keputusan probation tanpa drama ⚖️
 
@@ -1738,28 +1738,28 @@ Evidence-based TNA, not gut feeling 📋 Competencies per position, a score + re
 
 ---
 
-## vid-04-psikotest-5-jenis-asesmen: Satu link, 5 jenis asesmen 🧠
+## vid-04-psikotest-21-instrumen: Satu link, 21 instrumen psikometri 🧠
 
-**Format:** Video, ~17–19s, `output/video/vid-04-psikotest-5-jenis-asesmen.mp4` · **Sound:** add a CML track in-app  
-**Title (ID):** `Satu Link, 5 Jenis Asesmen: DISC, Kognitif, Big Five & Lainnya 🧠`  
-**Title (EN):** `One Link, 5 Assessment Types: DISC, Cognitive, Big Five & More 🧠`  
+**Format:** Video, ~17–19s, `output/video/vid-04-psikotest-21-instrumen.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Satu Link, 21 Instrumen Psikometri: DISC, IQ, Big 5 & Lainnya 🧠`  
+**Title (EN):** `One Link, 21 Psychometric Instruments: DISC, IQ, Big 5 & More 🧠`  
 **Content disclosure:** ON → *Your brand*
 
 **Caption (ID)**
 ```
-Satu link, 5 jenis asesmen 🧠 DISC, tes kognitif berwaktu, Big Five, workload/stress, atau instrumen custom-mu sendiri. Kandidat nggak perlu bikin akun. Request demo Psikotest lewat link di profil!
+Satu link, 21 instrumen psikometri tervalidasi 🧠 Personality (DISC, Big 5, 16PF), kognitif/IQ, Workplace & HSE, sampai wellbeing. Kandidat nggak perlu bikin akun. Request demo Psikotest lewat link di profil!
 
 #psikotes #rekrutmen #disc #bigfive #psikotest
 ```
 
 **Caption (EN, optional)**
 ```
-One link, 5 assessment types 🧠 DISC, timed cognitive tests, Big Five, workload/stress, or your own custom instrument. No candidate account needed.
+One link, 21 validated psychometric instruments 🧠 Personality (DISC, Big 5, 16PF), cognitive/IQ, workplace & HSE and wellbeing. No candidate account needed.
 
 #psychometrictest #recruiting #disc #bigfive
 ```
 
-**Pinned comment:** `Ada halaman persetujuan EN ↔ ID sebelum tes dimulai, jadi kandidat tahu tujuan & penggunaan hasilnya 🔒`
+**Pinned comment:** `Tiap instrumen menampilkan durasi, jumlah soal & rujukan akademiknya, jadi HR bisa pilih yang paling cocok 📚`
 
 ---
 
@@ -1767,24 +1767,24 @@ One link, 5 assessment types 🧠 DISC, timed cognitive tests, Big Five, workloa
 
 **Format:** Video, ~17–19s, `output/video/vid-05-psikotest-anti-contek.mp4` · **Sound:** add a CML track in-app  
 **Title (ID):** `Psikotes Online Gampang Dicontek? Begini Cara Mencegahnya 🤔`  
-**Title (EN):** `Are Online Psych Tests Easy to Cheat On? Here's How It's Prevented 🤔`  
+**Title (EN):** `Are Online Psych Tests Easy to Cheat On? Here's How It's Handled 🤔`  
 **Content disclosure:** ON → *Your brand*
 
 **Caption (ID)**
 ```
-Psikotes online gampang dicontek? 🤔 Soal tes kognitif muncul satu per satu, ada batas waktu, dan hasil dibaca reviewer, bukan cuma angka. Share ke tim rekrutmen!
+Psikotes online gampang dicontek? 🤔 Soal kognitif berwaktu (40 soal, 25 menit), mode administrasi tercatat di setiap asesmen, dan interpretasi tetap oleh praktisi berlisensi. Share ke tim rekrutmen!
 
 #psikotes #psikotesonline #rekrutmen #hrd #psikotest
 ```
 
 **Caption (EN, optional)**
 ```
-Are online psych tests easy to cheat on? 🤔 Cognitive questions load one at a time, they're timed, and results are reviewed by people, not just scored.
+Are online psych tests easy to cheat on? 🤔 Timed cognitive items (40 in 25 minutes), the administration mode recorded for every assessment, and interpretation by a licensed practitioner.
 
 #psychometrictest #recruiting #hr #hiring
 ```
 
-**Pinned comment:** `Pertanyaan lain soal psikotes online? Tulis di komentar, kami jawab 👇`
+**Pinned comment:** `Psikotest = infrastruktur pengiriman & skoring. Interpretasi tetap oleh praktisi berlisensi (SIPP/STR), bukan diagnosis klinis 🙏`
 
 ---
 
@@ -1797,19 +1797,19 @@ Are online psych tests easy to cheat on? 🤔 Cognitive questions load one at a 
 
 **Caption (ID)**
 ```
-Sebelum psikotes dimulai, kandidat wajib tahu 3 hal: untuk apa tes dipakai, siapa yang bisa lihat hasilnya, dan bahwa mereka setuju ikut. Psikotest menampilkan halaman persetujuan otomatis, bisa EN atau ID.
+Sebelum psikotes dimulai, kandidat wajib tahu: untuk apa tes dipakai, apakah usianya memenuhi syarat (17+ atau didampingi wali), dan bahwa mereka setuju ikut. Baru setelah itu isi identitas. Semua otomatis di Psikotest.
 
 #etikaasesmen #psikotes #rekrutmen #privasidata #psikotest
 ```
 
 **Caption (EN, optional)**
 ```
-Before a psych test starts, candidates should know 3 things: what it's for, who can see the results, and that they agree to take part. Psikotest shows a consent page automatically, in EN or ID.
+Before a psych test starts, candidates should know: what it's for, whether they're eligible (17+ or with a guardian), and that they agree to take part, then fill in their identity. It's all built into Psikotest.
 
 #assessmentethics #recruiting #dataprivacy #hr
 ```
 
-**Pinned comment:** `Transparansi di awal bikin kandidat lebih tenang, dan hasilnya lebih jujur 🙌`
+**Pinned comment:** `Nama perusahaan & kontak di screenshot kami samarkan. Di akunmu, halaman ini menampilkan nama perusahaanmu sendiri 🔒`
 
 ---
 

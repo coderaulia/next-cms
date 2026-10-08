@@ -1,12 +1,305 @@
 [
-  {"slug":"website-development","name":"Website Development","kicker":"Service","hook":"A website that <i>works</i> while you sleep.","for":"Owners & marketing teams with an outdated site — or none yet.","values":[["Found on Google","Technical SEO and Core Web Vitals built in from day one."],["Edit it yourself","CMS included — no developer needed to change a headline."],["Built to convert","Every page designed around one clear next action."]],"ladderLabel":"Packages","ladder":["Startup · 5 pages","Professional · up to 12 pages","Enterprise · unlimited"],"cta":"Book a free consultation","url":"vanaila.com/website-development","dark":false},
-  {"slug":"secure-online-shops","name":"Secure Online Shops","kicker":"Service","hook":"Your <i>24/7</i> sales machine.","for":"Retail & export brands ready to move beyond marketplaces and WhatsApp orders.","values":[["Own your customers","Your store, your data, your repeat buyers — no marketplace fees."],["Checkout that feels safe","Automated payments with a dedicated security layer."],["Stock that stays in sync","Inventory sync and WhatsApp integration built in."]],"ladderLabel":"Packages","ladder":["Startup Shop · up to 50 products","Growth Merchant · headless","Enterprise Retailer · B2B & apps"],"cta":"Start your online shop","url":"vanaila.com/secure-online-shops","dark":true},
-  {"slug":"custom-business-tools","name":"Custom Business Tools","kicker":"Service","hook":"Your process — <i>not</i> a generic workaround.","for":"Ops, finance & GMs running the business on spreadsheets and chat approvals.","values":[["One source of truth","Dashboards and portals replace scattered spreadsheet versions."],["Approvals with an audit trail","Role-based access — know who changed what, and when."],["Reports in minutes","Automated workflows end the month-end copy-paste marathon."]],"ladderLabel":"Packages","ladder":["Process Boost · automation","Operational Core · ops portal","Enterprise Hub · modernization"],"cta":"Map your workflow — free","url":"vanaila.com/custom-business-tools","dark":false},
-  {"slug":"mobile-business-app","name":"Mobile Business App","kicker":"Service","hook":"One codebase. <i>Two</i> app stores.","for":"Founders and teams who need their service in customers' — or field staff's — pockets.","values":[["iOS & Android together","React Native build: native feel at a single-codebase cost."],["Works offline","Offline sync, push notifications and biometric login."],["Store approval handled","We deploy and guide the App Store & Play Store review."]],"ladderLabel":"Packages","ladder":["App Launchpad · core features","Advanced Native · offline & push","Enterprise Native · payments & scale"],"cta":"Scope your app","url":"vanaila.com/mobile-business-app","dark":true},
-  {"slug":"official-business-email","name":"Official Business Email","kicker":"Service","hook":"Trust starts <i>before</i> they open your email.","for":"Every business still sending offers from a free email address.","values":[["Instant credibility","hello@yourcompany.com instead of a free address."],["Out of the spam folder","SPF, DKIM & DMARC configured correctly."],["Owned by the company","Accounts stay with the business when staff leave."]],"ladderLabel":"Packages","ladder":["Pro Identity · Workspace setup","Corporate Comm · security & signatures","Secure Infrastructure · DLP & managed"],"cta":"Set up business email","url":"vanaila.com/official-business-email","dark":false},
-  {"slug":"atelier","name":"Vanaila Atelier","kicker":"Design studio","hook":"We learn <i>before</i> we draw.","for":"New brands, rebrands, and product teams that need a guiding creative eye.","values":[["A brand that scales","Identity systems from business card to billboard."],["Design devs can build","Figma-to-handoff with real component libraries."],["Motion with a purpose","Explainers, micro-interactions & social content."]],"ladderLabel":"Capabilities","ladder":["Brand Identity · Web Experience","UI & Product · Creative Direction","Motion & Digital · Print"],"cta":"Start a design brief","url":"vanaila.com/atelier","dark":true},
-  {"slug":"templates","name":"Vanaila Templates","kicker":"Ready-made sites","hook":"Not themes. <i>Systems.</i>","for":"Small businesses that need a professional site live this week.","values":[["Launch fast","Pick an industry-ready design and go live quickly."],["Built to last","Every template ships with the full Vanaila design system."],["Room to grow","Upgrade to a custom build whenever you're ready."]],"ladderLabel":"14 industry templates, incl.","ladder":["Property · Fashion · Automotive","Catering · Law firm · Travel","Furniture · Transport · Heritage"],"cta":"Browse templates","url":"vanaila.com/templates","dark":false},
-  {"slug":"hris","name":"Vanaila HRIS","kicker":"Product · HR Suite","hook":"KPIs, competencies & HR letters — <i>one</i> record.","for":"HR teams quietly maintaining the performance spreadsheet.","values":[["KPIs people trust","Weighted targets with real manager-approval workflow."],["A TNA you can act on","Competency scoring with evidence on every rubric line."],["Letters in seconds","PKWT, PKWTT, SK & certificates to A4 PDF from the record."]],"ladderLabel":"Modules","ladder":["KPI Management · KPI Records","Competency Assessment","HR Documents · Probation & PIP"],"cta":"Request a demo","url":"vanaila.com/hris","dark":true,"shot":"../../../public/hris/hris-documents.jpeg"},
-  {"slug":"flowraze","name":"Flowraze CRM","kicker":"Product · Sales CRM","hook":"See what drives revenue — <i>and</i> what holds it back.","for":"Indonesian SMB sales teams tracking deals in spreadsheets and chats.","values":[["No lost leads","Every lead captured and assigned in one place."],["Pipeline at a glance","Visual deal Kanban with real pipeline value."],["Coach with data","Team performance and campaign analytics built in."]],"ladderLabel":"Inside","ladder":["Leads · Deals pipeline","Campaigns · Analytics","Team performance"],"cta":"Request a demo","url":"vanaila.com/flowraze","dark":false,"shot":"../../../public/flowraze/dashboard.png"},
-  {"slug":"psikotest","name":"Psikotest","kicker":"Product · Assessment","hook":"You design the test. <i>Psikotest</i> handles the rest.","for":"Recruiters, psychology bureaus & research teams.","values":[["Deliver online","Send assessments to candidates — no paper, no forms."],["Score automatically","Rubric-based scoring the moment a test is submitted."],["Interpret with care","Reviewer-written interpretations by licensed psychologists."]],"ladderLabel":"Workflow","ladder":["Build assessment","Deliver & score","Review & report"],"cta":"Request a demo","url":"vanaila.com/psikotest","dark":true,"shot":"../../../public/psikotest/new-assessment.png"}
+ {
+  "slug": "website-development",
+  "name": "Website Development",
+  "kicker": "Service",
+  "hook": "A website that <i>works</i> while you sleep.",
+  "for": "Owners & marketing teams with an outdated site — or none yet.",
+  "values": [
+   [
+    "Found on Google",
+    "Technical SEO and Core Web Vitals built in from day one."
+   ],
+   [
+    "Edit it yourself",
+    "CMS included — no developer needed to change a headline."
+   ],
+   [
+    "Built to convert",
+    "Every page designed around one clear next action."
+   ]
+  ],
+  "ladderLabel": "Packages",
+  "ladder": [
+   "Startup · 5 pages",
+   "Professional · up to 12 pages",
+   "Enterprise · unlimited"
+  ],
+  "cta": "Book a free consultation",
+  "url": "vanaila.com/website-development",
+  "dark": false
+ },
+ {
+  "slug": "secure-online-shops",
+  "name": "Secure Online Shops",
+  "kicker": "Service",
+  "hook": "Your <i>24/7</i> sales machine.",
+  "for": "Retail & export brands ready to move beyond marketplaces and WhatsApp orders.",
+  "values": [
+   [
+    "Own your customers",
+    "Your store, your data, your repeat buyers — no marketplace fees."
+   ],
+   [
+    "Checkout that feels safe",
+    "Automated payments with a dedicated security layer."
+   ],
+   [
+    "Stock that stays in sync",
+    "Inventory sync and WhatsApp integration built in."
+   ]
+  ],
+  "ladderLabel": "Packages",
+  "ladder": [
+   "Startup Shop · up to 50 products",
+   "Growth Merchant · headless",
+   "Enterprise Retailer · B2B & apps"
+  ],
+  "cta": "Start your online shop",
+  "url": "vanaila.com/secure-online-shops",
+  "dark": true
+ },
+ {
+  "slug": "custom-business-tools",
+  "name": "Custom Business Tools",
+  "kicker": "Service",
+  "hook": "Your process — <i>not</i> a generic workaround.",
+  "for": "Ops, finance & GMs running the business on spreadsheets and chat approvals.",
+  "values": [
+   [
+    "One source of truth",
+    "Dashboards and portals replace scattered spreadsheet versions."
+   ],
+   [
+    "Approvals with an audit trail",
+    "Role-based access — know who changed what, and when."
+   ],
+   [
+    "Reports in minutes",
+    "Automated workflows end the month-end copy-paste marathon."
+   ]
+  ],
+  "ladderLabel": "Packages",
+  "ladder": [
+   "Process Boost · automation",
+   "Operational Core · ops portal",
+   "Enterprise Hub · modernization"
+  ],
+  "cta": "Map your workflow — free",
+  "url": "vanaila.com/custom-business-tools",
+  "dark": false
+ },
+ {
+  "slug": "mobile-business-app",
+  "name": "Mobile Business App",
+  "kicker": "Service",
+  "hook": "One codebase. <i>Two</i> app stores.",
+  "for": "Founders and teams who need their service in customers' — or field staff's — pockets.",
+  "values": [
+   [
+    "iOS & Android together",
+    "React Native build: native feel at a single-codebase cost."
+   ],
+   [
+    "Works offline",
+    "Offline sync, push notifications and biometric login."
+   ],
+   [
+    "Store approval handled",
+    "We deploy and guide the App Store & Play Store review."
+   ]
+  ],
+  "ladderLabel": "Packages",
+  "ladder": [
+   "App Launchpad · core features",
+   "Advanced Native · offline & push",
+   "Enterprise Native · payments & scale"
+  ],
+  "cta": "Scope your app",
+  "url": "vanaila.com/mobile-business-app",
+  "dark": true
+ },
+ {
+  "slug": "official-business-email",
+  "name": "Official Business Email",
+  "kicker": "Service",
+  "hook": "Trust starts <i>before</i> they open your email.",
+  "for": "Every business still sending offers from a free email address.",
+  "values": [
+   [
+    "Instant credibility",
+    "hello@yourcompany.com instead of a free address."
+   ],
+   [
+    "Out of the spam folder",
+    "SPF, DKIM & DMARC configured correctly."
+   ],
+   [
+    "Owned by the company",
+    "Accounts stay with the business when staff leave."
+   ]
+  ],
+  "ladderLabel": "Packages",
+  "ladder": [
+   "Pro Identity · Workspace setup",
+   "Corporate Comm · security & signatures",
+   "Secure Infrastructure · DLP & managed"
+  ],
+  "cta": "Set up business email",
+  "url": "vanaila.com/official-business-email",
+  "dark": false
+ },
+ {
+  "slug": "atelier",
+  "name": "Vanaila Atelier",
+  "kicker": "Design studio",
+  "hook": "We learn <i>before</i> we draw.",
+  "for": "New brands, rebrands, and product teams that need a guiding creative eye.",
+  "values": [
+   [
+    "A brand that scales",
+    "Identity systems from business card to billboard."
+   ],
+   [
+    "Design devs can build",
+    "Figma-to-handoff with real component libraries."
+   ],
+   [
+    "Motion with a purpose",
+    "Explainers, micro-interactions & social content."
+   ]
+  ],
+  "ladderLabel": "Capabilities",
+  "ladder": [
+   "Brand Identity · Web Experience",
+   "UI & Product · Creative Direction",
+   "Motion & Digital · Print"
+  ],
+  "cta": "Start a design brief",
+  "url": "vanaila.com/atelier",
+  "dark": true
+ },
+ {
+  "slug": "templates",
+  "name": "Vanaila Templates",
+  "kicker": "Ready-made sites",
+  "hook": "Not themes. <i>Systems.</i>",
+  "for": "Small businesses that need a professional site live this week.",
+  "values": [
+   [
+    "Launch fast",
+    "Pick an industry-ready design and go live quickly."
+   ],
+   [
+    "Built to last",
+    "Every template ships with the full Vanaila design system."
+   ],
+   [
+    "Room to grow",
+    "Upgrade to a custom build whenever you're ready."
+   ]
+  ],
+  "ladderLabel": "14 industry templates, incl.",
+  "ladder": [
+   "Property · Fashion · Automotive",
+   "Catering · Law firm · Travel",
+   "Furniture · Transport · Heritage"
+  ],
+  "cta": "Browse templates",
+  "url": "vanaila.com/templates",
+  "dark": false
+ },
+ {
+  "slug": "hris",
+  "name": "Vanaila HRIS",
+  "kicker": "Product · HR Suite",
+  "hook": "KPIs, competencies & HR letters — <i>one</i> record.",
+  "for": "HR teams quietly maintaining the performance spreadsheet.",
+  "values": [
+   [
+    "KPIs people trust",
+    "Weighted targets with real manager-approval workflow."
+   ],
+   [
+    "A TNA you can act on",
+    "Competency scoring with evidence on every rubric line."
+   ],
+   [
+    "Letters in seconds",
+    "PKWT, PKWTT, SK & certificates to A4 PDF from the record."
+   ]
+  ],
+  "ladderLabel": "Modules",
+  "ladder": [
+   "KPI Management · KPI Records",
+   "Competency Assessment",
+   "HR Documents · Probation & PIP"
+  ],
+  "cta": "Request a demo",
+  "url": "vanaila.com/hris",
+  "dark": true,
+  "shot": "../../../public/hris/hris-documents.jpeg"
+ },
+ {
+  "slug": "flowraze",
+  "name": "Flowraze CRM",
+  "kicker": "Product · Sales CRM",
+  "hook": "See what drives revenue — <i>and</i> what holds it back.",
+  "for": "Indonesian SMB sales teams tracking deals in spreadsheets and chats.",
+  "values": [
+   [
+    "No lost leads",
+    "Every lead captured and assigned in one place."
+   ],
+   [
+    "Pipeline at a glance",
+    "Visual deal Kanban with real pipeline value."
+   ],
+   [
+    "Coach with data",
+    "Team performance and campaign analytics built in."
+   ]
+  ],
+  "ladderLabel": "Inside",
+  "ladder": [
+   "Leads · Deals pipeline",
+   "Campaigns · Analytics",
+   "Team performance"
+  ],
+  "cta": "Request a demo",
+  "url": "vanaila.com/flowraze",
+  "dark": false,
+  "shot": "../../../public/flowraze/dashboard.png"
+ },
+ {
+  "slug": "psikotest",
+  "name": "Psikotest",
+  "kicker": "Product · Assessment",
+  "hook": "21 instrumen. Satu link. <i>Psikotest</i> mengurus sisanya.",
+  "for": "HR & recruitment teams, and the licensed practitioners who interpret results.",
+  "values": [
+   [
+    "21 instrumen tervalidasi",
+    "DISC, IQ/kognitif (CHC), Big 5, 16PF, EI & lainnya — siap dipakai."
+   ],
+   [
+    "Alur kandidat yang rapi",
+    "Persetujuan, identitas, lalu tes — kandidat tanpa akun."
+   ],
+   [
+    "Interpretasi oleh ahlinya",
+    "Psikotest = infrastruktur; validitas & interpretasi oleh praktisi berlisensi (SIPP/STR)."
+   ]
+  ],
+  "ladderLabel": "Kategori instrumen",
+  "ladder": [
+   "Personality · 6",
+   "Cognitive · 2",
+   "Workplace & HSE · 11 · Wellbeing · 2"
+  ],
+  "cta": "Request a demo",
+  "url": "vanaila.com/psikotest",
+  "dark": true,
+  "shot": "../assets/products/psikotest-dashboard.png"
+ }
 ]

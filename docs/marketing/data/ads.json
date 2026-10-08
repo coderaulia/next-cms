@@ -16,5 +16,5 @@
    "headline":"Hire, manage & sell — <i>smarter.</i>",
    "benefits":["Vanaila HRIS · HR suite","Flowraze · Sales CRM","Psikotest · Assessments"],
    "offer":"Live demo for your team","cta":"Request demo →",
-   "visual":"<div class='frame p1'><div class='bar'><i></i><i></i><i></i><span>Psikotest</span></div><img src='../../../public/psikotest/new-assessment.png' style='object-position:left top'></div><div class='frame p2'><div class='bar'><i></i><i></i><i></i><span>Flowraze CRM</span></div><img src='../../../public/flowraze/dashboard.png' style='object-position:left top'></div><div class='frame p3'><div class='bar'><i></i><i></i><i></i><span>Vanaila HRIS</span></div><img src='../../../public/hris/hris-kpi-management.jpeg' style='object-position:left top'></div>"}
+   "visual":"<div class='frame p1'><div class='bar'><i></i><i></i><i></i><span>Psikotest</span></div><img src='../assets/products/psikotest-dashboard.png' style='object-position:left top'></div><div class='frame p2'><div class='bar'><i></i><i></i><i></i><span>Flowraze CRM</span></div><img src='../../../public/flowraze/dashboard.png' style='object-position:left top'></div><div class='frame p3'><div class='bar'><i></i><i></i><i></i><span>Vanaila HRIS</span></div><img src='../../../public/hris/hris-kpi-management.jpeg' style='object-position:left top'></div>"}
 ]

@@ -95,7 +95,7 @@ To edit the creatives, change `data/ads.json` and run `npm run render:ads`. Stor
 > Ready-to-use software for growing teams:
 > 🧾 Vanaila HRIS: KPIs, competency assessment & HR letters (PKWT, PKWTT, SK) in one employee record
 > 📈 Flowraze: leads, deals & team performance in one visual pipeline
-> 🧩 Psikotest: online psychometric tests with automatic scoring
+> 🧩 Psikotest: 21 validated psychometric instruments, sent by one link
 >
 > See it live. Request a demo for your team 👇
 
@@ -103,7 +103,7 @@ To edit the creatives, change `data/ads.json` and run `npm run render:ads`. Stor
 > Software siap pakai untuk tim yang sedang bertumbuh:
 > 🧾 Vanaila HRIS: KPI, asesmen kompetensi & surat HR (PKWT, PKWTT, SK) dalam satu data karyawan
 > 📈 Flowraze: leads, deal & performa tim dalam satu pipeline visual
-> 🧩 Psikotest: psikotes online dengan penilaian otomatis
+> 🧩 Psikotest: 21 instrumen psikometri tervalidasi, cukup satu link
 >
 > Lihat langsung. Request demo untuk timmu 👇
 

@@ -866,22 +866,22 @@
     "type": "img",
     "kicker": "Cara baru",
     "title": "Kirim link, kandidat tes <i>online</i>",
-    "img": "../../../public/psikotest/new-assessment.png",
-    "label": "Psikotest · New assessment",
-    "ask": "Pilih format asesmen, bagikan link atau QR"
+    "img": "../assets/products/psikotest-identity.png",
+    "label": "Psikotest · Participant identity",
+    "ask": "Persetujuan → identitas → tes. Tanpa akun."
    },
    {
     "type": "img",
     "kicker": "Lalu",
-    "title": "Skor otomatis, interpretasi oleh <i>ahlinya</i>",
-    "img": "../../../public/psikotest/assessment.png",
-    "label": "Psikotest · Assessment",
-    "ask": "Psikolog fokus menilai, bukan mengoreksi"
+    "title": "21 instrumen <i>tervalidasi</i>, siap pakai",
+    "img": "../assets/products/psikotest-catalog.png",
+    "label": "Psikotest · Instrument Library",
+    "ask": "DISC, IQ/kognitif, Big 5, 16PF & lainnya"
    },
    {
     "type": "cta",
     "title": "Tim HR-mu masih <i>koreksi manual</i>?",
-    "sub": "Share ke rekan rekrutmen. Demo Psikotest: link di profil.",
+    "sub": "Psikotest mengurus pengiriman & skoring — interpretasi tetap oleh praktisi berlisensi. Demo: link di profil.",
     "handle": "Follow untuk tips rekrutmen & HR"
    }
   ]

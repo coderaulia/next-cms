@@ -187,18 +187,18 @@ If your pipeline lives in spreadsheets and chat threads, you're forecasting from
 ### 10 · Psikotest — `svc-10-psikotest.png`
 
 **IG/FB**
-You design the test. Psikotest handles the rest. 🧩
+21 instrumen. Satu link. Psikotest mengurus sisanya. 🧩
 
-✅ Deliver assessments online, no paper
-✅ Score automatically with rubrics
-✅ Interpret with care: reviewer-written by licensed psychologists
+✅ 21 validated instruments: DISC, IQ/cognitive, Big 5, 16PF & more
+✅ Candidate flow with consent, age check and identity, with no candidate account
+✅ Interpretation stays with your licensed practitioner (SIPP/STR)
 
-For recruiters, psychology bureaus and research teams.
+For HR & recruitment teams and psychology practitioners.
 📩 Request a demo.
 #Psikotes #Rekrutmen #AsesmenPsikologi #HRTech #Psikotest
 
 **LinkedIn**
-Psychometric assessment shouldn't mean paper forms and manual scoring. Psikotest handles delivery, rubric-based scoring, and reviewer-written interpretation, so HR teams and licensed psychologists can focus on judgment, not admin. vanaila.com/psikotest
+Psychometric assessment shouldn't mean paper forms and guesswork. Psikotest gives HR teams 21 validated instruments and an ethical candidate flow (consent, age eligibility, identity), while validity and interpretation stay with the licensed practitioner. It's delivery infrastructure, not a diagnosis tool. vanaila.com/psikotest
 
 ---
 

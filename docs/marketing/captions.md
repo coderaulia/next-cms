@@ -66,7 +66,7 @@ Three products. One less spreadsheet. 📊
 
 🧾 Vanaila HRIS — KPIs, competency assessment & HR letters (PKWT, PKWTT, SK) in one employee record
 📈 Flowraze — CRM for Indonesian SMB sales teams: leads, deals & team performance in one visual pipeline
-🧩 Psikotest — psychometric test delivery, scoring rubrics & interpretations for HR teams and psychologists
+🧩 Psikotest — 21 validated psychometric instruments delivered by one link, with consent built in
 
 Request a demo → link in bio.
 
@@ -78,7 +78,7 @@ We built three products for the problems we kept seeing in client work:
 
 → Vanaila HRIS: performance management, TNA, and HR documents engineered around one employee record, one approval workflow, one audit trail.
 → Flowraze: a CRM that unifies leads, deals, campaigns, and team performance — built for Indonesian SMB sales teams.
-→ Psikotest: assessment infrastructure for HR teams and licensed psychologists — delivery, scoring, and interpretation.
+→ Psikotest: assessment delivery and workflow infrastructure, with 21 validated instruments (DISC, IQ, Big 5, 16PF…). Interpretation stays with your licensed practitioner.
 
 Request a demo: vanaila.com/products
 
@@ -288,13 +288,13 @@ One record. One approval flow. One audit trail.
 
 Psychotests, without the paper. 🧠📝
 
-Psikotest is the assessment workspace for HR teams and licensed psychologists:
-✅ Deliver assessments online: share a link or QR code, no paper and no forms
-✅ Automatic rubric-based scoring the moment a test is submitted
-✅ Reviewer-written interpretations by licensed psychologists
-✅ Upload your own instrument; Psikotest handles delivery, scoring and reporting
+Psikotest is assessment delivery and workflow infrastructure for HR teams:
+✅ 21 validated instruments: DISC, IQ/cognitive, Big 5, 16PF, emotional intelligence & more
+✅ One link: consent page → identity form → test, with no candidate account
+✅ Consent built in: purpose, privacy, voluntary participation and age eligibility (17+)
+✅ Interpretation stays with your licensed practitioner (SIPP/STR), not a medical/clinical diagnosis
 
-Faster recruitment screening, cleaner data, consistent reports.
+Faster recruitment screening, cleaner data, a candidate flow you can stand behind.
 👉 Request a demo: vanaila.com/psikotest or DM "PSIKOTEST".
 
 #Psikotes #PsikotesOnline #Rekrutmen #AsesmenPsikologi #HRTech #Psikotest
