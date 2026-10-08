@@ -1,0 +1,22 @@
+@import '@fontsource/inter-tight/400.css';
+@import '@fontsource/inter-tight/500.css';
+@import '@fontsource/inter-tight/600.css';
+@import '@fontsource/inter-tight/700.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/comic-neue/400.css';
+@import '@fontsource/comic-neue/700.css';
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+i, em { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+
+/* Retro 2010 website mock (used by the 2010 vs 2026 post) */
+.retro{width:100%;aspect-ratio:16/10;background:#000080;font-family:'Comic Neue',cursive;color:#ffff00;padding:14px;display:flex;flex-direction:column;gap:10px}
+.rt-head{text-align:center;font-size:26px;font-weight:700;color:#ff00ff;text-shadow:2px 2px #00ffff}
+.rt-marq{background:#ffff00;color:#ff0000;font-size:18px;font-weight:700;padding:4px 8px;white-space:nowrap;overflow:hidden}
+.rt-body{flex:1;display:grid;grid-template-columns:150px 1fr;gap:12px}
+.rt-side{background:#c0c0c0;color:#0000ee;padding:10px;font-size:18px;line-height:1.7;border:3px outset #fff}
+.rt-main{background:#fff;color:#000;padding:14px;font-size:19px;border:3px inset #888}
+.rt-blink{color:#ff0000;font-weight:700;font-size:22px}
+.rt-count{font-family:'Courier New',monospace;background:#000;color:#00ff00;padding:2px 6px;font-size:16px}
