@@ -2,6 +2,7 @@
 //   npm run render                    # every composition (52 carousels + tours + meme) — slow
 //   npm run render -- tt-13 tour      # only ids containing any of the given words
 //   npm run render -- --list          # list composition ids
+//   npm run render -- --skip-existing # don't re-render ids that already have an mp4
 import { bundle } from '@remotion/bundler';
 import { getCompositions, renderMedia } from '@remotion/renderer';
 import { existsSync, mkdirSync } from 'node:fs';
@@ -13,6 +14,7 @@ mkdirSync(outDir, { recursive: true });
 
 const args = process.argv.slice(2).filter((a) => a !== '--only');
 const list = args.includes('--list');
+const skipExisting = args.includes('--skip-existing');
 const filters = args.filter((a) => !a.startsWith('--'));
 
 const shell = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell';
@@ -28,6 +30,7 @@ if (list) {
 }
 for (const c of chosen) {
   const out = join(outDir, `${c.id}.mp4`);
+  if (skipExisting && existsSync(out)) continue;
   const t0 = Date.now();
   await renderMedia({
     serveUrl,
