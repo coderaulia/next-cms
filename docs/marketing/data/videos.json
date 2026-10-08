@@ -1,0 +1,302 @@
+[
+ {
+  "slug": "hris-probation-tanpa-drama",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Vanaila HRIS",
+    "title": "Keputusan probation tanpa <i>drama</i> ⚖️",
+    "sub": "Dari skor KPI ke keputusan — 3 langkah"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Tetapkan ambang batas",
+    "body": "Atur PIP threshold & nilai minimum lulus sekali — berlaku sama untuk semua karyawan.",
+    "fix": "Aturan konsisten, bukan per mood",
+    "fixLabel": "LANGKAH 1"
+   },
+   {
+    "type": "annot",
+    "kicker": "Langkah 2",
+    "title": "Draft probation <i>otomatis</i>",
+    "img": "../../../public/portfolio/hris/probation-pip.jpeg",
+    "label": "Vanaila HRIS · Probation & PIP",
+    "boxes": [
+     [
+      14,
+      39,
+      25,
+      8
+     ],
+     [
+      45,
+      39,
+      15,
+      8
+     ]
+    ],
+    "notes": [
+     "Ambang PIP & nilai minimum lulus",
+     "Draft dibuat dari skor KPI"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Langkah 3",
+    "title": "Putuskan pakai <i>data</i>",
+    "img": "../../../public/portfolio/hris/probation-pip.jpeg",
+    "label": "Vanaila HRIS · Probation & PIP",
+    "boxes": [
+     [
+      28,
+      68,
+      16,
+      12
+     ]
+    ],
+    "notes": [
+     "Skor akhir & keputusan tercatat per karyawan"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Probation yang <i>adil</i> dimulai dari data.",
+    "sub": "Request demo Vanaila HRIS — link di profil.",
+    "handle": "Follow untuk tips HR"
+   }
+  ]
+ },
+ {
+  "slug": "hris-siapa-belum-isi-kpi",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk manajer & HR",
+    "title": "Siapa di timmu yang belum isi <i>KPI</i> bulan ini? 🤔",
+    "sub": "Biasanya baru ketahuan pas akhir bulan"
+   },
+   {
+    "type": "annot",
+    "kicker": "Division Insights",
+    "title": "Satu klik per <i>divisi</i>",
+    "img": "../../../public/portfolio/hris/kpi-division.jpeg",
+    "label": "Vanaila HRIS · Division Insights",
+    "boxes": [
+     [
+      3,
+      12,
+      19,
+      17
+     ],
+     [
+      58,
+      12,
+      37,
+      19
+     ]
+    ],
+    "notes": [
+     "Jumlah karyawan tanpa record KPI",
+     "Tren capaian 6 bulan"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Lalu",
+    "title": "Langsung tahu <i>siapa</i>",
+    "img": "../../../public/portfolio/hris/kpi-division.jpeg",
+    "label": "Vanaila HRIS · Division Insights",
+    "boxes": [
+     [
+      3,
+      58,
+      93,
+      30
+     ]
+    ],
+    "notes": [
+     "Daftar karyawan yang belum submit periode ini"
+    ]
+   },
+   {
+    "type": "annot",
+    "kicker": "Terakhir",
+    "title": "Export untuk <i>meeting</i>",
+    "img": "../../../public/portfolio/hris/kpi-division.jpeg",
+    "label": "Vanaila HRIS · Division Insights",
+    "boxes": [
+     [
+      70,
+      90,
+      27,
+      6
+     ]
+    ],
+    "notes": [
+     "Excel & PDF per divisi"
+    ]
+   },
+   {
+    "type": "cta",
+    "title": "Stop kejar-kejaran <i>spreadsheet</i>.",
+    "sub": "Request demo Vanaila HRIS — link di profil. Tag manajer yang relate 👇",
+    "handle": "Follow untuk tips HR & manajemen"
+   }
+  ]
+ },
+ {
+  "slug": "hris-tna-berbasis-bukti",
+  "theme": "photo",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "HR 101 × HRIS",
+    "title": "TNA berbasis <i>bukti</i>, bukan feeling",
+    "sub": "Menilai kompetensi yang bisa dipertanggungjawabkan"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Kompetensi per posisi",
+    "body": "Backend engineer dinilai API design, sales dinilai negosiasi. Rubrik mengikuti jabatan.",
+    "fix": "Bukan satu form untuk semua",
+    "fixLabel": "PRINSIP"
+   },
+   {
+    "type": "annot",
+    "kicker": "2",
+    "title": "Skor + <i>bukti</i> di setiap baris",
+    "img": "../../../public/portfolio/hris/add-assessment.jpeg",
+    "label": "Vanaila HRIS · Competency Assessment",
+    "boxes": [
+     [
+      4,
+      29,
+      92,
+      7
+     ],
+     [
+      4,
+      44,
+      31,
+      12
+     ],
+     [
+      34,
+      44,
+      61,
+      10
+     ]
+    ],
+    "notes": [
+     "Pilih posisi → rubrik muncul",
+     "Skor 1–10 per kompetensi",
+     "Kolom bukti / contoh nyata"
+    ]
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Jadi rencana training",
+    "body": "Gap kompetensi terlihat jelas, jadi training bisa diprioritaskan — bukan ditebak.",
+    "fix": "Tersimpan di timeline karyawan",
+    "fixLabel": "HASILNYA"
+   },
+   {
+    "type": "cta",
+    "title": "Training tepat sasaran butuh <i>data</i>.",
+    "sub": "Request demo Vanaila HRIS — link di profil.",
+    "handle": "Follow untuk tips HR & L&D"
+   }
+  ]
+ },
+ {
+  "slug": "psikotest-5-jenis-asesmen",
+  "theme": "blue",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Psikotest",
+    "title": "Satu link, <i>5 jenis</i> asesmen 🧠",
+    "sub": "Kandidat nggak perlu bikin akun"
+   },
+   {
+    "type": "check",
+    "title": "Yang bisa kamu <i>kirim</i>:",
+    "items": [
+     "DISC — profil perilaku D, I, S, C",
+     "Tes kognitif berwaktu, soal per halaman",
+     "Big Five — 5 trait kepribadian"
+    ]
+   },
+   {
+    "type": "check",
+    "title": "Plus:",
+    "items": [
+     "Workload / stress untuk program karyawan",
+     "Custom: upload instrumenmu sendiri",
+     "Halaman persetujuan EN ↔ ID sebelum mulai"
+    ]
+   },
+   {
+    "type": "img",
+    "kicker": "Begini tampilannya",
+    "title": "Buat asesmen, <i>bagikan</i> link",
+    "img": "../../../public/psikotest/new-assessment.png",
+    "label": "Psikotest · New assessment",
+    "ask": "Skor & laporan menyusul otomatis"
+   },
+   {
+    "type": "cta",
+    "title": "Rekrutmen lebih <i>rapi</i>, laporan lebih konsisten.",
+    "sub": "Request demo Psikotest — link di profil.",
+    "handle": "Follow untuk tips rekrutmen"
+   }
+  ]
+ },
+ {
+  "slug": "psikotest-live-quiz",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Untuk training & induction",
+    "title": "Training karyawan bikin <i>ngantuk</i>? 😴",
+    "sub": "Coba live quiz ala game show"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Gabung pakai kode ruangan",
+    "body": "Peserta masuk dari HP dengan room code. Avatar dibuat otomatis.",
+    "fix": "Tanpa install, tanpa akun",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Leaderboard real-time",
+    "body": "Skor naik-turun langsung di layar. Bisa main per tim dengan leaderboard bersama.",
+    "fix": "Mode tim untuk sesi kelompok",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Timer & soal diacak",
+    "body": "Timer per soal dan urutan soal acak per peserta — cocok juga untuk sertifikasi.",
+    "fix": "Bukan cuma asesmen async",
+    "fixLabel": "FITUR"
+   },
+   {
+    "type": "cta",
+    "title": "Bikin sesi training-mu <i>hidup</i>.",
+    "sub": "Live quiz ada di Psikotest — demo lewat link di profil.",
+    "handle": "Follow untuk ide training seru"
+   }
+  ]
+ }
+]

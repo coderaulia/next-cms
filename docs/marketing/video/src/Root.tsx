@@ -2,6 +2,7 @@ import './fonts.css';
 import React, { useEffect, useState } from 'react';
 import { AbsoluteFill, Composition, continueRender, delayRender, Img, interpolate, Sequence, staticFile, useCurrentFrame } from 'remotion';
 import tiktok from '../../data/tiktok.json';
+import videoOnly from '../../data/videos.json';
 import { Carousel, Post, postDuration } from './Carousel';
 import { ScreenTour, tourDuration } from './ScreenTour';
 import { FPS, H, W } from './theme';
@@ -34,11 +35,13 @@ const KenBurns: React.FC<{ src: string; last: boolean }> = ({ src, last }) => {
 };
 
 const posts = (tiktok as Post[]).map((p, i) => ({ ...p, id: `tt-${String(i + 1).padStart(2, '0')}-${p.slug}` }));
+// Video-only posts (no PNG version): data/videos.json
+const videos = (videoOnly as Post[]).map((p, i) => ({ ...p, id: `vid-${String(i + 1).padStart(2, '0')}-${p.slug}` }));
 const meme = [1, 2, 3, 4, 5].map((n) => `meme-01-in-this-picture-s${n}.png`);
 
 export const RemotionRoot: React.FC = () => (
   <>
-    {posts.map((p) => (
+    {[...posts, ...videos].map((p) => (
       <Composition
         key={p.id}
         id={p.id}

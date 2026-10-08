@@ -1659,6 +1659,135 @@ POV: you're a Linux user who still collects music files 💿 MuzikPlayer: media 
 
 ---
 
+# Video-only posts: HRIS & Psikotest
+
+These 5 exist **only as videos** (no PNG carousel). Source: `data/videos.json` → Remotion compositions `vid-01…vid-05`. They cover features not used in any picture post: Probation & PIP, Division Insights, Competency Assessment with evidence, Psikotest assessment types, and Psikotest live quiz. All screens show demo data.
+
+## vid-01-hris-probation-tanpa-drama: Keputusan probation tanpa drama ⚖️
+
+**Format:** Video, ~17–19s, `output/video/vid-01-hris-probation-tanpa-drama.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Keputusan Probation Tanpa Drama: dari Skor KPI ke Keputusan ⚖️`  
+**Title (EN):** `Probation Decisions Without Drama: From KPI Scores to a Decision ⚖️`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Keputusan probation tanpa drama ⚖️ Tetapkan ambang batas, draft dibuat otomatis dari skor KPI, lalu putuskan pakai data. Begini alurnya di Vanaila HRIS.
+
+#hrd #probation #hrindonesia #manajemenkinerja #vanailahris
+```
+
+**Caption (EN, optional)**
+```
+Probation decisions without drama ⚖️ Set the threshold, auto-generate drafts from KPI scores, decide with data. Here's the flow in Vanaila HRIS.
+
+#hr #probation #performancemanagement #hrtech
+```
+
+**Pinned comment:** `Ambang PIP & nilai lulus bisa diatur sesuai kebijakan perusahaanmu 🙌 Demo lewat link di profil`
+
+---
+
+## vid-02-hris-siapa-belum-isi-kpi: Siapa yang belum isi KPI bulan ini? 🤔
+
+**Format:** Video, ~17–19s, `output/video/vid-02-hris-siapa-belum-isi-kpi.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Siapa di Timmu yang Belum Isi KPI Bulan Ini? 🤔`  
+**Title (EN):** `Who on Your Team Hasn't Filled In Their KPIs This Month? 🤔`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Siapa di timmu yang belum isi KPI bulan ini? 🤔 Division Insights di Vanaila HRIS: jumlah karyawan tanpa record, tren 6 bulan, daftar siapa yang belum submit, export Excel & PDF. Tag manajer yang relate!
+
+#kpi #manajer #hrd #duniakerja #vanailahris
+```
+
+**Caption (EN, optional)**
+```
+Who on your team hasn't filled in their KPIs this month? 🤔 Division Insights in Vanaila HRIS: missing records, a 6-month trend, who hasn't submitted, Excel & PDF export.
+
+#kpi #management #hr #hrtech
+```
+
+**Pinned comment:** `Akhir bulan nggak perlu kejar-kejaran spreadsheet lagi 😅 Demo lewat link di profil`
+
+---
+
+## vid-03-hris-tna-berbasis-bukti: TNA berbasis bukti, bukan feeling
+
+**Format:** Video, ~17–19s, `output/video/vid-03-hris-tna-berbasis-bukti.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `TNA Berbasis Bukti, Bukan Feeling: Cara Menilai Kompetensi`  
+**Title (EN):** `Evidence-Based TNA, Not Gut Feeling: How to Assess Competencies`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+TNA berbasis bukti, bukan feeling 📋 Kompetensi per posisi, skor + bukti nyata di setiap baris, lalu jadi rencana training yang tepat sasaran. Simpan untuk tim HR & L&D!
+
+#tna #trainingneedanalysis #hrd #learninganddevelopment #vanailahris
+```
+
+**Caption (EN, optional)**
+```
+Evidence-based TNA, not gut feeling 📋 Competencies per position, a score + real evidence on every line, then a targeted training plan.
+
+#tna #learninganddevelopment #hr #hrtech
+```
+
+**Pinned comment:** `Tips: tulis contoh perilaku nyata di kolom bukti, bukan cuma "baik" atau "cukup" ✍️`
+
+---
+
+## vid-04-psikotest-5-jenis-asesmen: Satu link, 5 jenis asesmen 🧠
+
+**Format:** Video, ~17–19s, `output/video/vid-04-psikotest-5-jenis-asesmen.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Satu Link, 5 Jenis Asesmen: DISC, Kognitif, Big Five & Lainnya 🧠`  
+**Title (EN):** `One Link, 5 Assessment Types: DISC, Cognitive, Big Five & More 🧠`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Satu link, 5 jenis asesmen 🧠 DISC, tes kognitif berwaktu, Big Five, workload/stress, atau instrumen custom-mu sendiri. Kandidat nggak perlu bikin akun. Request demo Psikotest lewat link di profil!
+
+#psikotes #rekrutmen #disc #bigfive #psikotest
+```
+
+**Caption (EN, optional)**
+```
+One link, 5 assessment types 🧠 DISC, timed cognitive tests, Big Five, workload/stress, or your own custom instrument. No candidate account needed.
+
+#psychometrictest #recruiting #disc #bigfive
+```
+
+**Pinned comment:** `Ada halaman persetujuan EN ↔ ID sebelum tes dimulai, jadi kandidat tahu tujuan & penggunaan hasilnya 🔒`
+
+---
+
+## vid-05-psikotest-live-quiz: Training bikin ngantuk? Coba live quiz 😴
+
+**Format:** Video, ~17–19s, `output/video/vid-05-psikotest-live-quiz.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Training Karyawan Bikin Ngantuk? Coba Live Quiz ala Game Show 😴`  
+**Title (EN):** `Boring Employee Training? Try a Game-Show Live Quiz 😴`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Training karyawan bikin ngantuk? 😴 Coba live quiz ala game show: gabung pakai kode ruangan, leaderboard real-time, mode tim, timer & soal diacak. Ada di Psikotest!
+
+#training #onboarding #hrd #gamification #psikotest
+```
+
+**Caption (EN, optional)**
+```
+Boring employee training? 😴 Try a game-show live quiz: join with a room code, real-time leaderboard, team mode, timers & shuffled questions. Built into Psikotest!
+
+#training #onboarding #gamification #hr
+```
+
+**Pinned comment:** `Cocok untuk induction karyawan baru, refresh SOP, atau sertifikasi internal 🏆`
+
+---
+
 ## Posting checklist
 - [ ] Posted from the Business Account, with a sound from the Commercial Music Library
 - [ ] Slides uploaded in order (s1 → s5, max 5)
