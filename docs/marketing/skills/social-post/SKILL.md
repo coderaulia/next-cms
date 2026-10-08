@@ -11,3 +11,4 @@ description: Create or update Vanaila social media creatives (HTML template → 
 4. Render: `npm run render` (all) or `npm run render:one -- <name>`. Output goes to `output/<name>.png` at 1080×1350.
 5. Open the PNG and check for overflow/clipping before shipping.
 6. Add IG/FB + LinkedIn captions to `captions.md`.
+7. Videos (`video/`): **HARD RULE — video top bar:** the top of every video shows the **Vanaila logo only**. No story progress bars, no slide counter ("3/5"), no labels like "Screen tour". Enforced in code: `Brand` in `video/src/theme.tsx` takes no counter prop.

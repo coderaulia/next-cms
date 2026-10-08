@@ -79,6 +79,7 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 - The hook goes in the **first 1–3 seconds**, or on slide 1 for carousels. Slide 1 must make people stop and swipe.
 - Use one idea per slide, few words, and large text.
 - For video: aim for 15–45 seconds, use auto-captions or on-screen text (many people watch with the sound off), and keep a fast pace.
+- **HARD RULE — video top bar:** the top of every video shows the **Vanaila logo only**. No story progress bars, no slide counter ("3/5"), no labels like "Screen tour". Enforced in code: `Brand` in `video/src/theme.tsx` takes no counter prop.
 
 **Title (Photo Mode)**
 - Photo posts have a separate **title** field (up to 90 characters). Every post below has one in ID and EN.

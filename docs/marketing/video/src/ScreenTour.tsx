@@ -69,7 +69,7 @@ export const ScreenTour: React.FC<{ tour: Tour }> = ({ tour }) => {
     <AbsoluteFill style={{ background: 'linear-gradient(170deg,#0e1a30 0%,#0b1426 60%,#132a57 100%)', fontFamily: 'Inter Tight, sans-serif', color: '#fff' }}>
       <Glow color={C.accent} opacity={0.32} />
       <AbsoluteFill style={{ padding: '170px 150px 440px 72px' }}>
-        <Brand dark count="Screen tour" muted={t.muted} />
+        <Brand dark />
       </AbsoluteFill>
 
       <Sequence durationInFrames={INTRO}>

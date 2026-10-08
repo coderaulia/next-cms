@@ -72,18 +72,15 @@ export const Rich: React.FC<{ html: string; em: string }> = ({ html, em }) => (
   />
 );
 
-export const Brand: React.FC<{ dark: boolean; count?: string; muted: string }> = ({ dark, count, muted }) => (
-  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-      <Img
-        src={staticFile('assets/brand/mark.png')}
-        style={{ width: 56, height: 56, borderRadius: 13, boxShadow: dark ? '0 0 0 2px rgba(255,255,255,.25)' : 'none' }}
-      />
-      <Img src={staticFile(dark ? 'assets/brand/wordmark-white.png' : 'assets/brand/wordmark.png')} style={{ height: 31 }} />
-    </div>
-    {count ? (
-      <div style={{ fontFamily: 'JetBrains Mono', fontSize: 20, letterSpacing: '.08em', color: muted }}>{count}</div>
-    ) : null}
+// HARD RULE: the top of every video shows the Vanaila logo only.
+// No progress bars, slide counters or labels — do not add props for them.
+export const Brand: React.FC<{ dark: boolean }> = ({ dark }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <Img
+      src={staticFile('assets/brand/mark.png')}
+      style={{ width: 56, height: 56, borderRadius: 13, boxShadow: dark ? '0 0 0 2px rgba(255,255,255,.25)' : 'none' }}
+    />
+    <Img src={staticFile(dark ? 'assets/brand/wordmark-white.png' : 'assets/brand/wordmark.png')} style={{ height: 31 }} />
   </div>
 );
 

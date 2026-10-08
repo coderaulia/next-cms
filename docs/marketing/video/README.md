@@ -47,6 +47,10 @@ SITE_URL=http://localhost:3123 npm run record # different port or host
 - **How a recording runs:** the recorder visits each page once to warm up Next.js dev compilation, records a smooth scroll, and forces scroll-reveal sections visible (they stay hidden in headless capture).
 - **Blocked CDNs:** the static HTML templates in `public/templates-static` load Tailwind and images from CDNs. Where those are blocked, record the Next.js pages instead (the default targets).
 
+## Hard rule: logo only at the top
+
+the top of every video shows the **Vanaila logo only**. No story progress bars, no slide counter ("3/5"), no labels like "Screen tour". Enforced in code: `Brand` in `video/src/theme.tsx` takes no counter prop. Don't add progress bars or counters back to `Carousel.tsx`, `ScreenTour.tsx` or any new composition.
+
 ## How the animation works
 
 - **Carousel videos.** `src/Carousel.tsx` plays the slides in sequence. Each slide type in `src/Slides.tsx` (hook, point, vs, img, collage, split, guess, chat, annot, check, shot, cta) has its own entrance motion:
@@ -57,7 +61,7 @@ SITE_URL=http://localhost:3123 npm run record # different port or host
   - chat bubbles arrive one by one
   - the photo theme uses a blurred image backdrop
 
-  Story-style progress bars sit at the top, and slide length depends on how much there is to read (2.7–4.3 s).
+  Slide length depends on how much there is to read (2.7–4.3 s).
 - **Screen tours.** `src/ScreenTour.tsx` runs a hook card, then the recording inside a phone frame with timed caption callouts, then the CTA.
 - **Safe zones.** Every layout keeps the same TikTok margins as the PNGs: top 160px, bottom 440px, right 140px.
 - **Editing.** Change a post's text in `../data/tiktok.json`, then re-render it. The PNG and video versions stay in sync.
