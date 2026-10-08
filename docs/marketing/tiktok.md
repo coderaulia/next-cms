@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 52 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 55 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -56,6 +56,9 @@ There are 52 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 50 | MuzikPlayer: hi-fi Linux player | `output/tt-49-muzikplayer-hifi-s1…s5.png` | Product soft-sell |
 | 51 | MuzikPlayer: bit-perfect itu apa? | `output/tt-50-muzikplayer-bit-perfect-s1…s5.png` | Product soft-sell |
 | 52 | MuzikPlayer: POV pengguna Linux | `output/tt-51-muzikplayer-pov-linux-s1…s5.png` | Product soft-sell |
+| 53 | Website lambat? 3 penyebab | `output/tt-52-website-lambat-penyebab-s1…s5.png` | Educational (Tech 101) |
+| 54 | Email bisnis masuk spam? SPF, DKIM, DMARC | `output/tt-53-spf-dkim-dmarc-bahasa-warung-s1…s5.png` | Educational (Tech 101) |
+| 55 | Rumus ROI iklan 3 langkah | `output/tt-54-rumus-roi-iklan-s1…s5.png` | Educational (Bisnis 101) |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -1811,6 +1814,81 @@ Before a psych test starts, candidates should know: what it's for, whether they'
 ```
 
 **Pinned comment:** `Nama perusahaan & kontak di screenshot kami samarkan. Di akunmu, halaman ini menampilkan nama perusahaanmu sendiri 🔒`
+
+---
+
+## Post 52: Website lambat? 3 penyebab yang sering diabaikan
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Website Lambat? Ini 3 Penyebab yang Sering Diabaikan 🐢`  
+**Title (EN):** `Slow Website? 3 Causes People Overlook 🐢`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Website lambat? Biasanya bukan karena internet-mu 🐢 Foto belum dikompres, hosting asal murah, dan plugin yang menumpuk. Cek skor kecepatanmu di PageSpeed Insights. Skormu berapa?
+
+#websitelambat #tipswebsite #seo #tipsbisnis #umkm
+```
+
+**Caption (EN, optional)**
+```
+Slow website? It's usually not your internet 🐢 Uncompressed images, cheap hosting and piled-up plugins. Check your speed score on PageSpeed Insights. What score did you get?
+
+#website #webperformance #seo #smallbusiness
+```
+
+**Pinned comment:** `Foto yang dikompres bisa jadi perbaikan tercepat. Coba sendiri, lalu bandingkan skornya 📸`
+
+---
+
+## Post 53: Email bisnis masuk spam? SPF, DKIM, DMARC bahasa warung
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Email Bisnis Masuk Spam? Ini Arti SPF, DKIM, DMARC 📮`  
+**Title (EN):** `Business Email Going to Spam? What SPF, DKIM, DMARC Mean 📮`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Email bisnis masuk spam? Bukan nasib, tapi setting 📮 SPF, DKIM, dan DMARC itu tiga 'surat izin' untuk email domainmu. Sudah punya yang mana? Komen SUDAH atau BELUM.
+
+#emailbisnis #tipsbisnis #domain #keamananonline #umkm
+```
+
+**Caption (EN, optional)**
+```
+Business email in spam? It's the settings, not fate 📮 SPF, DKIM and DMARC are three 'permission slips' for your domain email. Which ones do you have? Comment YES or NO.
+
+#email #domain #emailsecurity #smallbusiness
+```
+
+**Pinned comment:** `Cek email bisnismu di MXToolbox (gratis). Hasilnya bisa mengejutkan 🔍`
+
+---
+
+## Post 54: Iklan Rp1 juta untung berapa? Rumus ROI 3 langkah
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Rumus ROI Iklan: Hitung Untung Iklanmu dalam 3 Langkah 📊`  
+**Title (EN):** `Ad ROI Formula: Calculate Your Ad Profit in 3 Steps 📊`  
+**Content disclosure:** OFF (educational, no product promotion)
+
+**Caption (ID)**
+```
+Iklan Rp1 juta, untung berapa? 📊 Hitung total biaya, lalu untung (bukan omzet), lalu ROI = (untung − biaya) ÷ biaya. Simpan rumusnya! Iklanmu sudah untung belum?
+
+#roi #tipsbisnis #marketingumkm #iklanonline #bisnis
+```
+
+**Caption (EN, optional)**
+```
+How much profit does your Rp1 million ad make? 📊 Total cost, then profit (not revenue), then ROI = (profit − cost) ÷ cost. Save this formula. Is your ad profitable?
+
+#roi #marketing #smallbusiness #digitalmarketing #business
+```
+
+**Pinned comment:** `Angka aslimu lebih berguna dari contoh. Komen ROI-mu, nanti kita bahas bareng 💬`
 
 ---
 

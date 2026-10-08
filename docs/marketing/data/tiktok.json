@@ -2291,5 +2291,131 @@
     "handle": "Follow untuk tips Linux & audio"
    }
   ]
- }
+ },
+  {
+    "slug": "website-lambat-penyebab",
+    "theme": "light",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Tech 101",
+        "title": "Website lambat? Biasanya <i>bukan</i> karena internet-mu 🐢",
+        "sub": "3 penyebab yang sering diabaikan"
+      },
+      {
+        "type": "point",
+        "n": "🖼️",
+        "title": "Foto belum dikompres",
+        "body": "Foto 5 MB dipasang langsung di halaman. Browser harus mengunduh semuanya dulu sebelum halaman tampil.",
+        "fix": "Kompres dan pakai format WebP",
+        "fixLabel": "SOLUSI"
+      },
+      {
+        "type": "point",
+        "n": "🐌",
+        "title": "Hosting asal murah",
+        "body": "Server jauh dan kapasitasnya kecil. Saat pengunjung ramai, setiap halaman ikut menunggu.",
+        "fix": "Pilih hosting yang sesuai trafik & lokasi target",
+        "fixLabel": "SOLUSI"
+      },
+      {
+        "type": "point",
+        "n": "🧩",
+        "title": "Plugin & script menumpuk",
+        "body": "Setiap plugin menambah kode yang harus dimuat browser, walaupun fiturnya jarang dipakai.",
+        "fix": "Hapus yang tidak dipakai, muat script seperlunya",
+        "fixLabel": "SOLUSI"
+      },
+      {
+        "type": "cta",
+        "title": "Website-mu sudah cepat belum?",
+        "sub": "Cek gratis di PageSpeed Insights. Komen skor mobile-mu di bawah 👇",
+        "handle": "Follow untuk tips website & bisnis"
+      }
+    ]
+  },
+  {
+    "slug": "spf-dkim-dmarc-bahasa-warung",
+    "theme": "light",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Tech 101",
+        "title": "Email bisnis masuk spam? Bukan nasib, tapi <i>setting</i> 📮",
+        "sub": "SPF, DKIM, DMARC dijelasin pakai bahasa warung"
+      },
+      {
+        "type": "point",
+        "n": "SPF",
+        "title": "= Daftar pengirim resmi",
+        "body": "Kamu memberi tahu penerima: server ini boleh mengirim email atas nama domain kami.",
+        "fix": "Mencegah orang memalsukan pengirim atas nama domainmu",
+        "fixLabel": "FUNGSI"
+      },
+      {
+        "type": "point",
+        "n": "DKIM",
+        "title": "= Segel tanda tangan",
+        "body": "Setiap email diberi tanda tangan digital. Kalau isinya diubah di jalan, tanda tangannya ketahuan rusak.",
+        "fix": "Email yang utuh lebih dipercaya penerima",
+        "fixLabel": "FUNGSI"
+      },
+      {
+        "type": "point",
+        "n": "DMARC",
+        "title": "= Aturan kalau gagal",
+        "body": "Kamu menentukan: tandai sebagai spam, tolak, atau cuma pantau. Mulai dari mode pantau dulu.",
+        "fix": "Laporan hasilnya bisa dilihat untuk memantau penyalahgunaan",
+        "fixLabel": "FUNGSI"
+      },
+      {
+        "type": "cta",
+        "title": "Email bisnismu sudah pakai SPF?",
+        "sub": "Cek gratis di MXToolbox. Komen SUDAH atau BELUM di bawah 👇",
+        "handle": "Follow untuk tips email & domain bisnis"
+      }
+    ]
+  },
+  {
+    "slug": "rumus-roi-iklan",
+    "theme": "light",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Bisnis 101",
+        "title": "Iklan Rp1 juta, untung berapa? Ini <i>rumusnya</i> 📊",
+        "sub": "ROI dalam 3 langkah, tanpa Excel yang rumit"
+      },
+      {
+        "type": "point",
+        "n": "1",
+        "title": "Hitung total biaya",
+        "body": "Biaya iklan + biaya produksi konten + komisi. Jangan cuma lihat biaya iklan saja.",
+        "fix": "Contoh: iklan Rp1 jt + konten Rp500 rb = Rp1,5 jt",
+        "fixLabel": "CONTOH"
+      },
+      {
+        "type": "point",
+        "n": "2",
+        "title": "Hitung untung, bukan omzet",
+        "body": "Ambil penjualan yang berasal dari iklan, lalu kalikan margin keuntunganmu.",
+        "fix": "Contoh: omzet Rp4 jt × margin 40% = untung Rp1,6 jt",
+        "fixLabel": "CONTOH"
+      },
+      {
+        "type": "point",
+        "n": "3",
+        "title": "ROI = (untung − biaya) ÷ biaya",
+        "body": "Hasilnya dalam persen. Di atas 0% berarti iklanmu menguntungkan setelah semua biaya.",
+        "fix": "Contoh: (1,6 jt − 1,5 jt) ÷ 1,5 jt ≈ 7%",
+        "fixLabel": "HASIL"
+      },
+      {
+        "type": "cta",
+        "title": "Iklanmu sudah untung belum?",
+        "sub": "Hitung pakai angka aslimu, lalu komen berapa ROI-mu 👇",
+        "handle": "Follow untuk bisnis tanpa ribet"
+      }
+    ]
+  }
 ]
