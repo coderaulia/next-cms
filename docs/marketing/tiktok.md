@@ -1820,7 +1820,7 @@ Before a psych test starts, candidates should know: what it's for, whether they'
 
 ---
 
-## Post 52: Website lambat? 3 penyebab yang sering diabaikan
+## Post 53: Website lambat? 3 penyebab yang sering diabaikan
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
 **Title (ID):** `Website Lambat? Ini 3 Penyebab yang Sering Diabaikan 🐢`  
@@ -1845,7 +1845,7 @@ Slow website? It's usually not your internet 🐢 Uncompressed images, cheap hos
 
 ---
 
-## Post 53: Email bisnis masuk spam? SPF, DKIM, DMARC bahasa warung
+## Post 54: Email bisnis masuk spam? SPF, DKIM, DMARC bahasa warung
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
 **Title (ID):** `Email Bisnis Masuk Spam? Ini Arti SPF, DKIM, DMARC 📮`  
@@ -1870,7 +1870,7 @@ Business email in spam? It's the settings, not fate 📮 SPF, DKIM and DMARC are
 
 ---
 
-## Post 54: Iklan Rp1 juta untung berapa? Rumus ROI 3 langkah
+## Post 55: Iklan Rp1 juta untung berapa? Rumus ROI 3 langkah
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
 **Title (ID):** `Rumus ROI Iklan: Hitung Untung Iklanmu dalam 3 Langkah 📊`  
@@ -1895,7 +1895,7 @@ How much profit does your Rp1 million ad make? 📊 Total cost, then profit (not
 
 ---
 
-## Post 55: Jualan di marketplace itu gratis? Hitung dulu
+## Post 56: Jualan di marketplace itu gratis? Hitung dulu
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
 **Title (ID):** `Jualan di Marketplace Itu Gratis? Hitung Dulu 🧮`  
@@ -1920,7 +1920,7 @@ Is selling on marketplaces really free? 🧮 Commissions, ad spend to reach the 
 
 ---
 
-## Post 56: Stok di marketplace habis, tapi di WhatsApp masih dijual?
+## Post 57: Stok di marketplace habis, tapi di WhatsApp masih dijual?
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
 **Title (ID):** `Stok Habis di Marketplace tapi Masih Dijual di WhatsApp? 😵`  
@@ -1945,7 +1945,7 @@ Out of stock on the marketplace but still selling on WhatsApp? 😵 The most com
 
 ---
 
-## Post 57: Website Startup, Professional, atau Enterprise? Pilih yang mana
+## Post 58: Website Startup, Professional, atau Enterprise? Pilih yang mana
 
 **Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
 **Title (ID):** `Website Startup, Professional, atau Enterprise? Pilih yang Mana 🤔`  
