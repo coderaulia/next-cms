@@ -1,6 +1,6 @@
 # TikTok Content
 
-There are 54 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
+There are 57 posts. Each one is built as a **Photo Mode carousel** (**max 5 slides**, 1080×1920, 9:16) and also comes with a **video script**, so it can be filmed as a short video instead.
 
 | # | Topic | Slides | Goal |
 | --- | --- | --- | --- |
@@ -59,6 +59,9 @@ There are 54 posts. Each one is built as a **Photo Mode carousel** (**max 5 slid
 | 53 | Website lambat? 3 penyebab | `output/tt-52-website-lambat-penyebab-s1…s5.png` | Educational (Tech 101) |
 | 54 | Email bisnis masuk spam? SPF, DKIM, DMARC | `output/tt-53-spf-dkim-dmarc-bahasa-warung-s1…s5.png` | Educational (Tech 101) |
 | 55 | Rumus ROI iklan 3 langkah | `output/tt-54-rumus-roi-iklan-s1…s5.png` | Educational (Bisnis 101) |
+| 56 | Jualan di marketplace itu gratis? | `output/tt-55-marketplace-vs-toko-sendiri-s1…s5.png` | Soft-sell (Secure Online Shops) |
+| 57 | Stok habis di marketplace tapi masih dijual? | `output/tt-56-stok-sinkron-whatsapp-s1…s5.png` | Soft-sell (Secure Online Shops) |
+| 58 | Website Startup, Professional, atau Enterprise? | `output/tt-57-pilih-paket-website-s1…s5.png` | Soft-sell (Website Development) |
 
 To edit, change `data/tiktok.json` and run `npm run render:tiktok`.
 
@@ -1889,6 +1892,81 @@ How much profit does your Rp1 million ad make? 📊 Total cost, then profit (not
 ```
 
 **Pinned comment:** `Angka aslimu lebih berguna dari contoh. Komen ROI-mu, nanti kita bahas bareng 💬`
+
+---
+
+## Post 55: Jualan di marketplace itu gratis? Hitung dulu
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Jualan di Marketplace Itu Gratis? Hitung Dulu 🧮`  
+**Title (EN):** `Jualan di Marketplace Itu Gratis? Coba Hitung Dulu 🧮`  
+**Content disclosure:** ON → *Your brand* (links to a Vanaila service)
+
+**Caption (ID)**
+```
+Jualan di marketplace itu gratis? 🧮 Komisi, biaya iklan untuk ketemu pelanggan lagi, dan data pelanggan yang tetap di platform. Sudah kamu hitung margin-mu?
+
+#bisnisonline #tokoonline #umkm #tipsbisnis #ecommerce
+```
+
+**Caption (EN, optional)**
+```
+Is selling on marketplaces really free? 🧮 Commissions, ad spend to reach the same customers again, and customer data that stays on the platform. Have you calculated your margin?
+
+#ecommerce #smallbusiness #onlinestore #business
+```
+
+**Pinned comment:** `Komen HITUNG kalau mau contoh perhitungannya 💬`
+
+---
+
+## Post 56: Stok di marketplace habis, tapi di WhatsApp masih dijual?
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Stok Habis di Marketplace tapi Masih Dijual di WhatsApp? 😵`  
+**Title (EN):** `Out of Stock on Marketplace but Still Sold on WhatsApp? 😵`  
+**Content disclosure:** ON → *Your brand* (links to a Vanaila service)
+
+**Caption (ID)**
+```
+Stok habis di marketplace tapi masih dijual di WhatsApp? 😵 Ini masalah paling sering di toko UMKM: stok dicatat manual di tiap kanal, akhirnya pesanan dobel. Pernah ngalamin?
+
+#tokoonline #stokbarang #umkm #tipsjualan #bisnisonline
+```
+
+**Caption (EN, optional)**
+```
+Out of stock on the marketplace but still selling on WhatsApp? 😵 The most common problem for small shops: stock tracked by hand per channel, which leads to double orders. Ever had this happen?
+
+#onlinestore #inventory #smallbusiness #ecommerce
+```
+
+**Pinned comment:** `Komen MANUAL kalau stok tokomu masih dicatat di Excel 📋`
+
+---
+
+## Post 57: Website Startup, Professional, atau Enterprise? Pilih yang mana
+
+**Format:** Photo Mode, 5 slides · **Sound:** calm explainer track from the CML  
+**Title (ID):** `Website Startup, Professional, atau Enterprise? Pilih yang Mana 🤔`  
+**Title (EN):** `Startup, Professional or Enterprise Website? Which One? 🤔`  
+**Content disclosure:** ON → *Your brand* (links to a Vanaila service)
+
+**Caption (ID)**
+```
+Website Startup, Professional, atau Enterprise? 🤔 Startup untuk 5 halaman, Professional sampai 12 halaman dengan SEO teknis, Enterprise tanpa batas. Kamu di paket yang mana?
+
+#websitebisnis #jasawebsite #umkm #seo #websiteumkm
+```
+
+**Caption (EN, optional)**
+```
+Startup, Professional or Enterprise website? 🤔 Startup for 5 pages, Professional up to 12 pages with technical SEO, Enterprise unlimited. Which one fits you?
+
+#website #webdevelopment #seo #smallbusiness
+```
+
+**Pinned comment:** `Komen STARTUP, PRO, atau ENTERPRISE untuk dicek kebutuhanmu 💬`
 
 ---
 

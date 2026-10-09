@@ -2417,5 +2417,131 @@
         "handle": "Follow untuk bisnis tanpa ribet"
       }
     ]
+  },
+  {
+    "slug": "marketplace-vs-toko-sendiri",
+    "theme": "light",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Bisnis 101",
+        "title": "Jualan di marketplace itu <i>gratis</i>? Coba hitung dulu 🧮",
+        "sub": "3 biaya yang jarang dihitung pemilik UMKM"
+      },
+      {
+        "type": "point",
+        "n": "💸",
+        "title": "Komisi per transaksi",
+        "body": "Setiap penjualan dipotong komisi dan biaya layanan. Persentasenya bisa berubah sewaktu-waktu.",
+        "fix": "Cek ulang: margin-mu masih untung setelah dipotong?",
+        "fixLabel": "CEK INI"
+      },
+      {
+        "type": "point",
+        "n": "📣",
+        "title": "Beli pelanggan lagi, pakai iklan",
+        "body": "Pelanggan yang beli di marketplace tetap milik platform. Mau ketemu mereka lagi, kamu bayar iklan lagi.",
+        "fix": "Di toko sendiri, pelanggan bisa kamu hubungi lagi tanpa biaya platform",
+        "fixLabel": "BEDANYA"
+      },
+      {
+        "type": "point",
+        "n": "🗂️",
+        "title": "Data pelanggan bukan milikmu",
+        "body": "Nomor, riwayat beli, dan alamat tersimpan di platform, bukan di bisnismu.",
+        "fix": "Dengan toko sendiri, data pelanggan ada di tanganmu",
+        "fixLabel": "BEDANYA"
+      },
+      {
+        "type": "cta",
+        "title": "Margin-mu sudah dihitung belum?",
+        "sub": "Komen HITUNG kalau mau contoh perhitungannya. Info toko sendiri ada di link profil 👇",
+        "handle": "Follow untuk bisnis online tanpa ribet"
+      }
+    ]
+  },
+  {
+    "slug": "stok-sinkron-whatsapp",
+    "theme": "dark",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Masalah umum",
+        "title": "Stok di marketplace habis, tapi di WhatsApp masih <i>dijual</i>? 😵",
+        "sub": "Ini masalah paling sering di toko UMKM"
+      },
+      {
+        "type": "point",
+        "n": "1",
+        "title": "Stok dicatat manual di tiap kanal",
+        "body": "Catatan di Excel, di marketplace, dan di grup WhatsApp tidak pernah sama persis.",
+        "fix": "Satu sumber stok untuk semua kanal",
+        "fixLabel": "SOLUSI"
+      },
+      {
+        "type": "point",
+        "n": "2",
+        "title": "Pesanan dobel",
+        "body": "Dua pembeli pesan barang yang sama di waktu yang hampir bersamaan. Salah satunya terpaksa dibatalkan.",
+        "fix": "Stok berkurang otomatis saat pesanan masuk",
+        "fixLabel": "SOLUSI"
+      },
+      {
+        "type": "point",
+        "n": "3",
+        "title": "Pelanggan kecewa",
+        "body": "Pesanan batal atau telat dikirim membuat pelanggan kapok, dan sulit kembali lagi.",
+        "fix": "Stok yang akurat berarti pesanan yang bisa dipenuhi",
+        "fixLabel": "SOLUSI"
+      },
+      {
+        "type": "cta",
+        "title": "Stok tokomu masih dicatat manual?",
+        "sub": "Komen MANUAL kalau masih pakai Excel. Kami bantu rapikan alurnya, info di link profil 👇",
+        "handle": "Follow untuk tips bisnis online"
+      }
+    ]
+  },
+  {
+    "slug": "pilih-paket-website",
+    "theme": "light",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Pilih paket",
+        "title": "Startup, Professional, atau Enterprise? <i>Pilih</i> yang mana 🤔",
+        "sub": "Panduan singkat untuk memilih paket website"
+      },
+      {
+        "type": "point",
+        "n": "5",
+        "title": "Startup: 5 halaman",
+        "body": "Untuk bisnis yang baru mulai: profil, layanan, dan kontak yang rapi dan cepat di HP.",
+        "fix": "Cocok untuk UMKM yang baru go digital",
+        "fixLabel": "COCOK UNTUK"
+      },
+      {
+        "type": "point",
+        "n": "12",
+        "title": "Professional: sampai 12 halaman",
+        "body": "Ada riset UX/UI, SEO teknis, optimasi konversi, dan integrasi API. Cocok kalau kamu butuh lebih banyak halaman dan leads.",
+        "fix": "Cocok untuk bisnis yang ingin lebih banyak enquiry",
+        "fixLabel": "COCOK UNTUK"
+      },
+      {
+        "type": "point",
+        "n": "∞",
+        "title": "Enterprise: tanpa batas",
+        "body": "Backend custom, keamanan tingkat enterprise, dan dukungan DevOps khusus.",
+        "fix": "Cocok untuk sistem dan tim yang kompleks",
+        "fixLabel": "COCOK UNTUK"
+      },
+      {
+        "type": "cta",
+        "title": "Kamu butuh paket yang mana?",
+        "sub": "Komen STARTUP, PRO, atau ENTERPRISE. Kami cek kebutuhanmu dulu, tanpa biaya 👇",
+        "handle": "Follow untuk tips website bisnis"
+      }
+    ]
   }
 ]
