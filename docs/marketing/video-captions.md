@@ -24,64 +24,64 @@ Captions for every video in `output/video/` (Remotion). Use these when posting e
 | `tt-12-umkm-website-keren` | Website UMKM Bisa Sekeren Brand Besar | Yes |
 | `tt-13-tipe-bos` | Kamu Tipe Bos yang Mana? Excel, WhatsApp, atau Sistem | Yes |
 | `tt-14-unpopular-opinion-app` | Unpopular Opinion: UMKM Belum Butuh Aplikasi Mobile | Yes |
-| `tt-15-website-2010-vs-2026` | Website Bisnis 2010 vs 2026: Glow Up! 📈 | No |
-| `tt-16-prompt-ai-kantoran` | 3 Prompt AI untuk Kerjaan Kantor: Email, Notulen, Excel | No |
-| `tt-17-ai-untuk-hr` | 3 Tugas HR yang Lebih Cepat dengan AI | No |
-| `tt-18-tanpa-vs-dengan-ai` | Kerja Tanpa AI vs Dengan AI 😅 | No |
-| `tt-19-pov-senin-hr` | POV: Senin Pagi HR yang Sudah Pakai Sistem 😌 | No |
-| `tt-20-leads-hilang` | Leads Hilang Bukan Karena Sales-mu Malas | No |
-| `tt-21-100-kandidat-1-hr` | 100 Kandidat, 1 HR, Psikotes Pakai Kertas 😵 | No |
-| `tt-22-tebak-usaha` | Tebak Usahanya dari Websitenya! Jawaban di Slide Terakhir 👀 | No |
-| `tt-23-jangan-bikin-website` | Jangan Bikin Website Kalau… (Kata Tim Pembuat Website) | No |
-| `tt-24-domain-expired` | Domain Bisnis Expired Lalu Dibeli Orang Lain? Cegah dengan 3 Cara Ini | No |
-| `tt-25-umkm-level-berapa` | UMKM Kamu Level Berapa? Cek dari Level 1 Sampai 4 🎮 | No |
-| `tt-26-penawaran-tak-dibalas` | Kenapa Penawaran B2B Kamu Nggak Dibalas? 3 Alasannya | No |
-| `tt-27-pov-owner-liburan` | POV: Owner Bisnis Liburan Tapi HP Nggak Berhenti Bunyi 📱😂 | No |
-| `tt-28-rumus-prompt-ai` | Rumus Prompt AI 4 Bagian: Peran, Tugas, Konteks, Format 📌 | No |
-| `tt-29-prompt-asal-vs-jelas` | Prompt AI Asal vs Prompt Jelas: Bedanya Cuma 1 Kalimat 👀 | No |
-| `tt-30-siap-pakai-ai` | 3 Tanda Bisnismu Sudah Siap Pakai AI (Cek Sebelum Ikut-ikutan) | No |
-| `tt-31-website-kelihatan-mahal` | Kenapa Website Ini Kelihatan Mahal? 3 Rahasia Desain 💎 | No |
-| `tt-32-pilih-vibe-website` | Pilih Vibe Website Usahamu: Mewah, Hangat, atau Natural? 🎨 | No |
-| `tt-33-tur-flowraze` | Tur 30 Detik CRM Flowraze untuk Tim Sales UMKM 👀 | No |
-| `tt-34-istilah-tech-bahasa-warung` | API, CMS, SSL Dijelasin Pakai Bahasa Warung 🍜 | No |
-| `tt-35-backup-3-2-1` | Aturan Backup 3-2-1 Biar File Bisnis Nggak Hilang 😱 | No |
-| `tt-36-keamanan-akun-bisnis` | 3 Kebiasaan Biar Akun Bisnismu Nggak Dibobol 🔐 | No |
-| `tt-37-istilah-tech-part-2` | Cloud, DNS, Cache Dijelasin Pakai Bahasa Warung (Part 2) 🍜 | No |
-| `tt-38-tanda-penipuan-digital` | 3 Tanda Chat atau Email Penipuan ke Bisnismu 🚨 | No |
-| `tt-39-aturan-data-pelanggan` | 3 Aturan Simpan Data Pelanggan Biar Aman 🔒 | No |
-| `tt-40-vanailachat-ai-gratis` | AI Gratis yang Jalan di Laptopmu Sendiri — Tanpa Langganan | No |
-| `tt-41-vanailachat-workspace` | Chat AI-mu Campur Aduk? Pisahkan per Workspace | No |
-| `tt-42-vanailachat-coding-aman` | Ngoding Bareng AI Tapi Tetap Aman: 3 Pengaman di VanailaChat | No |
-| `tt-43-studio-satu-tab` | One Tab, Semua Tool Kerja: Vanaila Studio Gratis di Browser | No |
-| `tt-44-studio-pdf-tanpa-upload` | Convert PDF Tanpa Upload File ke Server Orang | No |
-| `tt-45-studio-cv-ats` | CV-mu Lolos ATS Nggak? Bikin CV ATS-Friendly Gratis | No |
-| `tt-46-lms-akademi-online` | Punya Ilmu? Bikin Akademi Online Sendiri — Vanaila LMS (Q4 2026) | No |
-| `tt-47-lms-training-karyawan` | Training Karyawan Masih Pakai Zoom + Google Form + Excel? | No |
-| `tt-48-lms-jual-kursus` | Jual Kursus Online dengan Pembayaran QRIS — Vanaila LMS | No |
-| `tt-49-muzikplayer-hifi` | MuzikPlayer: Music Player Linux yang Serius Soal Suara 🎧 | No |
-| `tt-50-muzikplayer-bit-perfect` | Bit-Perfect Itu Apa? Penjelasan 30 Detik 🎧 | No |
-| `tt-51-muzikplayer-pov-linux` | POV: Pengguna Linux yang Masih Koleksi File Musik 💿 | No |
+| `tt-15-website-2010-vs-2026` | Website Bisnis 2010 vs 2026: Glow Up! 📈 | Yes |
+| `tt-16-prompt-ai-kantoran` | 3 Prompt AI untuk Kerjaan Kantor: Email, Notulen, Excel | Yes |
+| `tt-17-ai-untuk-hr` | 3 Tugas HR yang Lebih Cepat dengan AI | Yes |
+| `tt-18-tanpa-vs-dengan-ai` | Kerja Tanpa AI vs Dengan AI 😅 | Yes |
+| `tt-19-pov-senin-hr` | POV: Senin Pagi HR yang Sudah Pakai Sistem 😌 | Yes |
+| `tt-20-leads-hilang` | Leads Hilang Bukan Karena Sales-mu Malas | Yes |
+| `tt-21-100-kandidat-1-hr` | 100 Kandidat, 1 HR, Psikotes Pakai Kertas 😵 | Yes |
+| `tt-22-tebak-usaha` | Tebak Usahanya dari Websitenya! Jawaban di Slide Terakhir 👀 | Yes |
+| `tt-23-jangan-bikin-website` | Jangan Bikin Website Kalau… (Kata Tim Pembuat Website) | Yes |
+| `tt-24-domain-expired` | Domain Bisnis Expired Lalu Dibeli Orang Lain? Cegah dengan 3 Cara Ini | Yes |
+| `tt-25-umkm-level-berapa` | UMKM Kamu Level Berapa? Cek dari Level 1 Sampai 4 🎮 | Yes |
+| `tt-26-penawaran-tak-dibalas` | Kenapa Penawaran B2B Kamu Nggak Dibalas? 3 Alasannya | Yes |
+| `tt-27-pov-owner-liburan` | POV: Owner Bisnis Liburan Tapi HP Nggak Berhenti Bunyi 📱😂 | Yes |
+| `tt-28-rumus-prompt-ai` | Rumus Prompt AI 4 Bagian: Peran, Tugas, Konteks, Format 📌 | Yes |
+| `tt-29-prompt-asal-vs-jelas` | Prompt AI Asal vs Prompt Jelas: Bedanya Cuma 1 Kalimat 👀 | Yes |
+| `tt-30-siap-pakai-ai` | 3 Tanda Bisnismu Sudah Siap Pakai AI (Cek Sebelum Ikut-ikutan) | Yes |
+| `tt-31-website-kelihatan-mahal` | Kenapa Website Ini Kelihatan Mahal? 3 Rahasia Desain 💎 | Yes |
+| `tt-32-pilih-vibe-website` | Pilih Vibe Website Usahamu: Mewah, Hangat, atau Natural? 🎨 | Yes |
+| `tt-33-tur-flowraze` | Tur 30 Detik CRM Flowraze untuk Tim Sales UMKM 👀 | Yes |
+| `tt-34-istilah-tech-bahasa-warung` | API, CMS, SSL Dijelasin Pakai Bahasa Warung 🍜 | Yes |
+| `tt-35-backup-3-2-1` | Aturan Backup 3-2-1 Biar File Bisnis Nggak Hilang 😱 | Yes |
+| `tt-36-keamanan-akun-bisnis` | 3 Kebiasaan Biar Akun Bisnismu Nggak Dibobol 🔐 | Yes |
+| `tt-37-istilah-tech-part-2` | Cloud, DNS, Cache Dijelasin Pakai Bahasa Warung (Part 2) 🍜 | Yes |
+| `tt-38-tanda-penipuan-digital` | 3 Tanda Chat atau Email Penipuan ke Bisnismu 🚨 | Yes |
+| `tt-39-aturan-data-pelanggan` | 3 Aturan Simpan Data Pelanggan Biar Aman 🔒 | Yes |
+| `tt-40-vanailachat-ai-gratis` | AI Gratis yang Jalan di Laptopmu Sendiri — Tanpa Langganan | Yes |
+| `tt-41-vanailachat-workspace` | Chat AI-mu Campur Aduk? Pisahkan per Workspace | Yes |
+| `tt-42-vanailachat-coding-aman` | Ngoding Bareng AI Tapi Tetap Aman: 3 Pengaman di VanailaChat | Yes |
+| `tt-43-studio-satu-tab` | One Tab, Semua Tool Kerja: Vanaila Studio Gratis di Browser | Yes |
+| `tt-44-studio-pdf-tanpa-upload` | Convert PDF Tanpa Upload File ke Server Orang | Yes |
+| `tt-45-studio-cv-ats` | CV-mu Lolos ATS Nggak? Bikin CV ATS-Friendly Gratis | Yes |
+| `tt-46-lms-akademi-online` | Punya Ilmu? Bikin Akademi Online Sendiri — Vanaila LMS (Q4 2026) | Yes |
+| `tt-47-lms-training-karyawan` | Training Karyawan Masih Pakai Zoom + Google Form + Excel? | Yes |
+| `tt-48-lms-jual-kursus` | Jual Kursus Online dengan Pembayaran QRIS — Vanaila LMS | Yes |
+| `tt-49-muzikplayer-hifi` | MuzikPlayer: Music Player Linux yang Serius Soal Suara 🎧 | Yes |
+| `tt-50-muzikplayer-bit-perfect` | Bit-Perfect Itu Apa? Penjelasan 30 Detik 🎧 | Yes |
+| `tt-51-muzikplayer-pov-linux` | POV: Pengguna Linux yang Masih Koleksi File Musik 💿 | Yes |
 | `tt-52-website-lambat-penyebab` | Website Lambat? Ini 3 Penyebab yang Sering Diabaikan 🐢 | Yes |
 | `tt-53-spf-dkim-dmarc-bahasa-warung` | Email Bisnis Masuk Spam? Ini Arti SPF, DKIM, DMARC 📮 | Yes |
 | `tt-54-rumus-roi-iklan` | Rumus ROI Iklan: Hitung Untung Iklanmu dalam 3 Langkah 📊 | Yes |
 | `tt-55-marketplace-vs-toko-sendiri` | Jualan di Marketplace Itu Gratis? Hitung Dulu 🧮 | Yes |
 | `tt-56-stok-sinkron-whatsapp` | Stok Habis di Marketplace tapi Masih Dijual di WhatsApp? 😵 | Yes |
 | `tt-57-pilih-paket-website` | Website Startup, Professional, atau Enterprise? Pilih yang Mana 🤔 | Yes |
-| `meme-01-in-this-picture` | In This Picture… Dia Lagi Lihat Apa? 👀 | No |
+| `meme-01-in-this-picture` | In This Picture… Dia Lagi Lihat Apa? 👀 | Yes |
 | `vid-01-hris-probation-tanpa-drama` | Keputusan Probation Tanpa Drama: dari Skor KPI ke Keputusan ⚖️ | Yes |
 | `vid-02-hris-siapa-belum-isi-kpi` | Siapa di Timmu yang Belum Isi KPI Bulan Ini? 🤔 | Yes |
 | `vid-03-hris-tna-berbasis-bukti` | TNA Berbasis Bukti, Bukan Feeling: Cara Menilai Kompetensi | Yes |
 | `vid-04-psikotest-21-instrumen` | Satu Link, 21 Instrumen Psikometri: DISC, IQ, Big 5 & Lainnya 🧠 | Yes |
 | `vid-05-psikotest-anti-contek` | Psikotes Online Gampang Dicontek? Begini Cara Mencegahnya 🤔 | Yes |
 | `vid-06-psikotest-consent-kandidat` | Sebelum Psikotes Dimulai, Kandidat Wajib Tahu 3 Hal Ini | Yes |
-| `vid-07-vanailachat-data-tetap-lokal` | Data Chat AI-mu Tetap di Laptop 🔒 | No |
-| `vid-08-vanailachat-tanpa-langganan` | Langganan AI Tiap Bulan? Ada Jalan Lain 💸 | No |
-| `vid-09-vanailachat-mulai-ai-lokal` | Mulai AI Lokal di Laptop dalam 3 Langkah 🧩 | No |
-| `tour-site-home` | Website Bisnis yang Dibangun untuk Tumbuh 🌐 | No |
-| `tour-site-hris` | Vanaila HRIS dalam 15 Detik 🧾 | No |
-| `tour-site-flowraze` | Flowraze CRM dalam 15 Detik 📈 | No |
-| `tour-site-psikotest` | Psikotest dalam 15 Detik 🧩 | No |
-| `tour-site-templates` | Vanaila Templates dalam 15 Detik 🎨 | No |
+| `vid-07-vanailachat-data-tetap-lokal` | Data Chat AI-mu Tetap di Laptop 🔒 | Yes |
+| `vid-08-vanailachat-tanpa-langganan` | Langganan AI Tiap Bulan? Ada Jalan Lain 💸 | Yes |
+| `vid-09-vanailachat-mulai-ai-lokal` | Mulai AI Lokal di Laptop dalam 3 Langkah 🧩 | Yes |
+| `tour-site-home` | Website Bisnis yang Dibangun untuk Tumbuh 🌐 | Yes |
+| `tour-site-hris` | Vanaila HRIS dalam 15 Detik 🧾 | Yes |
+| `tour-site-flowraze` | Flowraze CRM dalam 15 Detik 📈 | Yes |
+| `tour-site-psikotest` | Psikotest dalam 15 Detik 🧩 | Yes |
+| `tour-site-templates` | Vanaila Templates dalam 15 Detik 🎨 | Yes |
 
 ---
 
