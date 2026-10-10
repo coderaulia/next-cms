@@ -397,5 +397,131 @@
     "handle": "Follow untuk tips HR & etika asesmen"
    }
   ]
- }
+ },
+  {
+    "slug": "vanailachat-data-tetap-lokal",
+    "theme": "blue",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "VanailaChat",
+        "title": "Chat AI tanpa data-mu <i>keluar</i> dari laptop 🔒",
+        "sub": "Begini cara kerjanya"
+      },
+      {
+        "type": "point",
+        "n": "1",
+        "title": "Model jalan di perangkatmu",
+        "body": "Model AI lokal dijalankan lewat Ollama, langsung di GPU atau NPU laptopmu.",
+        "fix": "Prompt tidak dikirim ke server pihak lain",
+        "fixLabel": "ARTINYA"
+      },
+      {
+        "type": "point",
+        "n": "2",
+        "title": "Riwayat chat tersimpan lokal",
+        "body": "Chat dan data disimpan di SQLite, di perangkatmu sendiri.",
+        "fix": "Kamu yang pegang datanya",
+        "fixLabel": "ARTINYA"
+      },
+      {
+        "type": "point",
+        "n": "3",
+        "title": "Zero telemetry",
+        "body": "Tidak ada pelacakan penggunaan. Aplikasinya open-source, jadi kodenya bisa kamu cek sendiri.",
+        "fix": "Bisa diverifikasi, bukan sekadar janji",
+        "fixLabel": "ARTINYA"
+      },
+      {
+        "type": "cta",
+        "title": "Data kantor <i>aman</i> di AI lokal?",
+        "sub": "Komen LOKAL. VanailaChat gratis & open-source, link di profil.",
+        "handle": "Follow untuk AI tanpa langganan"
+      }
+    ]
+  },
+  {
+    "slug": "vanailachat-tanpa-langganan",
+    "theme": "blue",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Hitung-hitungan",
+        "title": "Langganan AI tiap bulan? Ada <i>jalan lain</i> 💸",
+        "sub": "Pakai model lokal di VanailaChat"
+      },
+      {
+        "type": "img",
+        "kicker": "VanailaChat",
+        "title": "Gratis & <i>open-source</i>",
+        "img": "../assets/products/vanailachat-hero-mockup.png",
+        "label": "VanailaChat",
+        "ask": "Tidak ada biaya bulanan untuk model lokal"
+      },
+      {
+        "type": "point",
+        "n": "🧠",
+        "title": "Model lokal tanpa biaya bulanan",
+        "body": "Llama 3.2, Qwen 2.5-Coder, Mistral, Phi-4, dan lainnya bisa dijalankan di laptopmu.",
+        "fix": "Biaya hanya dari perangkat yang sudah kamu punya",
+        "fixLabel": "ARTINYA"
+      },
+      {
+        "type": "point",
+        "n": "☁️",
+        "title": "Model cloud tetap berbayar",
+        "body": "Kalau mau pakai OpenAI, Claude, atau OpenRouter, kamu tetap pakai akun dan biaya dari penyedianya.",
+        "fix": "Pilih sesuai kebutuhan dan anggaranmu",
+        "fixLabel": "ARTINYA"
+      },
+      {
+        "type": "cta",
+        "title": "Pakai AI lokal, <i>berapa</i> hemat-mu?",
+        "sub": "Komen HEMAT. Link VanailaChat di profil.",
+        "handle": "Follow untuk tips AI untuk bisnis"
+      }
+    ]
+  },
+  {
+    "slug": "vanailachat-mulai-ai-lokal",
+    "theme": "blue",
+    "slides": [
+      {
+        "type": "hook",
+        "kicker": "Tutorial singkat",
+        "title": "Mulai AI lokal di laptop dalam <i>3 langkah</i> 🧩",
+        "sub": "Tanpa kartu kredit, tanpa server"
+      },
+      {
+        "type": "point",
+        "n": "1",
+        "title": "Pasang Ollama",
+        "body": "Ollama menjalankan model AI di laptopmu. Pasang sekali, lalu langsung dipakai.",
+        "fix": "Unduh dari situs resminya",
+        "fixLabel": "LANGKAH 1"
+      },
+      {
+        "type": "point",
+        "n": "2",
+        "title": "Pilih model sesuai perangkat",
+        "body": "Model kecil cocok untuk laptop biasa. Model besar butuh RAM dan GPU yang lebih lega.",
+        "fix": "Mulai dari yang kecil dulu, lalu naik kelas",
+        "fixLabel": "LANGKAH 2"
+      },
+      {
+        "type": "img",
+        "kicker": "Langkah 3",
+        "title": "Hubungkan ke <i>VanailaChat</i>",
+        "img": "../assets/products/vanailachat-workspaces-hub.png",
+        "label": "VanailaChat · Workspaces Hub",
+        "ask": "Satu proyek, satu ruang kerja, model lokal"
+      },
+      {
+        "type": "cta",
+        "title": "Sudah coba AI lokal?",
+        "sub": "Komen MULAI kalau mau panduan lengkapnya. Link VanailaChat di profil.",
+        "handle": "Follow untuk tutorial AI praktis"
+      }
+    ]
+  }
 ]

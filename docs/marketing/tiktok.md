@@ -1970,6 +1970,81 @@ Startup, Professional or Enterprise website? 🤔 Startup for 5 pages, Professio
 
 ---
 
+## vid-07-vanailachat-data-tetap-lokal: Data Chat AI-mu Tetap di Laptop 🔒
+
+**Format:** Video, ~17–19s, `output/video/vid-07-vanailachat-data-tetap-lokal.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Data Chat AI-mu Tetap di Laptop 🔒`  
+**Title (EN):** `Your AI Chat Data Stays on Your Laptop 🔒`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Chat AI tanpa data-mu keluar dari laptop 🔒 Model jalan lewat Ollama, riwayat chat tersimpan lokal di SQLite, dan tanpa telemetry. VanailaChat itu open-source. Data kantor aman di AI lokal?
+
+#ailokal #privasidata #vanailachat #opensource #ollama
+```
+
+**Caption (EN, optional)**
+```
+Chat AI without sending your data off your laptop 🔒 Models run through Ollama, chat history stays local in SQLite, and there's zero telemetry. VanailaChat is open-source. Is your office data safe with local AI?
+
+#localai #dataprivacy #opensource #ollama
+```
+
+**Pinned comment:** `Komen LOKAL kalau mau kami bahas cara setup-nya 💬`
+
+---
+
+## vid-08-vanailachat-tanpa-langganan: Langganan AI Tiap Bulan? Ada Jalan Lain 💸
+
+**Format:** Video, ~17–19s, `output/video/vid-08-vanailachat-tanpa-langganan.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Langganan AI Tiap Bulan? Ada Jalan Lain 💸`  
+**Title (EN):** `Monthly AI Subscriptions? There's Another Way 💸`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Langganan AI tiap bulan? Ada jalan lain 💸 Model lokal di VanailaChat tidak punya biaya bulanan. Model cloud tetap berbayar dari penyedianya. Kamu pilih yang paling pas.
+
+#aigratis #aitanpalangganan #vanailachat #tipsbisnis #ollama
+```
+
+**Caption (EN, optional)**
+```
+Monthly AI subscriptions? There's another way 💸 Local models in VanailaChat have no monthly fee. Cloud models still cost money from their providers. You choose what fits.
+
+#freeai #localai #smallbusiness #opensource
+```
+
+**Pinned comment:** `Mau hitung-hitungan hematnya? Komen HEMAT 💬`
+
+---
+
+## vid-09-vanailachat-mulai-ai-lokal: Mulai AI Lokal di Laptop dalam 3 Langkah 🧩
+
+**Format:** Video, ~17–19s, `output/video/vid-09-vanailachat-mulai-ai-lokal.mp4` · **Sound:** add a CML track in-app  
+**Title (ID):** `Mulai AI Lokal di Laptop dalam 3 Langkah 🧩`  
+**Title (EN):** `Start Local AI on Your Laptop in 3 Steps 🧩`  
+**Content disclosure:** ON → *Your brand*
+
+**Caption (ID)**
+```
+Mulai AI lokal di laptop dalam 3 langkah 🧩 Pasang Ollama, pilih model sesuai perangkat, lalu hubungkan ke VanailaChat. Mulai dari model kecil dulu. Sudah pernah coba?
+
+#tutorialai #ailokal #ollama #vanailachat #tipsai
+```
+
+**Caption (EN, optional)**
+```
+Start local AI on your laptop in 3 steps 🧩 Install Ollama, pick a model that fits your device, then connect it to VanailaChat. Start with a small model. Have you tried it?
+
+#localai #ollama #tutorial #aitools
+```
+
+**Pinned comment:** `Komen MULAI kalau mau panduan lengkapnya 💬`
+
+---
+
 ## Posting checklist
 - [ ] Posted from the Business Account, with a sound from the Commercial Music Library
 - [ ] Slides uploaded in order (s1 → s5, max 5)
