@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { ArrowDown, ArrowLeft, ArrowUp, ArrowUpDown, ExternalLink, GripVertical, PenSquare, Plus } from 'lucide-react';
+
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { getPortfolioProjectPublicationLabel } from '@/features/cms/publicationState';
@@ -141,8 +143,9 @@ function ReorderPanel({ user, onClose, onSaved }: ReorderPanelProps) {
             </p>
           </div>
           <div className="admin-actions">
-            <button type="button" onClick={onClose}>
-              ← Back to list
+            <button type="button" onClick={onClose} className="inline-flex items-center gap-1.5">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to list</span>
             </button>
             <button
               type="button"
@@ -171,7 +174,9 @@ function ReorderPanel({ user, onClose, onSaved }: ReorderPanelProps) {
               onDragOver={(e) => e.preventDefault()}
               className="admin-reorder-item"
             >
-              <span className="admin-reorder-handle" aria-hidden="true">⠿</span>
+              <span className="admin-reorder-handle inline-flex items-center text-slate-400" aria-hidden="true">
+                <GripVertical className="w-4 h-4" />
+              </span>
               <span className="admin-reorder-position">{index + 1}</span>
               <div className="admin-reorder-info">
                 <strong>{project.title}</strong>
@@ -194,8 +199,9 @@ function ReorderPanel({ user, onClose, onSaved }: ReorderPanelProps) {
                   onClick={() => moveItem(index, index - 1)}
                   aria-label={`Move ${project.title} up`}
                   title="Move up"
+                  className="flex items-center justify-center"
                 >
-                  ↑
+                  <ArrowUp className="w-3 h-3" />
                 </button>
                 <button
                   type="button"
@@ -203,8 +209,9 @@ function ReorderPanel({ user, onClose, onSaved }: ReorderPanelProps) {
                   onClick={() => moveItem(index, index + 1)}
                   aria-label={`Move ${project.title} down`}
                   title="Move down"
+                  className="flex items-center justify-center"
                 >
-                  ↓
+                  <ArrowDown className="w-3 h-3" />
                 </button>
               </div>
             </div>
@@ -379,15 +386,16 @@ function PortfolioList({ user, onReorder }: PortfolioListProps) {
           <h2>No portfolio projects yet</h2>
           <p className="admin-subtle">Create the first case study, add a managed cover image, and use scheduling when launches need a specific date.</p>
           {user.permissions.includes('content:edit') ? (
-            <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
-              Create first project
+            <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary inline-flex items-center gap-1.5">
+              <Plus className="w-4 h-4" />
+              <span>Create first project</span>
             </Link>
           ) : null}
         </section>
       ) : null}
 
       <section className="admin-card">
-        <div className="admin-filter-bar">
+        <div className="admin-filter-bar mb-4">
           <label>
             Search
             <input
@@ -472,40 +480,71 @@ function PortfolioList({ user, onReorder }: PortfolioListProps) {
             </select>
           </label>
         </div>
-      </section>
 
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <p className="admin-subtle">{selectedIds.length} selected</p>
-          <div className="admin-actions">
+        {selectedIds.length > 0 ? (
+          <div className="admin-bulk-bar flex flex-wrap items-center justify-between gap-3 p-3 bg-blue-50/80 border border-blue-200/80 rounded-xl mb-4">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm text-blue-900">{selectedIds.length} selected</span>
+              <span className="text-xs text-blue-700">of {data.meta.total} projects</span>
+            </div>
+            <div className="admin-actions">
+              <button
+                type="button"
+                disabled={bulkPending || !canPublish}
+                onClick={() => void applyBulkStatus('published')}
+              >
+                Publish selected
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending || !canPublish}
+                onClick={() => void applyBulkStatus('draft')}
+              >
+                Move selected to draft
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending || !canEdit}
+                onClick={() => void applyBulkFeatured(true)}
+              >
+                Feature selected
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending || !canEdit}
+                onClick={() => void applyBulkFeatured(false)}
+              >
+                Unfeature selected
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending}
+                onClick={() => setSelectedIds([])}
+              >
+                Clear selection
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between text-xs text-slate-500 py-1 mb-3">
+            <span>{data.meta.total} total {data.meta.total === 1 ? 'project' : 'projects'}</span>
             {canEdit ? (
-              <button type="button" onClick={onReorder}>
-                ↕ Reorder
+              <button
+                type="button"
+                onClick={onReorder}
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 transition-colors"
+              >
+                <ArrowUpDown className="w-3.5 h-3.5" />
+                <span>Reorder projects</span>
               </button>
             ) : null}
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('published')}>
-              Publish selected
-            </button>
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('draft')}>
-              Move selected to draft
-            </button>
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canEdit} onClick={() => void applyBulkFeatured(true)}>
-              Feature selected
-            </button>
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canEdit} onClick={() => void applyBulkFeatured(false)}>
-              Unfeature selected
-            </button>
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending} onClick={() => setSelectedIds([])}>
-              Clear selection
-            </button>
           </div>
-        </div>
-        {!canPublish ? <p className="admin-subtle">Your role can review projects but cannot change publish status.</p> : null}
-        {notice ? <p className="admin-subtle">{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
-      </section>
+        )}
 
-      <section className="admin-card">
+        {!canPublish ? <p className="admin-subtle text-xs mb-2">Your role can review projects but cannot change publish status.</p> : null}
+        {notice ? <p className="admin-subtle text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg mb-3">{notice}</p> : null}
+        {error ? <p className="error text-sm text-rose-700 bg-rose-50 border border-rose-200 p-2.5 rounded-lg mb-3">{error}</p> : null}
+
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>
@@ -524,7 +563,7 @@ function PortfolioList({ user, onReorder }: PortfolioListProps) {
                 <th>Status</th>
                 <th>Featured</th>
                 <th>Updated</th>
-                <th />
+                <th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -555,29 +594,54 @@ function PortfolioList({ user, onReorder }: PortfolioListProps) {
                         />
                       </td>
                       <td>
-                        <strong>{project.title}</strong>
-                        <span className="admin-subtle">/portfolio/{project.seo.slug}</span>
+                        <strong className="text-slate-900">{project.title}</strong>
+                        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                          <code className="text-[11px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
+                            /portfolio/{project.seo.slug}
+                          </code>
+                        </div>
                       </td>
-                      <td>{project.clientName || '-'}</td>
-                      <td>{project.serviceType || '-'}</td>
+                      <td className="text-slate-600 text-sm">{project.clientName || '—'}</td>
+                      <td className="text-slate-600 text-sm">{project.serviceType || '—'}</td>
                       <td>
-                        <span className={`admin-chip ${chipClass}`}>{publicationLabel}</span>
-                      </td>
-                      <td>
-                        <span className={`admin-chip ${project.featured ? 'admin-chip-success' : 'admin-chip-muted'}`}>
-                          {project.featured ? 'yes' : 'no'}
+                        <span className={`admin-chip ${chipClass} inline-flex items-center gap-1.5`}>
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-75" />
+                          {publicationLabel}
                         </span>
                       </td>
-                      <td>{new Date(project.updatedAt).toLocaleDateString()}</td>
                       <td>
-                        <Link href={`/admin/portfolio/${project.id}`}>Edit</Link>
+                        <span className={`admin-chip ${project.featured ? 'admin-chip-success' : 'admin-chip-muted'} inline-flex items-center gap-1.5`}>
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-75" />
+                          {project.featured ? 'featured' : 'standard'}
+                        </span>
+                      </td>
+                      <td className="text-slate-600 text-sm">{new Date(project.updatedAt).toLocaleDateString()}</td>
+                      <td className="text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Link
+                            href={`/admin/portfolio/${project.id}`}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                          >
+                            <PenSquare className="w-3.5 h-3.5" />
+                            <span>Edit</span>
+                          </Link>
+                          <a
+                            href={`/portfolio/${project.seo.slug}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            title="View live project"
+                            className="p-1 text-slate-400 hover:text-slate-700 rounded transition-colors"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={8} className="admin-subtle">
+                  <td colSpan={8} className="admin-subtle py-8 text-center">
                     No portfolio projects match the current filters. Clear filters or create a new case study.
                   </td>
                 </tr>
@@ -604,7 +668,6 @@ function PortfolioList({ user, onReorder }: PortfolioListProps) {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
@@ -618,8 +681,9 @@ export default function AdminPortfolioPage() {
       description="Manage case studies and portfolio project publishing."
       actions={(user) =>
         user.permissions.includes('content:edit') ? (
-          <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary">
-            + New project
+          <Link href="/admin/portfolio/new" className="v2-btn v2-btn-primary inline-flex items-center gap-1.5">
+            <Plus className="w-4 h-4" />
+            <span>New project</span>
           </Link>
         ) : null
       }

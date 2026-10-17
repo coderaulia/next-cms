@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { Clock, KeyRound, PenSquare, Search, Shield, Trash2, UserPlus, Users } from 'lucide-react';
 
 import { AdminShell } from '@/components/AdminShell';
 import { formatAdminRoleLabel, permissionsForRole } from '@/features/cms/adminPermissions';
@@ -40,6 +41,7 @@ type TeamManagerProps = {
 function TeamManager({ user }: TeamManagerProps) {
   const [members, setMembers] = useState<AdminTeamMember[]>([]);
   const [form, setForm] = useState<TeamMemberForm>(emptyForm);
+  const [query, setQuery] = useState('');
   const [available, setAvailable] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -108,6 +110,17 @@ function TeamManager({ user }: TeamManagerProps) {
     void load();
   }, [canManageTeam]);
 
+  const filteredMembers = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    if (!needle) return members;
+    return members.filter(
+      (m) =>
+        m.displayName.toLowerCase().includes(needle) ||
+        m.email.toLowerCase().includes(needle) ||
+        m.role.toLowerCase().includes(needle)
+    );
+  }, [members, query]);
+
   const selectedRolePermissions = useMemo(() => permissionsForRole(form.role), [form.role]);
 
   const resetForm = () => {
@@ -168,7 +181,7 @@ function TeamManager({ user }: TeamManagerProps) {
     }
 
     const body = (await response.json()) as { member: AdminTeamMember };
-    setNotice(isEditing ? 'Team member updated.' : 'Team member created.');
+    setNotice(isEditing ? 'Team member updated successfully.' : 'Team member created successfully.');
     setForm({
       id: body.member.id,
       email: body.member.email,
@@ -199,7 +212,7 @@ function TeamManager({ user }: TeamManagerProps) {
       setForm(emptyForm);
     }
 
-    setNotice('Team member deleted.');
+    setNotice('Team member deleted successfully.');
     await load();
   };
 
@@ -223,140 +236,245 @@ function TeamManager({ user }: TeamManagerProps) {
 
   return (
     <div className="admin-form-wrap">
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h2>{isEditing ? 'Edit admin user' : 'Invite admin user'}</h2>
-          <button type="button" className="v2-btn v2-btn-secondary" onClick={resetForm}>
-            {isEditing ? 'New team member' : 'Reset form'}
-          </button>
-        </div>
-        <p className="admin-subtle">Roles control publish access, analytics visibility, settings access, and media management. At least one super admin must remain.</p>
-        <div className="admin-grid-2">
-          <label>
-            Display name
-            <input
-              value={form.displayName}
-              onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
-              placeholder="Operations Lead"
-            />
-          </label>
-          <label>
-            Email
-            <input
-              value={form.email}
-              onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-              disabled={isEditing}
-              placeholder="editor@example.com"
-            />
-          </label>
-          <label>
-            Role
-            <select
-              value={form.role}
-              disabled={isCurrentUser}
-              onChange={(event) => setForm((current) => ({ ...current, role: event.target.value as AdminRole }))}
-            >
-              {roleOptions.map((role) => (
-                <option key={role} value={role}>
-                  {formatAdminRoleLabel(role)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            {isEditing ? 'Reset password' : 'Temporary password'}
-            <input
-              type="password"
-              value={form.password}
-              onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
-              placeholder={isEditing ? 'Leave blank to keep current password' : 'Minimum 8 characters'}
-            />
-          </label>
-        </div>
-
-        <div className="admin-card" style={{ marginTop: 16 }}>
-          <div className="admin-inline-header">
-            <h3>Role permissions</h3>
-            <span className="admin-chip admin-chip-muted">{formatAdminRoleLabel(form.role)}</span>
+      {/* 2-Column Workspace Grid: Invite Form on Left, Members List on Right */}
+      <div className="admin-workspace-grid grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Form Card */}
+        <section className="admin-card lg:col-span-5 sticky top-6">
+          <div className="admin-inline-header pb-2 border-b border-slate-100">
+            <div className="flex items-center gap-2">
+              {isEditing ? <PenSquare className="w-4 h-4 text-blue-600" /> : <UserPlus className="w-4 h-4 text-blue-600" />}
+              <h2 className="m-0 text-base font-bold text-slate-900">
+                {isEditing ? 'Edit admin user' : 'Invite admin user'}
+              </h2>
+            </div>
+            {isEditing ? (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="text-xs text-slate-500 hover:text-slate-800"
+              >
+                Cancel edit
+              </button>
+            ) : null}
           </div>
-          <ul className="admin-plain-list">
-            {selectedRolePermissions.map((permission) => (
-              <li key={permission}>
-                <strong>{permission}</strong>
-              </li>
-            ))}
-          </ul>
-          {isCurrentUser ? <p className="admin-subtle">Your current account role must be changed by another super admin.</p> : null}
-        </div>
 
-        <div className="admin-actions">
-          <button type="button" onClick={handleSave} disabled={saving}>
-            {saving ? 'Saving...' : isEditing ? 'Update team member' : 'Create team member'}
-          </button>
-          {isEditing ? (
-            <button type="button" disabled={isCurrentUser} onClick={() => void handleDelete(form.id)}>
-              Delete team member
-            </button>
-          ) : null}
-        </div>
+          <p className="admin-subtle text-xs mt-2 mb-4">
+            Manage administrative privileges. Super admins can manage team access and all site settings.
+          </p>
 
-        {notice ? <p>{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
-      </section>
+          <div className="space-y-3">
+            <label className="text-xs font-semibold text-slate-700">
+              Display name
+              <input
+                value={form.displayName}
+                onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
+                placeholder="e.g. Operations Lead"
+                className="mt-1 text-xs"
+              />
+            </label>
 
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h2>Admin team</h2>
-          <span className="admin-subtle">{members.length} users</span>
-        </div>
-        <div className="admin-table-wrap">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Permissions</th>
-                <th>Last login</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {members.map((member) => (
-                <tr key={member.id}>
-                  <td>
-                    <strong>{member.displayName}</strong>
-                    {member.id === user.id ? <span className="admin-chip admin-chip-success">current</span> : null}
-                  </td>
-                  <td>{member.email}</td>
-                  <td>
-                    <span className="admin-chip admin-chip-muted">{formatAdminRoleLabel(member.role)}</span>
-                  </td>
-                  <td>{member.permissions.join(', ')}</td>
-                  <td>{member.lastLoginAt ? new Date(member.lastLoginAt).toLocaleString() : 'Never'}</td>
-                  <td>
-                    <div className="admin-actions">
-                      <button type="button" onClick={() => selectMember(member)}>
-                        Edit
-                      </button>
-                      <button type="button" disabled={member.id === user.id} onClick={() => void handleDelete(member.id)}>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+            <label className="text-xs font-semibold text-slate-700">
+              Email
+              <input
+                value={form.email}
+                onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
+                disabled={isEditing}
+                placeholder="editor@vanaila.com"
+                className="mt-1 text-xs"
+              />
+            </label>
+
+            <label className="text-xs font-semibold text-slate-700">
+              Role
+              <select
+                value={form.role}
+                disabled={isCurrentUser}
+                onChange={(event) => setForm((current) => ({ ...current, role: event.target.value as AdminRole }))}
+                className="mt-1 text-xs"
+              >
+                {roleOptions.map((role) => (
+                  <option key={role} value={role}>
+                    {formatAdminRoleLabel(role)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="text-xs font-semibold text-slate-700">
+              {isEditing ? 'Reset password' : 'Temporary password'}
+              <input
+                type="password"
+                value={form.password}
+                onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
+                placeholder={isEditing ? 'Leave blank to preserve current' : 'Minimum 8 characters'}
+                className="mt-1 text-xs font-mono"
+              />
+            </label>
+          </div>
+
+          {/* Role permissions card */}
+          <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5 text-blue-600" />
+                <span>Granted permissions</span>
+              </span>
+              <span className="admin-chip admin-chip-muted text-[10px]">
+                {formatAdminRoleLabel(form.role)}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto">
+              {selectedRolePermissions.map((permission) => (
+                <span
+                  key={permission}
+                  className="text-[10px] font-mono bg-white text-slate-700 px-2 py-0.5 rounded border border-slate-200"
+                >
+                  {permission}
+                </span>
               ))}
-              {members.length === 0 ? (
+            </div>
+            {isCurrentUser ? (
+              <p className="admin-subtle text-[11px] mt-2 mb-0">
+                Your own account role cannot be demoted by yourself.
+              </p>
+            ) : null}
+          </div>
+
+          <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="v2-btn v2-btn-primary flex-1 text-xs py-2 inline-flex items-center justify-center gap-1.5"
+            >
+              <KeyRound className="w-3.5 h-3.5" />
+              <span>{saving ? 'Saving...' : isEditing ? 'Update member' : 'Create member'}</span>
+            </button>
+            {isEditing ? (
+              <button
+                type="button"
+                disabled={isCurrentUser}
+                onClick={() => void handleDelete(form.id)}
+                className="px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-rose-200 text-xs font-semibold disabled:opacity-50 transition-colors"
+                title="Delete team member"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            ) : null}
+          </div>
+
+          {notice ? <p className="admin-subtle text-xs text-emerald-700 mt-2">{notice}</p> : null}
+          {error ? <p className="error text-xs text-rose-700 mt-2">{error}</p> : null}
+        </section>
+
+        {/* Right Column: Member List Table Card */}
+        <section className="admin-card lg:col-span-7">
+          <div className="admin-inline-header flex-wrap gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-blue-600" />
+              <h2 className="m-0 text-base font-bold text-slate-900">Admin Team</h2>
+              <span className="admin-chip admin-chip-muted text-[10px] font-semibold">
+                {members.length}
+              </span>
+            </div>
+
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search team members..."
+                className="pl-8 text-xs py-1.5 w-48"
+              />
+            </div>
+          </div>
+
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
                 <tr>
-                  <td colSpan={6} className="admin-subtle">
-                    No admin users found.
-                  </td>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Last active</th>
+                  <th className="text-right">Actions</th>
                 </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {filteredMembers.map((member) => {
+                  const isSelected = form.id === member.id;
+                  const isMe = member.id === user.id;
+
+                  return (
+                    <tr key={member.id} className={isSelected ? 'bg-blue-50/40' : ''}>
+                      <td>
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0">
+                            {member.displayName.slice(0, 2).toUpperCase()}
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <strong className="text-slate-900 text-xs truncate">{member.displayName}</strong>
+                              {isMe ? (
+                                <span className="admin-chip admin-chip-success text-[9px] py-0 px-1.5">
+                                  you
+                                </span>
+                              ) : null}
+                            </div>
+                            <span className="text-[11px] text-slate-500 block truncate">{member.email}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="admin-chip admin-chip-muted text-[10px] whitespace-nowrap">
+                          {formatAdminRoleLabel(member.role)}
+                        </span>
+                      </td>
+                      <td className="text-slate-600 text-xs whitespace-nowrap">
+                        <div className="flex items-center gap-1 text-[11px]">
+                          <Clock className="w-3 h-3 text-slate-400" />
+                          <span>{member.lastLoginAt ? new Date(member.lastLoginAt).toLocaleDateString() : 'Never'}</span>
+                        </div>
+                      </td>
+                      <td className="text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => selectMember(member)}
+                            className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border transition-colors ${
+                              isSelected
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            <PenSquare className="w-3 h-3" />
+                            <span>{isSelected ? 'Editing' : 'Edit'}</span>
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isMe}
+                            onClick={() => void handleDelete(member.id)}
+                            className="p-1 text-slate-400 hover:text-rose-600 disabled:opacity-30 rounded transition-colors"
+                            title={isMe ? 'Cannot delete current account' : 'Delete user'}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filteredMembers.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="admin-subtle py-8 text-center">
+                      No admin users found matching the filter.
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

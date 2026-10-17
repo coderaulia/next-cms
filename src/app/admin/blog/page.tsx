@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { Plus } from 'lucide-react';
+
 import { AdminShell } from '@/components/AdminShell';
 import { AdminPostsTable } from '@/components/admin/AdminPostsTable';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
@@ -145,15 +147,16 @@ function BlogList({ user }: BlogListProps) {
           <h2>Start the blog workflow</h2>
           <p className="admin-subtle">Create the first post, assign categories, and use draft preview before publishing client-facing content.</p>
           {user.permissions.includes('content:edit') ? (
-            <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
-              Create first post
+            <Link href="/admin/blog/new" className="v2-btn v2-btn-primary inline-flex items-center gap-1.5">
+              <Plus className="w-4 h-4" />
+              <span>Create first post</span>
             </Link>
           ) : null}
         </section>
       ) : null}
 
       <section className="admin-card">
-        <div className="admin-filter-bar">
+        <div className="admin-filter-bar mb-4">
           <label>
             Search
             <input
@@ -224,26 +227,47 @@ function BlogList({ user }: BlogListProps) {
             </select>
           </label>
         </div>
-      </section>
 
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <p className="admin-subtle">{selectedCount} selected</p>
-          <div className="admin-actions">
-            <button type="button" disabled={selectedCount === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('published')}>
-              Publish selected
-            </button>
-            <button type="button" disabled={selectedCount === 0 || bulkPending || !canPublish} onClick={() => void applyBulkStatus('draft')}>
-              Move selected to draft
-            </button>
-            <button type="button" disabled={selectedCount === 0 || bulkPending} onClick={() => setSelectedIds([])}>
-              Clear selection
-            </button>
+        {selectedCount > 0 ? (
+          <div className="admin-bulk-bar flex flex-wrap items-center justify-between gap-3 p-3 bg-blue-50/80 border border-blue-200/80 rounded-xl mb-4">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm text-blue-900">{selectedCount} selected</span>
+              <span className="text-xs text-blue-700">of {data.meta.total} posts</span>
+            </div>
+            <div className="admin-actions">
+              <button
+                type="button"
+                disabled={bulkPending || !canPublish}
+                onClick={() => void applyBulkStatus('published')}
+              >
+                Publish selected
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending || !canPublish}
+                onClick={() => void applyBulkStatus('draft')}
+              >
+                Move selected to draft
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending}
+                onClick={() => setSelectedIds([])}
+              >
+                Clear selection
+              </button>
+            </div>
           </div>
-        </div>
-        {!canPublish ? <p className="admin-subtle">Your role can review posts but cannot change publication status.</p> : null}
-        {notice ? <p className="admin-subtle">{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
+        ) : (
+          <div className="flex items-center justify-between text-xs text-slate-500 py-1 mb-3">
+            <span>{data.meta.total} total {data.meta.total === 1 ? 'post' : 'posts'}</span>
+          </div>
+        )}
+
+        {!canPublish ? <p className="admin-subtle text-xs mb-2">Your role can review posts but cannot change publication status.</p> : null}
+        {notice ? <p className="admin-subtle text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg mb-3">{notice}</p> : null}
+        {error ? <p className="error text-sm text-rose-700 bg-rose-50 border border-rose-200 p-2.5 rounded-lg mb-3">{error}</p> : null}
+
         <AdminPostsTable
           posts={data.posts}
           total={data.meta.total}
@@ -271,7 +295,6 @@ function BlogList({ user }: BlogListProps) {
           viewCounts={data.viewCounts}
         />
       </section>
-
     </div>
   );
 }
@@ -283,8 +306,9 @@ export default function AdminBlogPage() {
       description="Search, filter, and manage editorial content."
       actions={(user) =>
         user.permissions.includes('content:edit') ? (
-          <Link href="/admin/blog/new" className="v2-btn v2-btn-primary">
-            + New post
+          <Link href="/admin/blog/new" className="v2-btn v2-btn-primary inline-flex items-center gap-1.5">
+            <Plus className="w-4 h-4" />
+            <span>New post</span>
           </Link>
         ) : null
       }

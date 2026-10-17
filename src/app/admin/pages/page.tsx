@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ExternalLink, PenSquare } from 'lucide-react';
+
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { filterAndSortPages, type PagesSortBy, type PagesStatusFilter } from '@/features/cms/adminPagesList';
@@ -129,7 +131,7 @@ function PagesList({ user }: PagesListProps) {
       ) : null}
 
       <section className="admin-card">
-        <div className="admin-filter-bar">
+        <div className="admin-filter-bar mb-4">
           <label>
             Search
             <input
@@ -166,23 +168,45 @@ function PagesList({ user }: PagesListProps) {
           </label>
         </div>
 
-        <div className="admin-inline-header" style={{ marginTop: 12 }}>
-          <p className="admin-subtle">{selectedIds.length} selected</p>
-          <div className="admin-actions">
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkPublishState(true)}>
-              Publish selected
-            </button>
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending || !canPublish} onClick={() => void applyBulkPublishState(false)}>
-              Move selected to draft
-            </button>
-            <button type="button" disabled={selectedIds.length === 0 || bulkPending} onClick={() => setSelectedIds([])}>
-              Clear selection
-            </button>
+        {selectedIds.length > 0 ? (
+          <div className="admin-bulk-bar flex flex-wrap items-center justify-between gap-3 p-3 bg-blue-50/80 border border-blue-200/80 rounded-xl mb-4">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm text-blue-900">{selectedIds.length} selected</span>
+              <span className="text-xs text-blue-700">of {pages.length} pages</span>
+            </div>
+            <div className="admin-actions">
+              <button
+                type="button"
+                disabled={bulkPending || !canPublish}
+                onClick={() => void applyBulkPublishState(true)}
+              >
+                Publish selected
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending || !canPublish}
+                onClick={() => void applyBulkPublishState(false)}
+              >
+                Move selected to draft
+              </button>
+              <button
+                type="button"
+                disabled={bulkPending}
+                onClick={() => setSelectedIds([])}
+              >
+                Clear selection
+              </button>
+            </div>
           </div>
-        </div>
-        {!canPublish ? <p className="admin-subtle">Your role can review pages but cannot change publication status.</p> : null}
-        {notice ? <p className="admin-subtle">{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
+        ) : (
+          <div className="flex items-center justify-between text-xs text-slate-500 py-1 mb-3">
+            <span>{visiblePages.length} {visiblePages.length === 1 ? 'page' : 'pages'} (of {pages.length} total)</span>
+          </div>
+        )}
+
+        {!canPublish ? <p className="admin-subtle text-xs mb-2">Your role can review pages but cannot change publication status.</p> : null}
+        {notice ? <p className="admin-subtle text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg mb-3">{notice}</p> : null}
+        {error ? <p className="error text-sm text-rose-700 bg-rose-50 border border-rose-200 p-2.5 rounded-lg mb-3">{error}</p> : null}
 
         <div className="admin-table-wrap">
           <table className="admin-table">
@@ -207,7 +231,7 @@ function PagesList({ user }: PagesListProps) {
                 <th>Status</th>
                 <th>Updated</th>
                 <th>Views</th>
-                <th />
+                <th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -237,24 +261,48 @@ function PagesList({ user }: PagesListProps) {
                       />
                     </td>
                     <td>
-                      <strong>{page.navLabel}</strong>
-                      <span className="admin-subtle">{page.title}</span>
+                      <strong className="text-slate-900">{page.navLabel}</strong>
+                      <span className="admin-subtle text-xs">{page.title}</span>
                     </td>
-                    <td>/{page.seo.slug || ''}</td>
                     <td>
-                      <span className={`admin-chip ${chipClass}`}>{publicationLabel}</span>
+                      <code className="text-[11px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
+                        /{page.seo.slug || page.id}
+                      </code>
                     </td>
-                    <td>{new Date(page.updatedAt).toLocaleDateString()}</td>
-                    <td>{(viewCounts[page.id === 'home' ? '/' : `/${page.seo.slug || page.id}`] ?? 0).toLocaleString() || '—'}</td>
                     <td>
-                      <Link href={`/admin/pages/${page.id}`}>Edit</Link>
+                      <span className={`admin-chip ${chipClass} inline-flex items-center gap-1.5`}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-current opacity-75" />
+                        {publicationLabel}
+                      </span>
+                    </td>
+                    <td className="text-slate-600 text-sm">{new Date(page.updatedAt).toLocaleDateString()}</td>
+                    <td className="text-slate-600 text-sm">{(viewCounts[page.id === 'home' ? '/' : `/${page.seo.slug || page.id}`] ?? 0).toLocaleString() || '—'}</td>
+                    <td className="text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <Link
+                          href={`/admin/pages/${page.id}`}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                        >
+                          <PenSquare className="w-3.5 h-3.5" />
+                          <span>Edit</span>
+                        </Link>
+                        <a
+                          href={page.id === 'home' ? '/' : `/${page.seo.slug || page.id}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          title="View live page"
+                          className="p-1 text-slate-400 hover:text-slate-700 rounded transition-colors"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 );
               })}
               {visiblePages.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="admin-subtle">
+                  <td colSpan={7} className="admin-subtle py-8 text-center">
                     No pages match the current filters. Clear filters to see the full landing-page set.
                   </td>
                 </tr>
@@ -263,7 +311,6 @@ function PagesList({ user }: PagesListProps) {
           </table>
         </div>
       </section>
-
     </div>
   );
 }

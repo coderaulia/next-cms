@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Clock, Laptop, LogOut, ShieldCheck, Trash2, User } from 'lucide-react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
@@ -33,37 +34,83 @@ function formatTimeAgo(dateStr: string): string {
   return `${diffDays}d ago`;
 }
 
-function SessionCard({ session, onRevoke, revoking }: { session: SessionInfo; onRevoke: (id: string) => void; revoking: boolean }) {
+function SessionCard({
+  session,
+  onRevoke,
+  revoking
+}: {
+  session: SessionInfo;
+  onRevoke: (id: string) => void;
+  revoking: boolean;
+}) {
   const expiresDate = new Date(session.expiresAt);
   const createdDate = new Date(session.createdAt);
   const isExpired = expiresDate < new Date();
 
   return (
-    <article className="admin-card">
-      <div className="admin-session-header">
-        <div className="admin-session-user">
-          <span className="admin-session-avatar">{session.userDisplayName.slice(0, 2).toUpperCase()}</span>
+    <article
+      className={`p-4 rounded-2xl border transition-all ${
+        session.isCurrent ? 'bg-blue-50/40 border-blue-200' : 'bg-white border-slate-200'
+      }`}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm shrink-0">
+            {session.userDisplayName.slice(0, 2).toUpperCase()}
+          </div>
           <div>
-            <strong>{session.userDisplayName}</strong>
-            <span className="admin-subtle">{session.userEmail}</span>
+            <div className="flex items-center gap-2">
+              <strong className="text-slate-900 text-sm">{session.userDisplayName}</strong>
+              {session.isCurrent ? (
+                <span className="admin-chip admin-chip-success inline-flex items-center gap-1 text-[10px]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
+                  current device
+                </span>
+              ) : null}
+            </div>
+            <span className="admin-subtle text-xs block">{session.userEmail}</span>
           </div>
         </div>
-        <div className="admin-session-badges">
-          {session.isCurrent ? <span className="admin-chip admin-chip-success">current session</span> : null}
-          <span className={`admin-chip ${isExpired ? 'admin-chip-danger' : 'admin-chip-muted'}`}>
+
+        <div className="flex items-center gap-2">
+          <span
+            className={`admin-chip ${
+              isExpired ? 'admin-chip-danger' : 'admin-chip-muted'
+            } inline-flex items-center gap-1.5 text-[10px]`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-current opacity-75" />
             {isExpired ? 'expired' : `expires ${expiresDate.toLocaleDateString()}`}
           </span>
         </div>
       </div>
-      <div className="admin-session-meta">
-        <span>Created {createdDate.toLocaleString()}</span>
-        <span>Lasts {formatTimeAgo(session.createdAt)}</span>
-        <span>Session ID: {session.id.slice(0, 8)}...</span>
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center gap-1">
+          <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <span>Active for {formatTimeAgo(session.createdAt)}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <Laptop className="w-3.5 h-3.5 text-slate-400" />
+          <span>Created {createdDate.toLocaleDateString()}</span>
+        </div>
+        <div>
+          <span className="text-slate-400">ID: </span>
+          <code className="text-[11px] font-mono bg-slate-100 text-slate-700 px-1 py-0.5 rounded border border-slate-200">
+            {session.id.slice(0, 8)}...
+          </code>
+        </div>
       </div>
+
       {!session.isCurrent && (
-        <div className="admin-actions">
-          <button type="button" disabled={revoking} onClick={() => onRevoke(session.id)}>
-            {revoking ? 'Revoking...' : 'Revoke session'}
+        <div className="mt-3 pt-2 border-t border-slate-100 flex justify-end">
+          <button
+            type="button"
+            disabled={revoking}
+            onClick={() => onRevoke(session.id)}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl text-rose-600 hover:bg-rose-50 border border-rose-200 transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>{revoking ? 'Revoking...' : 'Revoke session'}</span>
           </button>
         </div>
       )}
@@ -111,7 +158,7 @@ function SessionsManager({ user }: SessionsManagerProps) {
   }, [canManageTeam]);
 
   const handleRevoke = async (sessionId: string) => {
-    if (!confirm('Revoke this session? The user will be logged out immediately.')) return;
+    if (!confirm('Revoke this session? The user will be logged out on that device immediately.')) return;
 
     setRevokingId(sessionId);
     setError('');
@@ -164,55 +211,91 @@ function SessionsManager({ user }: SessionsManagerProps) {
 
   return (
     <div className="admin-form-wrap">
+      {/* Overview Card */}
       <section className="admin-card">
-        <div className="admin-inline-header">
-          <h2>Active sessions</h2>
-          <span className="admin-subtle">{sessions.length} sessions</span>
-        </div>
-        <p className="admin-subtle">
-          Sessions expire automatically after 7 days. Revoke sessions to force logout on specific devices.
-        </p>
-        <div className="admin-actions">
-          <button type="button" className="admin-danger-btn" disabled={signingOutAll} onClick={handleSignOutAllDevices}>
-            {signingOutAll ? 'Signing out...' : 'Sign out all devices'}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-blue-600" />
+              <h2 className="m-0 text-lg font-bold text-slate-900">Active Admin Sessions</h2>
+              <span className="admin-chip admin-chip-muted text-xs font-semibold">
+                {sessions.length} active
+              </span>
+            </div>
+            <p className="admin-subtle text-xs mt-1">
+              Sessions automatically expire after 7 days. Revoke individual sessions to invalidate lost or stale devices.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-50 transition-colors"
+            disabled={signingOutAll}
+            onClick={handleSignOutAllDevices}
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{signingOutAll ? 'Signing out...' : 'Sign out all devices'}</span>
           </button>
         </div>
-        {notice ? <p className="admin-success">{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
+
+        {notice ? <p className="admin-subtle text-xs text-emerald-700 mt-3 p-2 bg-emerald-50 rounded-lg border border-emerald-200">{notice}</p> : null}
+        {error ? <p className="error text-xs text-rose-700 mt-3 p-2 bg-rose-50 rounded-lg border border-rose-200">{error}</p> : null}
       </section>
 
+      {/* Your Current Session */}
       {currentUserSessions.length > 0 ? (
         <section className="admin-card">
-          <h3>Your current sessions</h3>
-          <div className="admin-session-list">
+          <div className="flex items-center gap-2 mb-3">
+            <User className="w-4 h-4 text-blue-600" />
+            <h3 className="m-0 text-sm font-bold text-slate-900">Your Current Session</h3>
+          </div>
+          <div className="space-y-3">
             {currentUserSessions.map((session) => (
-              <SessionCard key={session.id} session={session} onRevoke={handleRevoke} revoking={revokingId === session.id} />
+              <SessionCard
+                key={session.id}
+                session={session}
+                onRevoke={handleRevoke}
+                revoking={revokingId === session.id}
+              />
             ))}
           </div>
         </section>
       ) : null}
 
-      {otherSessions.length > 0 ? (
-        <section className="admin-card">
-          <h3>Other active sessions</h3>
-          <div className="admin-session-list">
+      {/* Other Active Sessions */}
+      <section className="admin-card">
+        <div className="flex items-center gap-2 mb-3">
+          <Laptop className="w-4 h-4 text-slate-600" />
+          <h3 className="m-0 text-sm font-bold text-slate-900">
+            Other Active Sessions ({otherSessions.length})
+          </h3>
+        </div>
+
+        {otherSessions.length > 0 ? (
+          <div className="space-y-3">
             {otherSessions.map((session) => (
-              <SessionCard key={session.id} session={session} onRevoke={handleRevoke} revoking={revokingId === session.id} />
+              <SessionCard
+                key={session.id}
+                session={session}
+                onRevoke={handleRevoke}
+                revoking={revokingId === session.id}
+              />
             ))}
           </div>
-        </section>
-      ) : (
-        <section className="admin-card">
-          <p className="admin-subtle">No other active sessions found.</p>
-        </section>
-      )}
+        ) : (
+          <div className="flex flex-col items-center justify-center py-8 text-center bg-slate-50 rounded-xl border border-slate-200">
+            <ShieldCheck className="w-8 h-8 text-emerald-600 mb-2" />
+            <p className="admin-subtle text-xs m-0">No other devices are currently logged in to this workspace.</p>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
 
 export default function AdminSessionsPage() {
   return (
-    <AdminShell title="Sessions" description="Manage active admin sessions and force logout.">
+    <AdminShell title="Sessions" description="Manage active admin sessions and enforce security across devices.">
       {(user) => <SessionsManager user={user} />}
     </AdminShell>
   );

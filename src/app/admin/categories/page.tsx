@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { FolderTree, PenSquare, Plus, Search, Tag, Trash2 } from 'lucide-react';
 import { csrfFetch } from '@/lib/clientCsrf';
 
 import { AdminShell } from '@/components/AdminShell';
@@ -64,6 +65,11 @@ function CategoriesManager() {
   };
 
   const handleSave = async () => {
+    if (!form.name.trim()) {
+      setError('Category name is required.');
+      return;
+    }
+
     setSaving(true);
     setNotice('');
     setError('');
@@ -72,6 +78,7 @@ function CategoriesManager() {
     const endpoint = form.id ? `/api/admin/categories/${form.id}` : '/api/admin/categories';
     const payload = {
       ...form,
+      slug: form.slug.trim() || form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
       id: form.id || crypto.randomUUID()
     };
 
@@ -90,12 +97,12 @@ function CategoriesManager() {
 
     const body = (await response.json()) as { category: Category };
     setForm(body.category);
-    setNotice(form.id ? 'Category updated.' : 'Category created.');
+    setNotice(form.id ? 'Category updated successfully.' : 'Category created successfully.');
     await load();
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this category? Posts using it will be updated.')) return;
+    if (!confirm('Delete this category? Posts using it will have the category unassigned.')) return;
 
     const response = await csrfFetch(`/api/admin/categories/${id}`, {
       method: 'DELETE'
@@ -110,7 +117,7 @@ function CategoriesManager() {
       resetForm();
     }
 
-    setNotice('Category deleted.');
+    setNotice('Category deleted successfully.');
     await load();
   };
 
@@ -118,98 +125,194 @@ function CategoriesManager() {
 
   return (
     <div className="admin-form-wrap">
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h2>{form.id ? 'Edit category' : 'New category'}</h2>
-          <button type="button" onClick={resetForm} className="v2-btn v2-btn-secondary">
-            New category
-          </button>
-        </div>
-        <div className="admin-grid-2">
-          <label>
-            Name
-            <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} />
-          </label>
-          <label>
-            Slug
-            <input value={form.slug} onChange={(event) => setForm({ ...form, slug: event.target.value })} />
-          </label>
-        </div>
-        <label>
-          Description
-          <textarea
-            rows={4}
-            value={form.description}
-            onChange={(event) => setForm({ ...form, description: event.target.value })}
-          />
-        </label>
-        <div className="admin-actions">
-          <button type="button" onClick={handleSave} disabled={saving}>
-            {saving ? 'Saving...' : form.id ? 'Update category' : 'Create category'}
-          </button>
-          {form.id ? (
-            <button type="button" onClick={() => handleDelete(form.id)}>
-              Delete category
-            </button>
-          ) : null}
-        </div>
-        {notice ? <p>{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
-      </section>
+      {/* 2-Column Workspace: Form on Left, Table on Right */}
+      <div className="admin-workspace-grid grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Category Editor Form Card */}
+        <section className="admin-card lg:col-span-5 sticky top-6">
+          <div className="admin-inline-header pb-2 border-b border-slate-100">
+            <div className="flex items-center gap-2">
+              {form.id ? <PenSquare className="w-4 h-4 text-blue-600" /> : <Plus className="w-4 h-4 text-blue-600" />}
+              <h2 className="m-0 text-base font-bold text-slate-900">
+                {form.id ? 'Edit category' : 'New category'}
+              </h2>
+            </div>
+            {form.id ? (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="text-xs text-slate-500 hover:text-slate-800"
+              >
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
 
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h2>Categories</h2>
-          <label>
-            Search
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search categories" />
-          </label>
-        </div>
-        <div className="admin-table-wrap">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Slug</th>
-                <th>Description</th>
-                <th>Updated</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((category) => (
-                <tr key={category.id}>
-                  <td>
-                    <strong>{category.name}</strong>
-                  </td>
-                  <td>
-                    <span className="admin-chip admin-chip-muted">{category.slug}</span>
-                  </td>
-                  <td>{category.description || 'No description'}</td>
-                  <td>{new Date(category.updatedAt).toLocaleDateString()}</td>
-                  <td>
-                    <div className="admin-actions">
-                      <button type="button" onClick={() => setForm(category)}>
-                        Edit
-                      </button>
-                      <button type="button" onClick={() => handleDelete(category.id)}>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {filtered.length === 0 ? (
+          <p className="admin-subtle text-xs mt-2 mb-4">
+            Categories organize blog posts and can be filtered by readers on the public site.
+          </p>
+
+          <div className="space-y-3">
+            <label className="text-xs font-semibold text-slate-700">
+              Name
+              <input
+                value={form.name}
+                onChange={(event) => {
+                  const val = event.target.value;
+                  setForm((prev) => ({
+                    ...prev,
+                    name: val,
+                    slug: prev.id ? prev.slug : val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+                  }));
+                }}
+                placeholder="e.g. Design Systems"
+                className="mt-1"
+              />
+            </label>
+
+            <label className="text-xs font-semibold text-slate-700">
+              Slug
+              <input
+                value={form.slug}
+                onChange={(event) => setForm({ ...form, slug: event.target.value })}
+                placeholder="e.g. design-systems"
+                className="mt-1 font-mono text-xs"
+              />
+            </label>
+
+            <label className="text-xs font-semibold text-slate-700">
+              Description
+              <textarea
+                rows={3}
+                value={form.description}
+                onChange={(event) => setForm({ ...form, description: event.target.value })}
+                placeholder="Brief summary of topics covered in this category"
+                className="mt-1 text-xs"
+              />
+            </label>
+          </div>
+
+          <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="v2-btn v2-btn-primary flex-1 text-xs py-2 inline-flex items-center justify-center gap-1.5"
+            >
+              <Tag className="w-3.5 h-3.5" />
+              <span>{saving ? 'Saving...' : form.id ? 'Update category' : 'Create category'}</span>
+            </button>
+            {form.id ? (
+              <button
+                type="button"
+                onClick={() => void handleDelete(form.id)}
+                className="px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-rose-200 text-xs font-semibold transition-colors"
+                title="Delete category"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            ) : null}
+          </div>
+
+          {notice ? <p className="admin-subtle text-xs text-emerald-700 mt-2">{notice}</p> : null}
+          {error ? <p className="error text-xs text-rose-700 mt-2">{error}</p> : null}
+        </section>
+
+        {/* Right Column: Categories List Table Card */}
+        <section className="admin-card lg:col-span-7">
+          <div className="admin-inline-header flex-wrap gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <FolderTree className="w-4 h-4 text-blue-600" />
+              <h2 className="m-0 text-base font-bold text-slate-900">Categories</h2>
+              <span className="admin-chip admin-chip-muted text-[10px] font-semibold">
+                {categories.length}
+              </span>
+            </div>
+
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search categories..."
+                className="pl-8 text-xs py-1.5 w-48"
+              />
+            </div>
+          </div>
+
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
                 <tr>
-                  <td colSpan={5} className="admin-subtle">
-                    No categories found.
-                  </td>
+                  <th>Name</th>
+                  <th>Slug</th>
+                  <th>Description</th>
+                  <th>Updated</th>
+                  <th className="text-right">Actions</th>
                 </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {filtered.map((category) => {
+                  const isSelected = form.id === category.id;
+
+                  return (
+                    <tr key={category.id} className={isSelected ? 'bg-blue-50/40' : ''}>
+                      <td>
+                        <strong className="text-slate-900">{category.name}</strong>
+                      </td>
+                      <td>
+                        <code className="text-[11px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
+                          /{category.slug}
+                        </code>
+                      </td>
+                      <td className="text-slate-600 text-xs max-w-xs">
+                        <span className="line-clamp-2">{category.description || '—'}</span>
+                      </td>
+                      <td className="text-slate-600 text-xs whitespace-nowrap">
+                        {new Date(category.updatedAt).toLocaleDateString()}
+                      </td>
+                      <td className="text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setForm(category);
+                              setError('');
+                              setNotice('');
+                            }}
+                            className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border transition-colors ${
+                              isSelected
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            <PenSquare className="w-3 h-3" />
+                            <span>{isSelected ? 'Editing' : 'Edit'}</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void handleDelete(category.id)}
+                            className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
+                            title="Delete category"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="admin-subtle py-8 text-center">
+                      No categories found. Create a category using the form on the left.
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

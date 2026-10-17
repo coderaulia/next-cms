@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowRight, ArrowRightLeft, PenSquare, Plus, Search, Trash2 } from 'lucide-react';
 
 import { AdminShell } from '@/components/AdminShell';
 import type { AdminSessionUser } from '@/features/cms/adminTypes';
@@ -30,52 +31,12 @@ const emptyForm: RedirectForm = {
   type: '302'
 };
 
-function RedirectCard({
-  redirect,
-  onEdit,
-  onDelete
-}: {
-  redirect: Redirect;
-  onEdit: (redirect: Redirect) => void;
-  onDelete: (id: string) => void;
-}) {
-  const typeLabels: Record<string, string> = {
-    '301': 'Permanent',
-    '302': 'Temporary',
-    '307': 'Temporary (POST)',
-    '308': 'Permanent (POST)'
-  };
-
-  return (
-    <div className="redirect-card">
-      <div className="redirect-card-paths">
-        <div className="redirect-from">
-          <span className="redirect-label">From</span>
-          <code>{redirect.fromPath}</code>
-        </div>
-        <div className="redirect-arrow">→</div>
-        <div className="redirect-to">
-          <span className="redirect-label">To</span>
-          <code>{redirect.toPath}</code>
-        </div>
-      </div>
-      <div className="redirect-card-meta">
-        <span className="admin-chip admin-chip-muted">{typeLabels[redirect.type] || redirect.type}</span>
-        <span className="admin-subtle">
-          Updated {new Date(redirect.updatedAt).toLocaleDateString()}
-        </span>
-      </div>
-      <div className="redirect-card-actions">
-        <button type="button" onClick={() => onEdit(redirect)}>
-          Edit
-        </button>
-        <button type="button" onClick={() => onDelete(redirect.id)} className="danger">
-          Delete
-        </button>
-      </div>
-    </div>
-  );
-}
+const typeLabels: Record<string, string> = {
+  '301': '301 Permanent',
+  '302': '302 Temporary',
+  '307': '307 Temporary (POST)',
+  '308': '308 Permanent (POST)'
+};
 
 type RedirectsManagerProps = {
   user: AdminSessionUser;
@@ -84,6 +45,7 @@ type RedirectsManagerProps = {
 function RedirectsManager({ user }: RedirectsManagerProps) {
   const [redirects, setRedirects] = useState<Redirect[]>([]);
   const [form, setForm] = useState<RedirectForm>(emptyForm);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -115,6 +77,14 @@ function RedirectsManager({ user }: RedirectsManagerProps) {
 
     void loadRedirects();
   }, [canManage]);
+
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    if (!needle) return redirects;
+    return redirects.filter(
+      (r) => r.fromPath.toLowerCase().includes(needle) || r.toPath.toLowerCase().includes(needle)
+    );
+  }, [redirects, query]);
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -150,8 +120,8 @@ function RedirectsManager({ user }: RedirectsManagerProps) {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        fromPath: form.fromPath,
-        toPath: form.toPath,
+        fromPath: form.fromPath.trim(),
+        toPath: form.toPath.trim(),
         type: form.type
       })
     });
@@ -164,7 +134,7 @@ function RedirectsManager({ user }: RedirectsManagerProps) {
       return;
     }
 
-    setNotice(form.id ? 'Redirect updated.' : 'Redirect created.');
+    setNotice(form.id ? 'Redirect updated successfully.' : 'Redirect created successfully.');
     resetForm();
     await loadRedirects();
   };
@@ -185,7 +155,7 @@ function RedirectsManager({ user }: RedirectsManagerProps) {
       return;
     }
 
-    setNotice('Redirect deleted.');
+    setNotice('Redirect deleted successfully.');
     if (form.id === id) {
       resetForm();
     }
@@ -204,88 +174,192 @@ function RedirectsManager({ user }: RedirectsManagerProps) {
 
   return (
     <div className="admin-form-wrap">
-      <section className="admin-card">
-        <h2>Manage Redirects</h2>
-        <p className="admin-subtle">
-          Create permanent (301) or temporary (302) redirects to handle changed URLs, moved content, or branding updates.
-        </p>
-      </section>
+      {/* 2-Column Workspace Grid */}
+      <div className="admin-workspace-grid grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Form Card */}
+        <section className="admin-card lg:col-span-5 sticky top-6">
+          <div className="admin-inline-header pb-2 border-b border-slate-100">
+            <div className="flex items-center gap-2">
+              {form.id ? <PenSquare className="w-4 h-4 text-blue-600" /> : <Plus className="w-4 h-4 text-blue-600" />}
+              <h2 className="m-0 text-base font-bold text-slate-900">
+                {form.id ? 'Edit redirect' : 'Add new redirect'}
+              </h2>
+            </div>
+            {form.id ? (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="text-xs text-slate-500 hover:text-slate-800"
+              >
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
 
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h3>{form.id ? 'Edit redirect' : 'Add new redirect'}</h3>
-          {form.id && (
-            <button type="button" className="v2-btn v2-btn-secondary" onClick={resetForm}>
-              Cancel edit
-            </button>
-          )}
-        </div>
+          <p className="admin-subtle text-xs mt-2 mb-4">
+            Forward changed URLs, migrated assets, or custom shortlinks permanently or temporarily.
+          </p>
 
-        <div className="redirect-form">
-          <div className="redirect-form-row">
-            <label>
+          <div className="space-y-3">
+            <label className="text-xs font-semibold text-slate-700">
               From path
               <input
                 type="text"
                 value={form.fromPath}
                 onChange={(e) => setForm((current) => ({ ...current, fromPath: e.target.value }))}
-                placeholder="/old-page"
+                placeholder="/old-page-path"
+                className="mt-1 font-mono text-xs"
               />
             </label>
-            <label>
-              To path
+
+            <label className="text-xs font-semibold text-slate-700">
+              To path or URL
               <input
                 type="text"
                 value={form.toPath}
                 onChange={(e) => setForm((current) => ({ ...current, toPath: e.target.value }))}
-                placeholder="/new-page"
+                placeholder="/new-page-path or https://..."
+                className="mt-1 font-mono text-xs"
               />
             </label>
-            <label>
-              Type
+
+            <label className="text-xs font-semibold text-slate-700">
+              Redirect type
               <select
                 value={form.type}
                 onChange={(e) => setForm((current) => ({ ...current, type: e.target.value }))}
+                className="mt-1 text-xs"
               >
-                <option value="301">301 - Permanent</option>
-                <option value="302">302 - Temporary</option>
-                <option value="307">307 - Temporary (POST)</option>
-                <option value="308">308 - Permanent (POST)</option>
+                <option value="301">301 - Permanent (SEO transfer)</option>
+                <option value="302">302 - Temporary (standard)</option>
+                <option value="307">307 - Temporary (preserve POST)</option>
+                <option value="308">308 - Permanent (preserve POST)</option>
               </select>
             </label>
           </div>
 
-          <div className="admin-actions">
-            <button type="button" onClick={() => void handleSave()} disabled={saving}>
-              {saving ? 'Saving...' : form.id ? 'Update redirect' : 'Create redirect'}
+          <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={() => void handleSave()}
+              disabled={saving}
+              className="v2-btn v2-btn-primary flex-1 text-xs py-2 inline-flex items-center justify-center gap-1.5"
+            >
+              <ArrowRightLeft className="w-3.5 h-3.5" />
+              <span>{saving ? 'Saving...' : form.id ? 'Update redirect' : 'Create redirect'}</span>
             </button>
+            {form.id ? (
+              <button
+                type="button"
+                onClick={() => void handleDelete(form.id!)}
+                className="px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-rose-200 text-xs font-semibold transition-colors"
+                title="Delete redirect"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            ) : null}
           </div>
-        </div>
 
-        {notice ? <p className="admin-success">{notice}</p> : null}
-        {error ? <p className="error">{error}</p> : null}
-      </section>
+          {notice ? <p className="admin-subtle text-xs text-emerald-700 mt-2">{notice}</p> : null}
+          {error ? <p className="error text-xs text-rose-700 mt-2">{error}</p> : null}
+        </section>
 
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h3>Active redirects ({redirects.length})</h3>
-        </div>
+        {/* Right Column: Active Redirects Table Card */}
+        <section className="admin-card lg:col-span-7">
+          <div className="admin-inline-header flex-wrap gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <ArrowRightLeft className="w-4 h-4 text-blue-600" />
+              <h2 className="m-0 text-base font-bold text-slate-900">Active Redirects</h2>
+              <span className="admin-chip admin-chip-muted text-[10px] font-semibold">
+                {redirects.length}
+              </span>
+            </div>
 
-        {redirects.length === 0 ? (
-          <p className="admin-subtle">No redirects configured yet.</p>
-        ) : (
-          <div className="redirect-list">
-            {redirects.map((redirect) => (
-              <RedirectCard
-                key={redirect.id}
-                redirect={redirect}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search paths..."
+                className="pl-8 text-xs py-1.5 w-48"
               />
-            ))}
+            </div>
           </div>
-        )}
-      </section>
+
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Route mapping</th>
+                  <th>Type</th>
+                  <th>Updated</th>
+                  <th className="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((redirect) => {
+                  const isSelected = form.id === redirect.id;
+
+                  return (
+                    <tr key={redirect.id} className={isSelected ? 'bg-blue-50/40' : ''}>
+                      <td>
+                        <div className="flex flex-wrap items-center gap-2 text-xs">
+                          <code className="text-[11px] font-mono bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded border border-slate-200">
+                            {redirect.fromPath}
+                          </code>
+                          <ArrowRight className="w-3 h-3 text-slate-400 shrink-0" />
+                          <code className="text-[11px] font-mono bg-blue-50 text-blue-800 px-1.5 py-0.5 rounded border border-blue-200">
+                            {redirect.toPath}
+                          </code>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="admin-chip admin-chip-muted text-[10px]">
+                          {typeLabels[redirect.type] || redirect.type}
+                        </span>
+                      </td>
+                      <td className="text-slate-600 text-xs whitespace-nowrap">
+                        {new Date(redirect.updatedAt).toLocaleDateString()}
+                      </td>
+                      <td className="text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleEdit(redirect)}
+                            className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border transition-colors ${
+                              isSelected
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            <PenSquare className="w-3 h-3" />
+                            <span>{isSelected ? 'Editing' : 'Edit'}</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void handleDelete(redirect.id)}
+                            className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
+                            title="Delete redirect"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="admin-subtle py-8 text-center">
+                      No redirects found. Configure route redirects using the form on the left.
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

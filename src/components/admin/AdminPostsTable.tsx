@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PenSquare } from 'lucide-react';
 
 import { getBlogPostPublicationLabel } from '@/features/cms/publicationState';
 import type { BlogPost } from '@/features/cms/types';
@@ -48,13 +49,13 @@ export function AdminPostsTable({
                   onChange={(event) => onToggleSelectAll?.(event.target.checked)}
                 />
               </th>
-              <th>Title</th>
+              <th>Post</th>
               <th>Author</th>
               <th>Categories</th>
               <th>Date</th>
               <th>Status</th>
               <th>Views</th>
-              <th />
+              <th className="text-right">Actions</th>
             </tr>
           </thead>
           {hasPosts ? (
@@ -70,20 +71,25 @@ export function AdminPostsTable({
                     />
                   </td>
                   <td>
-                    <strong>{post.title}</strong>
-                    <span className="admin-subtle">ID: {post.id.slice(0, 8)}</span>
+                    <strong className="text-slate-900">{post.title}</strong>
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                      <code className="text-[11px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
+                        /{post.seo.slug}
+                      </code>
+                      <span className="admin-subtle text-[11px]">ID: {post.id.slice(0, 8)}</span>
+                    </div>
                   </td>
-                  <td>{post.author}</td>
+                  <td className="text-slate-600 text-sm">{post.author}</td>
                   <td>
                     <div className="admin-actions">
                       {post.tags.map((tag) => (
-                        <span className="admin-chip admin-chip-muted" key={tag}>
+                        <span className="admin-chip admin-chip-muted text-[11px]" key={tag}>
                           {tag}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td title={`Last updated: ${new Date(post.updatedAt).toLocaleDateString()}`}>
+                  <td className="text-slate-600 text-sm" title={`Last updated: ${new Date(post.updatedAt).toLocaleDateString()}`}>
                     {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '—'}
                   </td>
                   <td>
@@ -96,15 +102,22 @@ export function AdminPostsTable({
                             ? 'admin-chip-warning'
                             : 'admin-chip-muted';
                       return (
-                        <span className={`admin-chip ${chipClass}`}>
+                        <span className={`admin-chip ${chipClass} inline-flex items-center gap-1.5`}>
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-75" />
                           {publicationLabel}
                         </span>
                       );
                     })()}
                   </td>
-                  <td>{viewCounts?.[`/blog/${post.seo.slug}`]?.toLocaleString() ?? '—'}</td>
-                  <td>
-                    <Link href={`/admin/blog/${post.id}`}>Edit</Link>
+                  <td className="text-slate-600 text-sm">{viewCounts?.[`/blog/${post.seo.slug}`]?.toLocaleString() ?? '—'}</td>
+                  <td className="text-right">
+                    <Link
+                      href={`/admin/blog/${post.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                    >
+                      <PenSquare className="w-3.5 h-3.5" />
+                      <span>Edit</span>
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -112,7 +125,7 @@ export function AdminPostsTable({
           ) : (
             <tbody>
               <tr>
-                <td colSpan={8} className="admin-subtle">
+                <td colSpan={8} className="admin-subtle py-8 text-center">
                   No posts match the current filters. Clear filters or create the first post from the Posts screen.
                 </td>
               </tr>
