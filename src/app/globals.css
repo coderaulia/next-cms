@@ -1614,15 +1614,17 @@ button {
   font: inherit;
 }
 
-input:not([type="checkbox"]):not([type="radio"]),
-textarea,
-select,
-.admin-shell input:not([type="checkbox"]):not([type="radio"]),
-.admin-shell textarea,
-.admin-shell select,
-.admin-login input:not([type="checkbox"]):not([type="radio"]),
-.admin-login textarea,
-.admin-login select {
+:where(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .admin-shell input:not([type="checkbox"]):not([type="radio"]),
+  .admin-shell textarea,
+  .admin-shell select,
+  .admin-login input:not([type="checkbox"]):not([type="radio"]),
+  .admin-login textarea,
+  .admin-login select
+) {
   width: 100%;
   border: 1px solid #cbd5e1;
   border-radius: 9px;
@@ -1634,38 +1636,42 @@ select,
   box-sizing: border-box;
 }
 
-input:not([type="checkbox"]):not([type="radio"]):focus,
-textarea:focus,
-select:focus,
-.admin-shell input:not([type="checkbox"]):not([type="radio"]):focus,
-.admin-shell textarea:focus,
-.admin-shell select:focus,
-.admin-login input:not([type="checkbox"]):not([type="radio"]):focus,
-.admin-login textarea:focus,
-.admin-login select:focus {
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):focus,
+  textarea:focus,
+  select:focus,
+  .admin-shell input:not([type="checkbox"]):not([type="radio"]):focus,
+  .admin-shell textarea:focus,
+  .admin-shell select:focus,
+  .admin-login input:not([type="checkbox"]):not([type="radio"]):focus,
+  .admin-login textarea:focus,
+  .admin-login select:focus
+) {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-input[type="checkbox"],
-input[type="radio"],
-.admin-shell input[type="checkbox"],
-.admin-shell input[type="radio"],
-.admin-login input[type="checkbox"],
-.admin-login input[type="radio"] {
+:where(
+  input[type="checkbox"],
+  input[type="radio"],
+  .admin-shell input[type="checkbox"],
+  .admin-shell input[type="radio"],
+  .admin-login input[type="checkbox"],
+  .admin-login input[type="radio"]
+) {
   width: 16px;
   height: 16px;
   accent-color: #2563eb;
   cursor: pointer;
 }
 
-textarea {
+:where(textarea) {
   resize: vertical;
   min-height: 100px;
 }
 
-button {
+:where(button) {
   border: 0;
   border-radius: 9px;
   min-height: 38px;
@@ -1682,15 +1688,31 @@ button {
   gap: 8px;
 }
 
-button:hover {
+:where(button:hover) {
   background: #0f172a;
 }
 
-button:disabled {
+:where(button[class*="text-"]:not([class^="bg-"]):not([class*=" bg-"]):not([class*="v2-btn"]):not([class*="admin-action-btn"])) {
+  background: transparent;
+}
+
+:where(button[class*="border-"]:not([class^="bg-"]):not([class*=" bg-"]):not([class*="v2-btn"]):not([class*="admin-action-btn"])) {
+  background: #ffffff;
+}
+
+:where(button[class*="text-"]:not([class^="bg-"]):not([class*=" bg-"]):not([class*="v2-btn"]):not([class*="admin-action-btn"]):hover) {
+  background: #f1f5f9;
+}
+
+:where(button:disabled) {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+.admin-link-btn:has(svg)::after {
+  display: none;
 }
 
 .admin-chip {
