@@ -9,6 +9,8 @@ import { AdminLoading } from '@/components/admin/AdminLoading';
 import type { CmsContentRevisionSummary } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
 
+import { ArrowLeft, Clock, History, RotateCcw, User } from 'lucide-react';
+
 const PAGE_SIZE = 10;
 
 type RevisionsResponse = {
@@ -80,45 +82,68 @@ function SettingsRevisionsList() {
 
   return (
     <section className="admin-card">
-      <div className="admin-inline-header">
-        <h2>All settings revisions</h2>
+      <div className="admin-inline-header" style={{ alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <History size={20} className="text-blue-600" />
+          <div>
+            <h2 style={{ margin: 0 }}>All Settings Revisions</h2>
+            <p className="admin-subtle" style={{ margin: '2px 0 0' }}>
+              Restore previous configuration states or audit past setting changes.
+            </p>
+          </div>
+        </div>
         <div className="admin-actions" style={{ alignItems: 'center' }}>
-          <span className="admin-subtle">{total} entries</span>
-          <Link href="/admin/settings" className="v2-btn v2-btn-secondary">
-            Back to settings
+          <span className="admin-chip admin-chip-muted">{total} total revisions</span>
+          <Link href="/admin/settings" className="v2-btn v2-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <ArrowLeft size={15} />
+            <span>Back to settings</span>
           </Link>
         </div>
       </div>
 
-      {notice ? <p className="admin-subtle">{notice}</p> : null}
+      {notice ? <p className="admin-subtle" style={{ color: '#16a34a', fontWeight: 600 }}>{notice}</p> : null}
       {error ? <p className="admin-error-text">{error}</p> : null}
 
       {loading ? (
         <AdminLoading label="Loading revisions..." />
       ) : revisions.length === 0 ? (
-        <p className="admin-subtle">No settings revisions saved yet.</p>
+        <p className="admin-subtle" style={{ padding: '24px 0', textAlign: 'center' }}>No settings revisions saved yet.</p>
       ) : (
-        <ul className="admin-plain-list admin-revision-list">
+        <ul className="admin-plain-list admin-revision-list" style={{ marginTop: 16 }}>
           {revisions.map((revision) => (
-            <li key={revision.id}>
-              <div className="admin-revision-row">
-                <div>
-                  <strong>{revision.label}</strong>
-                  <span>{revision.summary}</span>
-                  <span>
-                    {new Date(revision.createdAt).toLocaleString()}
-                    {revision.userDisplayName ? ` | ${revision.userDisplayName}` : ''}
-                  </span>
+            <li key={revision.id} style={{ marginBottom: 12 }}>
+              <div className="admin-revision-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', background: 'var(--panel, #f8fafc)', border: '1px solid var(--line, #e2e8f0)', borderRadius: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <strong style={{ fontSize: '0.95rem' }}>{revision.label}</strong>
+                    <span className="admin-chip admin-chip-muted" style={{ fontSize: '0.72rem' }}>
+                      {revision.entityType}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-muted, #64748b)' }}>{revision.summary}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: '0.78rem', color: '#94a3b8', marginTop: 2 }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <Clock size={13} />
+                      {new Date(revision.createdAt).toLocaleString()}
+                    </span>
+                    {revision.userDisplayName ? (
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                        <User size={13} />
+                        {revision.userDisplayName}
+                      </span>
+                    ) : null}
+                  </div>
                 </div>
-                <AdminActionButton
-                  icon="history_edu"
-                  size="sm"
-                  variant="secondary"
+                <button
+                  type="button"
+                  className="v2-btn v2-btn-secondary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', padding: '6px 12px' }}
                   disabled={restoringId === revision.id}
                   onClick={() => void restoreRevision(revision.id)}
                 >
-                  {restoringId === revision.id ? 'Restoring...' : 'Restore'}
-                </AdminActionButton>
+                  <RotateCcw size={14} />
+                  <span>{restoringId === revision.id ? 'Restoring...' : 'Restore'}</span>
+                </button>
               </div>
             </li>
           ))}
@@ -126,7 +151,7 @@ function SettingsRevisionsList() {
       )}
 
       {totalPages > 1 ? (
-        <div className="admin-actions" style={{ marginTop: 16, alignItems: 'center' }}>
+        <div className="admin-actions" style={{ marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
           <AdminActionButton
             icon="chevron_left"
             size="sm"

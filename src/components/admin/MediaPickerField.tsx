@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AdminActionButton } from '@/components/admin/AdminActionButton';
 import type { MediaAsset } from '@/features/cms/types';
 import { csrfFetch } from '@/lib/clientCsrf';
+import { Check, Image as ImageIcon, Search, Trash2, Upload, X } from 'lucide-react';
 
 type MediaResponse = {
   mediaAssets: MediaAsset[];
@@ -220,7 +221,7 @@ function MediaAssetBrowser({
 
   return (
     <div className="admin-media-browser-wrap">
-      <div className="admin-actions">
+      <div className="admin-actions" style={{ alignItems: 'center' }}>
         <AdminActionButton
           icon={open ? 'close' : 'images'}
           size="sm"
@@ -229,15 +230,16 @@ function MediaAssetBrowser({
         >
           {open ? 'Hide library' : buttonLabel}
         </AdminActionButton>
-        <AdminActionButton
-          icon="upload"
-          size="sm"
-          variant="primary"
+        <button
+          type="button"
+          className="v2-btn v2-btn-primary"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', padding: '6px 12px' }}
           disabled={uploading}
           onClick={() => fileInputRef.current?.click()}
         >
-          {uploading ? 'Uploading...' : uploadLabel}
-        </AdminActionButton>
+          <Upload size={14} />
+          <span>{uploading ? 'Uploading...' : uploadLabel}</span>
+        </button>
         <input
           ref={fileInputRef}
           type="file"
@@ -247,30 +249,34 @@ function MediaAssetBrowser({
         />
       </div>
 
-      {status ? <p className="admin-subtle">{status}</p> : null}
-      {error ? <p className="admin-error-text">{error}</p> : null}
+      {status ? <p className="admin-subtle" style={{ color: '#16a34a', marginTop: 6 }}>{status}</p> : null}
+      {error ? <p className="admin-error-text" style={{ marginTop: 6 }}>{error}</p> : null}
 
       {open ? (
-        <div className="admin-media-browser">
-          <div className="admin-inline-header">
+        <div className="admin-media-browser" style={{ marginTop: 12, padding: 16, background: 'var(--panel, #f8fafc)', border: '1px solid var(--line, #e2e8f0)', borderRadius: 12 }}>
+          <div className="admin-inline-header" style={{ marginBottom: 12 }}>
             <div>
-              <h3 className="admin-section-heading">Media library</h3>
-              <p className="admin-subtle">Pick from uploaded images without copying URLs.</p>
+              <h3 className="admin-section-heading" style={{ margin: 0, fontSize: '0.95rem' }}>Media Library</h3>
+              <p className="admin-subtle" style={{ margin: '2px 0 0' }}>Select an uploaded image or upload a new one directly.</p>
             </div>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search images"
-            />
+            <div style={{ position: 'relative', width: 220 }}>
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search images..."
+                style={{ paddingLeft: 30 }}
+              />
+              <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            </div>
           </div>
 
           {loading ? <p className="admin-subtle">Loading media assets...</p> : null}
 
           {!loading && filteredAssets.length === 0 ? (
-            <p className="admin-subtle">No images match this search.</p>
+            <p className="admin-subtle" style={{ textAlign: 'center', padding: '20px 0' }}>No images match this search.</p>
           ) : null}
 
-          <div className="admin-media-grid">
+          <div className="admin-media-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 12 }}>
             {filteredAssets.map((asset) => {
               const active = selectedUrl === asset.url;
               return (
@@ -278,20 +284,37 @@ function MediaAssetBrowser({
                   key={asset.id}
                   type="button"
                   className={`admin-media-option ${active ? 'active' : ''}`}
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    padding: 6,
+                    borderRadius: 8,
+                    border: active ? '2px solid #2563eb' : '1px solid var(--line, #e2e8f0)',
+                    background: active ? '#eff6ff' : '#ffffff',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    overflow: 'hidden'
+                  }}
                   onClick={() => {
                     onSelect(asset);
                     setOpen(false);
                   }}
                 >
-                  <div className="admin-media-option-thumb">
-                    <img src={asset.url} alt={asset.altText || asset.title} />
+                  <div className="admin-media-option-thumb" style={{ width: '100%', height: 80, borderRadius: 6, overflow: 'hidden', background: '#f1f5f9' }}>
+                    <img src={asset.url} alt={asset.altText || asset.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
-                  <div>
-                    <strong>{asset.title}</strong>
-                    <span>{asset.altText || asset.url}</span>
+                  {active ? (
+                    <div style={{ position: 'absolute', top: 10, right: 10, background: '#2563eb', color: '#fff', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Check size={12} strokeWidth={3} />
+                    </div>
+                  ) : null}
+                  <div style={{ marginTop: 6, fontSize: '0.75rem', lineHeight: 1.3 }}>
+                    <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{asset.title}</strong>
                     {asset.width && asset.height ? (
-                      <span>
-                        {asset.width} x {asset.height} ({formatAspectRatio(asset.width, asset.height)})
+                      <span style={{ color: '#64748b', fontSize: '0.7rem' }}>
+                        {asset.width}×{asset.height} ({formatAspectRatio(asset.width, asset.height)})
                       </span>
                     ) : null}
                   </div>
@@ -346,11 +369,32 @@ export function MediaPickerField({
   }, [value]);
 
   return (
-    <div className="admin-media-field">
+    <div className="admin-media-field" style={{ position: 'relative' }}>
       <label>
-        {label}
-        <div className="admin-media-input-row">
-          <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} />
+        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+          <span>{label}</span>
+          {aspectRatioHint ? (
+            <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal' }}>
+              Ratio: {aspectRatioHint}
+            </span>
+          ) : null}
+        </span>
+        <div className="admin-media-input-row" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {value ? (
+            <div style={{ width: 38, height: 38, borderRadius: 6, overflow: 'hidden', border: '1px solid var(--line, #e2e8f0)', flexShrink: 0, background: '#f8fafc' }}>
+              <img src={value} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+          ) : (
+            <div style={{ width: 38, height: 38, borderRadius: 6, border: '1px dashed var(--line, #cbd5e1)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
+              <ImageIcon size={16} className="text-slate-400" />
+            </div>
+          )}
+          <input
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            placeholder={placeholder}
+            style={{ flex: 1 }}
+          />
           <MediaAssetBrowser
             buttonLabel={pickLabel}
             selectedUrl={value}
@@ -365,40 +409,40 @@ export function MediaPickerField({
             }}
           />
           {value ? (
-            <AdminActionButton icon="close" size="sm" variant="ghost" onClick={() => onChange('')}>
-              Remove image
-            </AdminActionButton>
+            <button
+              type="button"
+              className="v2-btn v2-btn-secondary"
+              style={{ padding: '6px 10px', color: '#ef4444', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+              title="Remove image"
+              onClick={() => onChange('')}
+            >
+              <X size={14} />
+            </button>
           ) : null}
         </div>
       </label>
 
-      {helperText ? <p className="admin-subtle">{helperText}</p> : null}
-      {aspectRatioHint ? <p className="admin-subtle">Recommended ratio: {aspectRatioHint}</p> : null}
+      {helperText ? <p className="admin-subtle" style={{ margin: '4px 0 0', fontSize: '0.78rem' }}>{helperText}</p> : null}
 
       {value ? (
-        <div className="admin-media-preview">
-          <img src={value} alt={altValue || previewAltText(value)} />
+        <div className="admin-media-preview" style={{ marginTop: 8, borderRadius: 8, overflow: 'hidden', border: '1px solid var(--line, #e2e8f0)', maxHeight: 180, background: '#f8fafc' }}>
+          <img src={value} alt={altValue || previewAltText(value)} style={{ maxHeight: 180, width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block' }} />
         </div>
       ) : null}
 
       {selectedAsset ? (
-        <div className="admin-media-meta">
-          <span>{selectedAsset.title}</span>
-          <span>{selectedAsset.altText || 'No alt text on the selected asset yet.'}</span>
+        <div className="admin-media-meta" style={{ display: 'flex', gap: 12, fontSize: '0.75rem', color: '#64748b', marginTop: 4, flexWrap: 'wrap' }}>
+          <strong>{selectedAsset.title}</strong>
           {selectedAsset.width && selectedAsset.height ? (
-            <span>
-              {selectedAsset.width} x {selectedAsset.height} ({formatAspectRatio(selectedAsset.width, selectedAsset.height)})
-            </span>
-          ) : (
-            <span>Stored dimensions are not available for this asset.</span>
-          )}
+            <span>{selectedAsset.width} × {selectedAsset.height} ({formatAspectRatio(selectedAsset.width, selectedAsset.height)})</span>
+          ) : null}
         </div>
       ) : null}
 
       {onAltChange ? (
-        <label>
+        <label style={{ marginTop: 8 }}>
           {altLabel}
-          <input value={altValue} onChange={(event) => onAltChange(event.target.value)} placeholder="Describe this image" />
+          <input value={altValue} onChange={(event) => onAltChange(event.target.value)} placeholder="Describe this image for screen readers and SEO..." />
         </label>
       ) : null}
     </div>
@@ -410,10 +454,10 @@ export function MediaGalleryField({ label, values, onChange, helperText }: Media
 
   return (
     <div className="admin-media-field">
-      <div className="admin-inline-header">
+      <div className="admin-inline-header" style={{ alignItems: 'center' }}>
         <div>
-          <h3 className="admin-section-heading">{label}</h3>
-          {helperText ? <p className="admin-subtle">{helperText}</p> : null}
+          <h3 className="admin-section-heading" style={{ margin: 0 }}>{label}</h3>
+          {helperText ? <p className="admin-subtle" style={{ margin: '2px 0 0' }}>{helperText}</p> : null}
         </div>
         <MediaAssetBrowser
           buttonLabel="Browse library"
@@ -426,26 +470,51 @@ export function MediaGalleryField({ label, values, onChange, helperText }: Media
         />
       </div>
 
-      {items.length === 0 ? <p className="admin-subtle">No gallery images selected yet.</p> : null}
+      {items.length === 0 ? <p className="admin-subtle" style={{ marginTop: 8 }}>No gallery images selected yet.</p> : null}
 
-      <div className="admin-media-gallery-list">
+      <div className="admin-media-gallery-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, marginTop: 12 }}>
         {items.map((item, index) => (
-          <article className="admin-media-gallery-item" key={`${item}-${index}`}>
-            <div className="admin-media-gallery-thumb">
-              <img src={item} alt={previewAltText(item)} />
+          <article
+            className="admin-media-gallery-item"
+            key={`${item}-${index}`}
+            style={{
+              position: 'relative',
+              borderRadius: 8,
+              border: '1px solid var(--line, #e2e8f0)',
+              background: 'var(--panel, #f8fafc)',
+              overflow: 'hidden',
+              padding: 8
+            }}
+          >
+            <div className="admin-media-gallery-thumb" style={{ width: '100%', height: 110, borderRadius: 6, overflow: 'hidden', background: '#e2e8f0' }}>
+              <img src={item} alt={previewAltText(item)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <div className="admin-media-gallery-meta">
-              <span>{previewAltText(item)}</span>
-              <p>{item}</p>
+            <div className="admin-media-gallery-meta" style={{ marginTop: 6 }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: 600, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {previewAltText(item)}
+              </span>
+              <p style={{ fontSize: '0.7rem', color: '#64748b', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {item}
+              </p>
             </div>
-            <AdminActionButton
-              icon="delete"
-              size="sm"
-              variant="ghost"
+            <button
+              type="button"
+              className="v2-btn v2-btn-secondary"
+              style={{
+                position: 'absolute',
+                top: 12,
+                right: 12,
+                padding: '4px 6px',
+                background: 'rgba(255,255,255,0.9)',
+                color: '#ef4444',
+                border: '1px solid #fecaca',
+                borderRadius: 6
+              }}
+              title="Remove image"
               onClick={() => onChange(items.filter((url) => url !== item))}
             >
-              Remove
-            </AdminActionButton>
+              <Trash2 size={13} />
+            </button>
           </article>
         ))}
       </div>

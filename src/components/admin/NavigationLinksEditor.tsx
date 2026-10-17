@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { CornerDownRight, GripVertical, Plus, Trash2 } from 'lucide-react';
 import type { NavigationLink } from '@/features/cms/types';
 
 type NavigationLinksEditorProps = {
@@ -57,26 +58,34 @@ export function NavigationLinksEditor({
   };
 
   return (
-    <div className={`admin-link-editor ${depth > 0 ? 'ml-8 mt-2 mb-2 border-l-2 border-slate-200 pl-4' : ''}`}>
+    <div className={`admin-link-editor ${depth > 0 ? 'ml-6 mt-2 mb-2 border-l-2 border-slate-200 dark:border-slate-700 pl-3' : ''}`}>
       {depth === 0 && (
-        <div className="admin-inline-header">
+        <div className="admin-inline-header" style={{ alignItems: 'center', marginBottom: 12 }}>
           <div>
-            <h3 className="admin-section-heading">{label}</h3>
-            {description ? <p className="admin-subtle">{description}</p> : null}
+            <h3 className="admin-section-heading" style={{ margin: 0 }}>{label}</h3>
+            {description ? <p className="admin-subtle" style={{ margin: '2px 0 0' }}>{description}</p> : null}
           </div>
-          <button type="button" className="v2-btn v2-btn-secondary" onClick={addItem}>
-            Add link
+          <button
+            type="button"
+            className="v2-btn v2-btn-secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', padding: '5px 12px' }}
+            onClick={addItem}
+          >
+            <Plus size={14} />
+            <span>Add link</span>
           </button>
         </div>
       )}
 
-      {items.length === 0 && depth === 0 ? <p className="admin-subtle">No links added yet.</p> : null}
+      {items.length === 0 && depth === 0 ? <p className="admin-subtle" style={{ margin: '8px 0' }}>No links added yet.</p> : null}
 
-      <div className="admin-link-list flex flex-col gap-4">
+      <div className="admin-link-list flex flex-col gap-2.5">
         {items.map((item, index) => (
           <div
             key={item.id}
-            className={`flex flex-col gap-2 ${dragOverIndex === index ? 'rounded-md outline outline-2 outline-blue-400' : ''}`}
+            className={`flex flex-col gap-2 rounded-lg p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-all ${
+              dragOverIndex === index ? 'ring-2 ring-blue-500 bg-blue-50/50 dark:bg-blue-950/20' : ''
+            }`}
             onDragOver={(event) => {
               if (dragIndexRef.current === null) return;
               event.preventDefault();
@@ -92,13 +101,13 @@ export function NavigationLinksEditor({
               handleDrop(index);
             }}
           >
-            <div className="admin-link-row flex items-center gap-2">
+            <div className="admin-link-row flex items-center gap-2.5 flex-wrap">
               <span
                 draggable
                 role="button"
                 aria-label="Drag to reorder"
                 title="Drag to reorder"
-                className="cursor-grab select-none px-1 text-slate-400 hover:text-slate-600 active:cursor-grabbing"
+                className="cursor-grab select-none p-1 text-slate-400 hover:text-slate-600 active:cursor-grabbing rounded hover:bg-slate-200/50"
                 onDragStart={(event) => {
                   dragIndexRef.current = index;
                   event.dataTransfer.effectAllowed = 'move';
@@ -109,19 +118,21 @@ export function NavigationLinksEditor({
                   setDragOverIndex(null);
                 }}
               >
-                ⠿
+                <GripVertical size={16} />
               </span>
               <input
                 value={item.label}
                 onChange={(event) => updateItem(index, { label: event.target.value })}
-                placeholder="Label"
+                placeholder="Link label (e.g. Services)"
+                style={{ flex: 1, minWidth: 140 }}
               />
               <input
                 value={item.href}
                 onChange={(event) => updateItem(index, { href: event.target.value })}
-                placeholder="/contact"
+                placeholder="Target URL (e.g. /service)"
+                style={{ flex: 1.2, minWidth: 160 }}
               />
-              <label className="admin-link-toggle flex items-center gap-2 text-sm whitespace-nowrap">
+              <label className="admin-link-toggle flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={item.enabled}
@@ -129,13 +140,12 @@ export function NavigationLinksEditor({
                 />
                 Enabled
               </label>
-              <button type="button" className="v2-btn v2-btn-secondary" onClick={() => removeItem(item.id)}>
-                Remove
-              </button>
               {depth === 0 && (
                 <button
                   type="button"
                   className="v2-btn v2-btn-secondary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: '0.78rem', padding: '5px 8px' }}
+                  title="Add child menu link under this item"
                   onClick={() => {
                     const children = item.children || [];
                     updateItem(index, {
@@ -151,9 +161,19 @@ export function NavigationLinksEditor({
                     });
                   }}
                 >
-                  Add sub-link
+                  <CornerDownRight size={13} />
+                  <span>Sub-link</span>
                 </button>
               )}
+              <button
+                type="button"
+                className="v2-btn v2-btn-secondary"
+                style={{ padding: '5px 8px', color: '#ef4444' }}
+                title="Remove link"
+                onClick={() => removeItem(item.id)}
+              >
+                <Trash2 size={14} />
+              </button>
             </div>
 
             {item.children && item.children.length > 0 && (

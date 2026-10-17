@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { csrfFetch } from '@/lib/clientCsrf';
@@ -26,6 +25,17 @@ type CategoriesResponse = {
   categories: Category[];
 };
 
+import {
+  Settings as GeneralIcon,
+  PenTool as WritingIcon,
+  BookOpen as ReadingIcon,
+  MessageSquare as DiscussionIcon,
+  Image as MediaIcon,
+  Link2 as PermalinksIcon,
+  Search as SeoIcon,
+  Network as SitemapIcon
+} from 'lucide-react';
+
 type SettingsTab =
   | 'general'
   | 'writing'
@@ -36,15 +46,22 @@ type SettingsTab =
   | 'seo'
   | 'sitemap';
 
-const tabs: Array<{ id: SettingsTab; label: string }> = [
-  { id: 'general', label: 'General' },
-  { id: 'writing', label: 'Writing' },
-  { id: 'reading', label: 'Reading' },
-  { id: 'discussion', label: 'Discussion' },
-  { id: 'media', label: 'Media' },
-  { id: 'permalinks', label: 'Permalinks' },
-  { id: 'seo', label: 'Meta Tags' },
-  { id: 'sitemap', label: 'Sitemaps' }
+type TabConfig = {
+  id: SettingsTab;
+  label: string;
+  icon: typeof GeneralIcon;
+  description: string;
+};
+
+const tabs: TabConfig[] = [
+  { id: 'general', label: 'General', icon: GeneralIcon, description: 'Brand identity, localization, navigation, and contact info' },
+  { id: 'writing', label: 'Writing', icon: WritingIcon, description: 'Default category, formatting, and content defaults' },
+  { id: 'reading', label: 'Reading', icon: ReadingIcon, description: 'Homepage display, posts page, and feed rules' },
+  { id: 'discussion', label: 'Discussion', icon: DiscussionIcon, description: 'Comments, moderation, and notifications' },
+  { id: 'media', label: 'Media', icon: MediaIcon, description: 'Upload constraints, image sizing, and storage' },
+  { id: 'permalinks', label: 'Permalinks', icon: PermalinksIcon, description: 'URL structure, route slugs, and canonical format' },
+  { id: 'seo', label: 'Meta Tags', icon: SeoIcon, description: 'Site-wide SEO, social graph, and verification' },
+  { id: 'sitemap', label: 'Sitemaps', icon: SitemapIcon, description: 'XML sitemap settings, frequency, and indexing' }
 ];
 
 function parseTab(value: string | null): SettingsTab {
@@ -54,7 +71,19 @@ function parseTab(value: string | null): SettingsTab {
 
 function SettingsEditor() {
   const params = useSearchParams();
-  const activeTab = parseTab(params.get('tab'));
+  const urlTab = parseTab(params.get('tab'));
+  const [activeTab, setActiveTab] = useState<SettingsTab>(urlTab);
+
+  useEffect(() => {
+    setActiveTab(urlTab);
+  }, [urlTab]);
+
+  const handleTabChange = (tabId: SettingsTab) => {
+    setActiveTab(tabId);
+    window.history.replaceState(null, '', `/admin/settings?tab=${tabId}`);
+  };
+
+  const currentTabConfig = tabs.find((t) => t.id === activeTab) || tabs[0];
 
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [pages, setPages] = useState<LandingPage[]>([]);
@@ -198,25 +227,87 @@ function SettingsEditor() {
 
   return (
     <div className="admin-form-wrap">
-      <section className="admin-card">
-        <div className="admin-inline-header">
-          <h2>Website Settings</h2>
-          <AdminActionButton icon="save" variant="primary" onClick={save} disabled={saving}>
-            {saving ? 'Saving...' : 'Save settings'}
-          </AdminActionButton>
+      {/* Sticky Settings Save Toolbar */}
+      <section className="admin-card admin-editor-toolbar" style={{ position: 'sticky', top: 12, zIndex: 30, backdropFilter: 'blur(10px)', marginBottom: 20 }}>
+        <div className="admin-inline-header" style={{ alignItems: 'center' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0 }}>Website Settings</h2>
+              <span className="admin-chip admin-chip-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                {(() => {
+                  const CurrentIcon = currentTabConfig.icon;
+                  return <CurrentIcon size={14} />;
+                })()}
+                {currentTabConfig.label}
+              </span>
+            </div>
+            <p className="admin-subtle" style={{ margin: '4px 0 0' }}>
+              {currentTabConfig.description}
+            </p>
+          </div>
+          <div className="admin-actions" style={{ alignItems: 'center' }}>
+            {notice ? <span style={{ fontSize: '0.85rem', color: '#16a34a', fontWeight: 600 }}>{notice}</span> : null}
+            {error ? <span style={{ fontSize: '0.85rem', color: '#dc2626', fontWeight: 600 }}>{error}</span> : null}
+            <AdminActionButton icon="save" variant="primary" onClick={save} disabled={saving}>
+              {saving ? 'Saving...' : 'Save settings'}
+            </AdminActionButton>
+          </div>
         </div>
+      </section>
 
-        <div className="admin-actions" style={{ marginBottom: 16 }}>
-          {tabs.map((tab) => (
-            <Link
+      {/* Horizontal In-Page Tab Navigation (.admin-tabs) */}
+      <div
+        className="admin-tabs"
+        role="tablist"
+        aria-label="Settings navigation"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          overflowX: 'auto',
+          padding: '6px',
+          background: 'var(--panel, #f8fafc)',
+          border: '1px solid var(--line, #e2e8f0)',
+          borderRadius: '12px',
+          marginBottom: 20
+        }}
+      >
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
               key={tab.id}
-              href={`/admin/settings?tab=${tab.id}`}
-              className={`v2-btn ${activeTab === tab.id ? 'v2-btn-primary' : 'v2-btn-secondary'}`}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => handleTabChange(tab.id)}
+              className={`admin-tab-btn ${isActive ? 'active' : ''}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '8px 14px',
+                borderRadius: '8px',
+                fontSize: '0.85rem',
+                fontWeight: isActive ? 600 : 500,
+                border: isActive ? '1px solid #3b82f6' : '1px solid transparent',
+                background: isActive ? '#ffffff' : 'transparent',
+                color: isActive ? '#2563eb' : 'var(--text-muted, #64748b)',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease-in-out',
+                boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
+              }}
             >
-              {tab.label}
-            </Link>
-          ))}
-        </div>
+              <Icon size={16} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <section className="admin-card">
 
         {activeTab === 'general' ? (
           <div className="admin-grid-2">

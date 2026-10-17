@@ -256,10 +256,16 @@ export function BlogEditorForm({
 
   return (
     <div className="admin-form-wrap">
+      {/* Sticky Editor Toolbar */}
       <section className="admin-card admin-editor-toolbar">
         <div className="admin-inline-header">
           <div>
-            <h2>{post.title || 'Untitled post'}</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0 }}>{post.title || 'Untitled post'}</h2>
+              <span className={`admin-chip ${post.status === 'published' ? 'admin-chip-success' : 'admin-chip-muted'}`}>
+                {publicationLabel}
+              </span>
+            </div>
             <p className="admin-subtle">
               Ctrl/Cmd + S to save. Status: {publicationLabel}. {countWords(post.content)} words. {formatSavedAtLabel(lastSavedAt)}.
             </p>
@@ -306,19 +312,6 @@ export function BlogEditorForm({
         <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or content.</p>
       </section>
 
-      <ContentRevisionPanel<BlogPost>
-        entityType="blog_post"
-        entityId={post.id}
-        reloadKey={revisionReloadKey}
-        emptyMessage="Manual saves and publishing changes for this post will appear here."
-        onRestore={(restoredPost) => {
-          setPost(restoredPost); setBaseline(restoredPost);
-          setLastSavedAt(restoredPost.updatedAt ?? null);
-          setNotice('Post restored from revision history.');
-          setAutoSaveState('idle');
-        }}
-      />
-
       {showDeleteConfirm ? (
         <section className="admin-card admin-danger-card">
           <h3>Confirm deletion</h3>
@@ -332,233 +325,391 @@ export function BlogEditorForm({
         </section>
       ) : null}
 
-      <section className="admin-card">
-        <h2>Content</h2>
-        <label>
-          Title
-          <input
-            className={fieldErrors.title ? 'admin-input-error' : ''}
-            aria-invalid={Boolean(fieldErrors.title)}
-            value={post.title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-          />
-          {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
-        </label>
-        <label>
-          Excerpt
-          <textarea value={post.excerpt} onChange={(e) => setPost({ ...post, excerpt: e.target.value })} />
-        </label>
-        <div>
-          <label style={{ marginBottom: 6 }}>Content</label>
-          <RichContentEditor
-            value={post.content}
-            onChange={(value) => setPost({ ...post, content: value })}
-            hasError={Boolean(fieldErrors.content)}
-            rows={14}
-          />
-          <span className="admin-subtle">Word count: {countWords(post.content)}</span>
-          {fieldErrors.content ? <span className="admin-error-text">{fieldErrors.content}</span> : null}
-        </div>
-        <label>
-          Author
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <input
-              className={fieldErrors.author ? 'admin-input-error' : ''}
-              aria-invalid={Boolean(fieldErrors.author)}
-              value={post.author}
-              onChange={(e) => setPost({ ...post, author: e.target.value })}
-              style={{ flex: 1 }}
-            />
-            {currentUser && currentUser.displayName && currentUser.displayName !== post.author ? (
-              <button
-                type="button"
-                className="slug-lock-btn"
-                onClick={() => setPost({ ...post, author: currentUser.displayName })}
-                title={`Use ${currentUser.displayName}`}
-              >
-                Use my name
-              </button>
-            ) : null}
-          </div>
-          {fieldErrors.author ? <span className="admin-error-text">{fieldErrors.author}</span> : null}
-        </label>
-        <label>
-          Primary Category
-          <select value={post.categoryId || ''} onChange={(e) => setPost({ ...post, categoryId: e.target.value || null })}>
-            <option value="">Uncategorized</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
-            ))}
-          </select>
-        </label>
-        <div>
-          <h3 className="admin-section-heading">Tags (Quick Select)</h3>
-          <div className="admin-actions" style={{ flexWrap: 'wrap' }}>
-            {categories.map((cat) => {
-              const active = post.tags.includes(cat.slug);
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  className={active ? 'v2-btn v2-btn-primary' : 'v2-btn v2-btn-secondary'}
-                  onClick={() => toggleTag(cat.slug)}
-                >
-                  {cat.name}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        <label>
-          Tags (comma separated)
-          <input
-            value={post.tags.join(', ')}
-            onChange={(e) => setPost({ ...post, tags: fromKeywordInput(e.target.value) })}
-          />
-        </label>
-        <MediaPickerField
-          label="Cover image"
-          value={post.coverImage}
-          onChange={(value) => setPost({ ...post, coverImage: value })}
-          helperText="Pick an uploaded file or paste an external image URL."
-          aspectRatioHint="16:9 for blog cards and post hero sections."
-        />
-      </section>
-
-      <section className="admin-card">
-        <h2>Publishing</h2>
-        <div className="admin-grid-2">
-          <label>
-            Scheduled publish time
-            <input
-              className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
-              aria-invalid={Boolean(fieldErrors.scheduledPublishAt)}
-              type="datetime-local"
-              value={toDatetimeLocalValue(post.scheduledPublishAt)}
-              disabled={!canPublish}
-              onChange={(e) => setPost({ ...post, scheduledPublishAt: fromDatetimeLocalValue(e.target.value) })}
-            />
-            {fieldErrors.scheduledPublishAt ? (
-              <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
-            ) : (
-              <span className="admin-subtle">Leave blank to control publishing manually.</span>
-            )}
-          </label>
-          <label>
-            Scheduled unpublish time
-            <input
-              className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
-              aria-invalid={Boolean(fieldErrors.scheduledUnpublishAt)}
-              type="datetime-local"
-              value={toDatetimeLocalValue(post.scheduledUnpublishAt)}
-              disabled={!canPublish}
-              onChange={(e) => setPost({ ...post, scheduledUnpublishAt: fromDatetimeLocalValue(e.target.value) })}
-            />
-            {fieldErrors.scheduledUnpublishAt ? (
-              <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
-            ) : (
-              <span className="admin-subtle">Useful for time-limited announcements or campaign pages.</span>
-            )}
-          </label>
-        </div>
-        {!canPublish ? <p className="admin-subtle">Your role can edit content but cannot change publishing timing.</p> : null}
-      </section>
-
-      <section className="admin-card">
-        <h2>SEO</h2>
-        <label>
-          Meta title
-          <input
-            className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
-            aria-invalid={Boolean(fieldErrors['seo.metaTitle'])}
-            value={post.seo.metaTitle}
-            onChange={(e) => setPost({ ...post, seo: { ...post.seo, metaTitle: e.target.value } })}
-          />
-          <span className="admin-subtle">{post.seo.metaTitle.length}/60 recommended</span>
-          {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
-        </label>
-        <label>
-          Meta description
-          <textarea
-            className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
-            aria-invalid={Boolean(fieldErrors['seo.metaDescription'])}
-            value={post.seo.metaDescription}
-            onChange={(e) => setPost({ ...post, seo: { ...post.seo, metaDescription: e.target.value } })}
-          />
-          <span className="admin-subtle">{post.seo.metaDescription.length}/160 recommended</span>
-          {fieldErrors['seo.metaDescription'] ? <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span> : null}
-        </label>
-        <label>
-          Slug
-          <div className="slug-field-row">
-            <input
-              className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
-              aria-invalid={Boolean(fieldErrors['seo.slug'])}
-              value={post.seo.slug}
-              onChange={(e) => handleSlugChange(e.target.value)}
-            />
-            {!slugTouched ? (
-              <span className="slug-lock-btn" style={{ cursor: 'default', background: '#eef5ff', borderColor: '#93c5fd', color: '#1d4ed8' }}>
-                Auto
-              </span>
-            ) : isNew ? (
-              <button
-                type="button"
-                className="slug-lock-btn"
-                onClick={() => { setSlugTouched(false); setPost({ ...post, seo: { ...post.seo, slug: normalizeSlug(post.title) } }); }}
-                title="Re-enable auto-generation from title"
-              >
-                Reset to auto
-              </button>
-            ) : null}
-          </div>
-          {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
-          <span className="admin-subtle">URL: /blog/{post.seo.slug || '…'}</span>
-        </label>
-        <label>
-          Canonical URL
-          <input
-            value={post.seo.canonical}
-            onChange={(e) => setPost({ ...post, seo: { ...post.seo, canonical: e.target.value } })}
-          />
-        </label>
-        <MediaPickerField
-          label="Social image"
-          value={post.seo.socialImage}
-          onChange={(value) => setPost({ ...post, seo: { ...post.seo, socialImage: value } })}
-          helperText={
-            post.seo.socialImage
-              ? 'Custom social image set.'
-              : post.coverImage
-                ? 'Not set — will use cover image for social sharing.'
-                : globalOgImage
-                  ? 'Not set — will use site default OG image.'
-                  : 'Optional Open Graph/Twitter image for social sharing.'
+      {/* Modern 2-Column Editorial Workspace */}
+      <style>{`
+        .admin-workspace-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 340px;
+          gap: 24px;
+          align-items: start;
+        }
+        .admin-inspector {
+          position: sticky;
+          top: 84px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        @media (max-width: 1024px) {
+          .admin-workspace-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
           }
-          aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
-        />
-        {!post.seo.socialImage && effectiveSocialImage ? (
-          <p className="admin-subtle" style={{ marginTop: -8 }}>
-            Effective social image: <strong>{post.coverImage ? 'cover image' : 'site default'}</strong>
-            {' '}— set a custom image above to override.
-          </p>
-        ) : null}
-        <label>
-          Keywords (comma separated)
-          <input
-            value={toKeywordInput(post.seo.keywords)}
-            onChange={(e) => setPost({ ...post, seo: { ...post.seo, keywords: fromKeywordInput(e.target.value) } })}
+          .admin-inspector {
+            position: static !important;
+          }
+        }
+        .serp-card-preview {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 16px;
+          margin-bottom: 20px;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        .serp-card-preview .serp-url-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12px;
+          color: #475569;
+          margin-bottom: 4px;
+        }
+        .serp-card-preview .serp-favicon {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: #e2e8f0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: 700;
+          color: #0f172a;
+        }
+        .serp-card-preview .serp-title {
+          font-size: 18px;
+          color: #1a0dab;
+          font-weight: 500;
+          line-height: 1.3;
+          margin: 0 0 4px;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .serp-card-preview .serp-title:hover {
+          text-decoration: underline;
+        }
+        .serp-card-preview .serp-snippet {
+          font-size: 13px;
+          line-height: 1.5;
+          color: #4d5156;
+          margin: 0;
+        }
+      `}</style>
+
+      <div className="admin-workspace-grid">
+        {/* Left Main Column: Post Title, Excerpt, Content, SEO & Social Preview */}
+        <div className="admin-main-column" style={{ display: 'flex', flexDirection: 'column', gap: 24, minWidth: 0 }}>
+          <section className="admin-card">
+            <h2>Content</h2>
+            <label>
+              Title
+              <input
+                className={fieldErrors.title ? 'admin-input-error' : ''}
+                aria-invalid={Boolean(fieldErrors.title)}
+                value={post.title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                placeholder="Enter post title..."
+              />
+              {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
+            </label>
+            <label>
+              Excerpt
+              <textarea
+                rows={3}
+                value={post.excerpt}
+                onChange={(e) => setPost({ ...post, excerpt: e.target.value })}
+                placeholder="Brief summary used in card grids and search snippets..."
+              />
+            </label>
+            <div>
+              <label style={{ marginBottom: 6, display: 'block' }}>Content</label>
+              <RichContentEditor
+                value={post.content}
+                onChange={(value) => setPost({ ...post, content: value })}
+                hasError={Boolean(fieldErrors.content)}
+                rows={16}
+              />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 }}>
+                <span className="admin-subtle">Word count: {countWords(post.content)}</span>
+                {fieldErrors.content ? <span className="admin-error-text">{fieldErrors.content}</span> : null}
+              </div>
+            </div>
+          </section>
+
+          {/* SEO & Social Preview Card */}
+          <section className="admin-card">
+            <div className="admin-inline-header">
+              <h2>SEO & Social Preview</h2>
+              <span className="admin-chip admin-chip-muted">Google SERP & OpenGraph</span>
+            </div>
+
+            {/* Live Google SERP snippet preview */}
+            <div className="serp-card-preview">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid #f1f5f9' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b' }}>
+                  Live Google SERP Snippet Preview
+                </span>
+                <span style={{ fontSize: 11, color: '#94a3b8' }}>Desktop View</span>
+              </div>
+              <div className="serp-url-row">
+                <span className="serp-favicon">V</span>
+                <span>
+                  <strong>Vanaila</strong> <span style={{ color: '#94a3b8' }}>›</span> blog <span style={{ color: '#94a3b8' }}>›</span> /{post.seo.slug || 'slug'}
+                </span>
+              </div>
+              <div className="serp-title">
+                {post.seo.metaTitle || post.title || 'Untitled Post'}
+              </div>
+              <p className="serp-snippet">
+                {post.seo.metaDescription || post.excerpt || 'Add a meta description or post excerpt to see how this post appears in search engine results.'}
+              </p>
+            </div>
+
+            <label>
+              Meta title
+              <input
+                className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
+                aria-invalid={Boolean(fieldErrors['seo.metaTitle'])}
+                value={post.seo.metaTitle}
+                onChange={(e) => setPost({ ...post, seo: { ...post.seo, metaTitle: e.target.value } })}
+              />
+              <span className="admin-subtle">{post.seo.metaTitle.length}/60 recommended</span>
+              {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
+            </label>
+            <label>
+              Meta description
+              <textarea
+                rows={3}
+                className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
+                aria-invalid={Boolean(fieldErrors['seo.metaDescription'])}
+                value={post.seo.metaDescription}
+                onChange={(e) => setPost({ ...post, seo: { ...post.seo, metaDescription: e.target.value } })}
+              />
+              <span className="admin-subtle">{post.seo.metaDescription.length}/160 recommended</span>
+              {fieldErrors['seo.metaDescription'] ? <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span> : null}
+            </label>
+            <label>
+              Slug
+              <div className="slug-field-row">
+                <input
+                  className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
+                  aria-invalid={Boolean(fieldErrors['seo.slug'])}
+                  value={post.seo.slug}
+                  onChange={(e) => handleSlugChange(e.target.value)}
+                />
+                {!slugTouched ? (
+                  <span className="slug-lock-btn" style={{ cursor: 'default', background: '#eef5ff', borderColor: '#93c5fd', color: '#1d4ed8' }}>
+                    Auto
+                  </span>
+                ) : isNew ? (
+                  <button
+                    type="button"
+                    className="slug-lock-btn"
+                    onClick={() => { setSlugTouched(false); setPost({ ...post, seo: { ...post.seo, slug: normalizeSlug(post.title) } }); }}
+                    title="Re-enable auto-generation from title"
+                  >
+                    Reset to auto
+                  </button>
+                ) : null}
+              </div>
+              {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
+              <span className="admin-subtle">URL: /blog/{post.seo.slug || '…'}</span>
+            </label>
+            <label>
+              Canonical URL
+              <input
+                value={post.seo.canonical}
+                onChange={(e) => setPost({ ...post, seo: { ...post.seo, canonical: e.target.value } })}
+                placeholder="https://vanaila.com/blog/..."
+              />
+            </label>
+            <MediaPickerField
+              label="Social image"
+              value={post.seo.socialImage}
+              onChange={(value) => setPost({ ...post, seo: { ...post.seo, socialImage: value } })}
+              helperText={
+                post.seo.socialImage
+                  ? 'Custom social image set.'
+                  : post.coverImage
+                    ? 'Not set — will use cover image for social sharing.'
+                    : globalOgImage
+                      ? 'Not set — will use site default OG image.'
+                      : 'Optional Open Graph/Twitter image for social sharing.'
+              }
+              aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
+            />
+            {!post.seo.socialImage && effectiveSocialImage ? (
+              <p className="admin-subtle" style={{ marginTop: -8 }}>
+                Effective social image: <strong>{post.coverImage ? 'cover image' : 'site default'}</strong>
+                {' '}— set a custom image above to override.
+              </p>
+            ) : null}
+            <label>
+              Keywords (comma separated)
+              <input
+                value={toKeywordInput(post.seo.keywords)}
+                onChange={(e) => setPost({ ...post, seo: { ...post.seo, keywords: fromKeywordInput(e.target.value) } })}
+              />
+            </label>
+            <label className="admin-checkbox-row">
+              <input
+                type="checkbox"
+                checked={post.seo.noIndex}
+                onChange={(e) => setPost({ ...post, seo: { ...post.seo, noIndex: e.target.checked } })}
+              />
+              <span>Disallow search engines from indexing this post (noindex)</span>
+            </label>
+          </section>
+        </div>
+
+        {/* Right Sticky Inspector: Publishing & Schedule, Taxonomy & Attribution, Cover Image, Revision History */}
+        <aside className="admin-inspector">
+          {/* Publishing & Schedule Card */}
+          <section className="admin-card">
+            <h3 className="admin-section-heading">Publishing & Schedule</h3>
+            <div style={{ marginTop: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <span className="admin-subtle">Publication state</span>
+                <span className={`admin-chip ${post.status === 'published' ? 'admin-chip-success' : 'admin-chip-muted'}`}>
+                  {publicationLabel}
+                </span>
+              </div>
+              <label>
+                Scheduled publish time
+                <input
+                  className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
+                  aria-invalid={Boolean(fieldErrors.scheduledPublishAt)}
+                  type="datetime-local"
+                  value={toDatetimeLocalValue(post.scheduledPublishAt)}
+                  disabled={!canPublish}
+                  onChange={(e) => setPost({ ...post, scheduledPublishAt: fromDatetimeLocalValue(e.target.value) })}
+                />
+                {fieldErrors.scheduledPublishAt ? (
+                  <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
+                ) : (
+                  <span className="admin-subtle">Leave blank for manual publishing.</span>
+                )}
+              </label>
+              <label style={{ marginTop: 12 }}>
+                Scheduled unpublish time
+                <input
+                  className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
+                  aria-invalid={Boolean(fieldErrors.scheduledUnpublishAt)}
+                  type="datetime-local"
+                  value={toDatetimeLocalValue(post.scheduledUnpublishAt)}
+                  disabled={!canPublish}
+                  onChange={(e) => setPost({ ...post, scheduledUnpublishAt: fromDatetimeLocalValue(e.target.value) })}
+                />
+                {fieldErrors.scheduledUnpublishAt ? (
+                  <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
+                ) : (
+                  <span className="admin-subtle">For time-limited announcements or campaigns.</span>
+                )}
+              </label>
+              {!canPublish ? <p className="admin-subtle" style={{ marginTop: 8 }}>Your role can edit content but cannot change publishing timing.</p> : null}
+            </div>
+          </section>
+
+          {/* Taxonomy & Attribution Card */}
+          <section className="admin-card">
+            <h3 className="admin-section-heading">Taxonomy & Author</h3>
+            <div style={{ marginTop: 12 }}>
+              <label>
+                Author
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <input
+                    className={fieldErrors.author ? 'admin-input-error' : ''}
+                    aria-invalid={Boolean(fieldErrors.author)}
+                    value={post.author}
+                    onChange={(e) => setPost({ ...post, author: e.target.value })}
+                    style={{ flex: 1 }}
+                  />
+                  {currentUser && currentUser.displayName && currentUser.displayName !== post.author ? (
+                    <button
+                      type="button"
+                      className="slug-lock-btn"
+                      onClick={() => setPost({ ...post, author: currentUser.displayName })}
+                      title={`Use ${currentUser.displayName}`}
+                    >
+                      Me
+                    </button>
+                  ) : null}
+                </div>
+                {fieldErrors.author ? <span className="admin-error-text">{fieldErrors.author}</span> : null}
+              </label>
+
+              <label style={{ marginTop: 12 }}>
+                Primary Category
+                <select value={post.categoryId || ''} onChange={(e) => setPost({ ...post, categoryId: e.target.value || null })}>
+                  <option value="">Uncategorized</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))}
+                </select>
+              </label>
+
+              <div style={{ marginTop: 12 }}>
+                <span className="admin-subtle" style={{ display: 'block', marginBottom: 6, fontSize: '0.82rem', fontWeight: 600 }}>
+                  Quick Tag Select
+                </span>
+                <div className="admin-actions" style={{ flexWrap: 'wrap', gap: 6 }}>
+                  {categories.map((cat) => {
+                    const active = post.tags.includes(cat.slug);
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        className={active ? 'v2-btn v2-btn-primary' : 'v2-btn v2-btn-secondary'}
+                        style={{ fontSize: '0.78rem', padding: '3px 8px' }}
+                        onClick={() => toggleTag(cat.slug)}
+                      >
+                        {cat.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <label style={{ marginTop: 12 }}>
+                Tags (comma separated)
+                <input
+                  value={post.tags.join(', ')}
+                  onChange={(e) => setPost({ ...post, tags: fromKeywordInput(e.target.value) })}
+                  placeholder="tech, news, update"
+                />
+              </label>
+            </div>
+          </section>
+
+          {/* Cover Image Card */}
+          <section className="admin-card">
+            <h3 className="admin-section-heading">Cover Image</h3>
+            <div style={{ marginTop: 12 }}>
+              <MediaPickerField
+                label="Cover image"
+                value={post.coverImage}
+                onChange={(value) => setPost({ ...post, coverImage: value })}
+                helperText="Pick an uploaded file or paste an image URL."
+                aspectRatioHint="16:9 for blog cards and post hero sections."
+              />
+            </div>
+          </section>
+
+          {/* Content Revision History */}
+          <ContentRevisionPanel<BlogPost>
+            entityType="blog_post"
+            entityId={post.id}
+            reloadKey={revisionReloadKey}
+            emptyMessage="Manual saves and publishing changes for this post will appear here."
+            onRestore={(restoredPost) => {
+              setPost(restoredPost); setBaseline(restoredPost);
+              setLastSavedAt(restoredPost.updatedAt ?? null);
+              setNotice('Post restored from revision history.');
+              setAutoSaveState('idle');
+            }}
           />
-        </label>
-        <label>
-          Noindex
-          <input
-            type="checkbox"
-            checked={post.seo.noIndex}
-            onChange={(e) => setPost({ ...post, seo: { ...post.seo, noIndex: e.target.checked } })}
-          />
-        </label>
-      </section>
+        </aside>
+      </div>
     </div>
   );
 }

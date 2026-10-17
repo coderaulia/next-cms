@@ -433,10 +433,16 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
 
   return (
     <div className="admin-form-wrap">
+      {/* Sticky Editor Toolbar */}
       <section className="admin-card admin-editor-toolbar">
         <div className="admin-inline-header">
           <div>
-            <h2>{page.title}</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0 }}>{page.title}</h2>
+              <span className={`admin-chip ${page.published ? 'admin-chip-success' : 'admin-chip-muted'}`}>
+                {publicationLabel}
+              </span>
+            </div>
             <p className="admin-subtle">
               Ctrl/Cmd + S to save. Status: {publicationLabel}. {formatSavedAtLabel(lastSavedAt)}.
             </p>
@@ -467,344 +473,495 @@ export function PageEditorForm({ initialPage, canPublish = true }: PageEditorFor
         <p className="admin-subtle">Draft preview opens the current saved version in preview mode. Save first if you changed the slug or sections.</p>
       </section>
 
-      <ContentRevisionPanel<LandingPage>
-        entityType="page"
-        entityId={page.id}
-        reloadKey={revisionReloadKey}
-        emptyMessage="Manual saves and restore points for this page will appear here."
-        onRestore={(restoredPage) => {
-          setPage(restoredPage);
-          setBaseline(restoredPage);
-          setLastSavedAt(restoredPage.updatedAt ?? null);
-          setNotice('Page restored from revision history.');
-          setAutoSaveState('idle');
-        }}
-      />
+      {/* Modern 2-Column Page Builder Workspace */}
+      <style>{`
+        .admin-workspace-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 340px;
+          gap: 24px;
+          align-items: start;
+        }
+        .admin-inspector {
+          position: sticky;
+          top: 84px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        @media (max-width: 1024px) {
+          .admin-workspace-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+          .admin-inspector {
+            position: static !important;
+          }
+        }
+        .serp-card-preview {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 16px;
+          margin-bottom: 20px;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        .serp-card-preview .serp-url-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12px;
+          color: #475569;
+          margin-bottom: 4px;
+        }
+        .serp-card-preview .serp-favicon {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: #e2e8f0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: 700;
+          color: #0f172a;
+        }
+        .serp-card-preview .serp-title {
+          font-size: 18px;
+          color: #1a0dab;
+          font-weight: 500;
+          line-height: 1.3;
+          margin: 0 0 4px;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .serp-card-preview .serp-title:hover {
+          text-decoration: underline;
+        }
+        .serp-card-preview .serp-snippet {
+          font-size: 13px;
+          line-height: 1.5;
+          color: #4d5156;
+          margin: 0;
+        }
+      `}</style>
 
-      <section className="admin-card">
-        <h2>Page settings</h2>
-        <div className="admin-grid-2">
-          <label>
-            Title
-            <input
-              className={fieldErrors.title ? 'admin-input-error' : ''}
-              value={page.title}
-              onChange={(event) => setPage({ ...page, title: event.target.value })}
-            />
-            {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
-          </label>
-          <label>
-            Nav label
-            <input
-              className={fieldErrors.navLabel ? 'admin-input-error' : ''}
-              value={page.navLabel}
-              onChange={(event) => setPage({ ...page, navLabel: event.target.value })}
-            />
-            {fieldErrors.navLabel ? <span className="admin-error-text">{fieldErrors.navLabel}</span> : null}
-          </label>
-        </div>
-        <label>
-          Published
-          <input
-            type="checkbox"
-            checked={page.published}
-            disabled={!canPublish}
-            onChange={(event) => setPage({ ...page, published: event.target.checked })}
-          />
-        </label>
-        <div className="admin-grid-2">
-          <label>
-            Scheduled publish time
-            <input
-              className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
-              type="datetime-local"
-              value={toDatetimeLocalValue(page.scheduledPublishAt)}
-              disabled={!canPublish}
-              onChange={(event) =>
-                setPage({
-                  ...page,
-                  scheduledPublishAt: fromDatetimeLocalValue(event.target.value)
-                })
-              }
-            />
-            {fieldErrors.scheduledPublishAt ? (
-              <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
-            ) : (
-              <span className="admin-subtle">Set this when a page should go live automatically.</span>
-            )}
-          </label>
-          <label>
-            Scheduled unpublish time
-            <input
-              className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
-              type="datetime-local"
-              value={toDatetimeLocalValue(page.scheduledUnpublishAt)}
-              disabled={!canPublish}
-              onChange={(event) =>
-                setPage({
-                  ...page,
-                  scheduledUnpublishAt: fromDatetimeLocalValue(event.target.value)
-                })
-              }
-            />
-            {fieldErrors.scheduledUnpublishAt ? (
-              <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
-            ) : (
-              <span className="admin-subtle">Useful for temporary campaign pages or limited-time offers.</span>
-            )}
-          </label>
-        </div>
-        {!canPublish ? <p className="admin-subtle">Your role can edit content but cannot change page publication timing.</p> : null}
-      </section>
-
-      <section className="admin-card">
-        <h2>SEO</h2>
-        <div className="admin-grid-2">
-          <label>
-            Meta title
-            <input
-              className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
-              value={page.seo.metaTitle}
-              onChange={(event) => setPage({ ...page, seo: { ...page.seo, metaTitle: event.target.value } })}
-            />
-            <span className="admin-subtle">{page.seo.metaTitle.length}/60 recommended</span>
-            {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
-          </label>
-          <label>
-            Slug
-            <input
-              className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
-              value={page.seo.slug}
-              onChange={(event) => setPage({ ...page, seo: { ...page.seo, slug: event.target.value } })}
-            />
-            {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
-          </label>
-          <label>
-            Canonical
-            <input
-              value={page.seo.canonical}
-              onChange={(event) => setPage({ ...page, seo: { ...page.seo, canonical: event.target.value } })}
-            />
-          </label>
-          <div style={{ gridColumn: '1 / -1' }}>
-            <MediaPickerField
-              label="Social image"
-              value={page.seo.socialImage}
-              onChange={(value) => setPage({ ...page, seo: { ...page.seo, socialImage: value } })}
-              helperText="Optional Open Graph/Twitter image used when this page is shared."
-              aspectRatioHint="1200x630 (1.91:1) for Open Graph and X cards."
-            />
-          </div>
-          <label>
-            Keywords (comma separated)
-            <input
-              value={toKeywordInput(page.seo.keywords)}
-              onChange={(event) =>
-                setPage({
-                  ...page,
-                  seo: {
-                    ...page.seo,
-                    keywords: fromKeywordInput(event.target.value)
-                  }
-                })
-              }
-            />
-          </label>
-        </div>
-        <label>
-          Meta description
-          <textarea
-            className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
-            value={page.seo.metaDescription}
-            onChange={(event) => setPage({ ...page, seo: { ...page.seo, metaDescription: event.target.value } })}
-          />
-          <span className="admin-subtle">{page.seo.metaDescription.length}/160 recommended</span>
-          {fieldErrors['seo.metaDescription'] ? (
-            <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span>
-          ) : null}
-        </label>
-      </section>
-
-      {isHome ? (
-        <section className="admin-card">
-          <div className="admin-inline-header">
-            <h2>Homepage blocks</h2>
-            <div className="admin-actions">
-              <select value={nextType} onChange={(event) => setNextType(event.target.value as HomeBlockType)}>
-                {blockTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                onClick={() => setPage({ ...page, homeBlocks: [...blocks, createHomeBlock(nextType, blocks.length)] })}
-              >
-                Add block
-              </button>
+      <div className="admin-workspace-grid">
+        {/* Left Main Column: Page Title & Nav Label, Sections/Blocks Editor, and SEO with live SERP preview */}
+        <div className="admin-main-column" style={{ display: 'flex', flexDirection: 'column', gap: 24, minWidth: 0 }}>
+          {/* Page Details Card */}
+          <section className="admin-card">
+            <h2>Page Details</h2>
+            <div className="admin-grid-2">
+              <label>
+                Title
+                <input
+                  className={fieldErrors.title ? 'admin-input-error' : ''}
+                  value={page.title}
+                  onChange={(event) => setPage({ ...page, title: event.target.value })}
+                  placeholder="Page title..."
+                />
+                {fieldErrors.title ? <span className="admin-error-text">{fieldErrors.title}</span> : null}
+              </label>
+              <label>
+                Navigation label
+                <input
+                  className={fieldErrors.navLabel ? 'admin-input-error' : ''}
+                  value={page.navLabel}
+                  onChange={(event) => setPage({ ...page, navLabel: event.target.value })}
+                  placeholder="Label in menus and breadcrumbs..."
+                />
+                {fieldErrors.navLabel ? <span className="admin-error-text">{fieldErrors.navLabel}</span> : null}
+              </label>
             </div>
-          </div>
-          {fieldErrors.homeBlocks ? <p className="admin-error-text">{fieldErrors.homeBlocks}</p> : null}
+          </section>
 
-          {blocks.map((block, index) => {
-            const blockIssues = validationIssues.filter((issue) => issue.path.startsWith(`homeBlocks.${index}.`));
+          {/* Homepage Blocks Editor (when page.id === 'home') */}
+          {isHome ? (
+            <section className="admin-card">
+              <div className="admin-inline-header">
+                <h2>Homepage Blocks</h2>
+                <div className="admin-actions">
+                  <select value={nextType} onChange={(event) => setNextType(event.target.value as HomeBlockType)}>
+                    {blockTypes.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="v2-btn v2-btn-secondary"
+                    onClick={() => setPage({ ...page, homeBlocks: [...blocks, createHomeBlock(nextType, blocks.length)] })}
+                  >
+                    Add block
+                  </button>
+                </div>
+              </div>
+              {fieldErrors.homeBlocks ? <p className="admin-error-text">{fieldErrors.homeBlocks}</p> : null}
 
-            return (
-              <article className="section-editor" key={block.id}>
-                <div className="admin-inline-header">
-                  <h3>
-                    {index + 1}. {block.type}
-                  </h3>
-                  <div className="admin-actions">
+              {blocks.map((block, index) => {
+                const blockIssues = validationIssues.filter((issue) => issue.path.startsWith(`homeBlocks.${index}.`));
+
+                return (
+                  <article className="section-editor" key={block.id}>
+                    <div className="admin-inline-header">
+                      <h3>
+                        {index + 1}. {block.type}
+                      </h3>
+                      <div className="admin-actions">
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => {
+                            const next = [...blocks];
+                            [next[index - 1], next[index]] = [next[index], next[index - 1]];
+                            setPage({ ...page, homeBlocks: next });
+                          }}
+                        >
+                          Up
+                        </button>
+                        <button
+                          type="button"
+                          disabled={index === blocks.length - 1}
+                          onClick={() => {
+                            const next = [...blocks];
+                            [next[index + 1], next[index]] = [next[index], next[index + 1]];
+                            setPage({ ...page, homeBlocks: next });
+                          }}
+                        >
+                          Down
+                        </button>
+                        <button type="button" onClick={() => setPage({ ...page, homeBlocks: blocks.filter((row) => row.id !== block.id) })}>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="admin-grid-2">
+                      <label>
+                        Enabled
+                        <input type="checkbox" checked={block.enabled} onChange={(event) => updateBlock(index, { enabled: event.target.checked })} />
+                      </label>
+                      <label>
+                        Theme
+                        <select value={block.theme} onChange={(event) => updateBlock(index, { theme: event.target.value as HomeBlock['theme'] })}>
+                          <option value="light">light</option>
+                          <option value="blue-soft">blue-soft</option>
+                          <option value="mist">mist</option>
+                        </select>
+                      </label>
+                    </div>
+
+                    {renderHomeQuickFields(block, index)}
+                    {blockIssues.length > 0 ? <p className="admin-error-text">{blockIssues[0].message}</p> : null}
+                  </article>
+                );
+              })}
+            </section>
+          ) : (
+            /* Page Sections Editor (for standard pages) */
+            <section className="admin-card">
+              <div className="admin-inline-header">
+                <h2>Page Sections</h2>
+                <button
+                  type="button"
+                  className="v2-btn v2-btn-secondary"
+                  onClick={() => setPage({ ...page, sections: [...page.sections, createSection(page.sections.length)] })}
+                >
+                  Add section
+                </button>
+              </div>
+              {fieldErrors.sections ? <p className="admin-error-text">{fieldErrors.sections}</p> : null}
+
+              {page.sections.map((section, index) => (
+                <article className="section-editor" key={section.id}>
+                  <div className="admin-inline-header">
+                    <h3>
+                      {index + 1}. {section.id}
+                    </h3>
                     <button
                       type="button"
-                      disabled={index === 0}
-                      onClick={() => {
-                        const next = [...blocks];
-                        [next[index - 1], next[index]] = [next[index], next[index - 1]];
-                        setPage({ ...page, homeBlocks: next });
-                      }}
+                      onClick={() => setPage({ ...page, sections: page.sections.filter((row) => row.id !== section.id) })}
                     >
-                      Up
-                    </button>
-                    <button
-                      type="button"
-                      disabled={index === blocks.length - 1}
-                      onClick={() => {
-                        const next = [...blocks];
-                        [next[index + 1], next[index]] = [next[index], next[index + 1]];
-                        setPage({ ...page, homeBlocks: next });
-                      }}
-                    >
-                      Down
-                    </button>
-                    <button type="button" onClick={() => setPage({ ...page, homeBlocks: blocks.filter((row) => row.id !== block.id) })}>
                       Remove
                     </button>
                   </div>
-                </div>
 
-                <div className="admin-grid-2">
+                  <div className="admin-grid-2">
+                    <label>
+                      Layout
+                      <select value={section.layout} onChange={(event) => updateSection(index, { layout: event.target.value as PageSection['layout'] })}>
+                        <option value="stacked">stacked</option>
+                        <option value="split">split</option>
+                      </select>
+                    </label>
+                    <label>
+                      Heading
+                      <input
+                        className={fieldErrors[`sections.${index}.heading`] ? 'admin-input-error' : ''}
+                        value={section.heading}
+                        onChange={(event) => updateSection(index, { heading: event.target.value })}
+                      />
+                      {fieldErrors[`sections.${index}.heading`] ? (
+                        <span className="admin-error-text">{fieldErrors[`sections.${index}.heading`]}</span>
+                      ) : null}
+                    </label>
+                    <label>
+                      CTA label
+                      <input value={section.ctaLabel} onChange={(event) => updateSection(index, { ctaLabel: event.target.value })} />
+                    </label>
+                    <label>
+                      CTA URL
+                      <input
+                        className={fieldErrors[`sections.${index}.ctaHref`] ? 'admin-input-error' : ''}
+                        value={section.ctaHref}
+                        onChange={(event) => updateSection(index, { ctaHref: event.target.value })}
+                      />
+                      {fieldErrors[`sections.${index}.ctaHref`] ? (
+                        <span className="admin-error-text">{fieldErrors[`sections.${index}.ctaHref`]}</span>
+                      ) : null}
+                    </label>
+                    <label>
+                      Theme background
+                      <input value={section.theme.background} onChange={(event) => updateSection(index, { theme: { ...section.theme, background: event.target.value } })} />
+                    </label>
+                    <label>
+                      Theme text
+                      <input value={section.theme.text} onChange={(event) => updateSection(index, { theme: { ...section.theme, text: event.target.value } })} />
+                    </label>
+                    <label>
+                      Theme accent
+                      <input value={section.theme.accent} onChange={(event) => updateSection(index, { theme: { ...section.theme, accent: event.target.value } })} />
+                    </label>
+                  </div>
+
                   <label>
-                    Enabled
-                    <input type="checkbox" checked={block.enabled} onChange={(event) => updateBlock(index, { enabled: event.target.checked })} />
+                    Body
+                    <textarea
+                      className={fieldErrors[`sections.${index}.body`] ? 'admin-input-error' : ''}
+                      rows={5}
+                      value={section.body}
+                      onChange={(event) => updateSection(index, { body: event.target.value })}
+                    />
+                    {fieldErrors[`sections.${index}.body`] ? (
+                      <span className="admin-error-text">{fieldErrors[`sections.${index}.body`]}</span>
+                    ) : null}
                   </label>
-                  <label>
-                    Theme
-                    <select value={block.theme} onChange={(event) => updateBlock(index, { theme: event.target.value as HomeBlock['theme'] })}>
-                      <option value="light">light</option>
-                      <option value="blue-soft">blue-soft</option>
-                      <option value="mist">mist</option>
-                    </select>
-                  </label>
-                </div>
 
-                {renderHomeQuickFields(block, index)}
-                {blockIssues.length > 0 ? <p className="admin-error-text">{blockIssues[0].message}</p> : null}
-              </article>
-            );
-          })}
-        </section>
-      ) : (
-        <section className="admin-card">
-          <div className="admin-inline-header">
-            <h2>Page sections</h2>
-            <button type="button" onClick={() => setPage({ ...page, sections: [...page.sections, createSection(page.sections.length)] })}>
-              Add section
-            </button>
-          </div>
-          {fieldErrors.sections ? <p className="admin-error-text">{fieldErrors.sections}</p> : null}
-
-          {page.sections.map((section, index) => (
-            <article className="section-editor" key={section.id}>
-              <div className="admin-inline-header">
-                <h3>
-                  {index + 1}. {section.id}
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => setPage({ ...page, sections: page.sections.filter((row) => row.id !== section.id) })}
-                >
-                  Remove
-                </button>
-              </div>
-
-              <div className="admin-grid-2">
-                <label>
-                  Layout
-                  <select value={section.layout} onChange={(event) => updateSection(index, { layout: event.target.value as PageSection['layout'] })}>
-                    <option value="stacked">stacked</option>
-                    <option value="split">split</option>
-                  </select>
-                </label>
-                <label>
-                  Heading
-                  <input
-                    className={fieldErrors[`sections.${index}.heading`] ? 'admin-input-error' : ''}
-                    value={section.heading}
-                    onChange={(event) => updateSection(index, { heading: event.target.value })}
+                  <MediaPickerField
+                    label="Section image"
+                    value={section.mediaImage}
+                    onChange={(value) => updateSection(index, { mediaImage: value })}
+                    altLabel="Section image alt text"
+                    altValue={section.mediaAlt}
+                    onAltChange={(value) => updateSection(index, { mediaAlt: value })}
+                    helperText="Optional media shown in split or stacked page sections."
+                    aspectRatioHint="16:9 for wide sections or 4:3 for editorial layouts."
                   />
-                  {fieldErrors[`sections.${index}.heading`] ? (
-                    <span className="admin-error-text">{fieldErrors[`sections.${index}.heading`]}</span>
-                  ) : null}
-                </label>
-                <label>
-                  CTA label
-                  <input value={section.ctaLabel} onChange={(event) => updateSection(index, { ctaLabel: event.target.value })} />
-                </label>
-                <label>
-                  CTA URL
-                  <input
-                    className={fieldErrors[`sections.${index}.ctaHref`] ? 'admin-input-error' : ''}
-                    value={section.ctaHref}
-                    onChange={(event) => updateSection(index, { ctaHref: event.target.value })}
-                  />
-                  {fieldErrors[`sections.${index}.ctaHref`] ? (
-                    <span className="admin-error-text">{fieldErrors[`sections.${index}.ctaHref`]}</span>
-                  ) : null}
-                </label>
-                <label>
-                  Theme background
-                  <input value={section.theme.background} onChange={(event) => updateSection(index, { theme: { ...section.theme, background: event.target.value } })} />
-                </label>
-                <label>
-                  Theme text
-                  <input value={section.theme.text} onChange={(event) => updateSection(index, { theme: { ...section.theme, text: event.target.value } })} />
-                </label>
-                <label>
-                  Theme accent
-                  <input value={section.theme.accent} onChange={(event) => updateSection(index, { theme: { ...section.theme, accent: event.target.value } })} />
-                </label>
+                </article>
+              ))}
+            </section>
+          )}
+
+          {/* SEO & Social Card */}
+          <section className="admin-card">
+            <div className="admin-inline-header">
+              <h2>SEO & Social Preview</h2>
+              <span className="admin-chip admin-chip-muted">Google SERP</span>
+            </div>
+
+            {/* Live Google SERP snippet preview */}
+            <div className="serp-card-preview">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid #f1f5f9' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b' }}>
+                  Live Google SERP Snippet Preview
+                </span>
+                <span style={{ fontSize: 11, color: '#94a3b8' }}>Desktop View</span>
               </div>
+              <div className="serp-url-row">
+                <span className="serp-favicon">V</span>
+                <span>
+                  <strong>Vanaila</strong> <span style={{ color: '#94a3b8' }}>›</span> {page.seo.slug || (page.id === 'home' ? '' : page.id)}
+                </span>
+              </div>
+              <div className="serp-title">
+                {page.seo.metaTitle || page.title || 'Untitled page'}
+              </div>
+              <p className="serp-snippet">
+                {page.seo.metaDescription || (page.sections[0]?.body ? page.sections[0].body.slice(0, 150) + '...' : 'Add a meta description to see how this page appears in search results.')}
+              </p>
+            </div>
 
-              <label>
-                Body
-                <textarea
-                  className={fieldErrors[`sections.${index}.body`] ? 'admin-input-error' : ''}
-                  rows={5}
-                  value={section.body}
-                  onChange={(event) => updateSection(index, { body: event.target.value })}
-                />
-                {fieldErrors[`sections.${index}.body`] ? (
-                  <span className="admin-error-text">{fieldErrors[`sections.${index}.body`]}</span>
-                ) : null}
-              </label>
-
-              <MediaPickerField
-                label="Section image"
-                value={section.mediaImage}
-                onChange={(value) => updateSection(index, { mediaImage: value })}
-                altLabel="Section image alt text"
-                altValue={section.mediaAlt}
-                onAltChange={(value) => updateSection(index, { mediaAlt: value })}
-                helperText="Optional media shown in split or stacked page sections."
-                aspectRatioHint="16:9 for wide sections or 4:3 for editorial layouts."
+            <label>
+              Meta title
+              <input
+                className={fieldErrors['seo.metaTitle'] ? 'admin-input-error' : ''}
+                value={page.seo.metaTitle}
+                onChange={(event) => setPage({ ...page, seo: { ...page.seo, metaTitle: event.target.value } })}
               />
-            </article>
-          ))}
-        </section>
-      )}
+              <span className="admin-subtle">{page.seo.metaTitle.length}/60 recommended</span>
+              {fieldErrors['seo.metaTitle'] ? <span className="admin-error-text">{fieldErrors['seo.metaTitle']}</span> : null}
+            </label>
+            <label>
+              Meta description
+              <textarea
+                className={fieldErrors['seo.metaDescription'] ? 'admin-input-error' : ''}
+                rows={3}
+                value={page.seo.metaDescription}
+                onChange={(event) => setPage({ ...page, seo: { ...page.seo, metaDescription: event.target.value } })}
+              />
+              <span className="admin-subtle">{page.seo.metaDescription.length}/160 recommended</span>
+              {fieldErrors['seo.metaDescription'] ? (
+                <span className="admin-error-text">{fieldErrors['seo.metaDescription']}</span>
+              ) : null}
+            </label>
+            <label>
+              Keywords (comma separated)
+              <input
+                value={toKeywordInput(page.seo.keywords)}
+                onChange={(event) =>
+                  setPage({
+                    ...page,
+                    seo: {
+                      ...page.seo,
+                      keywords: fromKeywordInput(event.target.value)
+                    }
+                  })
+                }
+                placeholder="vanaila, digital agency, business software"
+              />
+            </label>
+            <label className="admin-checkbox-row">
+              <input
+                type="checkbox"
+                checked={page.seo.noIndex}
+                onChange={(event) => setPage({ ...page, seo: { ...page.seo, noIndex: event.target.checked } })}
+              />
+              <span>Disallow search engines from indexing this page (noindex)</span>
+            </label>
+          </section>
+        </div>
+
+        {/* Right Sticky Inspector: Publication & Schedule, Slug & Canonical, Social Image, Revision History */}
+        <aside className="admin-inspector">
+          {/* Publication & Scheduling Card */}
+          <section className="admin-card">
+            <h3 className="admin-section-heading">Publication & Schedule</h3>
+            <div style={{ marginTop: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <span className="admin-subtle">Publication state</span>
+                <span className={`admin-chip ${page.published ? 'admin-chip-success' : 'admin-chip-muted'}`}>
+                  {publicationLabel}
+                </span>
+              </div>
+              <label className="admin-checkbox-row" style={{ marginBottom: 12 }}>
+                <input
+                  type="checkbox"
+                  checked={page.published}
+                  disabled={!canPublish}
+                  onChange={(event) => setPage({ ...page, published: event.target.checked })}
+                />
+                <span>Published and live on website</span>
+              </label>
+              <label>
+                Scheduled publish time
+                <input
+                  className={fieldErrors.scheduledPublishAt ? 'admin-input-error' : ''}
+                  type="datetime-local"
+                  value={toDatetimeLocalValue(page.scheduledPublishAt)}
+                  disabled={!canPublish}
+                  onChange={(event) =>
+                    setPage({
+                      ...page,
+                      scheduledPublishAt: fromDatetimeLocalValue(event.target.value)
+                    })
+                  }
+                />
+                {fieldErrors.scheduledPublishAt ? (
+                  <span className="admin-error-text">{fieldErrors.scheduledPublishAt}</span>
+                ) : (
+                  <span className="admin-subtle">Go live automatically at date/time.</span>
+                )}
+              </label>
+              <label style={{ marginTop: 12 }}>
+                Scheduled unpublish time
+                <input
+                  className={fieldErrors.scheduledUnpublishAt ? 'admin-input-error' : ''}
+                  type="datetime-local"
+                  value={toDatetimeLocalValue(page.scheduledUnpublishAt)}
+                  disabled={!canPublish}
+                  onChange={(event) =>
+                    setPage({
+                      ...page,
+                      scheduledUnpublishAt: fromDatetimeLocalValue(event.target.value)
+                    })
+                  }
+                />
+                {fieldErrors.scheduledUnpublishAt ? (
+                  <span className="admin-error-text">{fieldErrors.scheduledUnpublishAt}</span>
+                ) : (
+                  <span className="admin-subtle">Unpublish automatically when campaign ends.</span>
+                )}
+              </label>
+              {!canPublish ? <p className="admin-subtle" style={{ marginTop: 8 }}>Your role can edit content but cannot change page publication timing.</p> : null}
+            </div>
+          </section>
+
+          {/* Slug & Canonical Card */}
+          <section className="admin-card">
+            <h3 className="admin-section-heading">URL & Canonical</h3>
+            <div style={{ marginTop: 12 }}>
+              <label>
+                Page URL slug
+                <input
+                  className={fieldErrors['seo.slug'] ? 'admin-input-error' : ''}
+                  value={page.seo.slug}
+                  onChange={(event) => setPage({ ...page, seo: { ...page.seo, slug: event.target.value } })}
+                  placeholder="e.g. services"
+                />
+                {fieldErrors['seo.slug'] ? <span className="admin-error-text">{fieldErrors['seo.slug']}</span> : null}
+                <span className="admin-subtle">URL path: /{page.seo.slug || page.id}</span>
+              </label>
+              <label style={{ marginTop: 12 }}>
+                Canonical URL
+                <input
+                  value={page.seo.canonical}
+                  onChange={(event) => setPage({ ...page, seo: { ...page.seo, canonical: event.target.value } })}
+                  placeholder="https://vanaila.com/..."
+                />
+              </label>
+            </div>
+          </section>
+
+          {/* Social Image Card */}
+          <section className="admin-card">
+            <h3 className="admin-section-heading">Social Share Image</h3>
+            <div style={{ marginTop: 12 }}>
+              <MediaPickerField
+                label="Social image"
+                value={page.seo.socialImage}
+                onChange={(value) => setPage({ ...page, seo: { ...page.seo, socialImage: value } })}
+                helperText="Optional Open Graph image for social platforms."
+                aspectRatioHint="1200x630 (1.91:1) for Open Graph cards."
+              />
+            </div>
+          </section>
+
+          {/* Revision History Card */}
+          <ContentRevisionPanel<LandingPage>
+            entityType="page"
+            entityId={page.id}
+            reloadKey={revisionReloadKey}
+            emptyMessage="Manual saves and restore points for this page will appear here."
+            onRestore={(restoredPage) => {
+              setPage(restoredPage);
+              setBaseline(restoredPage);
+              setLastSavedAt(restoredPage.updatedAt ?? null);
+              setNotice('Page restored from revision history.');
+              setAutoSaveState('idle');
+            }}
+          />
+        </aside>
+      </div>
     </div>
   );
 }
