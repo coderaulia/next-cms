@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Bell, Calendar, Check, MessageSquare, UserCheck, X } from 'lucide-react';
 
 import { csrfFetch } from '@/lib/clientCsrf';
 
@@ -92,15 +93,14 @@ export function NotificationBell() {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'schedule_publish':
-        return '📅';
       case 'schedule_unpublish':
-        return '📅';
+        return <Calendar size={15} style={{ color: '#2563eb' }} />;
       case 'approval_request':
-        return '👋';
+        return <UserCheck size={15} style={{ color: '#d97706' }} />;
       case 'mention':
-        return '💬';
+        return <MessageSquare size={15} style={{ color: '#059669' }} />;
       default:
-        return '🔔';
+        return <Bell size={15} style={{ color: '#64748b' }} />;
     }
   };
 
@@ -112,7 +112,7 @@ export function NotificationBell() {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Notifications"
       >
-        <span className="admin-notification-icon">🔔</span>
+        <Bell size={18} />
         {unreadCount > 0 && <span className="admin-notification-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
       </button>
 
@@ -149,12 +149,12 @@ export function NotificationBell() {
                   </div>
                   <div className="admin-notification-item-actions">
                     {!notification.read && (
-                      <button type="button" onClick={() => void handleMarkRead(notification.id)} title="Mark as read">
-                        ✓
+                      <button type="button" onClick={() => void handleMarkRead(notification.id)} title="Mark as read" aria-label="Mark as read">
+                        <Check size={14} />
                       </button>
                     )}
-                    <button type="button" onClick={() => void handleDelete(notification.id)} title="Dismiss">
-                      ×
+                    <button type="button" onClick={() => void handleDelete(notification.id)} title="Dismiss" aria-label="Dismiss">
+                      <X size={14} />
                     </button>
                   </div>
                 </div>

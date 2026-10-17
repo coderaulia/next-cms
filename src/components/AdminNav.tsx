@@ -1,7 +1,34 @@
 'use client';
 
+import type { ComponentType } from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  Activity,
+  ArrowLeftRight,
+  BarChart3,
+  BookOpen,
+  Briefcase,
+  Code2,
+  Database,
+  ExternalLink,
+  Files,
+  FileText,
+  Image as ImageIcon,
+  Inbox,
+  KeyRound,
+  LayoutDashboard,
+  Link2,
+  LogOut,
+  Map,
+  MessageSquare,
+  Settings,
+  ShieldCheck,
+  Tags,
+  Users,
+  X
+} from 'lucide-react';
 
 import { siteProfile } from '@/config/site-profile';
 import { logoutAdmin } from '@/features/cms/adminClientAuth';
@@ -9,26 +36,40 @@ import type { AdminSessionUser } from '@/features/cms/adminTypes';
 import { formatAdminRoleLabel } from '@/features/cms/adminPermissions';
 import type { AdminPermission } from '@/features/cms/types';
 
-const siteManagementLinks: Array<{ href: string; label: string; permission?: AdminPermission }> = [
-  { href: '/admin/data', label: 'Data & Backup', permission: 'data:manage' },
-  { href: '/admin/settings', label: 'Settings', permission: 'settings:edit' },
-  { href: '/admin/contact-submissions', label: 'Contact Leads' },
-  { href: '/admin/categories', label: 'Categories', permission: 'taxonomy:edit' },
-  { href: '/admin/media', label: 'Media Library', permission: 'media:edit' },
-  { href: '/admin/team', label: 'Team', permission: 'team:manage' },
-  { href: '/admin/sessions', label: 'Sessions', permission: 'team:manage' },
-  { href: '/admin/analytics', label: 'Analytics', permission: 'analytics:view' },
-  { href: '/admin/audit', label: 'Audit Log', permission: 'audit:view' },
-  { href: '/admin/manual', label: 'Manual' },
-  { href: '/admin/settings?tab=discussion', label: 'Comments', permission: 'settings:edit' }
+type NavItem = {
+  href: string;
+  label: string;
+  icon: ComponentType<{ size?: number; className?: string }>;
+  permission?: AdminPermission;
+};
+
+const coreLinks: NavItem[] = [
+  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/blog', label: 'Posts', icon: FileText, permission: 'content:edit' },
+  { href: '/admin/pages', label: 'Pages', icon: Files, permission: 'content:edit' },
+  { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase, permission: 'content:edit' }
 ];
 
-const seoLinks: Array<{ href: string; label: string; permission?: AdminPermission }> = [
-  { href: '/admin/settings?tab=permalinks', label: 'Permalinks', permission: 'settings:edit' },
-  { href: '/admin/settings?tab=seo', label: 'Meta Tags', permission: 'settings:edit' },
-  { href: '/admin/settings?tab=sitemap', label: 'Sitemaps', permission: 'settings:edit' },
-  { href: '/admin/link-checker', label: 'Link Checker', permission: 'analytics:view' },
-  { href: '/admin/redirects', label: 'Redirects', permission: 'settings:edit' }
+const siteManagementLinks: NavItem[] = [
+  { href: '/admin/data', label: 'Data & Backup', icon: Database, permission: 'data:manage' },
+  { href: '/admin/settings', label: 'Settings', icon: Settings, permission: 'settings:edit' },
+  { href: '/admin/contact-submissions', label: 'Contact Leads', icon: Inbox },
+  { href: '/admin/categories', label: 'Categories', icon: Tags, permission: 'taxonomy:edit' },
+  { href: '/admin/media', label: 'Media Library', icon: ImageIcon, permission: 'media:edit' },
+  { href: '/admin/team', label: 'Team', icon: Users, permission: 'team:manage' },
+  { href: '/admin/sessions', label: 'Sessions', icon: KeyRound, permission: 'team:manage' },
+  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3, permission: 'analytics:view' },
+  { href: '/admin/audit', label: 'Audit Log', icon: ShieldCheck, permission: 'audit:view' },
+  { href: '/admin/manual', label: 'Manual', icon: BookOpen },
+  { href: '/admin/settings?tab=discussion', label: 'Comments', icon: MessageSquare, permission: 'settings:edit' }
+];
+
+const seoLinks: NavItem[] = [
+  { href: '/admin/settings?tab=permalinks', label: 'Permalinks', icon: Link2, permission: 'settings:edit' },
+  { href: '/admin/settings?tab=seo', label: 'Meta Tags', icon: Code2, permission: 'settings:edit' },
+  { href: '/admin/settings?tab=sitemap', label: 'Sitemaps', icon: Map, permission: 'settings:edit' },
+  { href: '/admin/link-checker', label: 'Link Checker', icon: Activity, permission: 'analytics:view' },
+  { href: '/admin/redirects', label: 'Redirects', icon: ArrowLeftRight, permission: 'settings:edit' }
 ];
 
 function initialsForUser(user: AdminSessionUser) {
@@ -39,15 +80,36 @@ function initialsForUser(user: AdminSessionUser) {
 
 type AdminNavProps = {
   user: AdminSessionUser | null;
+  isOpen?: boolean;
+  onClose?: () => void;
 };
 
-export function AdminNav({ user }: AdminNavProps) {
+function AdminNavContent({ user, isOpen, onClose }: AdminNavProps) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const permissionSet = new Set(user?.permissions ?? []);
 
-  const isActive = (href: string) =>
-    pathname === href || (href !== '/admin' && pathname.startsWith(href.split('?')[0]));
+  const isActive = (href: string) => {
+    const [hrefPath, hrefQuery] = href.split('?');
+    const targetTab = hrefQuery ? new URLSearchParams(hrefQuery).get('tab') : null;
+    const currentTab = searchParams.get('tab');
+
+    if (targetTab) {
+      return pathname === hrefPath && currentTab === targetTab;
+    }
+
+    if (href === '/admin/settings') {
+      return pathname === '/admin/settings' && (!currentTab || currentTab === 'general');
+    }
+
+    if (href === '/admin') {
+      return pathname === '/admin';
+    }
+
+    return pathname === hrefPath || pathname.startsWith(`${hrefPath}/`);
+  };
+
   const canAccess = (permission?: AdminPermission) => !permission || permissionSet.has(permission);
 
   const handleLogout = async () => {
@@ -57,61 +119,65 @@ export function AdminNav({ user }: AdminNavProps) {
   };
 
   return (
-    <aside className="admin-sidebar">
-      <div className="admin-sidebar-scroll">
-        <Link href="/admin" className="admin-logo">
+    <aside className={`admin-sidebar ${isOpen ? 'open' : ''}`}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <Link href="/admin" className="admin-logo" onClick={onClose}>
           <span className="v2-brand-mark">{siteProfile.brand.mark}</span>
           <span>{siteProfile.brand.wordmark}</span>
         </Link>
+        {onClose ? (
+          <button
+            type="button"
+            className="admin-sidebar-close"
+            onClick={onClose}
+            aria-label="Close navigation"
+          >
+            <X size={18} />
+          </button>
+        ) : null}
+      </div>
 
+      <div className="admin-sidebar-scroll">
         <p className="admin-side-title">Core Content</p>
         <ul className="admin-nav-list">
-          <li>
-            <Link href="/admin" className={`admin-nav-link ${isActive('/admin') ? 'active' : ''}`}>
-              Dashboard
-            </Link>
-          </li>
-          {canAccess('content:edit') ? (
-            <>
-              <li>
+          {coreLinks.filter((item) => canAccess(item.permission)).map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.href);
+            return (
+              <li key={item.label}>
                 <Link
-                  href="/admin/blog"
-                  className={`admin-nav-link ${isActive('/admin/blog') ? 'active' : ''}`}
+                  href={item.href}
+                  className={`admin-nav-link ${active ? 'active' : ''}`}
+                  onClick={onClose}
                 >
-                  Posts
+                  <Icon size={18} className="admin-nav-icon" />
+                  <span>{item.label}</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/admin/pages"
-                  className={`admin-nav-link ${isActive('/admin/pages') ? 'active' : ''}`}
-                >
-                  Pages
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/admin/portfolio"
-                  className={`admin-nav-link ${isActive('/admin/portfolio') ? 'active' : ''}`}
-                >
-                  Portfolio
-                </Link>
-              </li>
-            </>
-          ) : null}
+            );
+          })}
         </ul>
 
         {siteManagementLinks.some((item) => canAccess(item.permission)) ? (
           <>
             <p className="admin-side-title">Site Management</p>
             <ul className="admin-nav-list">
-              {siteManagementLinks.filter((item) => canAccess(item.permission)).map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className={`admin-nav-link ${isActive(item.href) ? 'active' : ''}`}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {siteManagementLinks.filter((item) => canAccess(item.permission)).map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.href);
+                return (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className={`admin-nav-link ${active ? 'active' : ''}`}
+                      onClick={onClose}
+                    >
+                      <Icon size={18} className="admin-nav-icon" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </>
         ) : null}
@@ -120,31 +186,60 @@ export function AdminNav({ user }: AdminNavProps) {
           <>
             <p className="admin-side-title">Basic SEO</p>
             <ul className="admin-nav-list">
-              {seoLinks.filter((item) => canAccess(item.permission)).map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className={`admin-nav-link ${isActive(item.href) ? 'active' : ''}`}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {seoLinks.filter((item) => canAccess(item.permission)).map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.href);
+                return (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className={`admin-nav-link ${active ? 'active' : ''}`}
+                      onClick={onClose}
+                    >
+                      <Icon size={18} className="admin-nav-icon" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </>
         ) : null}
       </div>
 
       <div className="admin-sidebar-footer">
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="admin-nav-link"
+          title="Open live public site in new tab"
+          onClick={onClose}
+          style={{ color: '#94a3b8', fontSize: '0.82rem', minHeight: '34px' }}
+        >
+          <ExternalLink size={16} className="admin-nav-icon" />
+          <span>View Live Site</span>
+        </Link>
+
         {user ? (
           <>
             <div className="admin-user-card">
               <span className="admin-user-avatar">{initialsForUser(user)}</span>
-              <div>
-                <strong>{user.displayName}</strong>
-                <p className="muted">{user.email}</p>
-                <span className="admin-chip admin-chip-muted">{formatAdminRoleLabel(user.role)}</span>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <strong style={{ display: 'block', fontSize: '0.82rem', color: '#f8fafc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {user.displayName}
+                </strong>
+                <p style={{ margin: 0, fontSize: '0.72rem', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {user.email}
+                </p>
+                <span className="admin-chip admin-chip-muted" style={{ marginTop: 4, height: 18, fontSize: '0.65rem' }}>
+                  {formatAdminRoleLabel(user.role)}
+                </span>
               </div>
             </div>
             <button type="button" className="admin-logout" onClick={handleLogout}>
-              Logout
+              <LogOut size={16} />
+              <span>Logout</span>
             </button>
           </>
         ) : (
@@ -158,5 +253,23 @@ export function AdminNav({ user }: AdminNavProps) {
         )}
       </div>
     </aside>
+  );
+}
+
+export function AdminNav(props: AdminNavProps) {
+  return (
+    <Suspense
+      fallback={
+        <aside className={`admin-sidebar ${props.isOpen ? 'open' : ''}`}>
+          <div className="admin-logo">
+            <span className="v2-brand-mark">{siteProfile.brand.mark}</span>
+            <span>{siteProfile.brand.wordmark}</span>
+          </div>
+          <div className="admin-sidebar-scroll" />
+        </aside>
+      }
+    >
+      <AdminNavContent {...props} />
+    </Suspense>
   );
 }
