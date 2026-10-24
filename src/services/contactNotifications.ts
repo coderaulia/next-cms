@@ -17,6 +17,18 @@ export async function notifyContactSubmission(submission: ContactSubmission) {
     return { delivered: false };
   }
 
+  // Validate webhook URL: reject malformed URLs, NUL bytes (CVE-2026-105482), or non-HTTP(S) protocols
+  try {
+    const parsed = new URL(webhookUrl);
+    if (!['http:', 'https:'].includes(parsed.protocol) || webhookUrl.includes('\0') || webhookUrl.includes('%00')) {
+      console.error('[notifications] webhook delivery skipped: invalid URL or protocol');
+      return { delivered: false };
+    }
+  } catch {
+    console.error('[notifications] webhook delivery skipped: malformed webhook URL');
+    return { delivered: false };
+  }
+
   const payload: NotificationRequest = {
     name: submission.name,
     email: submission.email,
@@ -28,7 +40,9 @@ export async function notifyContactSubmission(submission: ContactSubmission) {
   };
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    // Disable Brotli response decompression on outbound calls (defense-in-depth for CVE-2026-111497)
+    'Accept-Encoding': 'gzip, deflate'
   };
 
   if (env.contactNotificationWebhookToken) {

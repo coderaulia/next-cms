@@ -88,7 +88,7 @@ Media storage provider priority at runtime: **R2 → Supabase → local disk**.
 Recommended production setup:
 - Supabase Postgres for CMS data, sessions, analytics, audit logs, and rate limits
 - Supabase Storage for uploaded media
-- Hostinger Node.js hosting for the Next.js app
+- Hostinger Node.js hosting (Node.js >= 22.23.4 LTS or >= 24.22.1) for the Next.js app
 
 Important:
 - Do not rely on local file writes for long-term production media persistence (ephemeral on containers/Vercel).

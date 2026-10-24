@@ -207,4 +207,40 @@ describe('CMS validators', () => {
     expect(page?.sections[0].ctaHref).toBe('');
     expect(page?.sections[0].mediaImage).toBe('');
   });
+
+  it('rejects URLs containing NUL characters or control characters (CVE-2026-105482)', () => {
+    const page = validateLandingPage({
+      id: 'partnership',
+      title: 'Partnership',
+      navLabel: 'Partnership',
+      published: true,
+      seo: {
+        metaTitle: 'Partnership',
+        metaDescription: 'desc',
+        slug: 'partnership',
+        canonical: 'https://example.com\0.attacker.com',
+        socialImage: 'https://example.com/%00/test.png',
+        noIndex: false
+      },
+      sections: [
+        {
+          id: 'cta',
+          heading: 'CTA',
+          body: 'Body',
+          ctaLabel: 'CTA',
+          ctaHref: 'https://example.com\0/bad',
+          layout: 'stacked',
+          theme: {
+            background: '#fff',
+            text: '#000',
+            accent: '#00f'
+          }
+        }
+      ]
+    });
+
+    expect(page?.seo.canonical).toBe('');
+    expect(page?.seo.socialImage).toBe('');
+    expect(page?.sections[0].ctaHref).toBe('');
+  });
 });

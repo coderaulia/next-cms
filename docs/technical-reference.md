@@ -5,7 +5,7 @@ This document holds implementation-level details that are useful for developers 
 ## Stack
 
 - Framework: Next.js App Router
-- Runtime: Node.js 20+
+- Runtime: Node.js >= 22.23.4 (LTS) or >= 24.22.1 (CVE-2026-111497 patched)
 - Language: TypeScript strict mode
 - UI: React 19 and Tailwind CSS
 - Database: PostgreSQL-compatible database through Drizzle ORM

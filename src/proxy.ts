@@ -52,12 +52,25 @@ function generateCsrfToken() {
 }
 
 export function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Block null-byte injection (CVE-2026-105482) in URL paths or query strings
+  if (pathname.includes('\0') || request.url.includes('%00')) {
+    return new NextResponse('Bad Request', { status: 400 });
+  }
+
+  // Reject compressed request bodies (defense-in-depth against CVE-2026-111497
+  // Brotli decoder out-of-bounds write / "Node2Shell"). This CMS does not accept
+  // Brotli-compressed request payloads.
+  const contentEncoding = request.headers.get('content-encoding')?.toLowerCase();
+  if (contentEncoding && (contentEncoding.includes('br') || contentEncoding.includes('brotli'))) {
+    return new NextResponse('Unsupported Content-Encoding', { status: 415 });
+  }
+
   const nonce = generateNonce();
   const csp = contentSecurityPolicyBase
     .join('; ')
     .replace(/REPLACE_ME_NONCE/g, nonce);
-
-  const pathname = request.nextUrl.pathname;
 
   // Public pages go through next-intl routing; everything else passes through.
   // Security headers + CSRF below are applied to whichever response we return.

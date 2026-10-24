@@ -73,3 +73,31 @@ This project is closer to client deployment after the first critical/high pass. 
 6. Client handoff flow: rotate bootstrap admin credentials, require strong password policy, document owner recovery.
 7. Redirects, scheduled publishing, and analytics should have end-to-end tests.
 8. Rate limiting should be enforced at both app and edge/WAF layers.
+
+## October 2026 Security Advisory Remediation (CVE-2026-111497 / Node2Shell & Related Flaws)
+
+Date: 2026-10-24
+
+### 1. Key Vulnerabilities Addressed
+- **CVE-2026-111497 (High)**: Out-of-bounds write in Node.js's native Brotli decoder (`c/dec/decode.c`) leading to potential RCE when decompressing untrusted streams.
+- **CVE-2026-106069 & CVE-2026-105483 (High)**: TLS certificate hostname validation bypasses via loose IP resolution and fullwidth Unicode digits.
+- **CVE-2026-105482 (High)**: `dns.resolve` truncating names containing NUL (`\0`) characters.
+- **Medium & Low Flaws**: Socket keep-alive processing (CVE-2026-105481), IPv4 validation, and permission model bypasses.
+
+### 2. Remediation Implemented
+1. **Node Runtime Constraints (`package.json` & `.nvmrc`)**:
+   - Updated `engines.node` to `">=22.23.4 <23.0.0 || >=24.22.1 <25.0.0 || >=26.12.1"`.
+   - Updated `.nvmrc` to `22.23.4`.
+   - Pinned `.github/workflows/ci.yml` to resolve Node version via `.nvmrc`.
+   - Removed documentation referencing Node 20.x (which is EOL and receives no official patches).
+2. **Application Defense-in-Depth for Brotli Decoder RCE**:
+   - `src/proxy.ts`: Added pre-routing guard rejecting incoming requests with `Content-Encoding: br` / `brotli` (HTTP 415), preventing unneeded compressed body handling.
+   - `src/services/requestSecurity.ts`: Hardened `readJsonWithLimit` to reject non-identity `Content-Encoding`.
+   - `src/services/contactNotifications.ts`: Explicitly configured `Accept-Encoding: gzip, deflate` on outbound webhook `fetch()` calls to prevent Node's HTTP client from requesting/handling Brotli-compressed responses from external servers.
+3. **URL & NUL-Byte Sanitization**:
+   - `src/proxy.ts`: Blocked requests with NUL bytes (`\0` or `%00`) in URL paths/queries (HTTP 400).
+   - `src/features/cms/validators.ts`: Hardened `isSafeAbsoluteUrl` and `asSafeHref` against NUL bytes and control characters to prevent DNS truncation bypasses.
+   - `src/services/contactNotifications.ts`: Added validation guarding outbound webhook URLs against NUL bytes and unsupported protocols.
+4. **Dependency Vulnerability Fixes**:
+   - Ran `npm audit fix` resolving 4 high vulnerabilities: updated `zod` to `>=4.6.7` (fixing GHSA-mrhx-c7xc-m3w5 DoS) and `markdown-it` to `14.3.3` (fixing GHSA-vfgh-jcmw-g37q and GHSA-gfr2-rv44-r23c). `npm audit` reports 0 vulnerabilities.
+

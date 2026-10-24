@@ -262,6 +262,14 @@ export async function assertRateLimit(request: Request, scope: string, limit: nu
 }
 
 export async function readJsonWithLimit(request: Request, maxBytes: number): Promise<LimitedJsonResult> {
+  const contentEncoding = request.headers.get('content-encoding')?.toLowerCase();
+  if (contentEncoding && contentEncoding !== 'identity') {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: 'Unsupported Content-Encoding.' }, { status: 415 })
+    };
+  }
+
   const contentLength = request.headers.get('content-length');
   if (contentLength) {
     const parsedLength = Number.parseInt(contentLength, 10);

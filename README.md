@@ -20,7 +20,7 @@ Use managed services for production:
 
 - PostgreSQL-compatible database, recommended Supabase Postgres
 - Managed object storage, recommended Cloudflare R2 or Supabase Storage
-- Node.js 20 or newer
+- Node.js >= 22.23.4 (LTS) or >= 24.22.1 (Node 20 is EOL and unpatched against CVE-2026-111497)
 - HTTPS public site URL
 
 Required environment variables:

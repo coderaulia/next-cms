@@ -124,6 +124,20 @@ describe('request security', () => {
     expect(result.ok ? result.value : null).toEqual({ name: 'Alex' });
   });
 
+  it('rejects unexpected Content-Encoding request bodies (defense against CVE-2026-111497)', async () => {
+    const request = new Request('https://example.com/api/contact', {
+      method: 'POST',
+      headers: {
+        'content-encoding': 'br'
+      },
+      body: JSON.stringify({ name: 'Alex' })
+    });
+
+    const result = await readJsonWithLimit(request, 1024);
+    expect(result.ok).toBe(false);
+    expect(result.ok ? null : result.response.status).toBe(415);
+  });
+
   it('escapes script-breaking characters in JSON-LD payloads', async () => {
     const html = serializeJsonForScript({ dangerous: '</script><script>alert(1)</script>' });
     expect(html).not.toContain('</script>');

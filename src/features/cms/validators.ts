@@ -135,6 +135,10 @@ const normalizeSlugValue = (value: string) =>
     .replace(/^-|-$/g, '');
 
 const isSafeAbsoluteUrl = (value: string, allowedProtocols: string[]) => {
+  // Reject URLs containing NUL characters or control characters (CVE-2026-105482)
+  if (value.includes('\0') || value.includes('%00') || /[\x00-\x1F\x7F]/.test(value)) {
+    return false;
+  }
   try {
     const parsed = new URL(value);
     return allowedProtocols.includes(parsed.protocol);
@@ -146,6 +150,7 @@ const isSafeAbsoluteUrl = (value: string, allowedProtocols: string[]) => {
 const asSafeHref = (value: unknown) => {
   const trimmed = asString(value).trim();
   if (!trimmed) return '';
+  if (trimmed.includes('\0') || trimmed.includes('%00')) return '';
   if (trimmed.startsWith('#')) return trimmed;
   if (trimmed.startsWith('/')) return trimmed.startsWith('//') ? '' : trimmed;
   return isSafeAbsoluteUrl(trimmed, ['http:', 'https:', 'mailto:', 'tel:']) ? trimmed : '';
