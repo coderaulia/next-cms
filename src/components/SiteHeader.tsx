@@ -178,6 +178,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
           ref={navRef}
           style={{
             display: 'flex',
+            alignItems: 'center',
             gap: 36,
             whiteSpace: 'nowrap',
             visibility: collapsed ? 'hidden' : 'visible',
@@ -204,7 +205,11 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
                     border: 'none',
                     cursor: 'pointer',
                     padding: 0,
+                    minHeight: 0,
+                    borderRadius: 0,
                     fontFamily: 'inherit',
+                    fontWeight: 'inherit',
+                    lineHeight: 'inherit',
                     letterSpacing: 'inherit',
                     display: 'flex',
                     alignItems: 'center',
