@@ -3399,6 +3399,31 @@ button {
   overflow: hidden;
 }
 
+/* Header nav: lock every item (links and dropdown triggers) to one box so
+   global button styles can never shift them off the shared baseline. */
+.v-site-nav > * {
+  display: flex;
+  align-items: center;
+  height: 20px;
+}
+
+.v-site-nav .v-site-nav-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 20px !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  vertical-align: middle;
+}
+
 .v-home a,
 .v-home button {
   cursor: none;
