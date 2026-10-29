@@ -176,6 +176,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
         {/* Nav links (inline — hidden when collapsed) */}
         <nav
           ref={navRef}
+          className="v-site-nav"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -196,7 +197,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
               >
                 <button
                   type="button"
-                  className="no-underline"
+                  className="no-underline v-site-nav-item"
                   style={{
                     fontSize: 14,
                     color: openDropdown === link.label ? '#0033FF' : '#0A0E1A',
@@ -288,7 +289,7 @@ export function SiteHeader({ siteName, navItems, settings }: SiteHeaderProps) {
               <Link
                 key={`${link.href}-${link.label}`}
                 href={link.href}
-                className="no-underline"
+                className="no-underline v-site-nav-item"
                 style={{ fontSize: 14, color: '#0A0E1A', transition: 'color 0.2s' }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLAnchorElement).style.color = '#0033FF';
