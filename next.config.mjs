@@ -12,6 +12,9 @@ const nextConfig = {
   compress: true,
   productionBrowserSourceMaps: false,
   experimental: {
+    // Limit parallel build workers. Each one holds its own database pool while prerendering, and
+    // build containers often expose many CPUs, which can exhaust a managed pooler (EMAXCONNSESSION).
+    cpus: 2,
     optimizePackageImports: ['lucide-react'],
     // Inline CSS into the HTML to remove the render-blocking stylesheet
     // request (~1.3s on mobile). CSP already allows style-src unsafe-inline.

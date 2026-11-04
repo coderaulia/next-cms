@@ -21,7 +21,9 @@ function isNextProductionBuild() {
 }
 
 function resolvePoolMax() {
-  return env.databasePoolMax ?? (isNextProductionBuild() ? 2 : process.env.NODE_ENV === 'production' ? 5 : 4);
+  // During `next build` every static-generation worker opens its own pool, and managed poolers
+  // (e.g. Supabase session mode, 15 clients) are easy to exhaust, so use a single connection per worker.
+  return env.databasePoolMax ?? (isNextProductionBuild() ? 1 : process.env.NODE_ENV === 'production' ? 5 : 4);
 }
 
 function getPool() {
