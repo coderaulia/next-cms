@@ -80,7 +80,7 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 - Don't put personal data on screen. The screenshots use demo data only.
 
 **Format**
-- **Carousels: max 5 slides.** Hook → 3 points → CTA. Shorter carousels get finished, and completion is what gets them pushed to more people.
+- **Carousels: hook → 3–6 content slides → CTA** (5–8 slides). Use as many content slides as the idea needs, but every slide must earn its place; completion is what gets carousels pushed.
 - 9:16 vertical, 1080×1920. Keep text out of the **top ~160px, bottom ~440px and right ~140px**, where the TikTok UI sits (this is built into the slides).
 - The hook goes in the **first 1–3 seconds**, or on slide 1 for carousels. Slide 1 must make people stop and swipe.
 - Use one idea per slide, few words, and large text.
@@ -102,7 +102,18 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 **After posting**
 - Pin a comment that repeats the CTA.
 - Reply to comments within the first hour. A **video reply** to a good question is a free next post.
-- Post 3–5 times a week. Track **saves, shares and profile visits**, not only views.
+- Post **once a day** without gaps (views dropped to ~10/day within a week of stopping). Track **saves, shares and profile visits**, not only views.
+
+**HARD NOTES from our own TikTok data (Oct–Nov 2026), apply to every new post**
+1. **Problem first, product last.** Open with a business problem, opinion or tip; mention a Vanaila product only on the final slide. Of 13 posts that got <10 views, 11 opened by promoting a specific product.
+2. **No organic posts for off-audience products.** VanailaChat, Vanaila Studio, MuzikPlayer and LMS flopped (0–9 views) with our UMKM/HR audience. Promote them with ads or a separate account, not the main feed.
+3. **What works organically (250–600 views):** hot takes ("unpopular opinion"), AI prompt tutorials, tech explained in *bahasa warung*, practical tips (red flags, security, backup), relatable POV, and business pain → system.
+4. **Anything we might advertise must be a video** with a CML sound (or original sound) and Public privacy. Our two approved ads were videos. Every carousel here also has a rendered video version in `output/video/`; post that one when ads are possible.
+5. **Keywords are not the problem.** "penipuan", "dibobol", "Excel/WhatsApp" and "psikotes" all got normal reach or passed ad review. Do avoid showing real personal data (KTP, contracts) on screen.
+6. **Indonesian captions only.** English captions underperformed.
+7. **Comment CTAs must be one-word answers** ("komen LEVEL", "A atau B?"). Open-ended asks got ~0 comments.
+8. **0 views after 24 h = restricted.** Check *Settings → Account status* before posting more of the same kind.
+9. **Ad results are not organic results.** Posts with locked (greyed) privacy were in ads; judge content ideas only on non-ad posts.
 
 ---
 

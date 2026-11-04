@@ -12,3 +12,4 @@ description: Create or update Vanaila social media creatives (HTML template → 
 5. Open the PNG and check for overflow/clipping before shipping.
 6. Add IG/FB + LinkedIn captions to `captions.md`.
 7. Videos (`video/`): **HARD RULE — video top bar:** the top of every video shows the **Vanaila logo only**. No story progress bars, no slide counter ("3/5"), no labels like "Screen tour". Enforced in code: `Brand` in `video/src/theme.tsx` takes no counter prop.
+8. TikTok: follow the **HARD NOTES** in `tiktok.md` (problem first, product last; no organic posts for off-audience products; video + CML sound for anything that may be advertised; Indonesian captions; carousels = hook + 3–6 content slides + CTA).
