@@ -53,6 +53,7 @@ the top of every video shows the **Vanaila logo only**. No story progress bars, 
 
 ## How the animation works
 
+- **Visual style.** Same as the PNG carousels: **Neo-Brutal** (light and blue themes: thick black borders, hard shadows, yellow / pink / blue blocks, Space Grotesk) and **Neon Night** (dark and photo themes: glass cards, yellow→pink gradient accents, Sora). Illustrations and shapes come from `../data/deco.json`. Their positions per slide are computed by `../scripts/build-tiktok.mjs` (it measures the text so decorations never cover it) and saved to `../data/deco-layout.json`, which the videos read. **After changing any slide text, run `npm run build:tiktok` (in `docs/marketing`) before rendering videos**, otherwise decorations can be misplaced.
 - **Carousel videos.** `src/Carousel.tsx` plays the slides in sequence. Each slide type in `src/Slides.tsx` (hook, point, vs, img, collage, split, guess, chat, annot, check, shot, cta) has its own entrance motion:
   - text springs up into place
   - numbers and buttons pop in

@@ -99,6 +99,11 @@ TikTok's policies change often. Check the current [Community Guidelines](https:/
 - End with **one** clear action: comment, save, share or follow. Ask for a meaningful comment ("komen CEK", "komen nomornya"), not empty engagement bait ("like kalau setuju", "follow biar dapat…").
 - Asking people to tag someone the post is *useful* to ("tag rekan HR") is fine. Never promise a reward for likes or follows.
 
+**Visual style (hard rule for all new content)**
+- Two families only: **Neo-Brutal** (themes `light`, `blue`) and **Neon Night** (themes `dark`, `photo`). Palette: yellow `#ffe14d`, pink `#ff5d8f`, blue `#3d5afe`, mint `#5de0b0`, ink `#111`, deep indigo `#0d1030`. Fonts: Space Grotesk + Space Mono (Neo-Brutal), Sora + JetBrains Mono (Neon Night).
+- Every slide carries **illustrations or shapes** (stickers, icons, starbursts) from `data/deco.json`, placed automatically around the text. Add new illustrations there, not in templates.
+- Change the look in one place: `scripts/build-tiktok.mjs` (PNG) and `video/src/theme.tsx` + `video/src/Slides.tsx` (video). Rebuild with `npm run build:tiktok`, then re-render.
+
 **After posting**
 - Pin a comment that repeats the CTA.
 - Reply to comments within the first hour. A **video reply** to a good question is a free next post.

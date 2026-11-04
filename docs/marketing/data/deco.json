@@ -1,0 +1,99 @@
+{
+ "illustrations": {
+  "bulb": "<path class=\"o fy\" d=\"M100 22c-30 0-52 22-52 50 0 19 10 30 19 41 6 7 9 13 9 22h48c0-9 3-15 9-22 9-11 19-22 19-41 0-28-22-50-52-50z\"/><rect class=\"o fw\" x=\"76\" y=\"137\" width=\"48\" height=\"14\" rx=\"5\"/><rect class=\"o fw\" x=\"82\" y=\"151\" width=\"36\" height=\"14\" rx=\"6\"/><path class=\"o\" fill=\"none\" d=\"M86 82l14 18 14-18\"/><path class=\"o\" fill=\"none\" d=\"M100 4v10M28 40l8 7M172 40l-8 7M10 86h14M176 86h14\"/>",
+  "rocket": "<g transform=\"rotate(45 100 100)\"><path class=\"o fp\" d=\"M78 118L48 150l30-8zM122 118l30 32-30-8z\"/><path class=\"o fw\" d=\"M100 10c24 24 30 62 24 108H76c-6-46 0-84 24-108z\"/><circle class=\"o fb\" cx=\"100\" cy=\"68\" r=\"15\"/><path class=\"o fo\" d=\"M84 122h32l-16 46z\"/></g><path class=\"o fy\" d=\"M30 30l5 12 12 5-12 5-5 12-5-12-12-5 12-5z\"/>",
+  "chart": "<rect class=\"o fw\" x=\"18\" y=\"28\" width=\"164\" height=\"144\" rx=\"12\"/><rect class=\"o fb\" x=\"38\" y=\"112\" width=\"26\" height=\"46\" rx=\"4\"/><rect class=\"o fp\" x=\"77\" y=\"88\" width=\"26\" height=\"70\" rx=\"4\"/><rect class=\"o fy\" x=\"116\" y=\"64\" width=\"26\" height=\"94\" rx=\"4\"/><path class=\"o\" fill=\"none\" d=\"M38 84l38-30 24 16 52-40\"/><path class=\"o\" fill=\"none\" d=\"M136 30h22v22\"/>",
+  "search": "<path class=\"o\" style=\"stroke-width:18\" fill=\"none\" d=\"M128 128l44 44\"/><circle class=\"o fb\" cx=\"86\" cy=\"86\" r=\"56\"/><circle class=\"o fw\" cx=\"86\" cy=\"86\" r=\"38\"/><path class=\"o\" fill=\"none\" d=\"M62 76a28 28 0 0 1 22-20\"/>",
+  "shield": "<path class=\"o fb\" d=\"M100 14l66 22v52c0 44-28 74-66 98-38-24-66-54-66-98V36z\"/><path fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"stroke:#fff;stroke-width:14\" d=\"M66 100l24 24 46-50\"/>",
+  "laptop": "<rect class=\"o fw\" x=\"30\" y=\"36\" width=\"140\" height=\"98\" rx=\"10\"/><path class=\"o fy\" d=\"M30 46a10 10 0 0 1 10-10h120a10 10 0 0 1 10 10v16H30z\"/><rect class=\"o fp\" x=\"46\" y=\"76\" width=\"50\" height=\"42\" rx=\"4\"/><path class=\"o\" fill=\"none\" d=\"M110 82h44M110 98h44M110 114h28\"/><path class=\"o fb\" d=\"M12 134h176l-12 26H24z\"/>",
+  "chat": "<path class=\"o fp\" d=\"M104 106h72a12 12 0 0 1 12 12v38a12 12 0 0 1-12 12h-12v24l-26-24h-34a12 12 0 0 1-12-12v-38a12 12 0 0 1 12-12z\"/><path class=\"o fy\" d=\"M24 26h108a12 12 0 0 1 12 12v52a12 12 0 0 1-12 12H72L44 126v-26H24a12 12 0 0 1-12-12V38a12 12 0 0 1 12-12z\"/><circle class=\"fk\" cx=\"54\" cy=\"64\" r=\"7\"/><circle class=\"fk\" cx=\"78\" cy=\"64\" r=\"7\"/><circle class=\"fk\" cx=\"102\" cy=\"64\" r=\"7\"/>",
+  "cursor": "<circle class=\"o fp\" cx=\"138\" cy=\"132\" r=\"34\"/><path class=\"o fw\" d=\"M44 22l10 134 32-28 24 48 26-12-24-48 44-4z\"/><path class=\"o\" fill=\"none\" d=\"M128 38l14-14M150 62l20-4M104 24l2-18\"/>",
+  "mail": "<rect class=\"o fy\" x=\"16\" y=\"48\" width=\"168\" height=\"112\" rx=\"12\"/><path class=\"o fw\" d=\"M20 56l80 58 80-58\"/><circle class=\"o fp\" cx=\"172\" cy=\"46\" r=\"18\"/>",
+  "box": "<path class=\"o fo\" d=\"M26 68l74-32 74 32v82l-74 32-74-32z\"/><path class=\"o fy\" d=\"M26 68l74 32 74-32\"/><path class=\"o\" fill=\"none\" d=\"M100 100v82\"/><path class=\"o fw\" d=\"M62 52l74 32v30l-74-32z\"/>",
+  "people": "<path class=\"o fy\" d=\"M108 168c0-26 14-42 38-42s36 16 36 42z\"/><circle class=\"o fy\" cx=\"146\" cy=\"88\" r=\"24\"/><path class=\"o fp\" d=\"M18 168c0-34 24-54 52-54s52 20 52 54z\"/><circle class=\"o fp\" cx=\"70\" cy=\"72\" r=\"28\"/>",
+  "clock": "<circle class=\"o fy\" cx=\"44\" cy=\"40\" r=\"20\"/><circle class=\"o fy\" cx=\"156\" cy=\"40\" r=\"20\"/><circle class=\"o fw\" cx=\"100\" cy=\"108\" r=\"70\"/><circle class=\"o fb\" cx=\"100\" cy=\"108\" r=\"6\"/><path class=\"o\" fill=\"none\" d=\"M100 60v48l30 18\"/><path class=\"o\" fill=\"none\" d=\"M100 46v8M100 162v8M38 108h8M154 108h8\"/>",
+  "ai": "<path class=\"o\" fill=\"none\" d=\"M62 52V28M100 52V28M138 52V28M62 148v24M100 148v24M138 148v24\"/><rect class=\"o fb\" x=\"30\" y=\"52\" width=\"140\" height=\"96\" rx=\"22\"/><text x=\"100\" y=\"118\" text-anchor=\"middle\" style=\"font:700 62px 'Space Grotesk',sans-serif;fill:#fff;stroke:none\">AI</text><path class=\"o fy\" d=\"M170 14l6 16 16 6-16 6-6 16-6-16-16-6 16-6z\"/>",
+  "coin": "<circle class=\"o fy\" cx=\"100\" cy=\"100\" r=\"76\"/><circle class=\"o\" fill=\"none\" style=\"stroke-width:4\" cx=\"100\" cy=\"100\" r=\"56\"/><text x=\"100\" y=\"120\" text-anchor=\"middle\" style=\"font:700 56px 'Space Grotesk',sans-serif;fill:var(--ol);stroke:none\">Rp</text>",
+  "phone": "<rect class=\"o fw\" x=\"52\" y=\"12\" width=\"96\" height=\"176\" rx=\"18\"/><rect class=\"o fb\" x=\"64\" y=\"34\" width=\"72\" height=\"116\" rx=\"6\"/><circle class=\"o fp\" cx=\"100\" cy=\"100\" r=\"18\"/><circle class=\"o fy\" cx=\"100\" cy=\"168\" r=\"8\"/>"
+ },
+ "shapes": {
+  "star4": "<path class=\"o\" d=\"M50 4l11 33 33 11-33 11-11 33-11-33L6 48l33-11z\"/>",
+  "burst": "<path class=\"o\" d=\"M50 4l9 20 20-12-5 22 22 6-19 12 14 18-22-2-3 22-16-16-16 16-3-22-22 2 14-18-19-12 22-6-5-22 20 12z\"/>",
+  "squiggle": "<path class=\"o\" fill=\"none\" style=\"stroke-width:9\" d=\"M6 50c10-24 20-24 30 0s20 24 30 0 20-24 28 0\"/>",
+  "plus": "<path class=\"o\" d=\"M38 6h24v32h32v24H62v32H38V62H6V38h32z\"/>",
+  "ring": "<circle class=\"o\" fill=\"none\" style=\"stroke-width:12\" cx=\"50\" cy=\"50\" r=\"38\"/>",
+  "dots": "<g class=\"fk\"><circle cx=\"14\" cy=\"14\" r=\"7\"/><circle cx=\"50\" cy=\"14\" r=\"7\"/><circle cx=\"86\" cy=\"14\" r=\"7\"/><circle cx=\"14\" cy=\"50\" r=\"7\"/><circle cx=\"50\" cy=\"50\" r=\"7\"/><circle cx=\"86\" cy=\"50\" r=\"7\"/><circle cx=\"14\" cy=\"86\" r=\"7\"/><circle cx=\"50\" cy=\"86\" r=\"7\"/><circle cx=\"86\" cy=\"86\" r=\"7\"/></g>",
+  "zigzag": "<path class=\"o\" fill=\"none\" style=\"stroke-width:9\" d=\"M6 70l22-40 22 40 22-40 22 40\"/>",
+  "arrow": "<path class=\"o\" fill=\"none\" style=\"stroke-width:9\" d=\"M8 50h70\"/><path class=\"o\" fill=\"none\" style=\"stroke-width:9\" d=\"M56 22l28 28-28 28\"/>",
+  "triangle": "<path class=\"o\" d=\"M50 8l44 78H6z\"/>",
+  "pill": "<rect class=\"o\" x=\"6\" y=\"30\" width=\"88\" height=\"40\" rx=\"20\"/>"
+ },
+ "keywords": [
+  [
+   "ai",
+   "\\bai\\b|prompt|otomasi|chatgpt"
+  ],
+  [
+   "people",
+   "\\bhr\\b|hrd|karyawan|kandidat|rekrut|kpi|psikotes|probation|tim\\b|bos\\b|owner"
+  ],
+  [
+   "coin",
+   "harga|mahal|murah|biaya|margin|hpp|rp\\d|rp ?\\d|gratis"
+  ],
+  [
+   "chart",
+   "iklan|roi|untung|omzet|penjualan|sales|leads|crm|revenue|bisnis|level"
+  ],
+  [
+   "mail",
+   "email|spam|surat"
+  ],
+  [
+   "shield",
+   "aman|keamanan|dibobol|bobol|penipuan|backup|hack|domain|expired|data"
+  ],
+  [
+   "box",
+   "stok|toko|marketplace|produk|kirim|belanja|shop"
+  ],
+  [
+   "chat",
+   "chat|komen|whatsapp|balas|klien|revisi|dibalas"
+  ],
+  [
+   "clock",
+   "waktu|laporan|cepat|lambat|senin|jam\\b|liburan|detik"
+  ],
+  [
+   "search",
+   "cari|cek|tebak|audit|rate|nilai|red flag"
+  ],
+  [
+   "phone",
+   "aplikasi|\\bapp\\b|mobile|hp\\b"
+  ],
+  [
+   "laptop",
+   "website|web\\b|halaman|landing|hosting|template|situs|paket"
+  ],
+  [
+   "bulb",
+   "tips|ide\\b|cara|rumus|tanda|alasan"
+  ],
+  [
+   "rocket",
+   "launch|tumbuh|naik|mulai|siap"
+  ]
+ ],
+ "cycle": [
+  "bulb",
+  "rocket",
+  "chart",
+  "search",
+  "laptop",
+  "chat",
+  "shield",
+  "clock"
+ ]
+}

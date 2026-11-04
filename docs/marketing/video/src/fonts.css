@@ -7,9 +7,23 @@
 @import '@fontsource/jetbrains-mono/500.css';
 @import '@fontsource/comic-neue/400.css';
 @import '@fontsource/comic-neue/700.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
+@import '@fontsource/sora/600.css';
+@import '@fontsource/sora/700.css';
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-i, em { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+i, em { font-style: normal; }
+:root { --y: #ffe14d; --p: #ff5d8f; --b: #3d5afe; --m: #5de0b0; --o: #ff8a3d; --ol: #111; --sh: #111; }
+
+/* Illustrations and shapes (data/deco.json) */
+.o { stroke: var(--ol); stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.fy { fill: var(--y); } .fp { fill: var(--p); } .fb { fill: var(--b); } .fm { fill: var(--m); } .fo { fill: var(--o); } .fw { fill: #fff; } .fk { fill: var(--ol); }
+.dc svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.dc.il svg { filter: drop-shadow(8px 8px 0 var(--sh)); }
+.dc.sh svg { filter: drop-shadow(5px 5px 0 var(--sh)); }
 
 /* Retro 2010 website mock (used by the 2010 vs 2026 post) */
 .retro{width:100%;aspect-ratio:16/10;background:#000080;font-family:'Comic Neue',cursive;color:#ffff00;padding:14px;display:flex;flex-direction:column;gap:10px}

@@ -17,8 +17,20 @@ const list = args.includes('--list');
 const skipExisting = args.includes('--skip-existing');
 const filters = args.filter((a) => !a.startsWith('--'));
 
-const shell = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell';
-const browserExecutable = process.env.REMOTION_BROWSER || (existsSync(shell) ? shell : null);
+import { readdirSync } from 'node:fs';
+// Find a headless shell under /opt/pw-browsers (folder names change with the Playwright version).
+const findShell = () => {
+  try {
+    for (const d of readdirSync('/opt/pw-browsers').filter((x) => x.startsWith('chromium_headless_shell'))) {
+      for (const rel of ['chrome-linux/headless_shell', 'chrome-headless-shell-linux64/chrome-headless-shell']) {
+        const f = join('/opt/pw-browsers', d, rel);
+        if (existsSync(f)) return f;
+      }
+    }
+  } catch {}
+  return null;
+};
+const browserExecutable = process.env.REMOTION_BROWSER || findShell();
 
 console.log('bundling…');
 const serveUrl = await bundle({ entryPoint: join(root, 'src/index.ts'), publicDir: join(root, 'public') });

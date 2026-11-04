@@ -10,7 +10,7 @@ const outDir = join(root, 'output');
 const onlyIdx = process.argv.indexOf('--only');
 const only = onlyIdx > -1 ? process.argv[onlyIdx + 1] : null;
 
-const executablePath = ['/opt/pw-browsers/chromium-1194/chrome-linux/chrome', process.env.CHROMIUM_PATH]
+const executablePath = [process.env.CHROMIUM_PATH, '/opt/pw-browsers/chromium', '/opt/pw-browsers/chromium-1194/chrome-linux/chrome']
   .find((p) => p && existsSync(p));
 
 mkdirSync(outDir, { recursive: true });
