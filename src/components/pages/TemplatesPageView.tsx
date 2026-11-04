@@ -30,6 +30,12 @@ const CATEGORY_ACCENT: Record<string, string> = {
   furniture: '#78350F',
   'travel agency': '#FF5B22',
   catering: '#F97316',
+  'cafe & bakery': '#C8643B',
+  healthcare: '#0FB5A6',
+  fitness: '#84CC16',
+  wellness: '#8A63D2',
+  hospitality: '#C9A45C',
+  'interior design': '#B5654A',
 };
 
 function categoryAccent(category: string) {
