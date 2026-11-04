@@ -70,7 +70,144 @@ const CateringMamaFadil = () => (
   <HtmlTemplateViewer src="/templates-static/catering-mama-fadil.html" title="Catering Mama Fadil" />
 );
 
+/** Landing-page templates generated from docs/marketing/landing (single-file HTML in /templates-static). */
+const staticTemplate = (src: string, title: string) =>
+  function StaticTemplate() {
+    return <HtmlTemplateViewer src={src} title={title} />;
+  };
+
+// Newest templates first: the /templates page lists entries in this order.
 export const templateRegistry: TemplateEntry[] = [
+  {
+    slug: 'lumen-studio',
+    previewImage: '/templates-static/previews/lumen-studio.jpg',
+    name: 'Lumen',
+    category: 'Interior Design',
+    description:
+      'Interior design studio. Large serif headline, arched hero, project gallery with filters, service packages, 4-step process and a brief form.',
+    tags: ['interior', 'studio', 'serif', 'terracotta'],
+    component: staticTemplate('/templates-static/lumen-studio.html', 'Lumen'),
+  },
+  {
+    slug: 'distro-kota',
+    previewImage: '/templates-static/previews/distro-kota.jpg',
+    name: 'DISTRO KOTA',
+    category: 'Streetwear',
+    description:
+      'Local streetwear store. Outlined mega headline, live marquee, product grid with category tabs, size-ready order form.',
+    tags: ['streetwear', 'fashion', 'bold'],
+    component: staticTemplate('/templates-static/distro-kota.html', 'DISTRO KOTA'),
+  },
+  {
+    slug: 'dapur-bunda',
+    previewImage: '/templates-static/previews/dapur-bunda.jpg',
+    name: 'Dapur Bunda',
+    category: 'Catering',
+    description:
+      'Home-style catering. Tumpeng hero, package pricing (nasi box, buffet, tumpeng), menu tabs, 3-step ordering and event request form.',
+    tags: ['catering', 'food', 'orange'],
+    component: staticTemplate('/templates-static/dapur-bunda.html', 'Dapur Bunda'),
+  },
+  {
+    slug: 'rasa-nusantara',
+    previewImage: '/templates-static/previews/rasa-nusantara.jpg',
+    name: 'Rasa Nusantara',
+    category: 'Restaurant',
+    description:
+      'Indonesian fine dining. Dark saffron palette, tasting-menu showcase by course, chef story, private dining and table reservation form.',
+    tags: ['restaurant', 'fine-dining', 'dark'],
+    component: staticTemplate('/templates-static/rasa-nusantara.html', 'Rasa Nusantara'),
+  },
+  {
+    slug: 'firma-hukum',
+    previewImage: '/templates-static/previews/firma-hukum.jpg',
+    name: 'Wibisono & Rekan',
+    category: 'Law Firm',
+    description:
+      'Modern law firm in navy and gold. Practice-area list with consultation buttons, firm story with counters, process steps and consultation form.',
+    tags: ['law', 'corporate', 'navy', 'gold'],
+    component: staticTemplate('/templates-static/firma-hukum.html', 'Wibisono & Rekan'),
+  },
+  {
+    slug: 'hotel-arunika',
+    previewImage: '/templates-static/previews/hotel-arunika.jpg',
+    name: 'ARUNIKA',
+    category: 'Hospitality',
+    description:
+      'Boutique resort. Full-bleed sunset hero with a working availability bar, room and villa showcase, amenities grid and reservation form.',
+    tags: ['hotel', 'resort', 'luxury', 'dark'],
+    component: staticTemplate('/templates-static/hotel-arunika.html', 'ARUNIKA'),
+  },
+  {
+    slug: 'semesta-yoga',
+    previewImage: '/templates-static/previews/semesta-yoga.jpg',
+    name: 'semesta.yoga',
+    category: 'Wellness',
+    description:
+      'Yoga and meditation studio. Pastel gradient hero, class schedule tabs, class packages, instructor story and first-class booking form.',
+    tags: ['yoga', 'wellness', 'pastel'],
+    component: staticTemplate('/templates-static/semesta-yoga.html', 'semesta.yoga'),
+  },
+  {
+    slug: 'bumi-skincare',
+    previewImage: '/templates-static/previews/bumi-skincare.jpg',
+    name: 'bumi',
+    category: 'E-commerce',
+    description:
+      'Natural skincare brand. Arched product hero, product tabs with add-to-order, 3-step routine, brand story and skin-consultation form.',
+    tags: ['skincare', 'organic', 'green'],
+    component: staticTemplate('/templates-static/bumi-skincare.html', 'bumi'),
+  },
+  {
+    slug: 'bengkel-maju',
+    previewImage: '/templates-static/previews/bengkel-maju.jpg',
+    name: 'Bengkel Maju',
+    category: 'Automotive',
+    description:
+      'Car workshop with transparent pricing. Booking form in the hero, service price tabs, guarantees, 4-step service flow and booking form.',
+    tags: ['automotive', 'workshop', 'dark', 'orange'],
+    component: staticTemplate('/templates-static/bengkel-maju.html', 'Bengkel Maju'),
+  },
+  {
+    slug: 'iron-fit',
+    previewImage: '/templates-static/previews/iron-fit.jpg',
+    name: 'IRONFIT',
+    category: 'Fitness',
+    description:
+      '24-hour gym. Neon-lime hero with a dumbbell, class tabs, bento facilities, monthly/yearly pricing toggle and free-trial form.',
+    tags: ['gym', 'fitness', 'bold', 'lime'],
+    component: staticTemplate('/templates-static/iron-fit.html', 'IRONFIT'),
+  },
+  {
+    slug: 'senyum-klinik',
+    previewImage: '/templates-static/previews/senyum-klinik.jpg',
+    name: 'Klinik Senyum',
+    category: 'Healthcare',
+    description:
+      'Family dental clinic. Booking widget in the hero, service cards, transparent treatment packages, doctor story and appointment form.',
+    tags: ['dental', 'clinic', 'teal'],
+    component: staticTemplate('/templates-static/senyum-klinik.html', 'Klinik Senyum'),
+  },
+  {
+    slug: 'roti-pagi',
+    previewImage: '/templates-static/previews/roti-pagi.jpg',
+    name: 'Roti Pagi',
+    category: 'Cafe & Bakery',
+    description:
+      'Neighbourhood bakery. Playful tile hero, product tabs, hamper and gathering packages, pre-order steps and pre-order form.',
+    tags: ['bakery', 'food', 'pink', 'yellow'],
+    component: staticTemplate('/templates-static/roti-pagi.html', 'Roti Pagi'),
+  },
+  {
+    slug: 'kopi-senja',
+    previewImage: '/templates-static/previews/kopi-senja.jpg',
+    name: 'Kopi Senja',
+    category: 'Cafe & Bakery',
+    description:
+      'Coffee roastery and cafe. Terracotta hero with floating cards, menu tabs with order buttons, story with counters, reviews slider and order form.',
+    tags: ['cafe', 'coffee', 'warm'],
+    component: staticTemplate('/templates-static/kopi-senja.html', 'Kopi Senja'),
+  },
   {
     slug: 'maritim-corp',
     previewImage: '/templates-static/previews/maritim-corp.jpg',

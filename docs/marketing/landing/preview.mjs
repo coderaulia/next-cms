@@ -1,0 +1,30 @@
+// Screenshots a landing template: hero preview jpg for /templates cards + full-page desktop/mobile images for review.
+//   node landing/preview.mjs <slug> [--write-preview]
+import { chromium } from 'playwright-core';
+import { existsSync, mkdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+const here = import.meta.dirname;
+const slug = process.argv[2];
+const write = process.argv.includes('--write-preview');
+const review = process.env.REVIEW_DIR || join(here, '.preview');
+mkdirSync(review, { recursive: true });
+const exe = [process.env.CHROMIUM_PATH, '/opt/pw-browsers/chromium'].find((p) => p && existsSync(p));
+const b = await chromium.launch({ ...(exe ? { executablePath: exe } : {}), args: ['--no-sandbox'] });
+const url = 'file://' + join(here, '.preview', slug + '.html');
+const errors = [];
+let p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+p.on('pageerror', (e) => errors.push(e.message));
+await p.goto(url); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(600);
+if (write) await p.screenshot({ path: resolve(here, '../../../public/templates-static/previews', slug + '.jpg'), type: 'jpeg', quality: 84 });
+await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo({ top: y, behavior: 'instant' }); await new Promise((r) => setTimeout(r, 60)); } window.scrollTo({ top: 0, behavior: 'instant' }); });
+await p.waitForTimeout(800);
+await p.screenshot({ path: join(review, slug + '-desktop.png'), fullPage: true });
+p = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+p.on('pageerror', (e) => errors.push(e.message));
+await p.goto(url); await p.evaluate(() => document.fonts.ready);
+await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo({ top: y, behavior: 'instant' }); await new Promise((r) => setTimeout(r, 60)); } window.scrollTo({ top: 0, behavior: 'instant' }); });
+await p.waitForTimeout(800);
+const overflow = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+await p.screenshot({ path: join(review, slug + '-mobile.png'), fullPage: true });
+console.log(slug, 'js errors:', errors.length ? errors : 'none', '| mobile horizontal overflow:', overflow, 'px');
+await b.close();
