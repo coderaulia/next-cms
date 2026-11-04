@@ -222,7 +222,7 @@ How a business website is built from scratch: the 3 stages we follow on every pr
 | --- | --- | --- |
 | 0–3s | "Gimana website dibuat dari NOL?" | Time-lapse of the desk setup |
 | 3–10s | "01 Riset" | Sticky notes / brief on a whiteboard |
-| 10–18s | "02 Desain" | Screen recording of the design file, then the Aura template |
+| 10–18s | "02 Desain" | Screen recording of the design file, then a finished site design |
 | 18–35s | "03 Build, launch & ukur" | Code editor → CMS → site live on a phone + "Bisnismu tahap mana?" |
 
 ---
@@ -431,9 +431,9 @@ AI in business is more than a chatbot 🤖 The most useful AI works quietly insi
 
 # Image-led viral series (posts 10–12)
 
-These slides are **picture-first**: full-screen Vanaila template previews on a blurred background of the same image, with short text on top. Images stop the scroll, and the text gives people a reason to comment.
+These slides are **picture-first**: full-screen website design examples on a blurred background of the same image, with short text on top. Images stop the scroll, and the text gives people a reason to comment.
 
-**Honesty rule:** every image is a **Vanaila template** with a fictional brand (Aura, Nusa Jaya, Catering Mama Fadil, Budi Mobil, Javanesa, BDO.CLTH, etc.). Each frame is labelled "Template Vanaila". Never call them client projects or real businesses.
+**Honesty rule:** every image is a **concept design we made** for a fictional brand (Kopi Senja, Roti Pagi, Klinik Senyum, Iron Fit, Bengkel Maju, Bumi, Semesta Yoga, Arunika, Wibisono & Rekan, Rasa Nusantara, Dapur Bunda, Lumen, Distro Kota; sources in `websites/`). Each frame is labelled "Contoh desain". Never call them client projects, real businesses or catalog templates.
 
 **Why they spread**
 - **Rate 1–10**: a one-number comment is the easiest reply on TikTok. Disagreeing scores in the comments create replies on replies.
@@ -518,9 +518,9 @@ Who says small businesses can't have websites as good as big brands? 💪 Garage
 #smallbusiness #supportlocal #websitedesign #localbrand
 ```
 
-**Pinned comment:** `Ada 14 contoh template per industri, sebut bidang usahamu dan kami kirimkan yang paling cocok 🙌`
+**Pinned comment:** `Sebut bidang usahamu, kami kirimkan contoh desain yang paling cocok 🙌`
 
-**Video script (alternative, ~25s):** "Siapa bilang…?" face to camera. Fast cuts through 3–5 templates on a phone screen, each labelled with its industry. End on "Usahamu bidang apa?"
+**Video script (alternative, ~25s):** "Siapa bilang…?" face to camera. Fast cuts through 3–5 site designs on a phone screen, each labelled with its industry. End on "Usahamu bidang apa?"
 
 ---
 
@@ -529,7 +529,7 @@ Who says small businesses can't have websites as good as big brands? 💪 Garage
 **Why these formats spread**
 - **Identity quiz ("tipe bos")**: people love labelling themselves and others. "Tag bosmu" brings in new viewers through tags, and it stays light and playful rather than mocking anyone.
 - **Unpopular opinion**: a hot take gets debate in the comments, which drives distribution. It's also **honest** (we sell apps, yet we say most UMKM don't need one yet), which builds trust.
-- **2010 vs 2026 glow-up**: nostalgia and humor. The retro site is a **mock we built in code** (tokokami.blogspot.com, a fictional site), not a real business. The 2026 side is a labelled Vanaila template.
+- **2010 vs 2026 glow-up**: nostalgia and humor. The retro site is a **mock we built in code** (tokokami.blogspot.com, a fictional site), not a real business. The 2026 side is a labelled concept design.
 
 ## Post 13: Kamu tipe bos yang mana? 🤔
 
@@ -613,7 +613,7 @@ Business websites: 2010 vs 2026 😭📈 Anyone still "Under Construction"? Whic
 
 **Pinned comment:** `Siapa yang dulu punya visitor counter di website-nya? 🙋 Ngaku!`
 
-**Video script (alternative, ~15s):** "Website 2010" with a dial-up sound effect (from the CML or royalty-free), scrolling the retro mock. A transition (swipe or flash) to the 2026 template scrolling smoothly on a phone. End on "Kamu era berapa?"
+**Video script (alternative, ~15s):** "Website 2010" with a dial-up sound effect (from the CML or royalty-free), scrolling the retro mock. A transition (swipe or flash) to the 2026 design scrolling smoothly on a phone. End on "Kamu era berapa?"
 
 ---
 
@@ -849,14 +849,14 @@ Lost leads usually aren't your sales team's fault. They're scattered everywhere 
 - **Level ladder**: people love placing themselves on a scale, and "komen levelmu" is an easy reply.
 - **Chat-bubble POV comedy**: instantly relatable for owners. The punchline reframes the problem as needing a system.
 
-**Honesty:** the guessing images are Vanaila templates (said on the last slide). The chat messages are **fictional examples**, not real customers or staff. Post 25 describes a common scenario, not a specific real case.
+**Honesty:** the guessing images are concept designs we made (said on the last slide). The chat messages are **fictional examples**, not real customers or staff. Post 25 describes a common scenario, not a specific real case.
 
 ## Post 23: Tebak usahanya dari websitenya 👀
 
 **Format:** Photo Mode, 5 slides · **Sound:** playful quiz/countdown track from the CML  
 **Title (ID):** `Tebak Usahanya dari Websitenya! Jawaban di Slide Terakhir 👀`  
 **Title (EN):** `Guess the Business From Its Website! Answers on the Last Slide 👀`  
-**Content disclosure:** ON → *Your brand* (the last slide says the designs are Vanaila templates)
+**Content disclosure:** ON → *Your brand* (the last slide says the designs are our concept designs)
 
 **Caption (ID)**
 ```
@@ -1105,7 +1105,7 @@ Lazy prompt vs clear prompt 👀 One sentence, a completely different result. Dr
 
 # Visual series (posts 32–34)
 
-These are **visual-first**: real screenshots with yellow **numbered callouts** drawn on top, like a designer's markup. Viewers learn by looking, so these get a high save rate. Templates are labelled "Template Vanaila", and Flowraze screens use demo data.
+These are **visual-first**: real screenshots with yellow **numbered callouts** drawn on top, like a designer's markup. Viewers learn by looking, so these get a high save rate. Website designs are labelled "Contoh desain" (concept designs we made), and Flowraze screens use demo data.
 
 **Why these formats spread**
 - **Design breakdown ("kenapa kelihatan mahal?")**: people love learning the secret behind something that looks expensive, and they save it as a reference.
@@ -1117,7 +1117,7 @@ These are **visual-first**: real screenshots with yellow **numbered callouts** d
 **Format:** Photo Mode, 5 slides · **Sound:** elegant/luxury track from the CML  
 **Title (ID):** `Kenapa Website Ini Kelihatan Mahal? 3 Rahasia Desain 💎`  
 **Title (EN):** `Why Does This Website Look Expensive? 3 Design Secrets 💎`  
-**Content disclosure:** ON → *Your brand* (the designs shown are Vanaila templates)
+**Content disclosure:** ON → *Your brand* (the designs shown are our concept designs)
 
 **Caption (ID)**
 ```
@@ -1135,7 +1135,7 @@ Why does this website look expensive? 💎 We break down 3 secrets: one big phot
 
 **Pinned comment:** `Rahasia paling murah untuk diterapkan: nomor 3, hapus tombol yang nggak perlu 😉`
 
-**Video script (alternative):** screen recording of the template, zooming into each area while a yellow box draws around it (use the CapCut/TikTok "highlight" effect), with a voice-over for each secret.
+**Video script (alternative):** screen recording of the design, zooming into each area while a yellow box draws around it (use the CapCut/TikTok "highlight" effect), with a voice-over for each secret.
 
 ---
 
@@ -1144,7 +1144,7 @@ Why does this website look expensive? 💎 We break down 3 secrets: one big phot
 **Format:** Photo Mode, 5 slides · **Sound:** aesthetic/moodboard track from the CML  
 **Title (ID):** `Pilih Vibe Website Usahamu: Mewah, Hangat, atau Natural? 🎨`  
 **Title (EN):** `Pick Your Website Vibe: Luxe, Warm or Natural? 🎨`  
-**Content disclosure:** ON → *Your brand* (the examples are Vanaila templates)
+**Content disclosure:** ON → *Your brand* (the examples are our concept designs)
 
 **Caption (ID)**
 ```
@@ -1162,7 +1162,7 @@ Pick your website vibe 🎨 Luxe & elegant, warm & inviting, or natural & soft? 
 
 **Pinned comment:** `Kami bisa tebak vibe yang cocok dari bidang usahamu. Tulis di komentar 👇`
 
-**Video script (alternative):** a moodboard-style transition: 2 templates per vibe slide in with a matching colour swatch, then "Kamu vibe nomor berapa?"
+**Video script (alternative):** a moodboard-style transition: 2 designs per vibe slide in with a matching colour swatch, then "Kamu vibe nomor berapa?"
 
 ---
 

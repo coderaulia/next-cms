@@ -371,7 +371,7 @@ Who says small businesses can't have websites as good as big brands? 💪 Garage
 #smallbusiness #supportlocal #websitedesign #localbrand
 ```
 
-**Pinned comment:** `Ada 14 contoh template per industri, sebut bidang usahamu dan kami kirimkan yang paling cocok 🙌`
+**Pinned comment:** `Sebut bidang usahamu, kami kirimkan contoh desain yang paling cocok 🙌`
 
 ---
 
@@ -595,7 +595,7 @@ Lost leads usually aren't your sales team's fault. They're scattered everywhere 
 
 **Title (ID):** Tebak Usahanya dari Websitenya! Jawaban di Slide Terakhir 👀  
 **Title (EN):** Guess the Business From Its Website! Answers on the Last Slide 👀  
-**Content disclosure:** ON → *Your brand* (the last slide says the designs are Vanaila templates)
+**Content disclosure:** ON → *Your brand* (the last slide says the designs are our concept designs)
 
 **Caption (ID)**
 ```
@@ -811,7 +811,7 @@ Lazy prompt vs clear prompt 👀 One sentence, a completely different result. Dr
 
 **Title (ID):** Kenapa Website Ini Kelihatan Mahal? 3 Rahasia Desain 💎  
 **Title (EN):** Why Does This Website Look Expensive? 3 Design Secrets 💎  
-**Content disclosure:** ON → *Your brand* (the designs shown are Vanaila templates)
+**Content disclosure:** ON → *Your brand* (the designs shown are our concept designs)
 
 **Caption (ID)**
 ```
@@ -835,7 +835,7 @@ Why does this website look expensive? 💎 We break down 3 secrets: one big phot
 
 **Title (ID):** Pilih Vibe Website Usahamu: Mewah, Hangat, atau Natural? 🎨  
 **Title (EN):** Pick Your Website Vibe: Luxe, Warm or Natural? 🎨  
-**Content disclosure:** ON → *Your brand* (the examples are Vanaila templates)
+**Content disclosure:** ON → *Your brand* (the examples are our concept designs)
 
 **Caption (ID)**
 ```

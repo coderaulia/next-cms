@@ -102,7 +102,7 @@
     "type": "shot",
     "kicker": "02 · Desain",
     "title": "Desain yang <i>jelas</i>, bukan cuma cantik",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "img": "../assets/websites/senyum-klinik.png",
     "items": [
      "Layout per halaman",
      "Nyaman di HP",
@@ -379,37 +379,37 @@
     "kicker": "Rate dong 👀",
     "title": "Kasih nilai <i>1–10</i> untuk website ini",
     "imgs": [
-     "../../../public/templates-static/previews/aura-property.jpg",
-     "../../../public/templates-static/previews/toko-meubel-rahayu.png",
-     "../../../public/templates-static/previews/po-bus-bahari-alam.png"
+     "../assets/websites/kopi-senja.png",
+     "../assets/websites/senyum-klinik.png",
+     "../assets/websites/iron-fit.png"
     ],
     "sub": "Jujur aja, kami kuat kok 😅"
    },
    {
     "type": "img",
-    "kicker": "#1 · Properti",
-    "title": "Elegan & mewah",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "kicker": "#1 · Kafe",
+    "title": "Hangat & artisan",
+    "img": "../assets/websites/kopi-senja.png",
     "ask": "Nilai berapa? 1–10"
    },
    {
     "type": "img",
-    "kicker": "#2 · Toko mebel",
-    "title": "Hangat & premium",
-    "img": "../../../public/templates-static/previews/toko-meubel-rahayu.png",
+    "kicker": "#2 · Klinik gigi",
+    "title": "Bersih & menenangkan",
+    "img": "../assets/websites/senyum-klinik.png",
     "ask": "Nilai berapa? 1–10"
    },
    {
     "type": "img",
-    "kicker": "#3 · PO Bus",
-    "title": "Bold & meyakinkan",
-    "img": "../../../public/templates-static/previews/po-bus-bahari-alam.png",
+    "kicker": "#3 · Gym",
+    "title": "Bold & bertenaga",
+    "img": "../assets/websites/iron-fit.png",
     "ask": "Nilai berapa? 1–10"
    },
    {
     "type": "cta",
     "title": "Tulis nilaimu: <i>#1, #2, #3</i> 👇",
-    "sub": "Semua ini template Vanaila — bisa disesuaikan untuk usahamu.",
+    "sub": "Semua ini contoh desain — bisa disesuaikan untuk usahamu.",
     "handle": "Follow untuk contoh website lainnya"
    }
   ]
@@ -422,8 +422,8 @@
     "type": "split",
     "kicker": "Pilih satu!",
     "title": "Usaha kuliner. <i>Website</i> mana yang bikin kamu pesan?",
-    "imgA": "../../../public/templates-static/previews/nusa-jaya-modern.png",
-    "imgB": "../../../public/templates-static/previews/catering-mama-fadil.png",
+    "imgA": "../assets/websites/rasa-nusantara.png",
+    "imgB": "../assets/websites/dapur-bunda.png",
     "labelA": "A · Gelap & eksklusif",
     "labelB": "B · Hangat & ramah"
    },
@@ -431,14 +431,14 @@
     "type": "img",
     "kicker": "A",
     "title": "Gelap & eksklusif",
-    "img": "../../../public/templates-static/previews/nusa-jaya-modern.png",
+    "img": "../assets/websites/rasa-nusantara.png",
     "ask": "Kesan: fine dining, premium"
    },
    {
     "type": "img",
     "kicker": "B",
     "title": "Hangat & ramah",
-    "img": "../../../public/templates-static/previews/catering-mama-fadil.png",
+    "img": "../assets/websites/dapur-bunda.png",
     "ask": "Kesan: rumahan, dekat, terpercaya"
    },
    {
@@ -467,9 +467,9 @@
     "kicker": "Siapa bilang?",
     "title": "UMKM nggak bisa punya website <i>sekeren</i> brand besar?",
     "imgs": [
-     "../../../public/templates-static/previews/budi-mobil.png",
-     "../../../public/templates-static/previews/javanesa.jpg",
-     "../../../public/templates-static/previews/bdo-clth.jpg"
+     "../assets/websites/bengkel-maju.png",
+     "../assets/websites/bumi-skincare.png",
+     "../assets/websites/distro-kota.png"
     ],
     "sub": "Geser, lihat buktinya →"
    },
@@ -477,27 +477,27 @@
     "type": "img",
     "kicker": "Bengkel",
     "title": "Bengkel lokal, kesan profesional",
-    "img": "../../../public/templates-static/previews/budi-mobil.png",
+    "img": "../assets/websites/bengkel-maju.png",
     "ask": "Booking servis langsung dari website"
    },
    {
     "type": "img",
     "kicker": "Skincare lokal",
     "title": "Brand lokal, rasa premium",
-    "img": "../../../public/templates-static/previews/javanesa.jpg",
+    "img": "../assets/websites/bumi-skincare.png",
     "ask": "Cerita brand + toko online"
    },
    {
     "type": "img",
     "kicker": "Clothing",
     "title": "Distro rasa flagship store",
-    "img": "../../../public/templates-static/previews/bdo-clth.jpg",
+    "img": "../assets/websites/distro-kota.png",
     "ask": "Koleksi baru tampil seperti lookbook"
    },
    {
     "type": "cta",
     "title": "Usahamu bidang <i>apa</i>?",
-    "sub": "Komen di bawah — kami tunjukkan contoh template yang cocok.",
+    "sub": "Komen di bawah — kami tunjukkan contoh desain yang cocok.",
     "handle": "Follow untuk contoh website UMKM"
    }
   ]
@@ -594,7 +594,7 @@
     "kicker": "Glow up 📈",
     "title": "Website bisnis: <i>2010</i> vs 2026",
     "htmlA": "<div class='retro'><div class='rt-head'>~*~ SELAMAT DATANG DI WEBSITE TOKO KAMI ~*~</div><div class='rt-marq'>★ PROMO!!! ★ HUBUNGI KAMI ★ BEST VIEWED IN 800x600 ★</div><div class='rt-body'><div class='rt-side'><u>Home</u><br><u>Produk</u><br><u>Guestbook</u><br><u>Link</u></div><div class='rt-main'><b>Under Construction</b> 🚧<br>Website sedang dalam perbaikan.<br><br><span class='rt-blink'>KLIK DISINI!!!</span><br><br><span class='rt-count'>Pengunjung ke-000127</span></div></div></div>",
-    "imgB": "../../../public/templates-static/previews/aura-property.jpg",
+    "imgB": "../assets/websites/bumi-skincare.png",
     "labelA": "2010 · \"Under construction\" 🚧",
     "labelB": "2026 · Cepat, rapi, bikin percaya"
    },
@@ -609,8 +609,8 @@
     "type": "img",
     "kicker": "Era 2026",
     "title": "Sekarang standarnya <i>begini</i>",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
-    "ask": "Template Vanaila — bisa untuk usahamu"
+    "img": "../assets/websites/bumi-skincare.png",
+    "ask": "Contoh desain — bisa untuk usahamu"
    },
    {
     "type": "check",
@@ -900,45 +900,45 @@
     "type": "guess",
     "kicker": "Tebakan #1",
     "title": "Ini website usaha apa?",
-    "img": "../../../public/templates-static/previews/toko-meubel-rahayu.png",
-    "pos": "55% 60%",
-    "zoom": "1.9",
+    "img": "../assets/websites/roti-pagi.png",
+    "pos": "85% 40%",
+    "zoom": "2.0",
     "options": [
-     "A · Hotel butik",
-     "B · Toko mebel",
-     "C · Kafe"
+     "A · Toko roti",
+     "B · Kafe",
+     "C · Katering"
     ]
    },
    {
     "type": "guess",
     "kicker": "Tebakan #2",
     "title": "Kalau yang ini?",
-    "img": "../../../public/templates-static/previews/catering-mama-fadil.png",
-    "pos": "85% 70%",
-    "zoom": "2.1",
+    "img": "../assets/websites/senyum-klinik.png",
+    "pos": "80% 45%",
+    "zoom": "2.4",
     "options": [
-     "A · Catering",
-     "B · Restoran padang",
-     "C · Toko bumbu"
+     "A · Salon",
+     "B · Klinik gigi",
+     "C · Apotek"
     ]
    },
    {
     "type": "guess",
     "kicker": "Tebakan #3",
     "title": "Terakhir, yang ini?",
-    "img": "../../../public/templates-static/previews/po-bus-bahari-alam.png",
-    "pos": "55% 55%",
-    "zoom": "1.7",
+    "img": "../assets/websites/semesta-yoga.png",
+    "pos": "50% 100%",
+    "zoom": "2.3",
     "options": [
-     "A · Rental mobil",
-     "B · Logistik",
-     "C · PO bus"
+     "A · Spa",
+     "B · Toko tanaman",
+     "C · Studio yoga"
     ]
    },
    {
     "type": "cta",
-    "title": "Jawaban: <i>1B · 2A · 3C</i>",
-    "sub": "Berapa yang benar? Komen skormu 👇 Semua ini template Vanaila.",
+    "title": "Jawaban: <i>1A · 2B · 3C</i>",
+    "sub": "Berapa yang benar? Komen skormu 👇 Semua ini contoh desain dari tim kami.",
     "handle": "Follow untuk tebak-tebakan berikutnya"
    }
   ]
@@ -1314,39 +1314,39 @@
     "type": "img",
     "kicker": "Bedah desain 🔍",
     "title": "Kenapa website ini kelihatan <i>mahal</i>? 💎",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
+    "img": "../assets/websites/lumen-studio.png",
     "ask": "Geser, kita bedah satu per satu →"
    },
    {
     "type": "annot",
     "kicker": "Rahasia #1",
-    "title": "Satu foto besar yang <i>berbicara</i>",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
-    "label": "Template Vanaila",
+    "title": "Satu visual besar yang <i>berbicara</i>",
+    "img": "../assets/websites/lumen-studio.png",
+    "label": "Contoh desain",
     "boxes": [
      [
-      1,
-      10,
-      98,
-      88
+      52.8,
+      15.3,
+      41.7,
+      77.8
      ]
     ],
     "notes": [
-     "Foto penuh layar, tajam, satu fokus — bukan kolase 10 foto kecil"
+     "Visual penuh layar, tajam, satu fokus — bukan kolase 10 gambar kecil"
     ]
    },
    {
     "type": "annot",
     "kicker": "Rahasia #2",
     "title": "Huruf besar & <i>ruang kosong</i>",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
-    "label": "Template Vanaila",
+    "img": "../assets/websites/lumen-studio.png",
+    "label": "Contoh desain",
     "boxes": [
      [
-      26,
-      24,
-      48,
-      43
+      5.6,
+      32,
+      43.8,
+      27
      ]
     ],
     "notes": [
@@ -1357,20 +1357,20 @@
     "type": "annot",
     "kicker": "Rahasia #3",
     "title": "Cuma <i>satu</i> tombol utama",
-    "img": "../../../public/templates-static/previews/aura-property.jpg",
-    "label": "Template Vanaila",
+    "img": "../assets/websites/lumen-studio.png",
+    "label": "Contoh desain",
     "boxes": [
      [
-      37,
-      66,
-      26,
-      9.5
+      5.6,
+      74.8,
+      12.1,
+      6.8
      ],
      [
-      1,
-      1,
-      98,
-      8
+      78.7,
+      3.1,
+      15.7,
+      2.2
      ]
     ],
     "notes": [
@@ -1395,43 +1395,43 @@
     "kicker": "Moodboard",
     "title": "Pilih <i>vibe</i> website usahamu 🎨",
     "imgs": [
-     "../../../public/templates-static/previews/aura-property.jpg",
-     "../../../public/templates-static/previews/catering-mama-fadil.png",
-     "../../../public/templates-static/previews/javanesa.jpg"
+     "../assets/websites/hotel-arunika.png",
+     "../assets/websites/kopi-senja.png",
+     "../assets/websites/bumi-skincare.png"
     ],
-    "sub": "3 vibe, 6 contoh nyata →"
+    "sub": "3 vibe, 6 contoh desain →"
    },
    {
     "type": "split",
     "kicker": "Vibe 1",
     "title": "Mewah & <i>elegan</i>",
-    "imgA": "../../../public/templates-static/previews/aura-property.jpg",
-    "imgB": "../../../public/templates-static/previews/kantor-hukum.jpg",
-    "labelA": "Properti · warna gelap, foto megah",
+    "imgA": "../assets/websites/hotel-arunika.png",
+    "imgB": "../assets/websites/firma-hukum.png",
+    "labelA": "Hotel butik · gelap, emas, megah",
     "labelB": "Firma hukum · navy & emas, serif tegas"
    },
    {
     "type": "split",
     "kicker": "Vibe 2",
     "title": "Hangat & <i>mengundang</i>",
-    "imgA": "../../../public/templates-static/previews/catering-mama-fadil.png",
-    "imgB": "../../../public/templates-static/previews/toko-meubel-rahayu.png",
-    "labelA": "Catering · krem & oranye, foto makanan",
-    "labelB": "Toko mebel · cahaya hangat, kayu"
+    "imgA": "../assets/websites/kopi-senja.png",
+    "imgB": "../assets/websites/roti-pagi.png",
+    "labelA": "Kafe · krem & terracotta, hangat",
+    "labelB": "Toko roti · kuning mentega, ramah"
    },
    {
     "type": "split",
     "kicker": "Vibe 3",
     "title": "Natural & <i>lembut</i>",
-    "imgA": "../../../public/templates-static/previews/javanesa.jpg",
-    "imgB": "../../../public/templates-static/previews/dcosta.jpg",
-    "labelA": "Skincare lokal · tone tanah, hijau",
-    "labelB": "Beauty · gradasi pastel, halus"
+    "imgA": "../assets/websites/bumi-skincare.png",
+    "imgB": "../assets/websites/semesta-yoga.png",
+    "labelA": "Skincare · hijau sage, tone tanah",
+    "labelB": "Studio yoga · gradasi pastel, halus"
    },
    {
     "type": "cta",
     "title": "Usahamu cocok <i>vibe</i> nomor berapa?",
-    "sub": "Komen 1, 2, atau 3 + bidang usahamu 👇 Semua contoh ini template Vanaila.",
+    "sub": "Komen 1, 2, atau 3 + bidang usahamu 👇 Semua ini contoh desain.",
     "handle": "Follow untuk inspirasi desain website"
    }
   ]
@@ -2292,256 +2292,256 @@
    }
   ]
  },
-  {
-    "slug": "website-lambat-penyebab",
-    "theme": "light",
-    "slides": [
-      {
-        "type": "hook",
-        "kicker": "Tech 101",
-        "title": "Website lambat? Biasanya <i>bukan</i> karena internet-mu 🐢",
-        "sub": "3 penyebab yang sering diabaikan"
-      },
-      {
-        "type": "point",
-        "n": "🖼️",
-        "title": "Foto belum dikompres",
-        "body": "Foto 5 MB dipasang langsung di halaman. Browser harus mengunduh semuanya dulu sebelum halaman tampil.",
-        "fix": "Kompres dan pakai format WebP",
-        "fixLabel": "SOLUSI"
-      },
-      {
-        "type": "point",
-        "n": "🐌",
-        "title": "Hosting asal murah",
-        "body": "Server jauh dan kapasitasnya kecil. Saat pengunjung ramai, setiap halaman ikut menunggu.",
-        "fix": "Pilih hosting yang sesuai trafik & lokasi target",
-        "fixLabel": "SOLUSI"
-      },
-      {
-        "type": "point",
-        "n": "🧩",
-        "title": "Plugin & script menumpuk",
-        "body": "Setiap plugin menambah kode yang harus dimuat browser, walaupun fiturnya jarang dipakai.",
-        "fix": "Hapus yang tidak dipakai, muat script seperlunya",
-        "fixLabel": "SOLUSI"
-      },
-      {
-        "type": "cta",
-        "title": "Website-mu sudah cepat belum?",
-        "sub": "Cek gratis di PageSpeed Insights. Komen skor mobile-mu di bawah 👇",
-        "handle": "Follow untuk tips website & bisnis"
-      }
-    ]
-  },
-  {
-    "slug": "spf-dkim-dmarc-bahasa-warung",
-    "theme": "light",
-    "slides": [
-      {
-        "type": "hook",
-        "kicker": "Tech 101",
-        "title": "Email bisnis masuk spam? Bukan nasib, tapi <i>setting</i> 📮",
-        "sub": "SPF, DKIM, DMARC dijelasin pakai bahasa warung"
-      },
-      {
-        "type": "point",
-        "n": "SPF",
-        "title": "= Daftar pengirim resmi",
-        "body": "Kamu memberi tahu penerima: server ini boleh mengirim email atas nama domain kami.",
-        "fix": "Mencegah orang memalsukan pengirim atas nama domainmu",
-        "fixLabel": "FUNGSI"
-      },
-      {
-        "type": "point",
-        "n": "DKIM",
-        "title": "= Segel tanda tangan",
-        "body": "Setiap email diberi tanda tangan digital. Kalau isinya diubah di jalan, tanda tangannya ketahuan rusak.",
-        "fix": "Email yang utuh lebih dipercaya penerima",
-        "fixLabel": "FUNGSI"
-      },
-      {
-        "type": "point",
-        "n": "DMARC",
-        "title": "= Aturan kalau gagal",
-        "body": "Kamu menentukan: tandai sebagai spam, tolak, atau cuma pantau. Mulai dari mode pantau dulu.",
-        "fix": "Laporan hasilnya bisa dilihat untuk memantau penyalahgunaan",
-        "fixLabel": "FUNGSI"
-      },
-      {
-        "type": "cta",
-        "title": "Email bisnismu sudah pakai SPF?",
-        "sub": "Cek gratis di MXToolbox. Komen SUDAH atau BELUM di bawah 👇",
-        "handle": "Follow untuk tips email & domain bisnis"
-      }
-    ]
-  },
-  {
-    "slug": "rumus-roi-iklan",
-    "theme": "light",
-    "slides": [
-      {
-        "type": "hook",
-        "kicker": "Bisnis 101",
-        "title": "Iklan Rp1 juta, untung berapa? Ini <i>rumusnya</i> 📊",
-        "sub": "ROI dalam 3 langkah, tanpa Excel yang rumit"
-      },
-      {
-        "type": "point",
-        "n": "1",
-        "title": "Hitung total biaya",
-        "body": "Biaya iklan + biaya produksi konten + komisi. Jangan cuma lihat biaya iklan saja.",
-        "fix": "Contoh: iklan Rp1 jt + konten Rp500 rb = Rp1,5 jt",
-        "fixLabel": "CONTOH"
-      },
-      {
-        "type": "point",
-        "n": "2",
-        "title": "Hitung untung, bukan omzet",
-        "body": "Ambil penjualan yang berasal dari iklan, lalu kalikan margin keuntunganmu.",
-        "fix": "Contoh: omzet Rp4 jt × margin 40% = untung Rp1,6 jt",
-        "fixLabel": "CONTOH"
-      },
-      {
-        "type": "point",
-        "n": "3",
-        "title": "ROI = (untung − biaya) ÷ biaya",
-        "body": "Hasilnya dalam persen. Di atas 0% berarti iklanmu menguntungkan setelah semua biaya.",
-        "fix": "Contoh: (1,6 jt − 1,5 jt) ÷ 1,5 jt ≈ 7%",
-        "fixLabel": "HASIL"
-      },
-      {
-        "type": "cta",
-        "title": "Iklanmu sudah untung belum?",
-        "sub": "Hitung pakai angka aslimu, lalu komen berapa ROI-mu 👇",
-        "handle": "Follow untuk bisnis tanpa ribet"
-      }
-    ]
-  },
-  {
-    "slug": "marketplace-vs-toko-sendiri",
-    "theme": "light",
-    "slides": [
-      {
-        "type": "hook",
-        "kicker": "Bisnis 101",
-        "title": "Jualan di marketplace itu <i>gratis</i>? Coba hitung dulu 🧮",
-        "sub": "3 biaya yang jarang dihitung pemilik UMKM"
-      },
-      {
-        "type": "point",
-        "n": "💸",
-        "title": "Komisi per transaksi",
-        "body": "Setiap penjualan dipotong komisi dan biaya layanan. Persentasenya bisa berubah sewaktu-waktu.",
-        "fix": "Cek ulang: margin-mu masih untung setelah dipotong?",
-        "fixLabel": "CEK INI"
-      },
-      {
-        "type": "point",
-        "n": "📣",
-        "title": "Beli pelanggan lagi, pakai iklan",
-        "body": "Pelanggan yang beli di marketplace tetap milik platform. Mau ketemu mereka lagi, kamu bayar iklan lagi.",
-        "fix": "Di toko sendiri, pelanggan bisa kamu hubungi lagi tanpa biaya platform",
-        "fixLabel": "BEDANYA"
-      },
-      {
-        "type": "point",
-        "n": "🗂️",
-        "title": "Data pelanggan bukan milikmu",
-        "body": "Nomor, riwayat beli, dan alamat tersimpan di platform, bukan di bisnismu.",
-        "fix": "Dengan toko sendiri, data pelanggan ada di tanganmu",
-        "fixLabel": "BEDANYA"
-      },
-      {
-        "type": "cta",
-        "title": "Margin-mu sudah dihitung belum?",
-        "sub": "Komen HITUNG kalau mau contoh perhitungannya. Info toko sendiri ada di link profil 👇",
-        "handle": "Follow untuk bisnis online tanpa ribet"
-      }
-    ]
-  },
-  {
-    "slug": "stok-sinkron-whatsapp",
-    "theme": "dark",
-    "slides": [
-      {
-        "type": "hook",
-        "kicker": "Masalah umum",
-        "title": "Stok di marketplace habis, tapi di WhatsApp masih <i>dijual</i>? 😵",
-        "sub": "Ini masalah paling sering di toko UMKM"
-      },
-      {
-        "type": "point",
-        "n": "1",
-        "title": "Stok dicatat manual di tiap kanal",
-        "body": "Catatan di Excel, di marketplace, dan di grup WhatsApp tidak pernah sama persis.",
-        "fix": "Satu sumber stok untuk semua kanal",
-        "fixLabel": "SOLUSI"
-      },
-      {
-        "type": "point",
-        "n": "2",
-        "title": "Pesanan dobel",
-        "body": "Dua pembeli pesan barang yang sama di waktu yang hampir bersamaan. Salah satunya terpaksa dibatalkan.",
-        "fix": "Stok berkurang otomatis saat pesanan masuk",
-        "fixLabel": "SOLUSI"
-      },
-      {
-        "type": "point",
-        "n": "3",
-        "title": "Pelanggan kecewa",
-        "body": "Pesanan batal atau telat dikirim membuat pelanggan kapok, dan sulit kembali lagi.",
-        "fix": "Stok yang akurat berarti pesanan yang bisa dipenuhi",
-        "fixLabel": "SOLUSI"
-      },
-      {
-        "type": "cta",
-        "title": "Stok tokomu masih dicatat manual?",
-        "sub": "Komen MANUAL kalau masih pakai Excel. Kami bantu rapikan alurnya, info di link profil 👇",
-        "handle": "Follow untuk tips bisnis online"
-      }
-    ]
-  },
-  {
-    "slug": "pilih-paket-website",
-    "theme": "light",
-    "slides": [
-      {
-        "type": "hook",
-        "kicker": "Pilih paket",
-        "title": "Startup, Professional, atau Enterprise? <i>Pilih</i> yang mana 🤔",
-        "sub": "Panduan singkat untuk memilih paket website"
-      },
-      {
-        "type": "point",
-        "n": "5",
-        "title": "Startup: 5 halaman",
-        "body": "Untuk bisnis yang baru mulai: profil, layanan, dan kontak yang rapi dan cepat di HP.",
-        "fix": "Cocok untuk UMKM yang baru go digital",
-        "fixLabel": "COCOK UNTUK"
-      },
-      {
-        "type": "point",
-        "n": "12",
-        "title": "Professional: sampai 12 halaman",
-        "body": "Ada riset UX/UI, SEO teknis, optimasi konversi, dan integrasi API. Cocok kalau kamu butuh lebih banyak halaman dan leads.",
-        "fix": "Cocok untuk bisnis yang ingin lebih banyak enquiry",
-        "fixLabel": "COCOK UNTUK"
-      },
-      {
-        "type": "point",
-        "n": "∞",
-        "title": "Enterprise: tanpa batas",
-        "body": "Backend custom, keamanan tingkat enterprise, dan dukungan DevOps khusus.",
-        "fix": "Cocok untuk sistem dan tim yang kompleks",
-        "fixLabel": "COCOK UNTUK"
-      },
-      {
-        "type": "cta",
-        "title": "Kamu butuh paket yang mana?",
-        "sub": "Komen STARTUP, PRO, atau ENTERPRISE. Kami cek kebutuhanmu dulu, tanpa biaya 👇",
-        "handle": "Follow untuk tips website bisnis"
-      }
-    ]
-  }
+ {
+  "slug": "website-lambat-penyebab",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Tech 101",
+    "title": "Website lambat? Biasanya <i>bukan</i> karena internet-mu 🐢",
+    "sub": "3 penyebab yang sering diabaikan"
+   },
+   {
+    "type": "point",
+    "n": "🖼️",
+    "title": "Foto belum dikompres",
+    "body": "Foto 5 MB dipasang langsung di halaman. Browser harus mengunduh semuanya dulu sebelum halaman tampil.",
+    "fix": "Kompres dan pakai format WebP",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "point",
+    "n": "🐌",
+    "title": "Hosting asal murah",
+    "body": "Server jauh dan kapasitasnya kecil. Saat pengunjung ramai, setiap halaman ikut menunggu.",
+    "fix": "Pilih hosting yang sesuai trafik & lokasi target",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "point",
+    "n": "🧩",
+    "title": "Plugin & script menumpuk",
+    "body": "Setiap plugin menambah kode yang harus dimuat browser, walaupun fiturnya jarang dipakai.",
+    "fix": "Hapus yang tidak dipakai, muat script seperlunya",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "cta",
+    "title": "Website-mu sudah cepat belum?",
+    "sub": "Cek gratis di PageSpeed Insights. Komen skor mobile-mu di bawah 👇",
+    "handle": "Follow untuk tips website & bisnis"
+   }
+  ]
+ },
+ {
+  "slug": "spf-dkim-dmarc-bahasa-warung",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Tech 101",
+    "title": "Email bisnis masuk spam? Bukan nasib, tapi <i>setting</i> 📮",
+    "sub": "SPF, DKIM, DMARC dijelasin pakai bahasa warung"
+   },
+   {
+    "type": "point",
+    "n": "SPF",
+    "title": "= Daftar pengirim resmi",
+    "body": "Kamu memberi tahu penerima: server ini boleh mengirim email atas nama domain kami.",
+    "fix": "Mencegah orang memalsukan pengirim atas nama domainmu",
+    "fixLabel": "FUNGSI"
+   },
+   {
+    "type": "point",
+    "n": "DKIM",
+    "title": "= Segel tanda tangan",
+    "body": "Setiap email diberi tanda tangan digital. Kalau isinya diubah di jalan, tanda tangannya ketahuan rusak.",
+    "fix": "Email yang utuh lebih dipercaya penerima",
+    "fixLabel": "FUNGSI"
+   },
+   {
+    "type": "point",
+    "n": "DMARC",
+    "title": "= Aturan kalau gagal",
+    "body": "Kamu menentukan: tandai sebagai spam, tolak, atau cuma pantau. Mulai dari mode pantau dulu.",
+    "fix": "Laporan hasilnya bisa dilihat untuk memantau penyalahgunaan",
+    "fixLabel": "FUNGSI"
+   },
+   {
+    "type": "cta",
+    "title": "Email bisnismu sudah pakai SPF?",
+    "sub": "Cek gratis di MXToolbox. Komen SUDAH atau BELUM di bawah 👇",
+    "handle": "Follow untuk tips email & domain bisnis"
+   }
+  ]
+ },
+ {
+  "slug": "rumus-roi-iklan",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Bisnis 101",
+    "title": "Iklan Rp1 juta, untung berapa? Ini <i>rumusnya</i> 📊",
+    "sub": "ROI dalam 3 langkah, tanpa Excel yang rumit"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Hitung total biaya",
+    "body": "Biaya iklan + biaya produksi konten + komisi. Jangan cuma lihat biaya iklan saja.",
+    "fix": "Contoh: iklan Rp1 jt + konten Rp500 rb = Rp1,5 jt",
+    "fixLabel": "CONTOH"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Hitung untung, bukan omzet",
+    "body": "Ambil penjualan yang berasal dari iklan, lalu kalikan margin keuntunganmu.",
+    "fix": "Contoh: omzet Rp4 jt × margin 40% = untung Rp1,6 jt",
+    "fixLabel": "CONTOH"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "ROI = (untung − biaya) ÷ biaya",
+    "body": "Hasilnya dalam persen. Di atas 0% berarti iklanmu menguntungkan setelah semua biaya.",
+    "fix": "Contoh: (1,6 jt − 1,5 jt) ÷ 1,5 jt ≈ 7%",
+    "fixLabel": "HASIL"
+   },
+   {
+    "type": "cta",
+    "title": "Iklanmu sudah untung belum?",
+    "sub": "Hitung pakai angka aslimu, lalu komen berapa ROI-mu 👇",
+    "handle": "Follow untuk bisnis tanpa ribet"
+   }
+  ]
+ },
+ {
+  "slug": "marketplace-vs-toko-sendiri",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Bisnis 101",
+    "title": "Jualan di marketplace itu <i>gratis</i>? Coba hitung dulu 🧮",
+    "sub": "3 biaya yang jarang dihitung pemilik UMKM"
+   },
+   {
+    "type": "point",
+    "n": "💸",
+    "title": "Komisi per transaksi",
+    "body": "Setiap penjualan dipotong komisi dan biaya layanan. Persentasenya bisa berubah sewaktu-waktu.",
+    "fix": "Cek ulang: margin-mu masih untung setelah dipotong?",
+    "fixLabel": "CEK INI"
+   },
+   {
+    "type": "point",
+    "n": "📣",
+    "title": "Beli pelanggan lagi, pakai iklan",
+    "body": "Pelanggan yang beli di marketplace tetap milik platform. Mau ketemu mereka lagi, kamu bayar iklan lagi.",
+    "fix": "Di toko sendiri, pelanggan bisa kamu hubungi lagi tanpa biaya platform",
+    "fixLabel": "BEDANYA"
+   },
+   {
+    "type": "point",
+    "n": "🗂️",
+    "title": "Data pelanggan bukan milikmu",
+    "body": "Nomor, riwayat beli, dan alamat tersimpan di platform, bukan di bisnismu.",
+    "fix": "Dengan toko sendiri, data pelanggan ada di tanganmu",
+    "fixLabel": "BEDANYA"
+   },
+   {
+    "type": "cta",
+    "title": "Margin-mu sudah dihitung belum?",
+    "sub": "Komen HITUNG kalau mau contoh perhitungannya. Info toko sendiri ada di link profil 👇",
+    "handle": "Follow untuk bisnis online tanpa ribet"
+   }
+  ]
+ },
+ {
+  "slug": "stok-sinkron-whatsapp",
+  "theme": "dark",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Masalah umum",
+    "title": "Stok di marketplace habis, tapi di WhatsApp masih <i>dijual</i>? 😵",
+    "sub": "Ini masalah paling sering di toko UMKM"
+   },
+   {
+    "type": "point",
+    "n": "1",
+    "title": "Stok dicatat manual di tiap kanal",
+    "body": "Catatan di Excel, di marketplace, dan di grup WhatsApp tidak pernah sama persis.",
+    "fix": "Satu sumber stok untuk semua kanal",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "point",
+    "n": "2",
+    "title": "Pesanan dobel",
+    "body": "Dua pembeli pesan barang yang sama di waktu yang hampir bersamaan. Salah satunya terpaksa dibatalkan.",
+    "fix": "Stok berkurang otomatis saat pesanan masuk",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "point",
+    "n": "3",
+    "title": "Pelanggan kecewa",
+    "body": "Pesanan batal atau telat dikirim membuat pelanggan kapok, dan sulit kembali lagi.",
+    "fix": "Stok yang akurat berarti pesanan yang bisa dipenuhi",
+    "fixLabel": "SOLUSI"
+   },
+   {
+    "type": "cta",
+    "title": "Stok tokomu masih dicatat manual?",
+    "sub": "Komen MANUAL kalau masih pakai Excel. Kami bantu rapikan alurnya, info di link profil 👇",
+    "handle": "Follow untuk tips bisnis online"
+   }
+  ]
+ },
+ {
+  "slug": "pilih-paket-website",
+  "theme": "light",
+  "slides": [
+   {
+    "type": "hook",
+    "kicker": "Pilih paket",
+    "title": "Startup, Professional, atau Enterprise? <i>Pilih</i> yang mana 🤔",
+    "sub": "Panduan singkat untuk memilih paket website"
+   },
+   {
+    "type": "point",
+    "n": "5",
+    "title": "Startup: 5 halaman",
+    "body": "Untuk bisnis yang baru mulai: profil, layanan, dan kontak yang rapi dan cepat di HP.",
+    "fix": "Cocok untuk UMKM yang baru go digital",
+    "fixLabel": "COCOK UNTUK"
+   },
+   {
+    "type": "point",
+    "n": "12",
+    "title": "Professional: sampai 12 halaman",
+    "body": "Ada riset UX/UI, SEO teknis, optimasi konversi, dan integrasi API. Cocok kalau kamu butuh lebih banyak halaman dan leads.",
+    "fix": "Cocok untuk bisnis yang ingin lebih banyak enquiry",
+    "fixLabel": "COCOK UNTUK"
+   },
+   {
+    "type": "point",
+    "n": "∞",
+    "title": "Enterprise: tanpa batas",
+    "body": "Backend custom, keamanan tingkat enterprise, dan dukungan DevOps khusus.",
+    "fix": "Cocok untuk sistem dan tim yang kompleks",
+    "fixLabel": "COCOK UNTUK"
+   },
+   {
+    "type": "cta",
+    "title": "Kamu butuh paket yang mana?",
+    "sub": "Komen STARTUP, PRO, atau ENTERPRISE. Kami cek kebutuhanmu dulu, tanpa biaya 👇",
+    "handle": "Follow untuk tips website bisnis"
+   }
+  ]
+ }
 ]

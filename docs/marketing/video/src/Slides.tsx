@@ -220,7 +220,7 @@ const ImgSlide: React.FC<{ s: Slide; t: Theme }> = ({ s, t }) => (
     <Kicker t={t} text={s.kicker} />
     <PtTitle t={t} html={s.title} />
     <div style={{ marginTop: 36, ...useEnter(10, 80) }}>
-      <BrowserFrame t={t} label={s.label || (s.html ? 'tokokami.blogspot.com' : 'Template Vanaila')}>
+      <BrowserFrame t={t} label={s.label || (s.html ? 'tokokami.blogspot.com' : 'Contoh desain')}>
         {s.html ? <div dangerouslySetInnerHTML={{ __html: s.html }} /> : <KenBurnsImg src={asset(s.img)} pos={s.label ? 'left top' : 'top'} />}
       </BrowserFrame>
     </div>
@@ -265,7 +265,7 @@ const Split: React.FC<{ s: Slide; t: Theme }> = ({ s, t }) => (
     <div style={{ marginTop: 30, display: 'flex', flexDirection: 'column', gap: 18 }}>
       {[[s.imgA, s.labelA, s.htmlA], [s.imgB, s.labelB, s.htmlB]].map(([im, lb, h], i) => (
         <div key={i} style={useEnter(10 + i * 10, 80)}>
-          <BrowserFrame t={t} label={h ? 'tokokami.blogspot.com' : 'Template Vanaila'}>
+          <BrowserFrame t={t} label={h ? 'tokokami.blogspot.com' : 'Contoh desain'}>
             {h ? (
               <div dangerouslySetInnerHTML={{ __html: (h as string).replace("class='retro'", "class='retro' style='aspect-ratio:16/6.4;font-size:.8em'") }} />
             ) : (
